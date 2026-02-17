@@ -1,59 +1,132 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Tabs } from "expo-router";
+import {
+  BookCheck,
+  House,
+  Package,
+  PackagePlus,
+  ScanBarcode,
+  Store,
+} from "lucide-react-native";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Image, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import CustomTabBar from "@/components/CustomTabBar";
+import HeaderRight from "@/components/HamburgerButton";
+import SearchBar from "@/components/shared/SearchBar/SearchBar";
+import Colors from "@/constants/Colors";
+import { useHasRole } from "@/store/useAuthStore";
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+import type { BottomTabHeaderProps } from "@react-navigation/bottom-tabs";
+
+function CustomHeader(_props: BottomTabHeaderProps) {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <View style={[styles.headerContainer, { paddingTop: insets.top }]}>
+      <View style={styles.headerBar}>
+        <Image
+          source={require("@/assets/images/logo.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <View style={styles.headerRight}>
+          <HeaderRight />
+        </View>
+      </View>
+      <SearchBar />
+    </View>
+  );
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+  const canUpload = useHasRole("store", "service", "admin");
 
   return (
     <Tabs
+      tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
+        header: (props) => <CustomHeader {...props} />,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: t("tabs.home"),
+          tabBarIcon: ({ color, size }) => (
+            <House strokeWidth={1.5} size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="marketplace"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: t("tabs.marketplace"),
+          tabBarIcon: ({ color, size }) => (
+            <Package strokeWidth={1.5} size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="stores"
+        options={{
+          title: t("tabs.stores"),
+          tabBarIcon: ({ color, size }) => (
+            <Store strokeWidth={1.5} size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="services"
+        options={{
+          title: t("tabs.services"),
+          tabBarIcon: ({ color, size }) => (
+            <ScanBarcode strokeWidth={1.5} size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="education"
+        options={{
+          title: t("tabs.education"),
+          tabBarIcon: ({ color, size }) => (
+            <BookCheck strokeWidth={1.5} size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="upload"
+        options={{
+          title: t("tabs.upload"),
+          tabBarIcon: ({ color, size }) => (
+            <PackagePlus strokeWidth={1.5} size={size} color={color} />
+          ),
+          href: canUpload ? "/(tabs)/upload" : null,
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    backgroundColor: Colors.primary,
+  },
+  headerBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: 48,
+    paddingHorizontal: 4,
+  },
+  logo: {
+    height: 32,
+    width: 100,
+    marginLeft: 14,
+  },
+  headerRight: {
+    alignItems: "flex-end",
+  },
+});

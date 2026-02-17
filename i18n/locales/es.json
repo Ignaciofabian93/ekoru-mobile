@@ -1,0 +1,17 @@
+{
+  "tabs": {
+    "home": "Inicio",
+    "marketplace": "Mercado",
+    "stores": "Tiendas",
+    "upload": "Subir",
+    "services": "Servicios",
+    "education": "Educación"
+  },
+  "profile": {
+    "profile": "Perfil",
+    "settings": "Configuración",
+    "editProfile": "Editar Perfil",
+    "changePassword": "Cambiar Contraseña",
+    "orderHistory": "Historial de Pedidos"
+  }
+}

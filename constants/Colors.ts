@@ -1,19 +1,21 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+const primary = "#65a30d"; // lime-600
 
 export default {
+  primary,
   light: {
-    text: '#000',
-    background: '#fff',
-    tint: tintColorLight,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorLight,
+    text: "#000",
+    background: "#fff",
+    tint: primary,
+    tabIconDefault: "#ccc",
+    tabIconSelected: primary,
+    header: primary,
   },
   dark: {
-    text: '#fff',
-    background: '#000',
-    tint: tintColorDark,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorDark,
+    text: "#fff",
+    background: "#000",
+    tint: primary,
+    tabIconDefault: "#ccc",
+    tabIconSelected: primary,
+    header: primary,
   },
 };

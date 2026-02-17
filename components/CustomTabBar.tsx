@@ -9,8 +9,8 @@ import Animated, {
 
 import Colors from "@/constants/Colors";
 
-const INDICATOR_WIDTH = 60;
-const INDICATOR_HEIGHT = 56;
+const INDICATOR_WIDTH = 54;
+const INDICATOR_HEIGHT = 50;
 const SPRING_CONFIG = {
   damping: 18,
   stiffness: 200,
@@ -101,16 +101,16 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     backgroundColor: Colors.primary,
-    paddingBottom: 28,
+    paddingBottom: 50,
     paddingTop: 16,
     paddingHorizontal: 8,
   },
   indicator: {
     position: "absolute",
-    top: 11,
+    top: 13,
     width: INDICATOR_WIDTH,
     height: INDICATOR_HEIGHT,
-    borderRadius: 12,
+    borderRadius: 10,
     backgroundColor: "#fff",
   },
   tabItem: {
@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 10,
     fontWeight: "700",
-    marginTop: 2,
+    marginTop: 1,
   },
 });

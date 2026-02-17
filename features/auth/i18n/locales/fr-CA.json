@@ -1,0 +1,19 @@
+{
+  "headline": "La durabilité commence ici",
+  "loginSubtitle": "Connectez-vous à votre compte",
+  "registerSubtitle": "Créez votre compte",
+  "email": "Courriel",
+  "emailPlaceholder": "Entrez votre courriel",
+  "password": "Mot de passe",
+  "passwordPlaceholder": "Entrez votre mot de passe",
+  "login": "Se connecter",
+  "register": "S'inscrire",
+  "or": "ou",
+  "noAccount": "Vous n'avez pas de compte?",
+  "signUp": "Inscrivez-vous",
+  "hasAccount": "Vous avez déjà un compte?",
+  "signIn": "Connectez-vous",
+  "goBackHome": "Retour à l'accueil",
+  "errorTitle": "Erreur",
+  "fieldsRequired": "Veuillez entrer votre courriel et mot de passe"
+}

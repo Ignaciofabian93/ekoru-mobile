@@ -1,9 +1,7 @@
-import MainButton from "@/components/shared/Button/MainButton";
 import Colors from "@/constants/Colors";
-import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
-import { Eye, EyeOff, LogIn } from "lucide-react-native";
-import React, { useState } from "react";
+import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Image,
   KeyboardAvoidingView,
@@ -12,35 +10,21 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
+import "../i18n";
+import LoginForm from "../ui/LoginForm";
 
 export default function LoginScreen() {
   const router = useRouter();
-  const login = useAuthStore((s) => s.login);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const handleLogin = async () => {
-    if (!email || !password) return;
-    setLoading(true);
-    try {
-      await login(email, password);
-      router.replace("/(tabs)");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { t } = useTranslation("auth");
 
   const EKORU_LOGO = require("@/assets/images/logo.png");
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "padding"}
     >
       <ScrollView
         contentContainerStyle={styles.scroll}
@@ -48,83 +32,29 @@ export default function LoginScreen() {
       >
         <View style={styles.logoSection}>
           <Image source={EKORU_LOGO} style={styles.logo} resizeMode="contain" />
-          <Text style={styles.headline}>Sustainability starts here</Text>
-          <Text style={styles.subtitle}>Log in to your account</Text>
+          <Text style={styles.headline}>{t("headline")}</Text>
+          <Text style={styles.subtitle}>{t("loginSubtitle")}</Text>
         </View>
 
-        <View style={styles.form}>
-          <View style={styles.field}>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              placeholder="you@example.com"
-              placeholderTextColor="#b0b7c3"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.label}>Password</Text>
-            <View style={styles.passwordWrapper}>
-              <TextInput
-                style={styles.passwordInput}
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Enter your password"
-                placeholderTextColor="#b0b7c3"
-                secureTextEntry={!showPassword}
-              />
-              <Pressable
-                onPress={() => setShowPassword(!showPassword)}
-                hitSlop={8}
-                style={styles.eyeButton}
-              >
-                {showPassword ? (
-                  <EyeOff size={20} color="#9ca3af" strokeWidth={1.5} />
-                ) : (
-                  <Eye size={20} color="#9ca3af" strokeWidth={1.5} />
-                )}
-              </Pressable>
-            </View>
-          </View>
-
-          <Pressable style={styles.forgotButton}>
-            <Text style={styles.forgotText}>Forgot password?</Text>
-          </Pressable>
-
-          <MainButton
-            text="Log In"
-            onPress={handleLogin}
-            loading={loading}
-            disabled={loading}
-            size="lg"
-            fullWidth
-            rightIcon={LogIn}
-            style={styles.loginButton}
-          />
-        </View>
+        <LoginForm />
 
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <Text style={styles.dividerText}>or</Text>
+          <Text style={styles.dividerText}>{t("or")}</Text>
           <View style={styles.dividerLine} />
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Don't have an account?</Text>
+          <Text style={styles.footerText}>{t("noAccount")}</Text>
           <Pressable onPress={() => router.push("/(auth)/register")}>
-            <Text style={styles.footerLink}> Sign Up</Text>
+            <Text style={styles.footerLink}> {t("signUp")}</Text>
           </Pressable>
         </View>
         <Pressable
           onPress={() => router.push("/(tabs)")}
           style={styles.backButton}
         >
-          <Text style={styles.backText}>Continue as guest</Text>
+          <Text style={styles.backText}>{t("goBackHome")}</Text>
         </Pressable>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -140,7 +70,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     paddingHorizontal: 28,
-    paddingVertical: 40,
+    paddingTop: 40,
   },
 
   // Logo & branding
@@ -151,76 +81,22 @@ const styles = StyleSheet.create({
   logo: {
     width: 240,
     height: 80,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   headline: {
     fontSize: 20,
-    fontWeight: "700",
-    color: "#1a1a1a",
+    fontFamily: "Cabin_700Bold",
+    color: Colors.primary,
     textAlign: "center",
     lineHeight: 28,
     letterSpacing: -0.3,
-    fontStyle: "italic",
   },
   subtitle: {
     fontSize: 15,
-    color: "#4c4c4c",
+    fontFamily: "Cabin_600SemiBold",
+    color: "#2c2c2c",
     marginTop: 6,
     letterSpacing: 0.1,
-  },
-
-  // Form
-  form: {
-    gap: 20,
-  },
-  field: {
-    gap: 8,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#4a5568",
-    marginLeft: 2,
-  },
-  input: {
-    backgroundColor: "#f8f9fb",
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 16,
-    color: "#1a1a1a",
-    borderWidth: 1,
-    borderColor: "#e8ecf0",
-  },
-  passwordWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f8f9fb",
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#e8ecf0",
-  },
-  passwordInput: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 16,
-    color: "#1a1a1a",
-  },
-  eyeButton: {
-    paddingHorizontal: 16,
-  },
-  forgotButton: {
-    alignSelf: "flex-end",
-    marginTop: -8,
-  },
-  forgotText: {
-    fontSize: 14,
-    color: Colors.primary,
-    fontWeight: "600",
-  },
-  loginButton: {
-    marginTop: 4,
   },
 
   // Divider
@@ -238,8 +114,8 @@ const styles = StyleSheet.create({
   },
   dividerText: {
     fontSize: 13,
+    fontFamily: "Cabin_500Medium",
     color: "#a0a8b8",
-    fontWeight: "500",
   },
 
   // Footer
@@ -250,11 +126,12 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 15,
-    color: "#8b95a5",
+    fontFamily: "Cabin_500Medium",
+    color: "#2c2c2c",
   },
   footerLink: {
     fontSize: 15,
-    fontWeight: "700",
+    fontFamily: "Cabin_700Bold",
     color: Colors.primary,
   },
   backButton: {
@@ -264,7 +141,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 14,
-    color: "#a0a8b8",
-    fontWeight: "500",
+    fontFamily: "Cabin_500Medium",
+    color: "#5c5c5c",
   },
 });

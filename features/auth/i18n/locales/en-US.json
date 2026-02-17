@@ -1,0 +1,19 @@
+{
+  "headline": "Sustainability starts here",
+  "loginSubtitle": "Log in to your account",
+  "registerSubtitle": "Create your account",
+  "email": "Email",
+  "emailPlaceholder": "Enter your email",
+  "password": "Password",
+  "passwordPlaceholder": "Enter your password",
+  "login": "Log In",
+  "register": "Sign Up",
+  "or": "or",
+  "noAccount": "Don't have an account?",
+  "signUp": "Sign Up",
+  "hasAccount": "Already have an account?",
+  "signIn": "Sign In",
+  "goBackHome": "Go back to home",
+  "errorTitle": "Error",
+  "fieldsRequired": "Please enter your email and password"
+}

@@ -1,0 +1,19 @@
+{
+  "headline": "La sostenibilidad comienza aquí",
+  "loginSubtitle": "Inicia sesión en tu cuenta",
+  "registerSubtitle": "Crea tu cuenta",
+  "email": "Correo electrónico",
+  "emailPlaceholder": "Ingresa tu correo",
+  "password": "Contraseña",
+  "passwordPlaceholder": "Ingresa tu contraseña",
+  "login": "Iniciar sesión",
+  "register": "Registrarse",
+  "or": "o",
+  "noAccount": "¿No tienes cuenta?",
+  "signUp": "Regístrate",
+  "hasAccount": "¿Ya tienes cuenta?",
+  "signIn": "Inicia sesión",
+  "goBackHome": "Volver al inicio",
+  "errorTitle": "Error",
+  "fieldsRequired": "Por favor ingresa tu correo y contraseña"
+}

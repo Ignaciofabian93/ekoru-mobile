@@ -23,9 +23,11 @@ import { ApolloProvider } from "@apollo/client/react";
 
 import Drawer from "@/components/Drawer";
 import { DrawerProvider } from "@/components/DrawerContext";
+import toastConfig from "@/components/shared/Toast/toastConfig";
 import { useColorScheme } from "@/components/useColorScheme";
 import client from "@/lib/apollo";
 import useAuthStore from "@/store/useAuthStore";
+import Toast from "react-native-toast-message";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -95,6 +97,7 @@ function RootLayoutNav() {
           <StatusBar style="light" />
         </ThemeProvider>
       </DrawerProvider>
+      <Toast config={toastConfig} />
     </ApolloProvider>
   );
 }

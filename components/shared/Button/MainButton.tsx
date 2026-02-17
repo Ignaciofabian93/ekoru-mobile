@@ -6,6 +6,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  View,
   type StyleProp,
   type ViewStyle,
 } from "react-native";
@@ -105,26 +106,30 @@ export default function MainButton({
         customStyle,
       ]}
     >
-      {loading ? (
-        <ActivityIndicator color={v.spinnerColor} size="small" />
-      ) : (
-        <>
-          {LeftIcon && (
-            <LeftIcon size={s.iconSize} color={v.iconColor} strokeWidth={2} />
-          )}
-          <Text
-            style={[
-              styles.text,
-              { fontSize: s.fontSize },
-              v.text,
-            ]}
-          >
-            {text}
-          </Text>
-          {RightIcon && (
-            <RightIcon size={s.iconSize} color={v.iconColor} strokeWidth={2} />
-          )}
-        </>
+      {/* Always render content to preserve height */}
+      <View style={[styles.content, { gap: s.gap, opacity: loading ? 0 : 1 }]}>
+        {LeftIcon && (
+          <LeftIcon size={s.iconSize} color={v.iconColor} strokeWidth={2} />
+        )}
+        <Text
+          style={[
+            styles.text,
+            { fontSize: s.fontSize },
+            v.text,
+          ]}
+        >
+          {text}
+        </Text>
+        {RightIcon && (
+          <RightIcon size={s.iconSize} color={v.iconColor} strokeWidth={2} />
+        )}
+      </View>
+      {loading && (
+        <ActivityIndicator
+          color={v.spinnerColor}
+          size="small"
+          style={styles.spinner}
+        />
       )}
     </Pressable>
   );
@@ -135,6 +140,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    position: "relative" as const,
+  },
+  content: {
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+  },
+  spinner: {
+    position: "absolute" as const,
   },
   fullWidth: {
     width: "100%",

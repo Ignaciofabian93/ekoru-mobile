@@ -1,6 +1,7 @@
 import HeroCarousel from "@/components/HeroCarousel/HeroCarousel";
 import Banner from "@/components/shared/Banner/Banner";
 import { ScrollView, StyleSheet, View } from "react-native";
+import CategoriesSection from "../ui/CategoriesSection";
 import ProductsHighlight from "../ui/ProductsHighlight";
 import StatsSection from "../ui/StatsSection";
 
@@ -14,6 +15,7 @@ export default function HomeScreen() {
           description="Discover a new way to consume and connect with your community."
         />
         <StatsSection />
+        <CategoriesSection />
         <ProductsHighlight />
       </View>
     </ScrollView>

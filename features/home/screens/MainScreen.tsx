@@ -9,11 +9,11 @@ export default function HomeScreen() {
     <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
       <HeroCarousel />
       <View style={styles.content}>
-        <StatsSection />
         <Banner
           title="Welcome to Ekoru!"
           description="Discover a new way to consume and connect with your community."
         />
+        <StatsSection />
         <ProductsHighlight />
       </View>
     </ScrollView>
@@ -23,8 +23,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   scroll: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   content: {
-    padding: 16,
+    marginTop: 24,
+    paddingHorizontal: 8,
+    backgroundColor: "#fff",
   },
 });

@@ -9,8 +9,14 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
   DefaultTheme,
+  type Theme,
   ThemeProvider,
 } from "@react-navigation/native";
+
+const LightTheme: Theme = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: "#ffffff" },
+};
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -96,12 +102,13 @@ function RootLayoutNav() {
     <ApolloProvider client={client}>
       <DrawerProvider>
         <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          value={colorScheme === "dark" ? DarkTheme : LightTheme}
         >
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="(profile)" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="product" options={{ headerShown: false }} />
           </Stack>
           <Drawer />
           <StatusBar style="light" />

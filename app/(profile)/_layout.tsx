@@ -1,16 +1,12 @@
+import GradientStackHeader from "@/components/shared/Header/GradientStackHeader";
 import { Stack } from "expo-router";
 import React from "react";
-
-import Colors from "@/constants/Colors";
 
 export default function ProfileLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: { backgroundColor: Colors.primary },
-        headerTintColor: "#fff",
-        headerTitleStyle: { fontWeight: "bold" },
-        headerTitleAlign: "center",
+        header: (props) => <GradientStackHeader {...props} />,
       }}
     >
       <Stack.Screen name="index" options={{ title: "Profile" }} />
@@ -20,9 +16,11 @@ export default function ProfileLayout() {
         name="change-password"
         options={{ title: "Change Password" }}
       />
+      <Stack.Screen name="order-history" options={{ title: "Order History" }} />
+      <Stack.Screen name="favorites" options={{ title: "Favorites" }} />
       <Stack.Screen
-        name="order-history"
-        options={{ title: "Order History" }}
+        name="environmental-impact"
+        options={{ title: "Environmental Impact" }}
       />
     </Stack>
   );

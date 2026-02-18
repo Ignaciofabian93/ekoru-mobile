@@ -12,6 +12,9 @@
     "settings": "Settings",
     "editProfile": "Edit Profile",
     "changePassword": "Change Password",
-    "orderHistory": "Order History"
+    "orderHistory": "Order History",
+    "orders": "Orders",
+    "environmentalImpact": "Environmental Impact",
+    "menu": "Menu"
   }
 }

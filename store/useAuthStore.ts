@@ -18,18 +18,92 @@ interface AuthState {
 const TOKEN_KEY = "auth_token";
 const SELLER_KEY = "auth_seller";
 
+// TODO: Remove before production
+const DEV_MOCK_SELLER: Seller = {
+  id: "mock-seller-1",
+  email: "jane@ekoru.com",
+  password: "",
+  sellerType: "PERSON",
+  isActive: true,
+  isVerified: true,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  points: 320,
+  profile: {
+    __typename: "PersonProfile",
+    id: "mock-profile-1",
+    sellerId: "mock-seller-1",
+    firstName: "Jane",
+    lastName: "Doe",
+    displayName: "Jane Doe",
+    allowExchanges: true,
+    personSubscriptionPlan: "BASIC",
+  },
+  sellerLevel: {
+    id: 2,
+    levelName: "Eco Warrior",
+    minPoints: 100,
+    maxPoints: 500,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  phone: "+56 9 1234 5678",
+  address: "Av. Providencia 1234, Piso 3",
+  country: { id: 1, country: "Chile" },
+  region: { id: 1, region: "Región Metropolitana", countryId: 1 },
+  city: { id: 1, city: "Santiago", regionId: 1 },
+  county: { id: 1, county: "Providencia", cityId: 1 },
+};
+
 const useAuthStore = create<AuthState>()((set) => ({
-  seller: null,
-  token: null,
+  seller: DEV_MOCK_SELLER,
+  token: "mock_jwt_token",
   isHydrated: false,
 
   login: async (_email: string, _password: string) => {
     // TODO: Replace with real API call
     const mockToken = "mock_jwt_token";
 
-    await SecureStore.setItemAsync(TOKEN_KEY, mockToken);
+    const mockSeller: Seller = {
+      id: "mock-seller-1",
+      email: _email,
+      password: "",
+      sellerType: "PERSON",
+      isActive: true,
+      isVerified: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      points: 320,
+      profile: {
+        __typename: "PersonProfile",
+        id: "mock-profile-1",
+        sellerId: "mock-seller-1",
+        firstName: "Jane",
+        lastName: "Doe",
+        displayName: "Jane Doe",
+        allowExchanges: true,
+        personSubscriptionPlan: "BASIC",
+      },
+      sellerLevel: {
+        id: 2,
+        levelName: "Eco Warrior",
+        minPoints: 100,
+        maxPoints: 500,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      phone: "+56 9 1234 5678",
+      address: "Av. Providencia 1234, Piso 3",
+      country: { id: 1, country: "Chile" },
+      region: { id: 1, region: "Región Metropolitana", countryId: 1 },
+      city: { id: 1, city: "Santiago", regionId: 1 },
+      county: { id: 1, county: "Providencia", cityId: 1 },
+    };
 
-    set({ token: mockToken });
+    await SecureStore.setItemAsync(TOKEN_KEY, mockToken);
+    await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(mockSeller));
+
+    set({ token: mockToken, seller: mockSeller });
   },
 
   logout: async () => {

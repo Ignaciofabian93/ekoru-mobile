@@ -12,6 +12,9 @@
     "settings": "Paramètres",
     "editProfile": "Modifier le profil",
     "changePassword": "Changer le mot de passe",
-    "orderHistory": "Historique des commandes"
+    "orderHistory": "Historique des commandes",
+    "orders": "Commandes",
+    "environmentalImpact": "Impact environnemental",
+    "menu": "Menu"
   }
 }

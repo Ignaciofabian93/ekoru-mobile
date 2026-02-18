@@ -1,4 +1,5 @@
 import Colors from "@/constants/Colors";
+import { LinearGradient } from "expo-linear-gradient";
 import {
   Package2,
   ScanBarcode,
@@ -6,115 +7,210 @@ import {
   TrendingUp,
   UsersRound,
 } from "lucide-react-native";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { PixelRatio, StyleSheet, Text, View } from "react-native";
+import Animated, {
+  cancelAnimation,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
+
+// px/ms — adjust to taste
+const SPEED = 0.038;
+
+const STATS = [
+  { label: "Active Users", value: "1,234", Icon: UsersRound },
+  { label: "Products Listed", value: "567", Icon: Package2 },
+  { label: "Eco Stores", value: "89", Icon: Store },
+  { label: "Eco Services", value: "45", Icon: ScanBarcode },
+  { label: "Active Initiatives", value: "12", Icon: TrendingUp },
+];
 
 export default function StatsSection() {
-  const stats = [
-    { title: "Active Users", value: "1,234", icon: UsersRound },
-    { title: "Products circulating", value: "567", icon: Package2 },
-    { title: "Sustainable Stores", value: "89", icon: Store },
-    { title: "Sustainable Services", value: "45", icon: ScanBarcode },
-    { title: "Active Initiatives", value: "12", icon: TrendingUp },
-  ];
+  const translateX = useSharedValue(0);
+  const [setWidth, setSetWidth] = useState(0);
 
-  const StatCard = ({
-    title,
-    value,
-    Icon,
-  }: {
-    title: string;
-    value: string;
-    Icon: any;
-  }) => (
-    <View style={styles.cardContainer}>
-      <View
-        style={{
-          backgroundColor: Colors.primary,
-          padding: 12,
-          borderRadius: 100,
-          marginBottom: 8,
-        }}
-      >
-        <Icon size={24} color={"#fff"} />
-      </View>
-      <Text style={{ marginTop: 4, fontSize: 24, fontWeight: "bold" }}>
-        {value}
-      </Text>
-      <Text
-        style={{
-          marginTop: 8,
-          fontSize: 12,
-          color: "#1e1e1e",
-          fontWeight: "600",
-        }}
-      >
-        {title}
-      </Text>
-    </View>
-  );
+  useEffect(() => {
+    if (setWidth === 0) return;
+    cancelAnimation(translateX);
+    // Animate from 0 → -setWidth so withRepeat always resets to 0,
+    // which is visually identical to -setWidth (copy 2 takes copy 1's place).
+    translateX.value = withRepeat(
+      withTiming(-setWidth, {
+        duration: setWidth / SPEED,
+        easing: Easing.linear,
+      }),
+      -1,
+      false,
+    );
+  }, [setWidth]);
+
+  const animStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}>
-        This is already happening
+      <Text style={styles.heading}>This is already happening</Text>
+      <Text style={styles.subtitle}>
+        An active community changing the way we consume.
       </Text>
-      <Text
-        style={{
-          textAlign: "center",
-          fontSize: 14,
-          color: "#555",
-          marginTop: 8,
-        }}
-      >
-        An active community changing the way to consume.
+
+      <View style={styles.track}>
+        <Animated.View style={[styles.ticker, animStyle]}>
+          {/* First copy — wrapped so onLayout measures exactly one set's width */}
+          <View
+            style={styles.copy}
+            onLayout={(e) => {
+              if (setWidth !== 0) return;
+              setSetWidth(
+                PixelRatio.roundToNearestPixel(e.nativeEvent.layout.width),
+              );
+            }}
+          >
+            {STATS.map((stat, i) => (
+              <StatItem
+                key={`a${i}`}
+                label={stat.label}
+                value={stat.value}
+                Icon={stat.Icon}
+              />
+            ))}
+          </View>
+          {/* Second copy — seamless continuation */}
+          <View style={styles.copy}>
+            {STATS.map((stat, i) => (
+              <StatItem
+                key={`b${i}`}
+                label={stat.label}
+                value={stat.value}
+                Icon={stat.Icon}
+              />
+            ))}
+          </View>
+        </Animated.View>
+
+        <LinearGradient
+          colors={["#ffffff", "transparent"]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.fadeLeft}
+          pointerEvents="none"
+        />
+        <LinearGradient
+          colors={["transparent", "#ffffff"]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={styles.fadeRight}
+          pointerEvents="none"
+        />
+      </View>
+
+      <Text style={styles.caption}>
+        Products, stores, and services already part of the circular economy.
       </Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={{ marginVertical: 16 }}
-      >
-        {stats.map((stat, index) => (
-          <StatCard
-            key={index}
-            title={stat.title}
-            value={stat.value}
-            Icon={stat.icon}
-          />
-        ))}
-      </ScrollView>
-      <Text
-        style={{
-          textAlign: "center",
-          fontSize: 11,
-          color: "#555",
-        }}
-      >
-        People, products, stores and services are already part of the circular
-        economy.
-      </Text>
+    </View>
+  );
+}
+
+function StatItem({
+  label,
+  value,
+  Icon,
+}: {
+  label: string;
+  value: string;
+  Icon: any;
+}) {
+  return (
+    <View style={styles.item}>
+      <Icon size={14} color={Colors.primary} strokeWidth={2} />
+      <Text style={styles.value}>{value}</Text>
+      <Text style={styles.label}>{label}</Text>
+      <View style={styles.dot} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 48,
     marginBottom: 24,
   },
-  cardContainer: {
-    width: 170,
-    padding: 16,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    marginRight: 16,
-    flexDirection: "column",
+  heading: {
+    fontSize: 20,
+    fontFamily: "Cabin_700Bold",
+    color: Colors.foreground,
+    textAlign: "center",
+  },
+  subtitle: {
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: "Cabin_400Regular",
+    color: Colors.foregroundSecondary,
+    marginTop: 6,
+  },
+  track: {
+    marginVertical: 20,
+    overflow: "hidden",
+    paddingVertical: 14,
+    // borderTopWidth: StyleSheet.hairlineWidth,
+    // borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.borderStrong,
+  },
+  ticker: {
+    flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: "#ccc",
+  },
+  copy: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  item: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
+    paddingHorizontal: 20,
+  },
+  value: {
+    fontSize: 17,
+    fontFamily: "Cabin_700Bold",
+    color: Colors.foreground,
+  },
+  label: {
+    fontSize: 13,
+    fontFamily: "Cabin_400Regular",
+    color: Colors.foregroundSecondary,
+  },
+  dot: {
+    width: 5,
+    height: 5,
+    borderRadius: 3,
+    backgroundColor: Colors.primary,
+    marginLeft: 8,
+    opacity: 0.6,
+  },
+  fadeLeft: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 48,
+  },
+  fadeRight: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: 48,
+  },
+  caption: {
+    textAlign: "center",
+    fontSize: 11,
+    fontFamily: "Cabin_400Regular",
+    color: Colors.foregroundTertiary,
   },
 });

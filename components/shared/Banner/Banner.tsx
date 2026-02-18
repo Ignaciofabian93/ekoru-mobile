@@ -1,7 +1,13 @@
 import Colors from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from "react-native";
 import Animated, { FadeIn, FadeInDown, ZoomIn } from "react-native-reanimated";
 
 type Variant = "primary" | "secondary" | "outlined" | "ghost";
@@ -25,7 +31,11 @@ const variantConfig = {
     shadow: true,
   },
   secondary: {
-    gradient: [Colors.secondaryDark, Colors.secondary, Colors.secondaryDark] as const,
+    gradient: [
+      Colors.secondaryDark,
+      Colors.secondary,
+      Colors.secondaryDark,
+    ] as const,
     textColor: "#fff",
     dotColor: "#fff",
     borderWidth: 0,
@@ -50,10 +60,16 @@ const variantConfig = {
   },
 };
 
-function Dot({ color, delay, animated }: { color: string; delay: number; animated: boolean }) {
-  const dot = (
-    <View style={[styles.dot, { backgroundColor: color }]} />
-  );
+function Dot({
+  color,
+  delay,
+  animated,
+}: {
+  color: string;
+  delay: number;
+  animated: boolean;
+}) {
+  const dot = <View style={[styles.dot, { backgroundColor: color }]} />;
 
   if (!animated) return dot;
 
@@ -77,9 +93,13 @@ export default function Banner({
   const content = (
     <>
       <View style={styles.titleRow}>
-        {showDots && <Dot color={config.dotColor} delay={200} animated={animated} />}
+        {showDots && (
+          <Dot color={config.dotColor} delay={200} animated={animated} />
+        )}
         <Text style={[styles.title, { color: config.textColor }]}>{title}</Text>
-        {showDots && <Dot color={config.dotColor} delay={400} animated={animated} />}
+        {showDots && (
+          <Dot color={config.dotColor} delay={400} animated={animated} />
+        )}
       </View>
       {animated ? (
         <Animated.View entering={FadeIn.delay(500)}>
@@ -103,7 +123,8 @@ export default function Banner({
       borderColor: config.borderColor,
     },
     !config.gradient && {
-      backgroundColor: variant === "ghost" ? "rgba(255,255,255,0.5)" : Colors.background,
+      backgroundColor:
+        variant === "ghost" ? "rgba(255,255,255,0.5)" : Colors.background,
     },
     style,
   ];
@@ -124,17 +145,16 @@ export default function Banner({
   if (!animated) return inner;
 
   return (
-    <Animated.View entering={FadeInDown.duration(600)}>
-      {inner}
-    </Animated.View>
+    <Animated.View entering={FadeInDown.duration(600)}>{inner}</Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: 12,
-    width: "95%",
+    width: "100%",
     alignSelf: "center",
     overflow: "hidden",
   },
@@ -143,30 +163,30 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
-    elevation: 6,
+    elevation: 4,
   },
   titleRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    marginBottom: 12,
+    marginBottom: 8,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "Cabin_700Bold",
     textAlign: "center",
     letterSpacing: -0.3,
   },
   description: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: "Cabin_400Regular",
     textAlign: "center",
-    lineHeight: 22,
+    lineHeight: 20,
   },
   dot: {
-    width: 12,
-    height: 12,
+    width: 8,
+    height: 8,
     borderRadius: 6,
   },
 });

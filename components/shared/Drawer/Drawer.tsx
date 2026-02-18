@@ -1,6 +1,10 @@
 import { useRouter } from "expo-router";
 import {
   BookCheck,
+  HelpCircle,
+  House,
+  Leaf,
+  Mail,
   Package,
   PackagePlus,
   ScanBarcode,
@@ -12,7 +16,14 @@ import {
 } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import Animated, {
   Easing,
   interpolate,
@@ -23,15 +34,17 @@ import Animated, {
 
 import Colors from "@/constants/Colors";
 import { useDrawer } from "@/context/DrawerContext";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import useAuthStore, {
-  useHasSellerType,
-  useIsAuthenticated,
-} from "@/store/useAuthStore";
-import MainButton from "../Button/MainButton";
+import useAuthStore, { useHasSellerType } from "@/store/useAuthStore";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
-const DRAWER_WIDTH = SCREEN_WIDTH * 0.8;
+const DRAWER_WIDTH = SCREEN_WIDTH * 0.82;
+
+const SELLER_TYPE_LABEL: Record<string, string> = {
+  PERSON: "Personal Account",
+  STARTUP: "Startup",
+  COMPANY: "Company",
+};
 
 interface MenuItem {
   route: string;
@@ -46,10 +59,16 @@ const profileMenuItems: MenuItem[] = [
     labelKey: "profile.settings",
     icon: Settings,
   },
+  { route: "/(profile)/orders", labelKey: "profile.orders", icon: Package },
+  {
+    route: "/(profile)/environmental-impact",
+    labelKey: "profile.environmentalImpact",
+    icon: Leaf,
+  },
 ];
 
-const menuItems: MenuItem[] = [
-  { route: "/(tabs)", labelKey: "tabs.home", icon: Package },
+const exploreMenuItems: MenuItem[] = [
+  { route: "/(tabs)", labelKey: "tabs.home", icon: House },
   { route: "/(tabs)/marketplace", labelKey: "tabs.marketplace", icon: Package },
   { route: "/(tabs)/stores", labelKey: "tabs.stores", icon: Store },
   { route: "/(tabs)/upload", labelKey: "tabs.upload", icon: PackagePlus },
@@ -58,31 +77,63 @@ const menuItems: MenuItem[] = [
 ];
 
 const supportMenuItems: MenuItem[] = [
-  { route: "/(tabs)/help", labelKey: "tabs.help", icon: BookCheck },
-  { route: "/(tabs)/contact", labelKey: "tabs.contact", icon: User },
+  { route: "/(tabs)/help", labelKey: "tabs.help", icon: HelpCircle },
+  { route: "/(tabs)/contact", labelKey: "tabs.contact", icon: Mail },
 ];
+
+function SectionLabel({ label }: { label: string }) {
+  return <Text style={styles.sectionLabel}>{label}</Text>;
+}
 
 export default function Drawer() {
   const { isOpen, closeDrawer } = useDrawer();
-  const { t } = useTranslation();
   const router = useRouter();
-  const colorScheme = useColorScheme();
   const progress = useSharedValue(0);
-  const isAuthenticated = useIsAuthenticated();
   const canUpload = useHasSellerType("STARTUP", "COMPANY");
   const seller = useAuthStore((s) => s.seller);
   const logout = useAuthStore((s) => s.logout);
+  const { t } = useTranslation();
+
+  const { top, bottom } = useSafeAreaInsets();
+
+  function MenuRow({
+    item,
+    onPress,
+    isLast,
+  }: {
+    item: MenuItem;
+    onPress: () => void;
+    isLast: boolean;
+  }) {
+    const Icon = item.icon;
+    return (
+      <Pressable
+        style={[styles.menuItem, !isLast && styles.menuItemBorder]}
+        onPress={onPress}
+      >
+        <View style={styles.iconWrap}>
+          <Icon size={18} strokeWidth={1.5} color={Colors.primary} />
+        </View>
+        <Text style={styles.menuLabel}>{t(item.labelKey)}</Text>
+      </Pressable>
+    );
+  }
 
   const displayName = seller?.profile
     ? seller.profile.__typename === "PersonProfile"
-      ? seller.profile.displayName ??
-        `${seller.profile.firstName}${seller.profile.lastName ? ` ${seller.profile.lastName}` : ""}`
+      ? (seller.profile.displayName ??
+        `${seller.profile.firstName}${seller.profile.lastName ? ` ${seller.profile.lastName}` : ""}`)
       : seller.profile.businessName
-    : "";
+    : (seller?.email ?? "");
 
-  const isDark = colorScheme === "dark";
+  const initials = displayName
+    .split(" ")
+    .map((n: string) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
-  const visibleMenuItems = menuItems.filter((item) => {
+  const visibleExploreItems = exploreMenuItems.filter((item) => {
     if (item.route === "/(tabs)/upload") return canUpload;
     return true;
   });
@@ -95,15 +146,13 @@ export default function Drawer() {
   }, [isOpen, progress]);
 
   const backdropStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(progress.value, [0, 1], [0, 0.3]),
+    opacity: interpolate(progress.value, [0, 1], [0, 0.4]),
     pointerEvents: progress.value > 0 ? "auto" : "none",
   }));
 
   const drawerStyle = useAnimatedStyle(() => ({
     transform: [
-      {
-        translateX: interpolate(progress.value, [0, 1], [DRAWER_WIDTH, 0]),
-      },
+      { translateX: interpolate(progress.value, [0, 1], [DRAWER_WIDTH, 0]) },
     ],
   }));
 
@@ -122,144 +171,118 @@ export default function Drawer() {
         style={[
           styles.drawer,
           drawerStyle,
-          { backgroundColor: isDark ? "#1a1a1a" : "#ffffff" },
+          { paddingTop: top, paddingBottom: bottom },
         ]}
       >
+        {/* Header */}
         <View style={styles.header}>
-          <Text style={[styles.headerTitle, { color: Colors.primary }]}>
-            EKORU
-          </Text>
-          <Pressable onPress={closeDrawer} hitSlop={8}>
-            <X size={24} color={isDark ? "#fff" : "#333"} />
+          <Text style={styles.headerTitle}>{t("profile.menu")}</Text>
+          <Pressable
+            onPress={closeDrawer}
+            hitSlop={8}
+            style={styles.closeButton}
+          >
+            <X size={20} color="#6b7280" strokeWidth={2} />
           </Pressable>
         </View>
 
-        {isAuthenticated && seller && (
-          <View style={styles.userSection}>
-            <View style={styles.userAvatar}>
-              <Text style={styles.userInitials}>
-                {displayName
-                  .split(" ")
-                  .map((n: string) => n[0])
-                  .join("")
-                  .slice(0, 2)
-                  .toUpperCase()}
-              </Text>
-            </View>
-            <View>
-              <Text
-                style={[
-                  styles.userName,
-                  { color: isDark ? "#fff" : "#1f2937" },
-                ]}
-              >
-                {displayName}
-              </Text>
-              <Text style={styles.userEmail}>{seller.email}</Text>
-            </View>
-          </View>
-        )}
-
-        {isAuthenticated && (
-          <View style={styles.menuList}>
-            {profileMenuItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Pressable
-                  key={item.route}
-                  style={styles.menuItem}
-                  onPress={() => handleNavigate(item.route)}
-                >
-                  <Icon
-                    size={22}
-                    strokeWidth={1.5}
-                    color={isDark ? "#fff" : "#333"}
-                  />
-                  <Text
-                    style={[
-                      styles.menuLabel,
-                      { color: isDark ? "#fff" : "#333" },
-                    ]}
-                  >
-                    {t(item.labelKey)}
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* User identity */}
+          {seller && (
+            <View style={styles.userSection}>
+              <View style={styles.userAvatar}>
+                <Text style={styles.userInitials}>{initials || "?"}</Text>
+              </View>
+              <View style={styles.userInfo}>
+                <Text style={styles.userName} numberOfLines={1}>
+                  {displayName}
+                </Text>
+                <Text style={styles.userEmail} numberOfLines={1}>
+                  {seller.email}
+                </Text>
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
+                    {SELLER_TYPE_LABEL[seller.sellerType]}
                   </Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        )}
-
-        <View style={styles.menuList}>
-          {visibleMenuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Pressable
-                key={item.route}
-                style={styles.menuItem}
-                onPress={() => handleNavigate(item.route)}
-              >
-                <Icon
-                  size={22}
-                  strokeWidth={1.5}
-                  color={isDark ? "#fff" : "#333"}
-                />
-                <Text
-                  style={[
-                    styles.menuLabel,
-                    { color: isDark ? "#fff" : "#333" },
-                  ]}
-                >
-                  {t(item.labelKey)}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
-
-        <View style={styles.menuList}>
-          {supportMenuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Pressable
-                key={item.route}
-                style={styles.menuItem}
-                onPress={() => handleNavigate(item.route)}
-              >
-                <Icon
-                  size={22}
-                  strokeWidth={1.5}
-                  color={isDark ? "#fff" : "#333"}
-                />
-                <Text
-                  style={[
-                    styles.menuLabel,
-                    { color: isDark ? "#fff" : "#333" },
-                  ]}
-                >
-                  {t(item.labelKey)}
-                </Text>
-              </Pressable>
-            );
-          })}
-        </View>
-
-        <View style={{ padding: 20 }}>
-          {isAuthenticated ? (
-            <MainButton
-              text="Log Out"
-              onPress={async () => {
-                await logout();
-                closeDrawer();
-                router.replace("/(tabs)");
-              }}
-            />
-          ) : (
-            <MainButton
-              text="Login"
-              onPress={() => handleNavigate("/(auth)")}
-            />
+                </View>
+              </View>
+            </View>
           )}
-        </View>
+
+          {/* Account section */}
+          {
+            <View style={styles.section}>
+              <SectionLabel label="Account" />
+              <View style={styles.menuCard}>
+                {profileMenuItems.map((item, index) => (
+                  <MenuRow
+                    key={item.route}
+                    item={item}
+                    onPress={() => handleNavigate(item.route)}
+                    isLast={index === profileMenuItems.length - 1}
+                  />
+                ))}
+              </View>
+            </View>
+          }
+
+          {/* Explore section */}
+          <View style={styles.section}>
+            <SectionLabel label="Explore" />
+            <View style={styles.menuCard}>
+              {visibleExploreItems.map((item, index) => (
+                <MenuRow
+                  key={item.route}
+                  item={item}
+                  onPress={() => handleNavigate(item.route)}
+                  isLast={index === visibleExploreItems.length - 1}
+                />
+              ))}
+            </View>
+          </View>
+
+          {/* Support section */}
+          <View style={styles.section}>
+            <SectionLabel label="Support" />
+            <View style={styles.menuCard}>
+              {supportMenuItems.map((item, index) => (
+                <MenuRow
+                  key={item.route}
+                  item={item}
+                  onPress={() => handleNavigate(item.route)}
+                  isLast={index === supportMenuItems.length - 1}
+                />
+              ))}
+            </View>
+          </View>
+
+          {/* Auth action */}
+          <View style={styles.authSection}>
+            {1 == 1 ? (
+              <Pressable
+                style={styles.logoutButton}
+                onPress={async () => {
+                  await logout();
+                  closeDrawer();
+                  router.replace("/(tabs)");
+                }}
+              >
+                <Text style={styles.logoutText}>Log Out</Text>
+              </Pressable>
+            ) : (
+              <Pressable
+                style={styles.loginButton}
+                onPress={() => handleNavigate("/(auth)")}
+              >
+                <Text style={styles.loginText}>Log In</Text>
+              </Pressable>
+            )}
+          </View>
+        </ScrollView>
       </Animated.View>
     </>
   );
@@ -278,67 +301,167 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: DRAWER_WIDTH,
     zIndex: 101,
+    backgroundColor: "#fff",
     shadowColor: "#000",
     shadowOffset: { width: -2, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 16,
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 20,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e5e5e5",
+    paddingTop: 10,
+    paddingBottom: 16,
+    backgroundColor: "#fff",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: "#e5e7eb",
   },
   headerTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontFamily: "Cabin_700Bold",
+    color: Colors.primary,
+    letterSpacing: 1,
   },
-  menuList: {
-    paddingTop: 12,
-  },
-  menuItem: {
-    flexDirection: "row",
+  closeButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: "#f3f4f6",
     alignItems: "center",
-    paddingVertical: 14,
-    paddingHorizontal: 20,
-    gap: 14,
+    justifyContent: "center",
   },
-  menuLabel: {
-    fontSize: 16,
+  scroll: {
+    flex: 1,
   },
+  scrollContent: {
+    padding: 16,
+    paddingBottom: 32,
+    gap: 4,
+  },
+
+  // User identity
   userSection: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#e5e5e5",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 8,
   },
   userAvatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
     backgroundColor: Colors.primary,
     alignItems: "center",
     justifyContent: "center",
+    flexShrink: 0,
   },
   userInitials: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontFamily: "Cabin_700Bold",
     color: "#fff",
   },
+  userInfo: {
+    flex: 1,
+    gap: 2,
+  },
   userName: {
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 15,
+    fontFamily: "Cabin_700Bold",
+    color: "#1f2937",
   },
   userEmail: {
-    fontSize: 13,
+    fontSize: 12,
+    fontFamily: "Cabin_400Regular",
     color: "#6b7280",
+  },
+  badge: {
+    alignSelf: "flex-start",
+    marginTop: 4,
+    backgroundColor: `${Colors.primary}22`,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 20,
+  },
+  badgeText: {
+    fontSize: 11,
+    fontFamily: "Cabin_600SemiBold",
+    color: Colors.primaryDark,
+  },
+
+  // Sections
+  section: {
+    gap: 6,
+    marginBottom: 4,
+  },
+  sectionLabel: {
+    fontSize: 11,
+    fontFamily: "Cabin_600SemiBold",
+    color: "#9ca3af",
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    marginLeft: 4,
+    marginTop: 8,
+  },
+  menuCard: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 13,
+    paddingHorizontal: 14,
+    gap: 12,
+  },
+  menuItemBorder: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: "#e5e7eb",
+  },
+  iconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: `${Colors.primary}18`,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  menuLabel: {
+    fontSize: 14,
+    fontFamily: "Cabin_500Medium",
+    color: "#1f2937",
+  },
+
+  // Auth
+  authSection: {
+    marginTop: 12,
+  },
+  logoutButton: {
+    paddingVertical: 13,
+    borderRadius: 12,
+    backgroundColor: "#fee2e2",
+    alignItems: "center",
+  },
+  logoutText: {
+    fontSize: 14,
+    fontFamily: "Cabin_600SemiBold",
+    color: "#dc2626",
+  },
+  loginButton: {
+    paddingVertical: 13,
+    borderRadius: 12,
+    backgroundColor: Colors.primary,
+    alignItems: "center",
+  },
+  loginText: {
+    fontSize: 14,
+    fontFamily: "Cabin_600SemiBold",
+    color: "#fff",
   },
 });

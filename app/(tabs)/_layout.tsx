@@ -11,13 +11,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import CustomTabBar from "@/components/shared/TabBar/CustomTabBar";
-import { useHasSellerType } from "@/store/useAuthStore";
 
 import CustomHeader from "@/components/shared/Header/CustomHeader";
 
 export default function TabLayout() {
   const { t } = useTranslation();
-  const canUpload = useHasSellerType("STARTUP", "COMPANY");
 
   return (
     <Tabs
@@ -78,7 +76,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => (
             <PackagePlus strokeWidth={1.5} size={size} color={color} />
           ),
-          href: canUpload ? "/(tabs)/upload" : null,
+          href: "/(tabs)/upload",
         }}
       />
     </Tabs>

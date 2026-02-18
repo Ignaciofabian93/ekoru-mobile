@@ -21,17 +21,18 @@ import "../global.css";
 
 import { ApolloProvider } from "@apollo/client/react";
 
-import Drawer from "@/components/Drawer";
-import { DrawerProvider } from "@/components/DrawerContext";
+import Drawer from "@/components/shared/Drawer/Drawer";
 import toastConfig from "@/components/shared/Toast/toastConfig";
-import { useColorScheme } from "@/components/useColorScheme";
+import { DrawerProvider } from "@/context/DrawerContext";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import client from "@/lib/apollo";
+import { getDatabase } from "@/lib/database";
 import useAuthStore from "@/store/useAuthStore";
 import Toast from "react-native-toast-message";
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from "expo-router";
 
 export const unstable_settings = {
@@ -52,11 +53,18 @@ export default function RootLayout() {
   });
   const isHydrated = useAuthStore((s) => s.isHydrated);
   const [authHydrating, setAuthHydrating] = useState(true);
+  const [dbReady, setDbReady] = useState(false);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
+
+  useEffect(() => {
+    getDatabase()
+      .then(() => setDbReady(true))
+      .catch((e) => console.error("[DB] Init failed:", e));
+  }, []);
 
   useEffect(() => {
     useAuthStore.getState().hydrate();
@@ -69,12 +77,12 @@ export default function RootLayout() {
   }, [isHydrated]);
 
   useEffect(() => {
-    if (loaded && !authHydrating) {
+    if (loaded && !authHydrating && dbReady) {
       SplashScreen.hideAsync();
     }
   }, [loaded, authHydrating]);
 
-  if (!loaded || authHydrating) {
+  if (!loaded || authHydrating || !dbReady) {
     return null;
   }
 
@@ -87,7 +95,9 @@ function RootLayoutNav() {
   return (
     <ApolloProvider client={client}>
       <DrawerProvider>
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="(profile)" options={{ headerShown: false }} />

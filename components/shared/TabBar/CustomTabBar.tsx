@@ -1,6 +1,7 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect } from "react";
-import { Dimensions, Pressable, StyleSheet, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -43,7 +44,12 @@ export default function CustomTabBar({
   }));
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={[Colors.primaryDark, Colors.primary, Colors.primaryDark]}
+      start={{ x: 0, y: 0.5 }}
+      end={{ x: 1, y: 0.5 }}
+      style={styles.container}
+    >
       <Animated.View
         style={[styles.indicator, { left: horizontalPadding }, indicatorStyle]}
       />
@@ -93,21 +99,20 @@ export default function CustomTabBar({
           </Pressable>
         );
       })}
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    backgroundColor: Colors.primary,
-    paddingBottom: 50,
-    paddingTop: 16,
+    paddingBottom: 56,
+    paddingTop: 12,
     paddingHorizontal: 8,
   },
   indicator: {
     position: "absolute",
-    top: 13,
+    top: 10,
     width: INDICATOR_WIDTH,
     height: INDICATOR_HEIGHT,
     borderRadius: 10,

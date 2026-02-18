@@ -1,7 +1,6 @@
 import HeroCarousel from "@/components/HeroCarousel/HeroCarousel";
 import Banner from "@/components/shared/Banner/Banner";
-import { View } from "@/components/Themed";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import ProductsHighlight from "../ui/ProductsHighlight";
 import StatsSection from "../ui/StatsSection";
 
@@ -11,7 +10,10 @@ export default function HomeScreen() {
       <HeroCarousel />
       <View style={styles.content}>
         <StatsSection />
-        <Banner />
+        <Banner
+          title="Welcome to Ekoru!"
+          description="Discover a new way to consume and connect with your community."
+        />
         <ProductsHighlight />
       </View>
     </ScrollView>

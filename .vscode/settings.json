@@ -4,5 +4,6 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "cSpell.words": ["Pressable"]
+  "cSpell.words": ["Pressable"],
+  "prisma.pinToPrisma6": true
 }

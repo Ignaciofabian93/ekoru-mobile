@@ -9,36 +9,11 @@ import {
 } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Image, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import CustomTabBar from "@/components/CustomTabBar";
-import HeaderRight from "@/components/HamburgerButton";
-import SearchBar from "@/components/shared/SearchBar/SearchBar";
-import Colors from "@/constants/Colors";
+import CustomTabBar from "@/components/shared/TabBar/CustomTabBar";
 import { useHasRole } from "@/store/useAuthStore";
 
-import type { BottomTabHeaderProps } from "@react-navigation/bottom-tabs";
-
-function CustomHeader(_props: BottomTabHeaderProps) {
-  const insets = useSafeAreaInsets();
-
-  return (
-    <View style={[styles.headerContainer, { paddingTop: insets.top }]}>
-      <View style={styles.headerBar}>
-        <Image
-          source={require("@/assets/images/logo.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <View style={styles.headerRight}>
-          <HeaderRight />
-        </View>
-      </View>
-      <SearchBar />
-    </View>
-  );
-}
+import CustomHeader from "@/components/shared/Header/CustomHeader";
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -109,24 +84,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    backgroundColor: Colors.primary,
-  },
-  headerBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    height: 48,
-    paddingHorizontal: 4,
-  },
-  logo: {
-    height: 32,
-    width: 100,
-    marginLeft: 14,
-  },
-  headerRight: {
-    alignItems: "flex-end",
-  },
-});

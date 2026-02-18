@@ -26,7 +26,7 @@ export default function SearchBar() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.primary,
+    backgroundColor: "transparent",
     paddingHorizontal: 16,
     paddingTop: 4,
     paddingBottom: 12,

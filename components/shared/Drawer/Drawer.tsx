@@ -21,12 +21,14 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { useDrawer } from "./DrawerContext";
-
-import { useColorScheme } from "@/components/useColorScheme";
 import Colors from "@/constants/Colors";
-import useAuthStore, { useIsAuthenticated, useHasRole } from "@/store/useAuthStore";
-import MainButton from "./shared/Button/MainButton";
+import { useDrawer } from "@/context/DrawerContext";
+import { useColorScheme } from "@/hooks/useColorScheme";
+import useAuthStore, {
+  useHasRole,
+  useIsAuthenticated,
+} from "@/store/useAuthStore";
+import MainButton from "../Button/MainButton";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const DRAWER_WIDTH = SCREEN_WIDTH * 0.8;
@@ -39,7 +41,11 @@ interface MenuItem {
 
 const profileMenuItems: MenuItem[] = [
   { route: "/(profile)", labelKey: "profile.profile", icon: User },
-  { route: "/(profile)/settings", labelKey: "profile.settings", icon: Settings },
+  {
+    route: "/(profile)/settings",
+    labelKey: "profile.settings",
+    icon: Settings,
+  },
 ];
 
 const menuItems: MenuItem[] = [
@@ -125,11 +131,21 @@ export default function Drawer() {
           <View style={styles.userSection}>
             <View style={styles.userAvatar}>
               <Text style={styles.userInitials}>
-                {user.name.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase()}
+                {user.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .slice(0, 2)
+                  .toUpperCase()}
               </Text>
             </View>
             <View>
-              <Text style={[styles.userName, { color: isDark ? "#fff" : "#1f2937" }]}>
+              <Text
+                style={[
+                  styles.userName,
+                  { color: isDark ? "#fff" : "#1f2937" },
+                ]}
+              >
                 {user.name}
               </Text>
               <Text style={styles.userEmail}>{user.email}</Text>
@@ -147,8 +163,17 @@ export default function Drawer() {
                   style={styles.menuItem}
                   onPress={() => handleNavigate(item.route)}
                 >
-                  <Icon size={22} strokeWidth={1.5} color={isDark ? "#fff" : "#333"} />
-                  <Text style={[styles.menuLabel, { color: isDark ? "#fff" : "#333" }]}>
+                  <Icon
+                    size={22}
+                    strokeWidth={1.5}
+                    color={isDark ? "#fff" : "#333"}
+                  />
+                  <Text
+                    style={[
+                      styles.menuLabel,
+                      { color: isDark ? "#fff" : "#333" },
+                    ]}
+                  >
                     {t(item.labelKey)}
                   </Text>
                 </Pressable>
@@ -166,8 +191,17 @@ export default function Drawer() {
                 style={styles.menuItem}
                 onPress={() => handleNavigate(item.route)}
               >
-                <Icon size={22} strokeWidth={1.5} color={isDark ? "#fff" : "#333"} />
-                <Text style={[styles.menuLabel, { color: isDark ? "#fff" : "#333" }]}>
+                <Icon
+                  size={22}
+                  strokeWidth={1.5}
+                  color={isDark ? "#fff" : "#333"}
+                />
+                <Text
+                  style={[
+                    styles.menuLabel,
+                    { color: isDark ? "#fff" : "#333" },
+                  ]}
+                >
                   {t(item.labelKey)}
                 </Text>
               </Pressable>
@@ -184,8 +218,17 @@ export default function Drawer() {
                 style={styles.menuItem}
                 onPress={() => handleNavigate(item.route)}
               >
-                <Icon size={22} strokeWidth={1.5} color={isDark ? "#fff" : "#333"} />
-                <Text style={[styles.menuLabel, { color: isDark ? "#fff" : "#333" }]}>
+                <Icon
+                  size={22}
+                  strokeWidth={1.5}
+                  color={isDark ? "#fff" : "#333"}
+                />
+                <Text
+                  style={[
+                    styles.menuLabel,
+                    { color: isDark ? "#fff" : "#333" },
+                  ]}
+                >
                   {t(item.labelKey)}
                 </Text>
               </Pressable>
@@ -204,7 +247,10 @@ export default function Drawer() {
               }}
             />
           ) : (
-            <MainButton text="Login" onPress={() => handleNavigate("/(auth)")} />
+            <MainButton
+              text="Login"
+              onPress={() => handleNavigate("/(auth)")}
+            />
           )}
         </View>
       </Animated.View>

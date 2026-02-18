@@ -1,8 +1,7 @@
+import { useDrawer } from "@/context/DrawerContext";
 import { Bell, Menu, ShoppingCart } from "lucide-react-native";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
-
-import { useDrawer } from "./DrawerContext";
 
 export default function HeaderRight() {
   const { openDrawer } = useDrawer();

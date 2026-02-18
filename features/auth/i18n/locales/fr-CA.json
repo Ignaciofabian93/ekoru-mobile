@@ -15,5 +15,17 @@
   "signIn": "Connectez-vous",
   "goBackHome": "Retour à l'accueil",
   "errorTitle": "Erreur",
-  "fieldsRequired": "Veuillez entrer votre courriel et mot de passe"
+  "fieldsRequired": "Veuillez entrer votre courriel et mot de passe",
+  "accountType": "Type de compte",
+  "person": "Particulier",
+  "startup": "Startup",
+  "company": "Entreprise",
+  "firstName": "Prénom",
+  "firstNamePlaceholder": "Entrez votre prénom",
+  "lastName": "Nom(s) de famille",
+  "lastNamePlaceholder": "Entrez votre(vos) nom(s) de famille",
+  "confirmPassword": "Confirmer le mot de passe",
+  "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+  "registerFieldsRequired": "Veuillez remplir tous les champs requis",
+  "passwordMismatch": "Les mots de passe ne correspondent pas"
 }

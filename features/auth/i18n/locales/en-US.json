@@ -15,5 +15,17 @@
   "signIn": "Sign In",
   "goBackHome": "Go back to home",
   "errorTitle": "Error",
-  "fieldsRequired": "Please enter your email and password"
+  "fieldsRequired": "Please enter your email and password",
+  "accountType": "Account Type",
+  "person": "Person",
+  "startup": "Startup",
+  "company": "Company",
+  "firstName": "Name",
+  "firstNamePlaceholder": "Enter your name",
+  "lastName": "Last name(s)",
+  "lastNamePlaceholder": "Enter your last name(s)",
+  "confirmPassword": "Confirm Password",
+  "confirmPasswordPlaceholder": "Confirm your password",
+  "registerFieldsRequired": "Please fill in all required fields",
+  "passwordMismatch": "Passwords do not match"
 }

@@ -11,13 +11,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import CustomTabBar from "@/components/shared/TabBar/CustomTabBar";
-import { useHasRole } from "@/store/useAuthStore";
+import { useHasSellerType } from "@/store/useAuthStore";
 
 import CustomHeader from "@/components/shared/Header/CustomHeader";
 
 export default function TabLayout() {
   const { t } = useTranslation();
-  const canUpload = useHasRole("store", "service", "admin");
+  const canUpload = useHasSellerType("STARTUP", "COMPANY");
 
   return (
     <Tabs

@@ -15,5 +15,17 @@
   "signIn": "Inicia sesión",
   "goBackHome": "Volver al inicio",
   "errorTitle": "Error",
-  "fieldsRequired": "Por favor ingresa tu correo y contraseña"
+  "fieldsRequired": "Por favor ingresa tu correo y contraseña",
+  "accountType": "Tipo de cuenta",
+  "person": "Persona",
+  "startup": "Startup",
+  "company": "Empresa",
+  "firstName": "Nombre",
+  "firstNamePlaceholder": "Ingresa tu nombre",
+  "lastName": "Apellido(s)",
+  "lastNamePlaceholder": "Ingresa tu(s) apellido(s)",
+  "confirmPassword": "Confirmar contraseña",
+  "confirmPasswordPlaceholder": "Confirma tu contraseña",
+  "registerFieldsRequired": "Por favor completa todos los campos requeridos",
+  "passwordMismatch": "Las contraseñas no coinciden"
 }

@@ -12,18 +12,20 @@ import {
   Text,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import "../i18n";
 import LoginForm from "../ui/LoginForm";
 
 export default function LoginScreen() {
   const router = useRouter();
   const { t } = useTranslation("auth");
+  const { top, bottom } = useSafeAreaInsets();
 
   const EKORU_LOGO = require("@/assets/images/logo.png");
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
+      style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}
       behavior={Platform.OS === "ios" ? "padding" : "padding"}
     >
       <ScrollView

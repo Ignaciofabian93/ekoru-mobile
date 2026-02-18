@@ -25,7 +25,7 @@ import Colors from "@/constants/Colors";
 import { useDrawer } from "@/context/DrawerContext";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import useAuthStore, {
-  useHasRole,
+  useHasSellerType,
   useIsAuthenticated,
 } from "@/store/useAuthStore";
 import MainButton from "../Button/MainButton";
@@ -69,9 +69,16 @@ export default function Drawer() {
   const colorScheme = useColorScheme();
   const progress = useSharedValue(0);
   const isAuthenticated = useIsAuthenticated();
-  const canUpload = useHasRole("store", "service", "admin");
-  const user = useAuthStore((s) => s.user);
+  const canUpload = useHasSellerType("STARTUP", "COMPANY");
+  const seller = useAuthStore((s) => s.seller);
   const logout = useAuthStore((s) => s.logout);
+
+  const displayName = seller?.profile
+    ? seller.profile.__typename === "PersonProfile"
+      ? seller.profile.displayName ??
+        `${seller.profile.firstName}${seller.profile.lastName ? ` ${seller.profile.lastName}` : ""}`
+      : seller.profile.businessName
+    : "";
 
   const isDark = colorScheme === "dark";
 
@@ -127,13 +134,13 @@ export default function Drawer() {
           </Pressable>
         </View>
 
-        {isAuthenticated && user && (
+        {isAuthenticated && seller && (
           <View style={styles.userSection}>
             <View style={styles.userAvatar}>
               <Text style={styles.userInitials}>
-                {user.name
+                {displayName
                   .split(" ")
-                  .map((n) => n[0])
+                  .map((n: string) => n[0])
                   .join("")
                   .slice(0, 2)
                   .toUpperCase()}
@@ -146,9 +153,9 @@ export default function Drawer() {
                   { color: isDark ? "#fff" : "#1f2937" },
                 ]}
               >
-                {user.name}
+                {displayName}
               </Text>
-              <Text style={styles.userEmail}>{user.email}</Text>
+              <Text style={styles.userEmail}>{seller.email}</Text>
             </View>
           </View>
         )}

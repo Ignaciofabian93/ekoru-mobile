@@ -1,8 +1,8 @@
 import MainButton from "@/components/shared/Button/MainButton";
 import Input from "@/components/shared/Input/Input";
-import { ArrowRight } from "lucide-react-native";
-import { StyleSheet, View } from "react-native";
+import { ArrowRight, Lock, Mail } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
 import useLogin from "../hooks/useLogin";
 
 export default function LoginForm() {
@@ -19,16 +19,16 @@ export default function LoginForm() {
         value={email}
         onChangeText={(value) => handleFieldChange({ name: "email", value })}
         type="email"
+        icon={Mail}
       />
       <Input
         name="password"
         label={t("password")}
         placeholder={t("passwordPlaceholder")}
         value={password}
-        onChangeText={(value) =>
-          handleFieldChange({ name: "password", value })
-        }
+        onChangeText={(value) => handleFieldChange({ name: "password", value })}
         type="password"
+        icon={Lock}
       />
       <MainButton
         text={t("login")}

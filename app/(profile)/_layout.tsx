@@ -22,6 +22,10 @@ export default function ProfileLayout() {
         name="environmental-impact"
         options={{ title: "Environmental Impact" }}
       />
+      <Stack.Screen
+        name="subscription"
+        options={{ title: "Subscription" }}
+      />
     </Stack>
   );
 }

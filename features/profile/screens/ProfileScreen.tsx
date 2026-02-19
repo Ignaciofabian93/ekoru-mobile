@@ -18,6 +18,7 @@ import {
   Settings,
   Star,
   UserPen,
+  Gem,
   type LucideIcon,
 } from "lucide-react-native";
 import React, { useEffect } from "react";
@@ -54,6 +55,11 @@ const menuRows: MenuRow[] = [
     label: "Environmental Impact",
     icon: Leaf,
     route: "/(profile)/environmental-impact",
+  },
+  {
+    label: "Subscription",
+    icon: Gem,
+    route: "/(profile)/subscription",
   },
   { label: "Settings", icon: Settings, route: "/(profile)/settings" },
 ];

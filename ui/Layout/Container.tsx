@@ -1,11 +1,19 @@
-import { StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 
-export default function Container({ children }: { children: React.ReactNode }) {
-  return <View style={styles.content}>{children}</View>;
+interface ContainerProps {
+  children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
+}
+
+export default function Container({ children, style }: ContainerProps) {
+  return <View style={[styles.content, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
   content: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 40,
   },
 });

@@ -1,3 +1,5 @@
+import { Text } from "@/components/shared/Text/Text";
+import { Title } from "@/components/shared/Title/Title";
 import Colors from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -8,7 +10,7 @@ import {
   UsersRound,
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { PixelRatio, StyleSheet, Text, View } from "react-native";
+import { PixelRatio, StyleSheet, View } from "react-native";
 import Animated, {
   cancelAnimation,
   Easing,
@@ -54,8 +56,8 @@ export default function StatsSection() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>This is already happening</Text>
-      <Text style={styles.subtitle}>
+      <Title level="h4" align="center">This is already happening</Title>
+      <Text size="sm" color="secondary" align="center" style={{ marginTop: 6 }}>
         An active community changing the way we consume.
       </Text>
 
@@ -109,7 +111,7 @@ export default function StatsSection() {
         />
       </View>
 
-      <Text style={styles.caption}>
+      <Text variant="small" color="tertiary" align="center">
         Products, stores, and services already part of the circular economy.
       </Text>
     </View>
@@ -128,8 +130,8 @@ function StatItem({
   return (
     <View style={styles.item}>
       <Icon size={14} color={Colors.primary} strokeWidth={2} />
-      <Text style={styles.value}>{value}</Text>
-      <Text style={styles.label}>{label}</Text>
+      <Text size="lg" weight="bold">{value}</Text>
+      <Text size="sm" color="secondary">{label}</Text>
       <View style={styles.dot} />
     </View>
   );
@@ -137,28 +139,14 @@ function StatItem({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 48,
-    marginBottom: 24,
-  },
-  heading: {
-    fontSize: 20,
-    fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
-    textAlign: "center",
-  },
-  subtitle: {
-    textAlign: "center",
-    fontSize: 14,
-    fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
-    marginTop: 6,
+    marginTop: 0,
+    marginBottom: 0,
   },
   track: {
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 12,
     overflow: "hidden",
     paddingVertical: 14,
-    // borderTopWidth: StyleSheet.hairlineWidth,
-    // borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.borderStrong,
   },
   ticker: {
@@ -174,16 +162,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 7,
     paddingHorizontal: 20,
-  },
-  value: {
-    fontSize: 17,
-    fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
-  },
-  label: {
-    fontSize: 13,
-    fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
   },
   dot: {
     width: 5,
@@ -206,11 +184,5 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 48,
-  },
-  caption: {
-    textAlign: "center",
-    fontSize: 11,
-    fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundTertiary,
   },
 });

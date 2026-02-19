@@ -43,6 +43,7 @@ export default {
   background: "#fdfffc",
   backgroundSecondary: colors.gray[50],
   backgroundTertiary: colors.gray[100],
+  backgroundPrimaryLight: colors.lime[50],
 
   // Surfaces
   surface: "#ffffff",

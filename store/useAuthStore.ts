@@ -11,6 +11,7 @@ interface AuthState {
 
   // Actions
   login: (email: string, password: string) => Promise<void>;
+  setSession: (token: string, seller: Seller) => Promise<void>;
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
 }
@@ -104,6 +105,12 @@ const useAuthStore = create<AuthState>()((set) => ({
     await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(mockSeller));
 
     set({ token: mockToken, seller: mockSeller });
+  },
+
+  setSession: async (token: string, seller: Seller) => {
+    await SecureStore.setItemAsync(TOKEN_KEY, token);
+    await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(seller));
+    set({ token, seller });
   },
 
   logout: async () => {

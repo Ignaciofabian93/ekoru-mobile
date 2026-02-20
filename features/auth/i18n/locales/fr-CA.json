@@ -27,5 +27,10 @@
   "confirmPassword": "Confirmer le mot de passe",
   "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
   "registerFieldsRequired": "Veuillez remplir tous les champs requis",
-  "passwordMismatch": "Les mots de passe ne correspondent pas"
+  "passwordMismatch": "Les mots de passe ne correspondent pas",
+  "invalidCredentials": "Courriel ou mot de passe invalide",
+  "userNotFound": "Utilisateur introuvable. Veuillez réessayer.",
+  "networkError": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
+  "successTitle": "Succès",
+  "registerSuccess": "Compte créé avec succès. Veuillez vous connecter."
 }

@@ -14,8 +14,8 @@ const getEndpoints = () => {
       };
     default:
       return {
-        graphql: "http://localhost:4000/graphql",
-        rest: "http://localhost:4000/session",
+        graphql: "http://192.168.0.5:4000/graphql",
+        rest: "http://192.168.0.5:4000/session",
       };
   }
 };

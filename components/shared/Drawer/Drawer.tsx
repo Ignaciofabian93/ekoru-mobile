@@ -268,7 +268,7 @@ export default function Drawer() {
                 onPress={async () => {
                   await logout();
                   closeDrawer();
-                  router.replace("/(tabs)");
+                  router.replace("/(auth)");
                 }}
               >
                 <Text style={styles.logoutText}>Log Out</Text>

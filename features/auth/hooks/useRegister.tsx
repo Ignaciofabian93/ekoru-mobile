@@ -1,5 +1,7 @@
-import { showError } from "@/lib/toast";
+import { REGISTER_BUSINESS, REGISTER_PERSON } from "@/graphql/auth/register";
+import { showError, showSuccess } from "@/lib/toast";
 import type { SellerType } from "@/types/enums";
+import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,7 +17,41 @@ export default function useRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  const onCompleted = () => {
+    showSuccess({
+      title: t("successTitle"),
+      message: t("registerSuccess"),
+    });
+    router.back();
+  };
+
+  const onError = (error: Error) => {
+    showError({
+      title: t("errorTitle"),
+      message: error.message,
+    });
+  };
+
+  const [registerPerson, { loading: loadingPerson }] = useMutation(
+    REGISTER_PERSON,
+    {
+      onCompleted,
+      onError,
+      fetchPolicy: "no-cache",
+    },
+  );
+
+  const [registerBusiness, { loading: loadingBusiness }] = useMutation(
+    REGISTER_BUSINESS,
+    {
+      onCompleted,
+      onError,
+      fetchPolicy: "no-cache",
+    },
+  );
+
+  const loading = loadingPerson || loadingBusiness;
 
   const handleFieldChange = ({
     name,
@@ -48,12 +84,18 @@ export default function useRegister() {
       return;
     }
 
-    setLoading(true);
-    try {
-      // TODO: Replace with real API call
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-    } finally {
-      setLoading(false);
+    if (sellerType === "PERSON") {
+      await registerPerson({
+        variables: {
+          input: { firstName, lastName, email, password },
+        },
+      });
+    } else {
+      await registerBusiness({
+        variables: {
+          input: { firstName, lastName, email, password },
+        },
+      });
     }
   };
 

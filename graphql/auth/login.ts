@@ -17,18 +17,6 @@ export const GET_ME = gql`
       socialMediaLinks
       points
       profile {
-        ... on PersonProfile {
-          id
-          sellerId
-          firstName
-          lastName
-          displayName
-          bio
-          birthday
-          profileImage
-          coverImage
-          allowExchanges
-        }
         ... on BusinessProfile {
           id
           sellerId
@@ -51,6 +39,18 @@ export const GET_ME = gql`
           businessHours
           createdAt
           updatedAt
+        }
+        ... on PersonProfile {
+          id
+          sellerId
+          firstName
+          lastName
+          displayName
+          bio
+          birthday
+          profileImage
+          coverImage
+          allowExchanges
         }
       }
       preferences {
@@ -83,14 +83,17 @@ export const GET_ME = gql`
       region {
         id
         region
+        countryId
       }
       city {
         id
         city
+        regionId
       }
       county {
         id
         county
+        cityId
       }
     }
   }

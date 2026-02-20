@@ -3,9 +3,11 @@
     "home": "Accueil",
     "marketplace": "Marché",
     "stores": "Boutiques",
-    "upload": "Publier",
+    "publish": "Publier",
     "services": "Services",
-    "education": "Éducation"
+    "education": "Éducation",
+    "notifications": "Alertes",
+    "profile": "Profil"
   },
   "profile": {
     "profile": "Profil",
@@ -16,5 +18,11 @@
     "orders": "Commandes",
     "environmentalImpact": "Impact environnemental",
     "menu": "Menu"
+  },
+  "location": {
+    "detectedTitle": "Nous avons trouvé votre position",
+    "detectedSubtitle": "Nous utiliserons ceci pour afficher les annonces proches et définir votre langue. Vous pouvez le modifier à tout moment dans les paramètres.",
+    "confirm": "Oui, c'est correct",
+    "notMyLocation": "Ce n'est pas ma position"
   }
 }

@@ -1,5 +1,7 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { StackActions } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { Dimensions, Pressable, StyleSheet } from "react-native";
 import Animated, {
@@ -9,6 +11,10 @@ import Animated, {
 } from "react-native-reanimated";
 
 import Colors from "@/constants/Colors";
+import { useIsAuthenticated } from "@/store/useAuthStore";
+
+// Tabs that immediately redirect guests to auth (no landing screen shown)
+const PROTECTED_TABS = ["publish", "profile", "notifications"];
 
 const INDICATOR_WIDTH = 54;
 const INDICATOR_HEIGHT = 50;
@@ -23,6 +29,9 @@ export default function CustomTabBar({
   descriptors,
   navigation,
 }: BottomTabBarProps) {
+  const router = useRouter();
+  const isAuthenticated = useIsAuthenticated();
+
   const tabCount = state.routes.length;
   const screenWidth = Dimensions.get("window").width;
   const horizontalPadding = 8;
@@ -62,8 +71,21 @@ export default function CustomTabBar({
             : (options.title ?? route.name);
         const isFocused = state.index === index;
         const color = isFocused ? Colors.primary : "#fff";
+        const isProtected = PROTECTED_TABS.includes(route.name);
 
         const onPress = () => {
+          // Guests: hard-redirect to auth for protected tabs
+          if (isProtected && !isAuthenticated) {
+            router.push("/(auth)");
+            return;
+          }
+
+          // Profile: push onto the root stack so back navigation returns to tabs
+          if (route.name === "profile") {
+            navigation.getParent()?.dispatch(StackActions.push("(profile)"));
+            return;
+          }
+
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,

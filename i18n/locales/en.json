@@ -3,9 +3,11 @@
     "home": "Home",
     "marketplace": "Market",
     "stores": "Stores",
-    "upload": "Upload",
+    "publish": "Publish",
     "services": "Services",
-    "education": "Education"
+    "education": "Education",
+    "notifications": "Alerts",
+    "profile": "Profile"
   },
   "profile": {
     "profile": "Profile",
@@ -16,5 +18,11 @@
     "orders": "Orders",
     "environmentalImpact": "Environmental Impact",
     "menu": "Menu"
+  },
+  "location": {
+    "detectedTitle": "We found your location",
+    "detectedSubtitle": "We'll use this to show nearby listings and set your language. You can change it anytime in settings.",
+    "confirm": "Yes, that's correct",
+    "notMyLocation": "This isn't my location"
   }
 }

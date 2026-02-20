@@ -1,18 +1,10 @@
 import { Tabs } from "expo-router";
-import {
-  BookCheck,
-  House,
-  Package,
-  PackagePlus,
-  ScanBarcode,
-  Store,
-} from "lucide-react-native";
+import { Bell, House, PackagePlus, UserRound } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import CustomTabBar from "@/components/shared/TabBar/CustomTabBar";
-
 import CustomHeader from "@/components/shared/Header/CustomHeader";
+import CustomTabBar from "@/components/shared/TabBar/CustomTabBar";
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -34,49 +26,30 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="marketplace"
+        name="notifications"
         options={{
-          title: t("tabs.marketplace"),
+          title: t("tabs.notifications"),
           tabBarIcon: ({ color, size }) => (
-            <Package strokeWidth={1.5} size={size} color={color} />
+            <Bell strokeWidth={1.5} size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="stores"
+        name="publish"
         options={{
-          title: t("tabs.stores"),
-          tabBarIcon: ({ color, size }) => (
-            <Store strokeWidth={1.5} size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="services"
-        options={{
-          title: t("tabs.services"),
-          tabBarIcon: ({ color, size }) => (
-            <ScanBarcode strokeWidth={1.5} size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="education"
-        options={{
-          title: t("tabs.education"),
-          tabBarIcon: ({ color, size }) => (
-            <BookCheck strokeWidth={1.5} size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="upload"
-        options={{
-          title: t("tabs.upload"),
+          title: t("tabs.publish"),
           tabBarIcon: ({ color, size }) => (
             <PackagePlus strokeWidth={1.5} size={size} color={color} />
           ),
-          href: "/(tabs)/upload",
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: t("tabs.profile"),
+          tabBarIcon: ({ color, size }) => (
+            <UserRound strokeWidth={1.5} size={size} color={color} />
+          ),
         }}
       />
     </Tabs>

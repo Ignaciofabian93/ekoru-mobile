@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchBar from "../SearchBar/SearchBar";
+import SubHeader from "../SubHeader/SubHeader";
 import HeaderRight from "./HamburgerButton";
 
 export default function CustomHeader(_props: BottomTabHeaderProps) {
@@ -27,6 +28,7 @@ export default function CustomHeader(_props: BottomTabHeaderProps) {
         </View>
       </View>
       <SearchBar />
+      <SubHeader />
     </LinearGradient>
   );
 }

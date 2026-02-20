@@ -3,9 +3,11 @@
     "home": "Inicio",
     "marketplace": "Mercado",
     "stores": "Tiendas",
-    "upload": "Subir",
+    "publish": "Publicar",
     "services": "Servicios",
-    "education": "Educación"
+    "education": "Educación",
+    "notifications": "Alertas",
+    "profile": "Perfil"
   },
   "profile": {
     "profile": "Perfil",
@@ -16,5 +18,11 @@
     "orders": "Pedidos",
     "environmentalImpact": "Impacto Ambiental",
     "menu": "Menú"
+  },
+  "location": {
+    "detectedTitle": "Encontramos tu ubicación",
+    "detectedSubtitle": "Usaremos esto para mostrar productos cercanos y configurar tu idioma. Puedes cambiarlo en cualquier momento en ajustes.",
+    "confirm": "Sí, es correcta",
+    "notMyLocation": "Esta no es mi ubicación"
   }
 }

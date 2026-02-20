@@ -9,7 +9,10 @@ export default function ProfileLayout() {
         header: (props) => <GradientStackHeader {...props} />,
       }}
     >
-      <Stack.Screen name="index" options={{ title: "Profile" }} />
+      <Stack.Screen
+        name="index"
+        options={{ title: "Profile", headerBackButtonMenuEnabled: true }}
+      />
       <Stack.Screen name="settings" options={{ title: "Settings" }} />
       <Stack.Screen name="edit-profile" options={{ title: "Edit Profile" }} />
       <Stack.Screen
@@ -22,10 +25,7 @@ export default function ProfileLayout() {
         name="environmental-impact"
         options={{ title: "Environmental Impact" }}
       />
-      <Stack.Screen
-        name="subscription"
-        options={{ title: "Subscription" }}
-      />
+      <Stack.Screen name="subscription" options={{ title: "Subscription" }} />
     </Stack>
   );
 }

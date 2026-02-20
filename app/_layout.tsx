@@ -12,11 +12,6 @@ import {
   type Theme,
   ThemeProvider,
 } from "@react-navigation/native";
-
-const LightTheme: Theme = {
-  ...DefaultTheme,
-  colors: { ...DefaultTheme.colors, background: "#ffffff" },
-};
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -25,15 +20,23 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import "../global.css";
 
+const LightTheme: Theme = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: "#ffffff" },
+};
+
 import { ApolloProvider } from "@apollo/client/react";
 
 import Drawer from "@/components/shared/Drawer/Drawer";
+import LocationConfirmModal from "@/components/shared/LocationConfirmModal/LocationConfirmModal";
 import toastConfig from "@/components/shared/Toast/toastConfig";
 import { DrawerProvider } from "@/context/DrawerContext";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import useLocationDetection from "@/hooks/useLocationDetection";
 import client from "@/lib/apollo";
 import { getDatabase } from "@/lib/database";
 import useAuthStore from "@/store/useAuthStore";
+import useLocationStore from "@/store/useLocationStore";
 import Toast from "react-native-toast-message";
 
 export {
@@ -77,6 +80,10 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
+    useLocationStore.getState().hydrate();
+  }, []);
+
+  useEffect(() => {
     if (isHydrated) {
       setAuthHydrating(false);
     }
@@ -97,20 +104,25 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  useLocationDetection();
 
   return (
     <ApolloProvider client={client}>
       <DrawerProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : LightTheme}
-        >
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : LightTheme}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="(profile)" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="product" options={{ headerShown: false }} />
+            <Stack.Screen name="(marketplace)" options={{ headerShown: false }} />
+            <Stack.Screen name="(stores)" options={{ headerShown: false }} />
+            <Stack.Screen name="(services)" options={{ headerShown: false }} />
+            <Stack.Screen name="(community)" options={{ headerShown: false }} />
+            <Stack.Screen name="(blog)" options={{ headerShown: false }} />
           </Stack>
           <Drawer />
+          <LocationConfirmModal />
           <StatusBar style="light" />
         </ThemeProvider>
       </DrawerProvider>

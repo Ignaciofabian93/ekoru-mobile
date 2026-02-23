@@ -54,11 +54,43 @@ export interface MainButtonProps {
 
 const SIZE_MAP: Record<
   Size,
-  { py: number; px: number; fontSize: number; iconSize: number; gap: number; radius: number; minHeight: number }
+  {
+    py: number;
+    px: number;
+    fontSize: number;
+    iconSize: number;
+    gap: number;
+    radius: number;
+    minHeight: number;
+  }
 > = {
-  sm: { py: 8,  px: 16, fontSize: 14, iconSize: 16, gap: 6,  radius: 8,  minHeight: 36 },
-  md: { py: 12, px: 24, fontSize: 16, iconSize: 18, gap: 8,  radius: 10, minHeight: 44 },
-  lg: { py: 16, px: 32, fontSize: 16, iconSize: 20, gap: 10, radius: 14, minHeight: 56 },
+  sm: {
+    py: 8,
+    px: 16,
+    fontSize: 14,
+    iconSize: 16,
+    gap: 6,
+    radius: 8,
+    minHeight: 36,
+  },
+  md: {
+    py: 12,
+    px: 24,
+    fontSize: 16,
+    iconSize: 18,
+    gap: 8,
+    radius: 10,
+    minHeight: 44,
+  },
+  lg: {
+    py: 16,
+    px: 32,
+    fontSize: 16,
+    iconSize: 20,
+    gap: 10,
+    radius: 14,
+    minHeight: 56,
+  },
 };
 
 // ─── Variant style map ────────────────────────────────────────────────────────
@@ -72,15 +104,69 @@ interface VariantStyle {
 }
 
 const VARIANT_MAP: Record<Variant, VariantStyle> = {
-  primary:           { bg: Colors.primary,   border: Colors.primary,          textColor: "#fff",                   spinnerColor: "#fff",                iconColor: "#fff" },
-  filled:            { bg: Colors.primary,   border: Colors.primary,          textColor: "#fff",                   spinnerColor: "#fff",                iconColor: "#fff" },
-  secondary:         { bg: Colors.secondary, border: Colors.secondary,        textColor: "#fff",                   spinnerColor: "#fff",                iconColor: "#fff" },
-  secondary_outline: { bg: "#fff",           border: Colors.secondary,        textColor: Colors.secondary,         spinnerColor: Colors.secondary,      iconColor: Colors.secondary },
-  outline:           { bg: "transparent",    border: Colors.primary,          textColor: Colors.primary,           spinnerColor: Colors.primary,        iconColor: Colors.primary },
-  ghost:             { bg: "transparent",    border: "transparent",           textColor: Colors.primary,           spinnerColor: Colors.primary,        iconColor: Colors.primary },
-  success:           { bg: Colors.success,   border: Colors.success,          textColor: "#fff",                   spinnerColor: "#fff",                iconColor: "#fff" },
-  warning:           { bg: Colors.warning,   border: Colors.warning,          textColor: "#fff",                   spinnerColor: "#fff",                iconColor: "#fff" },
-  error:             { bg: Colors.danger,    border: Colors.danger,           textColor: "#fff",                   spinnerColor: "#fff",                iconColor: "#fff" },
+  primary: {
+    bg: Colors.primary,
+    border: Colors.primary,
+    textColor: "#fff",
+    spinnerColor: "#fff",
+    iconColor: "#fff",
+  },
+  filled: {
+    bg: Colors.primary,
+    border: Colors.primary,
+    textColor: "#fff",
+    spinnerColor: "#fff",
+    iconColor: "#fff",
+  },
+  secondary: {
+    bg: Colors.secondary,
+    border: Colors.secondary,
+    textColor: "#fff",
+    spinnerColor: "#fff",
+    iconColor: "#fff",
+  },
+  secondary_outline: {
+    bg: "#fff",
+    border: Colors.secondary,
+    textColor: Colors.secondary,
+    spinnerColor: Colors.secondary,
+    iconColor: Colors.secondary,
+  },
+  outline: {
+    bg: "#fff",
+    border: Colors.primary,
+    textColor: Colors.primary,
+    spinnerColor: Colors.primary,
+    iconColor: Colors.primary,
+  },
+  ghost: {
+    bg: "transparent",
+    border: "transparent",
+    textColor: Colors.primary,
+    spinnerColor: Colors.primary,
+    iconColor: Colors.primary,
+  },
+  success: {
+    bg: Colors.success,
+    border: Colors.success,
+    textColor: "#fff",
+    spinnerColor: "#fff",
+    iconColor: "#fff",
+  },
+  warning: {
+    bg: Colors.warning,
+    border: Colors.warning,
+    textColor: "#fff",
+    spinnerColor: "#fff",
+    iconColor: "#fff",
+  },
+  error: {
+    bg: Colors.danger,
+    border: Colors.danger,
+    textColor: "#fff",
+    spinnerColor: "#fff",
+    iconColor: "#fff",
+  },
 };
 
 // ─── Helper: render icon ──────────────────────────────────────────────────────
@@ -142,10 +228,7 @@ const MainButton = React.forwardRef<View, MainButtonProps>(
     return (
       <Animated.View
         ref={ref}
-        style={[
-          animatedStyle,
-          fullWidth && styles.fullWidth,
-        ]}
+        style={[animatedStyle, fullWidth && styles.fullWidth]}
       >
         <AnimatedPressable
           onPress={onPress}
@@ -169,9 +252,16 @@ const MainButton = React.forwardRef<View, MainButtonProps>(
           ]}
         >
           {/* Content row — hidden behind spinner while loading */}
-          <View style={[styles.content, { gap: s.gap, opacity: loading ? 0 : 1 }]}>
+          <View
+            style={[styles.content, { gap: s.gap, opacity: loading ? 0 : 1 }]}
+          >
             {leftIcon && renderIcon(leftIcon, s.iconSize, v.iconColor)}
-            <Text style={[styles.text, { fontSize: s.fontSize, color: v.textColor }]}>
+            <Text
+              style={[
+                styles.text,
+                { fontSize: s.fontSize, color: v.textColor },
+              ]}
+            >
               {label}
             </Text>
             {rightIcon && renderIcon(rightIcon, s.iconSize, v.iconColor)}

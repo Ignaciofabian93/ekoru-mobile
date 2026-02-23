@@ -1,12 +1,13 @@
 import Colors from "@/constants/Colors";
 import { getProductById } from "@/features/marketplace/data/dummyProducts";
 import type { Product } from "@/features/marketplace/types/Product";
+import useCartStore from "@/store/useCartStore";
 import { conditionTranslate } from "@/utils/conditionTranslate";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { sellerTypeTranslate } from "@/utils/sellerTypeTranslate";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import {
   Droplets,
   ImageOff,
@@ -52,7 +53,16 @@ function ProductNotFound() {
 function ProductDetail({ product }: { product: Product }) {
   const insets = useSafeAreaInsets();
   const [imageError, setImageError] = useState(false);
+  const [added, setAdded] = useState(false);
   const imageUri = getImageUrl(product.images?.[0]);
+  const router = useRouter();
+  const addItem = useCartStore((s) => s.addItem);
+
+  const handleAddToCart = () => {
+    addItem(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   return (
     <>
@@ -210,10 +220,23 @@ function ProductDetail({ product }: { product: Product }) {
 
         {/* Footer CTA */}
         <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
-          <Pressable style={styles.cartButton}>
-            <ShoppingCart size={20} color="#fff" strokeWidth={2} />
-            <Text style={styles.cartButtonText}>Agregar al carrito</Text>
-          </Pressable>
+          <View style={styles.footerRow}>
+            <Pressable
+              style={[styles.cartButton, added && styles.cartButtonAdded]}
+              onPress={handleAddToCart}
+            >
+              <ShoppingCart size={20} color="#fff" strokeWidth={2} />
+              <Text style={styles.cartButtonText}>
+                {added ? "¡Agregado!" : "Agregar al carrito"}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={styles.viewCartBtn}
+              onPress={() => router.push("/(cart)" as any)}
+            >
+              <ShoppingCart size={20} color={Colors.primary} strokeWidth={2} />
+            </Pressable>
+          </View>
         </View>
       </View>
     </>
@@ -439,7 +462,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.borderLight,
   },
+  footerRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
   cartButton: {
+    flex: 1,
     backgroundColor: Colors.primary,
     flexDirection: "row",
     alignItems: "center",
@@ -448,9 +476,21 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
   },
+  cartButtonAdded: {
+    backgroundColor: Colors.success,
+  },
   cartButtonText: {
     fontSize: 16,
     fontFamily: "Cabin_600SemiBold",
     color: "#fff",
+  },
+  viewCartBtn: {
+    width: 52,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: Colors.primary,
+    backgroundColor: Colors.backgroundPrimaryLight,
   },
 });

@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { Bell, House, PackagePlus, UserRound } from "lucide-react-native";
+import { Bell, House, Leaf, PackagePlus, UserRound } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -40,6 +40,15 @@ export default function TabLayout() {
           title: t("tabs.publish"),
           tabBarIcon: ({ color, size }) => (
             <PackagePlus strokeWidth={1.5} size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="recycle"
+        options={{
+          title: t("tabs.recycle"),
+          tabBarIcon: ({ color, size }) => (
+            <Leaf strokeWidth={1.5} size={size} color={color} />
           ),
         }}
       />

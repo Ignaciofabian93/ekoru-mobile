@@ -1,5 +1,4 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { StackActions } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
@@ -14,7 +13,7 @@ import Colors from "@/constants/Colors";
 import { useIsAuthenticated } from "@/store/useAuthStore";
 
 // Tabs that immediately redirect guests to auth (no landing screen shown)
-const PROTECTED_TABS = ["publish", "profile", "notifications"];
+const PROTECTED_TABS = ["publish", "notifications"];
 
 const INDICATOR_WIDTH = 54;
 const INDICATOR_HEIGHT = 50;
@@ -81,10 +80,10 @@ export default function CustomTabBar({
           }
 
           // Profile: push onto the root stack so back navigation returns to tabs
-          if (route.name === "profile") {
-            navigation.getParent()?.dispatch(StackActions.push("(profile)"));
-            return;
-          }
+          // if (route.name === "profile") {
+          //   navigation.getParent()?.dispatch(StackActions.push("(profile)"));
+          //   return;
+          // }
 
           const event = navigation.emit({
             type: "tabPress",

@@ -40,10 +40,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: 48,
     paddingHorizontal: 4,
+    paddingTop: 8,
   },
   logo: {
-    height: 32,
-    width: 100,
+    height: 40,
+    width: 120,
     marginLeft: 14,
   },
   headerRight: {

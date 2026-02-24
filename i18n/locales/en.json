@@ -25,5 +25,21 @@
     "detectedSubtitle": "We'll use this to show nearby listings and set your language. You can change it anytime in settings.",
     "confirm": "Yes, that's correct",
     "notMyLocation": "This isn't my location"
+  },
+  "screens": {
+    "profile": {
+      "index": "Profile",
+      "settings": "Settings",
+      "editProfile": "Edit Profile",
+      "changePassword": "Change Password",
+      "orderHistory": "Order History",
+      "favorites": "Favorites",
+      "environmentalImpact": "Environmental Impact",
+      "subscription": "Subscription"
+    },
+    "legal": {
+      "termsOfService": "Terms of Service",
+      "privacyPolicy": "Privacy Policy"
+    }
   }
 }

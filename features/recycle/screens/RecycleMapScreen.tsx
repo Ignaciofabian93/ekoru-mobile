@@ -1,7 +1,7 @@
 import Colors from "@/constants/Colors";
 import * as Location from "expo-location";
 import { Leaf, MapPin, Navigation, X } from "lucide-react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -11,7 +11,6 @@ import {
   View,
 } from "react-native";
 import MapView, {
-  Callout,
   Marker,
   PROVIDER_DEFAULT,
   type Region,
@@ -68,41 +67,58 @@ const MATERIAL_LABELS: Record<string, string> = {
   wood: "Madera",
 };
 
+const OVERPASS_ENDPOINTS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter",
+];
+
+function parseOverpassElements(json: { elements?: Record<string, unknown>[] }): RecyclePoint[] {
+  return (json.elements ?? []).map((el): RecyclePoint => {
+    const tags = (el.tags ?? {}) as Record<string, string>;
+    const materials = MATERIAL_KEYS.filter(
+      (k) => tags[`recycling:${k}`] === "yes",
+    );
+    return {
+      id: el.id as number,
+      lat: el.lat as number,
+      lon: el.lon as number,
+      name: tags.name,
+      operator: tags.operator,
+      openingHours: tags.opening_hours,
+      materials,
+    };
+  });
+}
+
 async function fetchRecyclePoints(
   lat: number,
   lng: number,
   radiusMeters = 5000,
 ): Promise<RecyclePoint[]> {
   const query = `
-    [out:json][timeout:20];
+    [out:json][timeout:25];
     node[amenity=recycling](around:${radiusMeters},${lat},${lng});
     out body;
   `;
   const body = `data=${encodeURIComponent(query)}`;
-  const res = await fetch("https://overpass-api.de/api/interpreter", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body,
-  });
-  const json = await res.json();
 
-  return (json.elements ?? []).map(
-    (el: Record<string, unknown>): RecyclePoint => {
-      const tags = (el.tags ?? {}) as Record<string, string>;
-      const materials = MATERIAL_KEYS.filter(
-        (k) => tags[`recycling:${k}`] === "yes",
-      );
-      return {
-        id: el.id as number,
-        lat: el.lat as number,
-        lon: el.lon as number,
-        name: tags.name,
-        operator: tags.operator,
-        openingHours: tags.opening_hours,
-        materials,
-      };
-    },
-  );
+  let lastError: unknown;
+  for (const endpoint of OVERPASS_ENDPOINTS) {
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status} from ${endpoint}`);
+      const json = await res.json();
+      return parseOverpassElements(json);
+    } catch (err) {
+      console.warn(`[RecycleMap] Endpoint failed: ${endpoint}`, err);
+      lastError = err;
+    }
+  }
+  throw lastError;
 }
 
 // ------------------------------------------------------------------
@@ -134,6 +150,29 @@ function ErrorState({ onRetry }: { onRetry: () => void }) {
         <Text style={styles.retryBtnText}>Reintentar</Text>
       </Pressable>
     </View>
+  );
+}
+
+interface RecycleMarkerProps {
+  point: RecyclePoint;
+  onPress: () => void;
+}
+
+function RecycleMarker({ point, onPress }: RecycleMarkerProps) {
+  const [tracksViewChanges, setTracksViewChanges] = useState(true);
+  return (
+    <Marker
+      coordinate={{ latitude: point.lat, longitude: point.lon }}
+      onPress={onPress}
+      tracksViewChanges={tracksViewChanges}
+    >
+      <View
+        style={styles.markerPin}
+        onLayout={() => setTracksViewChanges(false)}
+      >
+        <Leaf size={14} color="#fff" strokeWidth={2.5} />
+      </View>
+    </Marker>
   );
 }
 
@@ -223,8 +262,9 @@ export default function RecycleMapScreen() {
     setIsFetching(true);
     try {
       const data = await fetchRecyclePoints(lat, lng, 5000);
-      setPoints(data);
-    } catch {
+      setPoints(data.slice(0, 100));
+    } catch (err) {
+      console.error("[RecycleMap] Failed to load points:", err);
       setStatus("error");
     } finally {
       setIsFetching(false);
@@ -270,6 +310,18 @@ export default function RecycleMapScreen() {
     );
   };
 
+  const markers = useMemo(
+    () =>
+      points.map((point) => (
+        <RecycleMarker
+          key={point.id}
+          point={point}
+          onPress={() => setSelected(point)}
+        />
+      )),
+    [points],
+  );
+
   if (status === "permission_denied") return <PermissionDenied />;
   if (status === "error") return <ErrorState onRetry={init} />;
 
@@ -283,25 +335,7 @@ export default function RecycleMapScreen() {
         showsUserLocation
         showsMyLocationButton={false}
       >
-        {points.map((point) => (
-          <Marker
-            key={point.id}
-            coordinate={{ latitude: point.lat, longitude: point.lon }}
-            onPress={() => setSelected(point)}
-            pinColor={Colors.primary}
-          >
-            <View style={styles.markerPin}>
-              <Leaf size={14} color="#fff" strokeWidth={2.5} />
-            </View>
-            <Callout tooltip>
-              <View style={styles.callout}>
-                <Text style={styles.calloutText} numberOfLines={2}>
-                  {point.name ?? "Punto de Reciclaje"}
-                </Text>
-              </View>
-            </Callout>
-          </Marker>
-        ))}
+        {markers}
       </MapView>
 
       {/* Loading spinner overlay */}
@@ -411,25 +445,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3,
     elevation: 4,
-  },
-  callout: {
-    backgroundColor: Colors.surface,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Colors.borderLight,
-    maxWidth: 180,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.15,
-    shadowRadius: 2,
-    elevation: 3,
-  },
-  calloutText: {
-    fontSize: 12,
-    fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
   },
   // Loading
   loadingOverlay: {

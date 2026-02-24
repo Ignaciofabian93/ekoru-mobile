@@ -1,0 +1,12 @@
+{
+  "notifications": "Notifications",
+  "pushNotifications": "Push Notifications",
+  "emailNotifications": "Email Notifications",
+  "orderUpdates": "Order Updates",
+  "language": "Language",
+  "about": "About",
+  "version": "Version",
+  "termsOfService": "Terms of Service",
+  "privacyPolicy": "Privacy Policy",
+  "saveSettings": "Save Settings"
+}

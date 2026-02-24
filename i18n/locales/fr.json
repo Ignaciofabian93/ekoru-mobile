@@ -25,5 +25,21 @@
     "detectedSubtitle": "Nous utiliserons ceci pour afficher les annonces proches et définir votre langue. Vous pouvez le modifier à tout moment dans les paramètres.",
     "confirm": "Oui, c'est correct",
     "notMyLocation": "Ce n'est pas ma position"
+  },
+  "screens": {
+    "profile": {
+      "index": "Profil",
+      "settings": "Paramètres",
+      "editProfile": "Modifier le profil",
+      "changePassword": "Changer le mot de passe",
+      "orderHistory": "Historique des commandes",
+      "favorites": "Favoris",
+      "environmentalImpact": "Impact environnemental",
+      "subscription": "Abonnement"
+    },
+    "legal": {
+      "termsOfService": "Conditions d'utilisation",
+      "privacyPolicy": "Politique de confidentialité"
+    }
   }
 }

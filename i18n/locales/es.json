@@ -25,5 +25,21 @@
     "detectedSubtitle": "Usaremos esto para mostrar productos cercanos y configurar tu idioma. Puedes cambiarlo en cualquier momento en ajustes.",
     "confirm": "Sí, es correcta",
     "notMyLocation": "Esta no es mi ubicación"
+  },
+  "screens": {
+    "profile": {
+      "index": "Perfil",
+      "settings": "Configuración",
+      "editProfile": "Editar Perfil",
+      "changePassword": "Cambiar Contraseña",
+      "orderHistory": "Historial de Pedidos",
+      "favorites": "Favoritos",
+      "environmentalImpact": "Impacto Ambiental",
+      "subscription": "Suscripción"
+    },
+    "legal": {
+      "termsOfService": "Términos de Servicio",
+      "privacyPolicy": "Política de Privacidad"
+    }
   }
 }

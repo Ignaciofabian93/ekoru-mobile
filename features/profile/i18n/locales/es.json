@@ -1,0 +1,12 @@
+{
+  "notifications": "Notificaciones",
+  "pushNotifications": "Notificaciones push",
+  "emailNotifications": "Notificaciones por correo",
+  "orderUpdates": "Actualizaciones de pedidos",
+  "language": "Idioma",
+  "about": "Acerca de",
+  "version": "Versión",
+  "termsOfService": "Términos de servicio",
+  "privacyPolicy": "Política de privacidad",
+  "saveSettings": "Guardar configuración"
+}

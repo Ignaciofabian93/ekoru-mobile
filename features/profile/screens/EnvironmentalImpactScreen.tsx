@@ -8,54 +8,29 @@ import {
   type LucideIcon,
 } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import "../i18n";
+import { NAMESPACE } from "../i18n";
 
-interface StatCard {
+interface StatItem {
   icon: LucideIcon;
   iconColor: string;
   iconBg: string;
   value: string;
   unit: string;
-  label: string;
+  labelKey: string;
 }
 
 // TODO: replace with real API data
-const STATS: StatCard[] = [
-  {
-    icon: Leaf,
-    iconColor: "#16a34a",
-    iconBg: "#dcfce7",
-    value: "12.4",
-    unit: "kg",
-    label: "CO₂ Saved",
-  },
-  {
-    icon: Recycle,
-    iconColor: "#2563eb",
-    iconBg: "#dbeafe",
-    value: "8",
-    unit: "items",
-    label: "Items Recycled",
-  },
-  {
-    icon: Droplets,
-    iconColor: "#0891b2",
-    iconBg: "#cffafe",
-    value: "340",
-    unit: "L",
-    label: "Water Saved",
-  },
-  {
-    icon: TreePine,
-    iconColor: "#15803d",
-    iconBg: "#bbf7d0",
-    value: "0.5",
-    unit: "trees",
-    label: "Equivalent Trees",
-  },
+const STATS: StatItem[] = [
+  { icon: Leaf, iconColor: "#16a34a", iconBg: "#dcfce7", value: "12.4", unit: "kg", labelKey: "co2Saved" },
+  { icon: Recycle, iconColor: "#2563eb", iconBg: "#dbeafe", value: "8", unit: "items", labelKey: "itemsRecycled" },
+  { icon: Droplets, iconColor: "#0891b2", iconBg: "#cffafe", value: "340", unit: "L", labelKey: "waterSaved" },
+  { icon: TreePine, iconColor: "#15803d", iconBg: "#bbf7d0", value: "0.5", unit: "trees", labelKey: "equivalentTrees" },
 ];
 
-function StatCard({ stat }: { stat: StatCard }) {
+function StatCard({ stat, label }: { stat: StatItem; label: string }) {
   const Icon = stat.icon;
   return (
     <View style={styles.statCard}>
@@ -66,47 +41,43 @@ function StatCard({ stat }: { stat: StatCard }) {
         <Text style={styles.statValue}>{stat.value}</Text>
         <Text style={styles.statUnit}> {stat.unit}</Text>
       </View>
-      <Text style={styles.statLabel}>{stat.label}</Text>
+      <Text style={styles.statLabel}>{label}</Text>
     </View>
   );
 }
 
 export default function EnvironmentalImpactScreen() {
   const seller = useSeller();
+  const { t } = useTranslation(NAMESPACE);
 
   const displayName = seller?.profile
     ? seller.profile.__typename === "PersonProfile"
       ? seller.profile.firstName
       : seller.profile.businessName
-    : "You";
+    : t("account");
 
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.container}>
       {/* Header banner */}
       <View style={styles.banner}>
         <Leaf size={32} color="#fff" strokeWidth={1.5} />
-        <Text style={styles.bannerTitle}>Your Green Impact</Text>
+        <Text style={styles.bannerTitle}>{t("yourGreenImpact")}</Text>
         <Text style={styles.bannerSubtitle}>
-          {displayName}, here's the positive change you've made by choosing
-          Ekoru.
+          {t("greenImpactSubtitle_other", { name: displayName })}
         </Text>
       </View>
 
       {/* Stats grid */}
       <View style={styles.grid}>
         {STATS.map((stat) => (
-          <StatCard key={stat.label} stat={stat} />
+          <StatCard key={stat.labelKey} stat={stat} label={t(stat.labelKey)} />
         ))}
       </View>
 
       {/* Explanation card */}
       <View style={styles.infoCard}>
-        <Text style={styles.infoTitle}>How is this calculated?</Text>
-        <Text style={styles.infoBody}>
-          We estimate your environmental impact based on the products you've
-          exchanged, recycled, or bought second-hand through Ekoru, compared to
-          buying new items.
-        </Text>
+        <Text style={styles.infoTitle}>{t("howCalculated")}</Text>
+        <Text style={styles.infoBody}>{t("calculationExplanation")}</Text>
       </View>
     </ScrollView>
   );

@@ -1,7 +1,10 @@
 import Colors from "@/constants/Colors";
 import { PackageSearch } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+import "../i18n";
+import { NAMESPACE } from "../i18n";
 
 type OrderStatus = "Delivered" | "Shipped" | "Processing" | "Cancelled";
 
@@ -28,51 +31,66 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
   Cancelled: "#dc2626",
 };
 
-function OrderCard({ order }: { order: Order }) {
+function OrderCard({ order, statusLabel, totalLabel, itemLabel }: {
+  order: Order;
+  statusLabel: string;
+  totalLabel: string;
+  itemLabel: string;
+}) {
   const color = STATUS_COLORS[order.status];
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <Text style={styles.orderId}>{order.id}</Text>
         <View style={[styles.statusBadge, { backgroundColor: color + "1a" }]}>
-          <Text style={[styles.statusText, { color }]}>{order.status}</Text>
+          <Text style={[styles.statusText, { color }]}>{statusLabel}</Text>
         </View>
       </View>
       <View style={styles.cardBody}>
         <Text style={styles.cardDetail}>{order.date}</Text>
-        <Text style={styles.cardDetail}>
-          {order.items} item{order.items > 1 ? "s" : ""}
-        </Text>
+        <Text style={styles.cardDetail}>{itemLabel}</Text>
       </View>
       <View style={styles.cardFooter}>
-        <Text style={styles.totalLabel}>Total</Text>
+        <Text style={styles.totalLabel}>{totalLabel}</Text>
         <Text style={styles.totalValue}>{order.total}</Text>
       </View>
     </View>
   );
 }
 
-function EmptyState() {
+function EmptyState({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <View style={styles.empty}>
       <PackageSearch size={52} color="#d1d5db" strokeWidth={1.5} />
-      <Text style={styles.emptyTitle}>No orders yet</Text>
-      <Text style={styles.emptySubtitle}>
-        Your purchase history will appear here.
-      </Text>
+      <Text style={styles.emptyTitle}>{title}</Text>
+      <Text style={styles.emptySubtitle}>{subtitle}</Text>
     </View>
   );
 }
 
 export default function OrderHistoryScreen() {
+  const { t } = useTranslation(NAMESPACE);
+
   return (
     <FlatList
       data={MOCK_ORDERS}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <OrderCard order={item} />}
+      renderItem={({ item }) => (
+        <OrderCard
+          order={item}
+          statusLabel={t(`status_${item.status}`)}
+          totalLabel={t("total")}
+          itemLabel={t("item", { count: item.items })}
+        />
+      )}
       contentContainerStyle={styles.list}
       style={styles.scroll}
-      ListEmptyComponent={<EmptyState />}
+      ListEmptyComponent={
+        <EmptyState
+          title={t("noOrders")}
+          subtitle={t("noOrdersSubtitle")}
+        />
+      }
     />
   );
 }

@@ -8,21 +8,28 @@ interface AuthState {
   seller: Seller | null;
   token: string | null;
   isHydrated: boolean;
+  biometricEnabled: boolean;
+  requiresBiometric: boolean;
 
   // Actions
   login: (email: string, password: string) => Promise<void>;
   setSession: (token: string, seller: Seller) => Promise<void>;
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
+  setBiometricEnabled: (enabled: boolean) => Promise<void>;
+  unlockWithBiometric: () => void;
 }
 
 const TOKEN_KEY = "auth_token";
 const SELLER_KEY = "auth_seller";
+const BIOMETRIC_KEY = "biometric_enabled";
 
 const useAuthStore = create<AuthState>()((set) => ({
   seller: null,
   token: null,
   isHydrated: false,
+  biometricEnabled: false,
+  requiresBiometric: false,
 
   login: async (_email: string, _password: string) => {
     // TODO: Replace with real API call
@@ -79,23 +86,40 @@ const useAuthStore = create<AuthState>()((set) => ({
   logout: async () => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
     await SecureStore.deleteItemAsync(SELLER_KEY);
-    set({ seller: null, token: null });
+    set({ seller: null, token: null, requiresBiometric: false });
   },
 
   hydrate: async () => {
     try {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
       const sellerJson = await SecureStore.getItemAsync(SELLER_KEY);
+      const biometricEnabled =
+        (await SecureStore.getItemAsync(BIOMETRIC_KEY)) === "true";
 
       if (token && sellerJson) {
         const seller = JSON.parse(sellerJson) as Seller;
-        set({ seller, token, isHydrated: true });
+        set({
+          seller,
+          token,
+          isHydrated: true,
+          biometricEnabled,
+          requiresBiometric: biometricEnabled,
+        });
       } else {
-        set({ isHydrated: true });
+        set({ isHydrated: true, biometricEnabled });
       }
     } catch {
       set({ isHydrated: true });
     }
+  },
+
+  setBiometricEnabled: async (enabled: boolean) => {
+    await SecureStore.setItemAsync(BIOMETRIC_KEY, enabled ? "true" : "false");
+    set({ biometricEnabled: enabled });
+  },
+
+  unlockWithBiometric: () => {
+    set({ requiresBiometric: false });
   },
 }));
 

@@ -5,11 +5,15 @@ import { useSeller } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
 import { Save } from "lucide-react-native";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import "../i18n";
+import { NAMESPACE } from "../i18n";
 
 export default function EditProfileScreen() {
   const router = useRouter();
   const seller = useSeller();
+  const { t } = useTranslation(NAMESPACE);
 
   if (!seller) {
     router.replace("/(auth)");
@@ -81,38 +85,38 @@ export default function EditProfileScreen() {
           <Text style={styles.avatarText}>{initials || "?"}</Text>
         </View>
         <Pressable>
-          <Text style={styles.changePhoto}>Change Photo</Text>
+          <Text style={styles.changePhoto}>{t("changePhoto")}</Text>
         </Pressable>
       </View>
 
       {/* Person fields */}
       {isPerson && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <Text style={styles.sectionTitle}>{t("personalInformation")}</Text>
           <View style={styles.form}>
             <Input
-              label="First Name"
+              label={t("firstName")}
               value={firstName}
               onChangeText={setFirstName}
-              placeholder="Your first name"
+              placeholder={t("firstNamePlaceholder")}
             />
             <Input
-              label="Last Name(s)"
+              label={t("lastName")}
               value={lastName}
               onChangeText={setLastName}
-              placeholder="Your last name(s)"
+              placeholder={t("lastNamePlaceholder")}
             />
             <Input
-              label="Display Name"
+              label={t("displayName")}
               value={displayName}
               onChangeText={setDisplayName}
-              placeholder="How others will see you"
+              placeholder={t("displayNamePlaceholder")}
             />
             <Input
-              label="Bio"
+              label={t("bio")}
               value={bio}
               onChangeText={setBio}
-              placeholder="Tell us about yourself"
+              placeholder={t("bioPlaceholder")}
               multiline
               numberOfLines={4}
               style={styles.textArea}
@@ -124,34 +128,34 @@ export default function EditProfileScreen() {
       {/* Business fields */}
       {isBusiness && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Business Information</Text>
+          <Text style={styles.sectionTitle}>{t("businessInformation")}</Text>
           <View style={styles.form}>
             <Input
-              label="Business Name"
+              label={t("businessName")}
               value={businessName}
               onChangeText={setBusinessName}
-              placeholder="Your business name"
+              placeholder={t("businessNamePlaceholder")}
             />
             <Input
-              label="Description"
+              label={t("description")}
               value={description}
               onChangeText={setDescription}
-              placeholder="Describe your business"
+              placeholder={t("descriptionPlaceholder")}
               multiline
               numberOfLines={4}
               style={styles.textArea}
             />
             <Input
-              label="Legal Business Name"
+              label={t("legalBusinessName")}
               value={legalBusinessName}
               onChangeText={setLegalBusinessName}
-              placeholder="Official registered name"
+              placeholder={t("legalNamePlaceholder")}
             />
             <Input
-              label="Tax ID (RUT)"
+              label={t("taxId")}
               value={taxId}
               onChangeText={setTaxId}
-              placeholder="e.g. 12.345.678-9"
+              placeholder={t("taxIdPlaceholder")}
             />
           </View>
         </View>
@@ -159,17 +163,17 @@ export default function EditProfileScreen() {
 
       {/* Contact — shared */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Contact</Text>
+        <Text style={styles.sectionTitle}>{t("contact")}</Text>
         <View style={styles.form}>
           <Input
-            label="Phone"
+            label={t("phone")}
             value={phone}
             onChangeText={setPhone}
             placeholder="+56 9 1234 5678"
             type="number"
           />
           <Input
-            label="Website"
+            label={t("website")}
             value={website}
             onChangeText={setWebsite}
             placeholder="https://your-site.com"
@@ -178,7 +182,7 @@ export default function EditProfileScreen() {
       </View>
 
       <MainButton
-        text="Save Changes"
+        text={t("saveChanges")}
         onPress={handleSave}
         rightIcon={Save}
         style={styles.saveButton}

@@ -27,6 +27,7 @@ const LightTheme: Theme = {
 
 import { ApolloProvider } from "@apollo/client/react";
 
+import BiometricGateScreen from "@/components/shared/BiometricGate/BiometricGateScreen";
 import Drawer from "@/components/shared/Drawer/Drawer";
 import LocationConfirmModal from "@/components/shared/LocationConfirmModal/LocationConfirmModal";
 import toastConfig from "@/components/shared/Toast/toastConfig";
@@ -34,7 +35,6 @@ import { DrawerProvider } from "@/context/DrawerContext";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import useLocationDetection from "@/hooks/useLocationDetection";
 import client from "@/lib/apollo";
-import { getDatabase } from "@/lib/database";
 import useAuthStore from "@/store/useAuthStore";
 import useLocationStore from "@/store/useLocationStore";
 import Toast from "react-native-toast-message";
@@ -62,18 +62,11 @@ export default function RootLayout() {
   });
   const isHydrated = useAuthStore((s) => s.isHydrated);
   const [authHydrating, setAuthHydrating] = useState(true);
-  const [dbReady, setDbReady] = useState(false);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
-
-  useEffect(() => {
-    getDatabase()
-      .then(() => setDbReady(true))
-      .catch((e) => console.error("[DB] Init failed:", e));
-  }, []);
 
   useEffect(() => {
     useAuthStore.getState().hydrate();
@@ -90,12 +83,12 @@ export default function RootLayout() {
   }, [isHydrated]);
 
   useEffect(() => {
-    if (loaded && !authHydrating && dbReady) {
+    if (loaded && !authHydrating) {
       SplashScreen.hideAsync();
     }
   }, [loaded, authHydrating]);
 
-  if (!loaded || authHydrating || !dbReady) {
+  if (!loaded || authHydrating) {
     return null;
   }
 
@@ -104,6 +97,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const requiresBiometric = useAuthStore((s) => s.requiresBiometric);
   useLocationDetection();
 
   return (
@@ -125,6 +119,7 @@ function RootLayoutNav() {
           <Drawer />
           <LocationConfirmModal />
           <StatusBar style="light" />
+          {requiresBiometric && <BiometricGateScreen />}
         </ThemeProvider>
       </DrawerProvider>
       <Toast config={toastConfig} />

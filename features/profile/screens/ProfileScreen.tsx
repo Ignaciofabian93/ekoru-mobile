@@ -30,53 +30,16 @@ import {
   Text,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import "../i18n";
+import { NAMESPACE } from "../i18n";
 
 interface MenuRow {
   label: string;
   icon: LucideIcon;
   route: string;
 }
-
-const menuRows: MenuRow[] = [
-  { label: "Edit Profile", icon: UserPen, route: "/(profile)/edit-profile" },
-  {
-    label: "Change Password",
-    icon: KeyRound,
-    route: "/(profile)/change-password",
-  },
-  {
-    label: "Order History",
-    icon: PackageSearch,
-    route: "/(profile)/order-history",
-  },
-  { label: "Favorites", icon: Heart, route: "/(profile)/favorites" },
-  {
-    label: "Environmental Impact",
-    icon: Leaf,
-    route: "/(profile)/environmental-impact",
-  },
-  {
-    label: "Subscription",
-    icon: Gem,
-    route: "/(profile)/subscription",
-  },
-  { label: "Settings", icon: Settings, route: "/(profile)/settings" },
-];
-
-const SELLER_TYPE_LABEL: Record<string, string> = {
-  PERSON: "Personal Account",
-  STARTUP: "Startup",
-  COMPANY: "Company",
-};
-
-const SUBSCRIPTION_LABEL: Record<string, string> = {
-  FREEMIUM: "Freemium",
-  BASIC: "Basic",
-  ADVANCED: "Advanced",
-  STARTUP: "Startup",
-  EXPERT: "Expert",
-};
 
 const AVATAR_SIZE = 120;
 const COVER_HEIGHT = 200;
@@ -111,6 +74,31 @@ export default function ProfileScreen() {
   const seller = useSeller();
   const logout = useAuthStore((s) => s.logout);
   const { bottom } = useSafeAreaInsets();
+  const { t } = useTranslation(NAMESPACE);
+
+  const menuRows: MenuRow[] = [
+    { label: t("editProfile"), icon: UserPen, route: "/(profile)/edit-profile" },
+    { label: t("changePassword"), icon: KeyRound, route: "/(profile)/change-password" },
+    { label: t("orderHistory"), icon: PackageSearch, route: "/(profile)/order-history" },
+    { label: t("favorites"), icon: Heart, route: "/(profile)/favorites" },
+    { label: t("environmentalImpact"), icon: Leaf, route: "/(profile)/environmental-impact" },
+    { label: t("subscription"), icon: Gem, route: "/(profile)/subscription" },
+    { label: t("settings"), icon: Settings, route: "/(profile)/settings" },
+  ];
+
+  const SELLER_TYPE_LABEL: Record<string, string> = {
+    PERSON: t("sellerType_PERSON"),
+    STARTUP: t("sellerType_STARTUP"),
+    COMPANY: t("sellerType_COMPANY"),
+  };
+
+  const SUBSCRIPTION_LABEL: Record<string, string> = {
+    FREEMIUM: t("plan_FREEMIUM"),
+    BASIC: t("plan_BASIC"),
+    ADVANCED: t("plan_ADVANCED"),
+    STARTUP: t("plan_STARTUP"),
+    EXPERT: t("plan_EXPERT"),
+  };
 
   useEffect(() => {
     if (!seller) {
@@ -156,15 +144,15 @@ export default function ProfileScreen() {
   const detailItems = [
     subscriptionPlan && {
       icon: BadgeCheck,
-      label: "Subscription",
+      label: t("subscription"),
       value: SUBSCRIPTION_LABEL[subscriptionPlan] ?? subscriptionPlan,
     },
-    seller.phone && { icon: Phone, label: "Phone", value: seller.phone },
-    seller.address && { icon: Pin, label: "Address", value: seller.address },
-    countyLine && { icon: MapPin, label: "County", value: countyLine },
-    cityLine && { icon: MapPinCheck, label: "City", value: cityLine },
-    regionLine && { icon: Flag, label: "Region", value: regionLine },
-    countryLine && { icon: Globe, label: "Country", value: countryLine },
+    seller.phone && { icon: Phone, label: t("phone"), value: seller.phone },
+    seller.address && { icon: Pin, label: t("address"), value: seller.address },
+    countyLine && { icon: MapPin, label: t("county"), value: countyLine },
+    cityLine && { icon: MapPinCheck, label: t("city"), value: cityLine },
+    regionLine && { icon: Flag, label: t("region"), value: regionLine },
+    countryLine && { icon: Globe, label: t("country"), value: countryLine },
   ].filter(Boolean) as { icon: LucideIcon; label: string; value: string }[];
 
   return (
@@ -238,7 +226,7 @@ export default function ProfileScreen() {
         {/* Profile Details */}
         {detailItems.length > 0 && (
           <>
-            <Text style={styles.sectionTitle}>Details</Text>
+            <Text style={styles.sectionTitle}>{t("details")}</Text>
             <View style={styles.detailsCard}>
               {detailItems.map((item, index) => (
                 <DetailRow
@@ -254,7 +242,7 @@ export default function ProfileScreen() {
         )}
 
         {/* Navigation menu */}
-        <Text style={styles.sectionTitle}>Account</Text>
+        <Text style={styles.sectionTitle}>{t("account")}</Text>
         <View style={styles.menuCard}>
           {menuRows.map((row, index) => {
             const Icon = row.icon;
@@ -286,7 +274,7 @@ export default function ProfileScreen() {
             router.replace("/(tabs)");
           }}
         >
-          <Text style={styles.logoutText}>Log Out</Text>
+          <Text style={styles.logoutText}>{t("logOut")}</Text>
         </Pressable>
       </ScrollView>
     </View>

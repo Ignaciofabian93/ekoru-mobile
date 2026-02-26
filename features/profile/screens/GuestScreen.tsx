@@ -10,43 +10,23 @@ import {
   UserRound,
   Zap,
 } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
-
-const PERKS = [
-  {
-    icon: Star,
-    color: Colors.accent,
-    title: "Eco points & rewards",
-    desc: "Earn points on every purchase and redeem them for discounts.",
-  },
-  {
-    icon: Leaf,
-    color: Colors.primary,
-    title: "Environmental impact",
-    desc: "Track the CO₂ you've saved and the trees planted through Ekoru.",
-  },
-  {
-    icon: ShieldCheck,
-    color: Colors.secondary,
-    title: "Verified seller badge",
-    desc: "Build trust and sell faster with a verified profile.",
-  },
-  {
-    icon: Zap,
-    color: "#a855f7",
-    title: "Exclusive deals",
-    desc: "Members get early access to flash sales and eco events.",
-  },
-  {
-    icon: TreePine,
-    color: "#10b981",
-    title: "Plant trees for free",
-    desc: "Every active month Ekoru plants a tree on your behalf.",
-  },
-];
+import "../i18n";
+import { NAMESPACE } from "../i18n";
 
 export default function GuestScreen() {
   const router = useRouter();
+  const { t } = useTranslation(NAMESPACE);
+
+  const PERKS = [
+    { icon: Star, color: Colors.accent, titleKey: "perk_points_title", descKey: "perk_points_desc" },
+    { icon: Leaf, color: Colors.primary, titleKey: "perk_impact_title", descKey: "perk_impact_desc" },
+    { icon: ShieldCheck, color: Colors.secondary, titleKey: "perk_badge_title", descKey: "perk_badge_desc" },
+    { icon: Zap, color: "#a855f7", titleKey: "perk_deals_title", descKey: "perk_deals_desc" },
+    { icon: TreePine, color: "#10b981", titleKey: "perk_trees_title", descKey: "perk_trees_desc" },
+  ];
+
   return (
     <ScrollView
       style={styles.container}
@@ -59,7 +39,7 @@ export default function GuestScreen() {
           <UserRound size={40} color={Colors.primary} strokeWidth={1.25} />
         </View>
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
-          Join the Ekoru community
+          {t("joinCommunity")}
         </Text>
         <Text
           size="sm"
@@ -67,8 +47,7 @@ export default function GuestScreen() {
           align="center"
           style={styles.heroSubtitle}
         >
-          Free to join. Earn points, track your impact, and buy or sell
-          eco-friendly goods.
+          {t("guestSubtitle")}
         </Text>
       </View>
 
@@ -77,7 +56,7 @@ export default function GuestScreen() {
         {PERKS.map((perk) => {
           const Icon = perk.icon;
           return (
-            <View key={perk.title} style={styles.perkItem}>
+            <View key={perk.titleKey} style={styles.perkItem}>
               <View
                 style={[
                   styles.perkIconBox,
@@ -88,10 +67,10 @@ export default function GuestScreen() {
               </View>
               <View style={styles.perkText}>
                 <Text size="sm" weight="semibold">
-                  {perk.title}
+                  {t(perk.titleKey)}
                 </Text>
                 <Text size="xs" color="secondary">
-                  {perk.desc}
+                  {t(perk.descKey)}
                 </Text>
               </View>
             </View>
@@ -102,11 +81,11 @@ export default function GuestScreen() {
       {/* CTAs */}
       <View style={styles.actions}>
         <MainButton
-          text="Create free account"
+          text={t("createAccount")}
           onPress={() => router.push("/(auth)/register")}
         />
         <MainButton
-          text="Sign in to my account"
+          text={t("signIn")}
           variant="outline"
           onPress={() => router.push("/(auth)")}
         />

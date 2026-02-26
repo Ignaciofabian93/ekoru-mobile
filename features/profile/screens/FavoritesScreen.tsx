@@ -2,10 +2,14 @@ import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { Heart } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import "../i18n";
+import { NAMESPACE } from "../i18n";
 
 export default function FavouritesScreen() {
   const router = useRouter();
+  const { t } = useTranslation(NAMESPACE);
 
   return (
     <View style={styles.container}>
@@ -13,15 +17,13 @@ export default function FavouritesScreen() {
         <View style={styles.iconWrap}>
           <Heart size={48} color={Colors.primary} strokeWidth={1.5} />
         </View>
-        <Text style={styles.title}>No favourites yet</Text>
-        <Text style={styles.subtitle}>
-          Save products and stores you love and they will appear here.
-        </Text>
+        <Text style={styles.title}>{t("noFavorites")}</Text>
+        <Text style={styles.subtitle}>{t("noFavoritesSubtitle")}</Text>
         <Pressable
           style={styles.button}
           onPress={() => router.push("/(tabs)/marketplace")}
         >
-          <Text style={styles.buttonText}>Browse Marketplace</Text>
+          <Text style={styles.buttonText}>{t("browseMarketplace")}</Text>
         </Pressable>
       </View>
     </View>

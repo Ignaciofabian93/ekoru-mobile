@@ -2,13 +2,18 @@ import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import { LANGUAGES_SUPPORTED } from "@/config/languages";
 import Colors from "@/constants/Colors";
-import { Pressable, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
+import { SettingsSectionProps } from "../screens/SettingsScreen";
 
-export default function LanguagesSection() {
+export default function LanguagesSection({
+  sellerPreferences,
+  handleSellerPreferences,
+}: SettingsSectionProps) {
   const { t, i18n } = useTranslation(NAMESPACE);
-  const currentLanguage = i18n.language;
+  const { preferredLanguage } = sellerPreferences;
+  const currentLanguage = preferredLanguage || i18n.language;
   return (
     <View style={{ marginTop: 24 }}>
       <Title level="h6" style={{ color: "#2f2f2f" }}>
@@ -22,10 +27,18 @@ export default function LanguagesSection() {
               styles.row,
               index < LANGUAGES_SUPPORTED.length - 1 && styles.rowBorder,
             ]}
-            onPress={() => i18n.changeLanguage(lang.code)}
+            onPress={() => {
+              i18n.changeLanguage(lang.code);
+              handleSellerPreferences?.({
+                preference: "preferredLanguage",
+                value: lang.code,
+              });
+            }}
           >
             <Text>{lang.label}</Text>
-            {currentLanguage === lang.code && <Text style={styles.check}>✓</Text>}
+            {currentLanguage === lang.code && (
+              <Text style={styles.check}>✓</Text>
+            )}
           </Pressable>
         ))}
       </View>

@@ -3,9 +3,13 @@ import Input from "@/components/shared/Input/Input";
 import { showError } from "@/lib/toast";
 import { KeyRound } from "lucide-react-native";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import "../i18n";
+import { NAMESPACE } from "../i18n";
 
 export default function ChangePasswordScreen() {
+  const { t } = useTranslation(NAMESPACE);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,11 +17,11 @@ export default function ChangePasswordScreen() {
 
   const handleSubmit = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      showError({ title: "Error", message: "Please fill in all fields" });
+      showError({ title: "Error", message: t("error_fillFields") });
       return;
     }
     if (newPassword !== confirmPassword) {
-      showError({ title: "Error", message: "New passwords do not match" });
+      showError({ title: "Error", message: t("error_passwordMismatch") });
       return;
     }
     setLoading(true);
@@ -34,36 +38,34 @@ export default function ChangePasswordScreen() {
       <View style={styles.iconWrap}>
         <KeyRound size={40} color="#6b7280" strokeWidth={1.5} />
       </View>
-      <Text style={styles.hint}>
-        Choose a strong password that you haven't used before.
-      </Text>
+      <Text style={styles.hint}>{t("passwordHint")}</Text>
 
       <View style={styles.card}>
         <Input
-          label="Current Password"
+          label={t("currentPassword")}
           value={currentPassword}
           onChangeText={setCurrentPassword}
-          placeholder="Enter current password"
+          placeholder={t("enterCurrentPassword")}
           type="password"
         />
         <Input
-          label="New Password"
+          label={t("newPassword")}
           value={newPassword}
           onChangeText={setNewPassword}
-          placeholder="Enter new password"
+          placeholder={t("enterNewPassword")}
           type="password"
         />
         <Input
-          label="Confirm New Password"
+          label={t("confirmNewPassword")}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
-          placeholder="Confirm new password"
+          placeholder={t("confirmNewPasswordPlaceholder")}
           type="password"
         />
       </View>
 
       <MainButton
-        text="Update Password"
+        text={t("updatePassword")}
         onPress={handleSubmit}
         loading={loading}
         style={styles.button}

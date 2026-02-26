@@ -3,7 +3,8 @@
     "allow": [
       "Bash(xargs -0 grep -l \"expo-sqlite\\\\|getDatabase\\\\|from [''\"\"].*database\\\\|from [''\"\"].*repository\")",
       "Bash(npx expo install --fix)",
-      "Bash(npm uninstall expo-sqlite)"
+      "Bash(npm uninstall expo-sqlite)",
+      "Bash(npx tsc --noEmit)"
     ]
   }
 }

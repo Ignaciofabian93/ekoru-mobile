@@ -21,7 +21,7 @@ export default function FavouritesScreen() {
         <Text style={styles.subtitle}>{t("noFavoritesSubtitle")}</Text>
         <Pressable
           style={styles.button}
-          onPress={() => router.push("/(tabs)/marketplace")}
+          onPress={() => router.push("/(marketplace)")}
         >
           <Text style={styles.buttonText}>{t("browseMarketplace")}</Text>
         </Pressable>

@@ -1,6 +1,7 @@
-export type ProductCondition = "new" | "like_new" | "good" | "fair" | "poor";
+import type { ProductCondition, SellerType } from "../../../types/enums";
+import type { Seller } from "../../../types/user";
 
-export type SellerType = "individual" | "store" | "service";
+export type { ProductCondition, SellerType, Seller };
 
 export interface MaterialBreakdown {
   materialType: string;
@@ -15,19 +16,6 @@ export interface EnvironmentalImpact {
 
 export interface County {
   county: string;
-}
-
-export interface SellerProfile {
-  firstName?: string;
-  lastName?: string;
-}
-
-export interface Seller {
-  sellerType: SellerType;
-  profile?: SellerProfile;
-  phone?: string;
-  address?: string;
-  county?: County;
 }
 
 export interface Product {

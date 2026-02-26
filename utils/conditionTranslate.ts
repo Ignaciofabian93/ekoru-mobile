@@ -1,11 +1,13 @@
-import type { ProductCondition } from "../types/Product";
+import type { ProductCondition } from "../types/enums";
 
 const conditionMap: Record<ProductCondition, string> = {
-  new: "Nuevo",
-  like_new: "Como nuevo",
-  good: "Buen estado",
-  fair: "Aceptable",
-  poor: "Desgastado",
+  NEW: "Nuevo",
+  OPEN_BOX: "Caja abierta",
+  LIKE_NEW: "Como nuevo",
+  FAIR: "Aceptable",
+  POOR: "Desgastado",
+  FOR_PARTS: "Para piezas",
+  REFURBISHED: "Reacondicionado",
 };
 
 export function conditionTranslate(condition: ProductCondition): string {

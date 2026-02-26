@@ -1,9 +1,9 @@
-import type { SellerType } from "../types/Product";
+import type { SellerType } from "../types/enums";
 
 const sellerTypeMap: Record<SellerType, string> = {
-  individual: "Particular",
-  store: "Tienda",
-  service: "Servicio",
+  PERSON: "Particular",
+  STARTUP: "Startup",
+  COMPANY: "Empresa",
 };
 
 export function sellerTypeTranslate(type: SellerType): string {

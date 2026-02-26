@@ -192,54 +192,17 @@ EAS build profiles are defined in `eas.json` (to be configured). Common profile 
 
 ---
 
-## CI/CD with GitHub Actions
+## CI with GitHub Actions
 
-Three workflows are defined in `.github/workflows/`:
+**File:** `.github/workflows/ci.yml`
 
-### `ci.yml` — Runs on every PR and push to `main` / `develop`
+Runs on every PR and push to `main` / `develop`:
 
-Steps:
 1. Install dependencies (`npm ci`)
 2. TypeScript type check (`tsc --noEmit`)
 3. Jest test suite (`npm test`)
 
-This is a fast, cheap gate that catches type errors and broken tests before any build is triggered.
-
-### `preview.yml` — Runs on PRs targeting `main`
-
-Steps:
-1. Install, type check, test (same as CI)
-2. `eas build --profile preview --platform android` — builds an APK against the QA API
-3. Posts a comment on the PR with a link to the build
-
-This gives reviewers an installable build for every PR without needing a local setup.
-
-### `production.yml` — Runs on version tags (`v*.*.*`)
-
-Two parallel jobs — Android and iOS:
-1. Install, type check, test
-2. `eas build --profile production` — builds a release AAB (Android) or IPA (iOS)
-3. `eas submit --profile production` — submits to Play Store / App Store automatically
-
-**To trigger a production release:**
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
----
-
-## Required Secrets
-
-Set these in **GitHub → Settings → Secrets and variables → Actions**:
-
-| Secret | Description |
-|---|---|
-| `EXPO_TOKEN` | Personal access token from [expo.dev/accounts/settings](https://expo.dev/accounts/settings) |
-
-For store submissions, also configure in `eas.json → submit`:
-- **Android:** path to `google-service-account.json` (Play Store API key)
-- **iOS:** `appleId`, `ascAppId`, `appleTeamId`
+EAS builds and store submissions are triggered manually via the EAS CLI — not automated.
 
 ---
 

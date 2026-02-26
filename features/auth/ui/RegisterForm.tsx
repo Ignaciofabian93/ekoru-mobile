@@ -36,7 +36,6 @@ export default function RegisterForm() {
         onChange={(value) => setSellerType(value as SellerType)}
         options={sellerTypeOptions}
         searchEnabled={false}
-        hasIcon={false}
       />
 
       <Input

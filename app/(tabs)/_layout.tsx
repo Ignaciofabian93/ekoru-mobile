@@ -47,7 +47,6 @@ export default function TabLayout() {
         name="recycle"
         options={{
           title: t("tabs.recycle"),
-          unmountOnBlur: true,
           tabBarIcon: ({ color, size }) => (
             <Leaf strokeWidth={1.5} size={size} color={color} />
           ),

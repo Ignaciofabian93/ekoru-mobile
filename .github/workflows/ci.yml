@@ -27,5 +27,8 @@ jobs:
       - name: Type check
         run: npx tsc --noEmit
 
+      - name: Lint
+        run: npx expo lint
+
       - name: Run tests
         run: npm test -- --passWithNoTests --ci

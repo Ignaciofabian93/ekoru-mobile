@@ -19,7 +19,7 @@ export default function LoginForm() {
         value={email}
         onChangeText={(value) => handleFieldChange({ name: "email", value })}
         type="email"
-        icon={Mail}
+        leftIcon={Mail}
       />
       <Input
         name="password"
@@ -28,7 +28,7 @@ export default function LoginForm() {
         value={password}
         onChangeText={(value) => handleFieldChange({ name: "password", value })}
         type="password"
-        icon={Lock}
+        leftIcon={Lock}
       />
       <MainButton
         text={t("login")}

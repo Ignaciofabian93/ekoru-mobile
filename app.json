@@ -32,7 +32,14 @@
     "plugins": [
       "expo-router",
       "expo-localization",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow EKORU to access your photo library to update your profile and cover photo.",
+          "cameraPermission": "Allow EKORU to use your camera to take a profile or cover photo."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

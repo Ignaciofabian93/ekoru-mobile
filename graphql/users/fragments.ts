@@ -56,7 +56,6 @@ export const BUSINESS_PROFILE_FIELDS_FRAGMENT = gql`
     id
     sellerId
     businessName
-    displayName
     description
     logo
     coverImage

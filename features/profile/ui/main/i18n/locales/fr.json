@@ -1,0 +1,30 @@
+{
+  "sellerType_PERSON": "Compte personnel",
+  "sellerType_STARTUP": "Startup",
+  "sellerType_COMPANY": "Entreprise",
+
+  "account": "Compte",
+
+  "changePhoto": "Changer la photo",
+  "chooseFromLibrary": "Choisir dans la bibliothèque",
+  "takePhoto": "Prendre une photo",
+  "cancel": "Annuler",
+  "uploadError": "Impossible de télécharger l'image. Veuillez réessayer.",
+  "permissionDenied": "Permission refusée",
+  "galleryPermission": "Veuillez autoriser l'accès à votre photothèque dans les Paramètres.",
+  "cameraPermission": "Veuillez autoriser l'accès à la caméra dans les Paramètres.",
+
+  "details": "Détails",
+  "subscription": "Abonnement",
+  "phone": "Téléphone",
+  "address": "Adresse",
+  "county": "Département",
+  "city": "Ville",
+  "region": "Région",
+  "country": "Pays",
+  "plan_FREEMIUM": "Freemium",
+  "plan_BASIC": "Basique",
+  "plan_ADVANCED": "Avancé",
+  "plan_STARTUP": "Startup",
+  "plan_EXPERT": "Expert"
+}

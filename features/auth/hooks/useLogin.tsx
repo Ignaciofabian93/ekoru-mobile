@@ -53,6 +53,8 @@ export default function useLogin() {
       }
 
       // Step 2: GraphQL call — fetch the full seller profile
+      // The Apollo authLink automatically attaches the token from the store,
+      // but since setSession hasn't been called yet we pass it explicitly here.
       const { data } = await client.query<{ me: Seller }>({
         query: GET_ME,
         context: {
@@ -69,11 +71,11 @@ export default function useLogin() {
         return;
       }
 
-      // Step 3: Persist token + seller in secure storage and global state
-      await setSession(authData.token, data.me);
+      // Step 3: Persist token + refreshToken + seller in secure storage and global state
+      await setSession(authData.token, data.me, authData.refreshToken);
 
       router.replace("/(tabs)");
-    } catch {
+    } catch (err) {
       showError({
         title: t("errorTitle"),
         message: t("networkError"),

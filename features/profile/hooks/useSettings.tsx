@@ -83,8 +83,6 @@ export default function useSettings() {
     });
   };
 
-  console.log("Seller Pref:: ", sellerPreferences);
-
   return {
     sellerPreferences,
     handleSellerPreferences,

@@ -1,0 +1,45 @@
+version: "0.2"
+ignorePaths:
+  - node_modules
+  - .expo
+  - dist
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  # React Native / Expo
+  - ekoru
+  - Pressable
+  - pressable
+  - stylesheet
+  - flatlist
+  - touchable
+  - scrollview
+  - safearea
+  - statusbar
+  - nativewind
+  - tailwindcss
+  - Reanimated
+  - reanimated
+  - zustand
+  - lucide
+  # Expo modules
+  - expo
+  - eas
+  - prebuild
+  - SecureStore
+  - securestore
+  - ImagePicker
+  - imagepicker
+  # Project-specific
+  - sellerId
+  - sellertype
+  - personprofile
+  - businessprofile
+  - coverimage
+  - profileimage
+  - supergraph
+  - prisma
+  - graphql
+  - apollo
+ignoreWords: []
+import: []

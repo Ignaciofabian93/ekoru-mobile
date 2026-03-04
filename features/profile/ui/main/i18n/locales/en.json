@@ -1,0 +1,30 @@
+{
+  "sellerType_PERSON": "Personal Account",
+  "sellerType_STARTUP": "Startup",
+  "sellerType_COMPANY": "Company",
+
+  "account": "Account",
+
+  "changePhoto": "Change Photo",
+  "chooseFromLibrary": "Choose from Library",
+  "takePhoto": "Take Photo",
+  "cancel": "Cancel",
+  "uploadError": "Could not upload image. Please try again.",
+  "permissionDenied": "Permission Denied",
+  "galleryPermission": "Please allow access to your photo library in Settings.",
+  "cameraPermission": "Please allow camera access in Settings.",
+
+  "details": "Details",
+  "subscription": "Subscription",
+  "phone": "Phone",
+  "address": "Address",
+  "county": "County",
+  "city": "City",
+  "region": "Region",
+  "country": "Country",
+  "plan_FREEMIUM": "Freemium",
+  "plan_BASIC": "Basic",
+  "plan_ADVANCED": "Advanced",
+  "plan_STARTUP": "Startup",
+  "plan_EXPERT": "Expert"
+}

@@ -1,4 +1,5 @@
 import { REST_URL } from "@/config/endpoints";
+import useAuthStore from "@/store/useAuthStore";
 
 export async function Login({
   email,
@@ -7,26 +8,29 @@ export async function Login({
   email: string;
   password: string;
 }) {
-  const options: RequestInit = {
+  const response = await fetch(`${REST_URL}/auth`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
-  };
-  const response = await fetch(`${REST_URL}/auth`, options);
+  });
   const data = await response.json();
-  return data;
+  return data as { token: string; refreshToken: string; message: string };
 }
 
-// Refresh token handler
+// Sends the stored refresh token in the request body (cookie-based refresh
+// does not work in React Native — tokens are stored in expo-secure-store).
 export async function RefreshToken() {
-  const options: RequestInit = {
+  const refreshToken = useAuthStore.getState().refreshToken;
+  if (!refreshToken) return null;
+
+  const response = await fetch(`${REST_URL}/refresh`, {
     method: "POST",
-    credentials: "include",
-  };
-  const response = await fetch(`${REST_URL}/refresh`, options);
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refreshToken }),
+  });
+
+  if (!response.ok) return null;
+
   const data = await response.json();
-  return data;
+  return data as { token: string; success: boolean };
 }

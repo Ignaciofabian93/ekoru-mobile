@@ -1,19 +1,29 @@
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
 
+import { formatInitials } from "@/features/profile/utils/formatters";
+import { resolveImageUrl } from "@/features/profile/utils/resolveImage";
 import type { SellerType } from "@/types/enums";
 import type { Seller } from "@/types/user";
 
 interface AuthState {
   seller: Seller | null;
   token: string | null;
+  refreshToken: string | null;
   isHydrated: boolean;
   biometricEnabled: boolean;
   requiresBiometric: boolean;
 
   // Actions
-  login: (email: string, password: string) => Promise<void>;
-  setSession: (token: string, seller: Seller) => Promise<void>;
+  setSession: (
+    token: string,
+    seller: Seller,
+    refreshToken?: string,
+  ) => Promise<void>;
+  updateToken: (token: string) => Promise<void>;
+  refreshSeller: (seller: Seller) => Promise<void>;
+  updateProfileImage: (imageUrl: string) => Promise<void>;
+  updateCoverImage: (imageUrl: string) => Promise<void>;
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
   setBiometricEnabled: (enabled: boolean) => Promise<void>;
@@ -21,77 +31,74 @@ interface AuthState {
 }
 
 const TOKEN_KEY = "auth_token";
+const REFRESH_TOKEN_KEY = "auth_refresh_token";
 const SELLER_KEY = "auth_seller";
 const BIOMETRIC_KEY = "biometric_enabled";
 
 const useAuthStore = create<AuthState>()((set) => ({
   seller: null,
   token: null,
+  refreshToken: null,
   isHydrated: false,
   biometricEnabled: false,
   requiresBiometric: false,
 
-  login: async (_email: string, _password: string) => {
-    // TODO: Replace with real API call
-    const mockToken = "mock_jwt_token";
-
-    const mockSeller: Seller = {
-      id: "mock-seller-1",
-      email: _email,
-      password: "",
-      sellerType: "PERSON",
-      isActive: true,
-      isVerified: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      points: 320,
-      profile: {
-        __typename: "PersonProfile",
-        id: "mock-profile-1",
-        sellerId: "mock-seller-1",
-        firstName: "Jane",
-        lastName: "Doe",
-        displayName: "Jane Doe",
-        allowExchanges: true,
-        personSubscriptionPlan: "BASIC",
-      },
-      sellerLevel: {
-        id: 2,
-        levelName: "Eco Warrior",
-        minPoints: 100,
-        maxPoints: 500,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      phone: "+56 9 1234 5678",
-      address: "Av. Providencia 1234, Piso 3",
-      country: { id: 1, country: "Chile" },
-      region: { id: 1, region: "Región Metropolitana", countryId: 1 },
-      city: { id: 1, city: "Santiago", regionId: 1 },
-      county: { id: 1, county: "Providencia", cityId: 1 },
-    };
-
-    await SecureStore.setItemAsync(TOKEN_KEY, mockToken);
-    await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(mockSeller));
-
-    set({ token: mockToken, seller: mockSeller });
-  },
-
-  setSession: async (token: string, seller: Seller) => {
+  setSession: async (token: string, seller: Seller, refreshToken?: string) => {
     await SecureStore.setItemAsync(TOKEN_KEY, token);
     await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(seller));
-    set({ token, seller });
+    if (refreshToken) {
+      await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
+    }
+    set({ token, seller, ...(refreshToken ? { refreshToken } : {}) });
+  },
+
+  updateToken: async (token: string) => {
+    await SecureStore.setItemAsync(TOKEN_KEY, token);
+    set({ token });
+  },
+
+  refreshSeller: async (seller: Seller) => {
+    await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(seller));
+    set({ seller });
+  },
+
+  updateProfileImage: async (imageUrl: string) => {
+    const seller = useAuthStore.getState().seller;
+    if (!seller?.profile) return;
+    const updatedProfile =
+      seller.profile.__typename === "PersonProfile"
+        ? { ...seller.profile, profileImage: imageUrl }
+        : { ...seller.profile, logo: imageUrl };
+    const updatedSeller = { ...seller, profile: updatedProfile };
+    set({ seller: updatedSeller });
+    await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(updatedSeller));
+  },
+
+  updateCoverImage: async (imageUrl: string) => {
+    const seller = useAuthStore.getState().seller;
+    if (!seller?.profile) return;
+    const updatedProfile = { ...seller.profile, coverImage: imageUrl };
+    const updatedSeller = { ...seller, profile: updatedProfile };
+    set({ seller: updatedSeller });
+    await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(updatedSeller));
   },
 
   logout: async () => {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
+    await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
     await SecureStore.deleteItemAsync(SELLER_KEY);
-    set({ seller: null, token: null, requiresBiometric: false });
+    set({
+      seller: null,
+      token: null,
+      refreshToken: null,
+      requiresBiometric: false,
+    });
   },
 
   hydrate: async () => {
     try {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
+      const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
       const sellerJson = await SecureStore.getItemAsync(SELLER_KEY);
       const biometricEnabled =
         (await SecureStore.getItemAsync(BIOMETRIC_KEY)) === "true";
@@ -101,6 +108,7 @@ const useAuthStore = create<AuthState>()((set) => ({
         set({
           seller,
           token,
+          refreshToken,
           isHydrated: true,
           biometricEnabled,
           requiresBiometric: biometricEnabled,
@@ -137,5 +145,53 @@ export const useIsSellerType = (type: SellerType) =>
 
 export const useHasSellerType = (...types: SellerType[]) =>
   useAuthStore((s) => s.seller !== null && types.includes(s.seller.sellerType));
+
+export const useSellerProfile = () => useAuthStore((s) => s.seller?.profile);
+
+export const useIsPersonProfile = () =>
+  useAuthStore((s) => s.seller?.profile?.__typename === "PersonProfile");
+
+export const useIsBusinessProfile = () =>
+  useAuthStore((s) => s.seller?.profile?.__typename === "BusinessProfile");
+
+export const useDisplayName = () =>
+  useAuthStore((s) => {
+    const profile = s.seller?.profile;
+    if (!profile) return s.seller?.email ?? "";
+    if (profile.__typename === "PersonProfile") {
+      if (profile.displayName) return profile.displayName;
+      return (
+        [profile.firstName, profile.lastName].filter(Boolean).join(" ") ||
+        s.seller?.email ||
+        ""
+      );
+    }
+    return profile.businessName ?? s.seller?.email ?? "";
+  });
+
+export const useProfileImage = () =>
+  useAuthStore((s) => {
+    const profile = s.seller?.profile;
+    if (!profile) return undefined;
+    const rawPath =
+      profile.__typename === "PersonProfile"
+        ? profile.profileImage
+        : (profile as any).logo;
+    return resolveImageUrl(rawPath);
+  });
+
+export const useCoverImage = () =>
+  useAuthStore((s) => resolveImageUrl(s.seller?.profile?.coverImage));
+
+export const useInitials = () =>
+  useAuthStore((s) => {
+    const profile = s.seller?.profile;
+    const name =
+      profile?.__typename === "PersonProfile"
+        ? profile.displayName ||
+          [profile.firstName, profile.lastName].filter(Boolean).join(" ")
+        : (profile as any)?.businessName;
+    return formatInitials(name || s.seller?.email || "");
+  });
 
 export default useAuthStore;

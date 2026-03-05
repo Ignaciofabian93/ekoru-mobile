@@ -1,0 +1,28 @@
+{
+  "header": "Menu",
+  "sections": {
+    "account": "Compte",
+    "explore": "Explorer",
+    "support": "Support"
+  },
+  "home": "Accueil",
+  "marketplace": "Marché",
+  "stores": "Magasins",
+  "services": "Services",
+  "community": "Communauté",
+  "blog": "Blog",
+  "upload": "Publier",
+  "help": "Aide",
+  "contact": "Contact",
+  "profile": "Profil",
+  "settings": "Paramètres",
+  "orders": "Commandes",
+  "environmentalImpact": "Impact Environnemental",
+  "logOut": "Se Déconnecter",
+  "logIn": "Se Connecter",
+  "sellerType": {
+    "PERSON": "Compte Personnel",
+    "STARTUP": "Startup",
+    "COMPANY": "Entreprise"
+  }
+}

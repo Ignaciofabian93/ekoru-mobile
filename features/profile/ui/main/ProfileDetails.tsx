@@ -10,10 +10,15 @@ import {
 } from "lucide-react-native";
 import { NAMESPACE } from "./i18n";
 import { useTranslation } from "react-i18next";
-import { useIsPersonProfile, useSeller, useSellerProfile } from "@/store/useAuthStore";
+import {
+  useIsPersonProfile,
+  useSeller,
+  useSellerProfile,
+} from "@/store/useAuthStore";
 import { Text } from "@/components/shared/Text/Text";
 import { StyleSheet, View } from "react-native";
 import Colors from "@/constants/Colors";
+import { Title } from "@/components/shared/Title/Title";
 
 function DetailRow({
   icon: Icon,
@@ -91,7 +96,9 @@ export default function ProfileDetails() {
   return (
     detailItems.length > 0 && (
       <>
-        <Text style={styles.sectionTitle}>{t("details")}</Text>
+        <Title level="h6" weight="semibold" style={styles.sectionTitle}>
+          {t("details")}
+        </Title>
         <View style={styles.detailsCard}>
           {detailItems.map((item, index) => (
             <DetailRow
@@ -110,11 +117,6 @@ export default function ProfileDetails() {
 
 const styles = StyleSheet.create({
   sectionTitle: {
-    fontSize: 12,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#6b7280",
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
     marginBottom: 8,
     marginHorizontal: 20,
   },

@@ -151,6 +151,18 @@ export const useSellerProfile = () => useAuthStore((s) => s.seller?.profile);
 export const useIsPersonProfile = () =>
   useAuthStore((s) => s.seller?.profile?.__typename === "PersonProfile");
 
+export const usePersonProfile = () =>
+  useAuthStore((s) =>
+    s.seller?.profile?.__typename === "PersonProfile" ? s.seller.profile : null,
+  );
+
+export const useBusinessProfile = () =>
+  useAuthStore((s) =>
+    s.seller?.profile?.__typename === "BusinessProfile"
+      ? s.seller.profile
+      : null,
+  );
+
 export const useIsBusinessProfile = () =>
   useAuthStore((s) => s.seller?.profile?.__typename === "BusinessProfile");
 
@@ -176,7 +188,7 @@ export const useProfileImage = () =>
     const rawPath =
       profile.__typename === "PersonProfile"
         ? profile.profileImage
-        : (profile as any).logo;
+        : profile.logo;
     return resolveImageUrl(rawPath);
   });
 
@@ -190,7 +202,7 @@ export const useInitials = () =>
       profile?.__typename === "PersonProfile"
         ? profile.displayName ||
           [profile.firstName, profile.lastName].filter(Boolean).join(" ")
-        : (profile as any)?.businessName;
+        : profile?.businessName;
     return formatInitials(name || s.seller?.email || "");
   });
 

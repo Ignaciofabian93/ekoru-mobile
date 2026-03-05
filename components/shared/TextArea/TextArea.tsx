@@ -1,6 +1,12 @@
 import Colors from "@/constants/Colors";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View, type TextInputProps } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  type TextInputProps,
+} from "react-native";
 
 interface TextAreaProps extends Omit<TextInputProps, "onChange"> {
   label?: string;
@@ -17,6 +23,7 @@ export default function TextArea({
   value,
   onChangeText,
   maxLength,
+  style,
   ...rest
 }: TextAreaProps) {
   const [focused, setFocused] = useState(false);
@@ -34,7 +41,7 @@ export default function TextArea({
         maxLength={maxLength}
         placeholder={placeholder}
         placeholderTextColor="#9ca3af"
-        style={[styles.input, focused && styles.inputFocused]}
+        style={[styles.input, focused && styles.inputFocused, style]}
         {...rest}
       />
     </View>
@@ -56,11 +63,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#111827",
     backgroundColor: "#fff",
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#d1d5db",
     borderRadius: 10,
     paddingVertical: 12,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     height: 128,
   },
   inputFocused: {

@@ -1,5 +1,5 @@
 import Colors from "@/constants/Colors";
-import { ChevronDown, Circle } from "lucide-react-native";
+import { Check, ChevronDown, Circle } from "lucide-react-native";
 import type { LucideIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -8,7 +8,6 @@ import {
   Modal,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from "react-native";
@@ -21,6 +20,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { Text } from "../Text/Text";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -63,16 +63,19 @@ export interface SelectProps {
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-const SIZE_MAP: Record<Size, { height: number; fontSize: number; px: number; iconSize: number }> = {
+const SIZE_MAP: Record<
+  Size,
+  { height: number; fontSize: number; px: number; iconSize: number }
+> = {
   sm: { height: 36, fontSize: 14, px: 10, iconSize: 16 },
   md: { height: 44, fontSize: 16, px: 12, iconSize: 18 },
   lg: { height: 56, fontSize: 18, px: 14, iconSize: 20 },
 };
 
 const WIDTH_MAP: Record<Width, `${number}%` | "100%"> = {
-  sm:   "33%",
-  md:   "50%",
-  lg:   "66%",
+  sm: "33%",
+  md: "50%",
+  lg: "66%",
   full: "100%",
 };
 
@@ -143,7 +146,12 @@ const Select = React.forwardRef<View, SelectProps>(
     const [isOpen, setIsOpen] = useState(false);
     const [search, setSearch] = useState("");
     const triggerRef = useRef<View>(null);
-    const [dropdownPos, setDropdownPos] = useState({ x: 0, y: 0, width: 0, triggerY: 0 });
+    const [dropdownPos, setDropdownPos] = useState({
+      x: 0,
+      y: 0,
+      width: 0,
+      triggerY: 0,
+    });
 
     const selectedOption = options.find((o) => o.value === value);
     const filteredOptions = options.filter((o) =>
@@ -163,15 +171,17 @@ const Select = React.forwardRef<View, SelectProps>(
     // ── Open / close ────────────────────────────────────────────────────────
     const handleOpen = () => {
       if (disabled || readOnly) return;
-      (triggerRef.current as View | null)?.measureInWindow((x, y, width, height) => {
-        setDropdownPos({
-          x,
-          width,
-          y: y + height + 4,   // bottom of trigger + gap (for "down")
-          triggerY: y - 4,     // top of trigger - gap (for "up")
-        });
-        setIsOpen(true);
-      });
+      (triggerRef.current as View | null)?.measureInWindow(
+        (x, y, width, height) => {
+          setDropdownPos({
+            x,
+            width,
+            y: y + height + 8, // bottom of trigger + gap (for "down")
+            triggerY: y - 8, // top of trigger - gap (for "up")
+          });
+          setIsOpen(true);
+        },
+      );
     };
 
     const handleClose = () => {
@@ -193,7 +203,7 @@ const Select = React.forwardRef<View, SelectProps>(
             width: dropdownPos.width,
           }
         : {
-            top: dropdownPos.y,
+            top: dropdownPos.y + 20,
             left: dropdownPos.x,
             width: dropdownPos.width,
           };
@@ -222,11 +232,12 @@ const Select = React.forwardRef<View, SelectProps>(
     const DropdownEntering = dropdownDirection === "up" ? FadeInUp : FadeInDown;
 
     return (
-      <View ref={ref} style={[styles.container, { width: WIDTH_MAP[width] as any }]}>
+      <View
+        ref={ref}
+        style={[styles.container, { width: WIDTH_MAP[width] as any }]}
+      >
         {/* Label */}
-        {label && (
-          <Text style={styles.label}>{label}</Text>
-        )}
+        {label && <Text style={styles.label}>{label}</Text>}
 
         {/* Trigger */}
         <Pressable
@@ -255,13 +266,18 @@ const Select = React.forwardRef<View, SelectProps>(
             </View>
           )}
 
-          <View style={[styles.triggerContent, LeftIcon && { paddingLeft: s.iconSize + 8 }]}>
+          <View
+            style={[
+              styles.triggerContent,
+              LeftIcon && { paddingLeft: s.iconSize + 8 },
+            ]}
+          >
             {renderColorCircle(selectedOption)}
             <Text
               style={[
                 styles.triggerText,
                 { fontSize: s.fontSize },
-                !selectedOption && styles.placeholder,
+                !selectedOption ? { ...styles.placeholder } : {},
               ]}
               numberOfLines={1}
             >
@@ -272,7 +288,13 @@ const Select = React.forwardRef<View, SelectProps>(
           <Animated.View style={chevronStyle}>
             <ChevronDown
               size={s.iconSize}
-              color={hasError ? Colors.danger : isOpen ? Colors.primary : Colors.foregroundTertiary}
+              color={
+                hasError
+                  ? Colors.danger
+                  : isOpen
+                    ? Colors.primary
+                    : Colors.foregroundTertiary
+              }
               strokeWidth={2}
             />
           </Animated.View>
@@ -320,6 +342,9 @@ const Select = React.forwardRef<View, SelectProps>(
                   data={filteredOptions}
                   keyExtractor={(item) => String(item.value)}
                   style={styles.list}
+                  ItemSeparatorComponent={() => (
+                    <View style={styles.separator} />
+                  )}
                   keyboardShouldPersistTaps="handled"
                   ListEmptyComponent={
                     <Text style={styles.emptyText}>{noResultsText}</Text>
@@ -344,11 +369,18 @@ const Select = React.forwardRef<View, SelectProps>(
                               style={[
                                 styles.optionText,
                                 { fontSize: s.fontSize },
-                                isSelected && styles.optionTextSelected,
+                                isSelected ? styles.optionTextSelected : {},
                               ]}
                             >
                               {item.label}
                             </Text>
+                            {isSelected && (
+                              <Check
+                                size={16}
+                                color={Colors.primary}
+                                strokeWidth={2.5}
+                              />
+                            )}
                           </View>
                         )}
                       </Pressable>
@@ -417,16 +449,16 @@ const styles = StyleSheet.create({
   dropdown: {
     position: "absolute",
     backgroundColor: Colors.surface,
-    borderWidth: 2,
-    borderColor: Colors.primary,
+    borderWidth: 1.5,
+    borderColor: Colors.borderLight,
     borderRadius: 12,
     overflow: "hidden",
-    maxHeight: 280,
+    maxHeight: 320,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 8,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 10,
   },
   searchInput: {
     fontFamily: "Cabin_400Regular",
@@ -438,11 +470,14 @@ const styles = StyleSheet.create({
     color: Colors.inputText,
   },
   list: {
-    maxHeight: 230,
+    maxHeight: 268,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: Colors.borderLight,
   },
   option: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    overflow: "hidden",
   },
   optionSelected: {
     backgroundColor: `${Colors.primary}1A`,
@@ -453,11 +488,15 @@ const styles = StyleSheet.create({
   optionContent: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    gap: 10,
   },
   optionText: {
     fontFamily: "Cabin_400Regular",
     color: Colors.foreground,
+    fontSize: 15,
+    lineHeight: 20,
     flex: 1,
   },
   optionTextSelected: {

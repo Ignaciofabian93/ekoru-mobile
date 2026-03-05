@@ -6,9 +6,8 @@ import useAuthStore, {
 } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
-import { Animated, ScrollView, StyleSheet, View } from "react-native";
+import { Animated, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import "../i18n";
 import { NAMESPACE } from "../i18n";
 import PhotoPicker from "../ui/main/PhotoPicker";
@@ -20,6 +19,7 @@ import CoverImage from "../ui/main/CoverImage";
 import Identity from "../ui/main/Identity";
 import ProfileDetails from "../ui/main/ProfileDetails";
 import NavigationMenu from "../ui/main/NavigationMenu";
+import { OuterContainer, ScrollContainer } from "../ui/layout/Container";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -28,7 +28,6 @@ export default function ProfileScreen() {
   const coverImage = useCoverImage();
   const initials = useInitials();
   const logout = useAuthStore((s) => s.logout);
-  const { bottom } = useSafeAreaInsets();
   const { t } = useTranslation(NAMESPACE);
 
   // ── Photo upload state ──────────────────────────────────────────────────────
@@ -70,10 +69,12 @@ export default function ProfileScreen() {
   if (!seller) return null;
 
   return (
-    <View style={[styles.outerContainer, { paddingBottom: bottom }]}>
-      <ScrollView style={styles.scroll}>
+    <OuterContainer>
+      <ScrollContainer>
         {/* ── Cover + overlapping avatar ─────────────────────────────────── */}
-        <View style={styles.headerContainer}>
+        <View
+          style={{ height: COVER_HEIGHT, marginBottom: AVATAR_PROTRUDE + 16 }}
+        >
           {/* Cover — tap anywhere to change */}
           <CoverImage
             coverImage={coverImage}
@@ -109,7 +110,7 @@ export default function ProfileScreen() {
             router.replace("/(tabs)");
           }}
         />
-      </ScrollView>
+      </ScrollContainer>
 
       {/* ── Profile image fullscreen modal ─────────────────────────────────── */}
       <ProfileImageModal
@@ -127,16 +128,6 @@ export default function ProfileScreen() {
         setUploadingCover={setUploadingCover}
         setUploadingProfile={setUploadingProfile}
       />
-    </View>
+    </OuterContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  outerContainer: { flex: 1, backgroundColor: "#fff" },
-  scroll: { flex: 1 },
-  // ── Cover ──────────────────────────────────────────────────────────────────
-  headerContainer: {
-    height: COVER_HEIGHT,
-    marginBottom: AVATAR_PROTRUDE + 16,
-  },
-});

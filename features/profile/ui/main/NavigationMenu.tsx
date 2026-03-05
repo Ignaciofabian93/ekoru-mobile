@@ -6,6 +6,7 @@ import Colors from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
 import { NAMESPACE } from "./i18n";
 import { useRouter } from "expo-router";
+import { Title } from "@/components/shared/Title/Title";
 
 export default function NavigationMenu() {
   const router = useRouter();
@@ -14,7 +15,9 @@ export default function NavigationMenu() {
 
   return (
     <>
-      <Text style={styles.sectionTitle}>{t("account")}</Text>
+      <Title level="h6" weight="semibold" style={styles.sectionTitle}>
+        {t("account")}
+      </Title>
       <View style={styles.menuCard}>
         {useMenuRows().map((row, index) => {
           const Icon = row.icon;
@@ -44,11 +47,6 @@ export default function NavigationMenu() {
 
 const styles = StyleSheet.create({
   sectionTitle: {
-    fontSize: 12,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#6b7280",
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
     marginBottom: 8,
     marginHorizontal: 20,
   },

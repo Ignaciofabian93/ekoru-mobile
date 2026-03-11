@@ -8,6 +8,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Colors from "@/constants/Colors";
 import { useIsAuthenticated } from "@/store/useAuthStore";
@@ -30,6 +31,7 @@ export default function CustomTabBar({
 }: BottomTabBarProps) {
   const router = useRouter();
   const isAuthenticated = useIsAuthenticated();
+  const insets = useSafeAreaInsets();
 
   const tabCount = state.routes.length;
   const screenWidth = Dimensions.get("window").width;
@@ -56,7 +58,7 @@ export default function CustomTabBar({
       colors={[Colors.primaryDark, Colors.primary, Colors.primaryDark]}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
-      style={styles.container}
+      style={[styles.container, { paddingBottom: insets.bottom + 12 }]}
     >
       <Animated.View
         style={[styles.indicator, { left: horizontalPadding }, indicatorStyle]}
@@ -127,7 +129,6 @@ export default function CustomTabBar({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    paddingBottom: 56,
     paddingTop: 12,
     paddingHorizontal: 8,
   },

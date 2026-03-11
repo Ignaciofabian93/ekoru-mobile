@@ -109,7 +109,10 @@ function RootLayoutNav() {
             <Stack.Screen name="(profile)" options={{ headerShown: false }} />
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="product" options={{ headerShown: false }} />
-            <Stack.Screen name="(marketplace)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(marketplace)"
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="(stores)" options={{ headerShown: false }} />
             <Stack.Screen name="(services)" options={{ headerShown: false }} />
             <Stack.Screen name="(community)" options={{ headerShown: false }} />

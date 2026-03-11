@@ -7,7 +7,7 @@ import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 const STEPS = [
   { icon: Camera, label: "Add photos", desc: "Up to 4 clear images" },
   { icon: FileText, label: "Describe it", desc: "Title, condition, details" },
-  { icon: Tag, label: "Set a price", desc: "Or offer it for free" },
+  { icon: Tag, label: "Set a price", desc: "Or offer it for exchange" },
   {
     icon: Leaf,
     label: "Choose eco tags",

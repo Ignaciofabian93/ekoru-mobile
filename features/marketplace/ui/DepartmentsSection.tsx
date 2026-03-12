@@ -3,17 +3,12 @@ import { Title } from "@/components/shared/Title/Title";
 import Colors from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { ChevronRight } from "lucide-react-native";
+import { ChevronRight, SlidersHorizontal } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
 import type { Department } from "../types/Department";
+import DepartmentsSectionSkeleton from "./skeletons/DepartmentsSectionSkeleton";
 
 // Gradient palettes cycling for department cards
 const GRADIENTS: [string, string][] = [
@@ -31,29 +26,36 @@ const CARD_HEIGHT = 108;
 interface Props {
   departments: Department[];
   loading: boolean;
+  setFiltersVisible?: (v: boolean) => void;
 }
 
-export default function DepartmentsSection({ departments, loading }: Props) {
+export default function DepartmentsSection({
+  departments,
+  loading,
+  setFiltersVisible,
+}: Props) {
   const { t } = useTranslation(NAMESPACE);
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator color={Colors.primary} size="small" />
-      </View>
-    );
-  }
+  if (loading) return <DepartmentsSectionSkeleton />;
 
   if (departments.length === 0) return null;
 
   return (
     <View style={styles.container}>
       <View style={styles.sectionHeader}>
-        <Title level="h5" weight="semibold">
-          {t("browseDepartments")}
-        </Title>
-        <Text size="sm" color="tertiary" style={{ marginTop: 2 }}>
-          {departments.length} {t("available")}
-        </Text>
+        <View>
+          <Title level="h5" weight="semibold">
+            {t("browseDepartments")}
+          </Title>
+          <Text size="sm" color="tertiary" style={{ marginTop: 2 }}>
+            {departments.length} {t("available")}
+          </Text>
+        </View>
+        <Pressable
+          style={[styles.filterBtn]}
+          onPress={() => setFiltersVisible?.(true)}
+        >
+          <SlidersHorizontal size={18} color={Colors.primary} strokeWidth={2} />
+        </Pressable>
       </View>
 
       {/* ── Horizontal scroll row ──────────────────────────────────── */}
@@ -127,16 +129,13 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     marginBottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   scroll: {
     gap: 10,
     paddingBottom: 4,
-  },
-  loadingContainer: {
-    marginTop: 24,
-    height: 120,
-    alignItems: "center",
-    justifyContent: "center",
   },
   card: {
     width: CARD_WIDTH,
@@ -177,5 +176,19 @@ const styles = StyleSheet.create({
   },
   countLabel: {
     color: "rgba(255,255,255,0.75)",
+  },
+  filterBtn: {
+    width: 42,
+    height: 42,
+    borderRadius: 10,
+    backgroundColor: Colors.backgroundPrimaryLight,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: Colors.borderFocus,
+  },
+  filterBtnActive: {
+    backgroundColor: Colors.primaryDark,
+    borderColor: Colors.primaryDark,
   },
 });

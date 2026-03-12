@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 120,
     marginLeft: 14,
+    marginBottom: 8,
   },
   headerRight: {
     alignItems: "flex-end",

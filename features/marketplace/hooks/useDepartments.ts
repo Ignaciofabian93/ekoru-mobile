@@ -15,6 +15,7 @@ export default function useDepartments() {
     getDepartments: Department[];
   }>(GET_DEPARTMENTS, {
     variables: { language },
+    fetchPolicy: "cache-first",
   });
 
   return {

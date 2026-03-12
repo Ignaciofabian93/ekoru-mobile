@@ -1,20 +1,19 @@
-import Colors from "@/constants/Colors";
 import SubHeader from "@/components/shared/SubHeader/SubHeader";
+import Colors from "@/constants/Colors";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import { ArrowLeft } from "lucide-react-native";
 import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Image, Pressable, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Text } from "../Text/Text";
+import SearchBar from "../SearchBar/SearchBar";
+import HeaderRight from "./HamburgerButton";
 
 export default function SectionHeader({
   navigation,
-  options,
   back,
 }: NativeStackHeaderProps) {
   const insets = useSafeAreaInsets();
-  const title = options.title ?? "";
 
   return (
     <LinearGradient
@@ -23,7 +22,7 @@ export default function SectionHeader({
       end={{ x: 1, y: 0.5 }}
       style={{ paddingTop: insets.top }}
     >
-      <View style={styles.bar}>
+      <View style={styles.headerBar}>
         <View style={styles.side}>
           {back && (
             <Pressable
@@ -35,26 +34,36 @@ export default function SectionHeader({
             </Pressable>
           )}
         </View>
-
-        <Text weight="bold" style={styles.title} numberOfLines={1}>
-          {title}
-        </Text>
-
-        <View style={styles.side} />
+        <Pressable onPress={() => navigation.replace("(tabs)")}>
+          <Image
+            source={require("@/assets/images/logo.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </Pressable>
+        <View style={styles.headerRight}>
+          <HeaderRight />
+        </View>
       </View>
-
+      <SearchBar />
       <SubHeader />
     </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  bar: {
-    height: 48,
+  headerBar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 8,
+    paddingHorizontal: 4,
+    paddingTop: 8,
+  },
+  logo: {
+    height: 40,
+    width: 124,
+    marginLeft: 24,
+    marginBottom: 8,
   },
   side: {
     width: 44,
@@ -63,10 +72,7 @@ const styles = StyleSheet.create({
   backButton: {
     padding: 8,
   },
-  title: {
-    flex: 1,
-    textAlign: "center",
-    color: "#fff",
-    fontSize: 16,
+  headerRight: {
+    alignItems: "flex-end",
   },
 });

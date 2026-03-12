@@ -1,11 +1,11 @@
-import GradientStackHeader from "@/components/shared/Header/GradientStackHeader";
+import SectionHeader from "@/components/shared/Header/SectionHeader";
 import { Stack } from "expo-router";
 
 export default function ProductLayout() {
   return (
     <Stack
       screenOptions={{
-        header: (props) => <GradientStackHeader {...props} />,
+        header: (props) => <SectionHeader {...props} />,
       }}
     />
   );

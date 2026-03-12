@@ -1,5 +1,6 @@
 import type { Product } from "@/features/marketplace/types/Product";
 import { useState } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import { StyleSheet, View } from "react-native";
 import Animated, {
   Easing,
@@ -15,6 +16,7 @@ interface Props {
   product: Product;
   onPress?: () => void;
   onShowImpact?: () => void;
+  style?: StyleProp<ViewStyle>;
 }
 
 const TIMING_CONFIG = { duration: 400, easing: Easing.inOut(Easing.ease) };
@@ -23,6 +25,7 @@ export default function MarketplaceCard({
   product,
   onPress = () => {},
   onShowImpact = () => {},
+  style,
 }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
   const rotation = useSharedValue(0);
@@ -50,7 +53,7 @@ export default function MarketplaceCard({
   });
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Animated.View
         style={[styles.face, frontStyle]}
         pointerEvents={isFlipped ? "none" : "auto"}
@@ -73,7 +76,7 @@ export default function MarketplaceCard({
 
 const styles = StyleSheet.create({
   container: {
-    width: 180,
+    width: 174,
     height: 300,
   },
   face: {

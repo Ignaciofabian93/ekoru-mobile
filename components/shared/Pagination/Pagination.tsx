@@ -9,15 +9,9 @@ import {
   View,
   type ViewProps,
 } from "react-native";
+import Select from "../Select/Select";
 
-// ─── Variant types (mirrors the web API) ─────────────────────────────────────
-
-type Variant = "default" | "primary" | "outline";
-type Size = "sm" | "md" | "lg";
-
-// ─── Props ────────────────────────────────────────────────────────────────────
-
-export interface PaginationProps extends Omit<ViewProps, "style"> {
+export interface PaginationProps extends ViewProps {
   /** Current active page (1-indexed) */
   currentPage: number;
   /** Total number of pages */
@@ -32,96 +26,38 @@ export interface PaginationProps extends Omit<ViewProps, "style"> {
   showItemsPerPage?: boolean;
   /** Available items-per-page options */
   itemsPerPageOptions?: number[];
-  /** Show "Page X of Y" info text */
-  showPageInfo?: boolean;
-  /** Template for the page info text */
-  pageInfoTemplate?: string;
-  /** Show chevron icons in buttons */
-  showIcons?: boolean;
-  /** Label for the previous button */
-  previousLabel?: string;
-  /** Label for the next button */
-  nextLabel?: string;
   /** Label preceding the items-per-page selector */
   rowsLabel?: string;
-  /** Button style variant */
-  variant?: Variant;
-  /** Button size */
-  size?: Size;
+  /** Max page buttons to show (excluding chevrons) */
+  maxPageButtons?: number;
 }
 
-// ─── Maps ─────────────────────────────────────────────────────────────────────
+// ─── Page number generation ────────────────────────────────────────────────
 
-const SIZE_MAP = {
-  sm: { height: 32, paddingHorizontal: 12, fontSize: 13, iconSize: 14, gap: 4 },
-  md: { height: 40, paddingHorizontal: 16, fontSize: 15, iconSize: 16, gap: 6 },
-  lg: { height: 48, paddingHorizontal: 20, fontSize: 17, iconSize: 18, gap: 8 },
-};
+function getPageNumbers(
+  current: number,
+  total: number,
+  max: number,
+): (number | "...")[] {
+  if (total <= max) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
+  const half = Math.floor(max / 2);
+  let start = Math.max(2, current - half);
+  let end = Math.min(total - 1, start + max - 3);
 
-function NavButton({
-  label,
-  onPress,
-  disabled,
-  showIcon,
-  iconSide,
-  variant = "default",
-  size = "md",
-}: {
-  label: string;
-  onPress: () => void;
-  disabled: boolean;
-  showIcon: boolean;
-  iconSide: "left" | "right";
-  variant?: Variant;
-  size?: Size;
-}) {
-  const s = SIZE_MAP[size];
-  const Icon = iconSide === "left" ? ChevronLeft : ChevronRight;
+  if (end - start < max - 3) {
+    start = Math.max(2, end - (max - 3));
+  }
 
-  const bg =
-    variant === "primary"
-      ? Colors.primary
-      : variant === "outline"
-        ? "transparent"
-        : Colors.backgroundSecondary;
+  const pages: (number | "...")[] = [1];
+  if (start > 2) pages.push("...");
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (end < total - 1) pages.push("...");
+  pages.push(total);
 
-  const textColor =
-    variant === "primary" ? "#fff" : Colors.foreground;
-
-  const borderStyle =
-    variant === "outline"
-      ? { borderWidth: 1.5, borderColor: Colors.primary }
-      : {};
-
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      style={({ pressed }) => [
-        styles.button,
-        {
-          height: s.height,
-          paddingHorizontal: s.paddingHorizontal,
-          gap: s.gap,
-          backgroundColor: bg,
-          opacity: disabled ? 0.4 : pressed ? 0.75 : 1,
-        },
-        borderStyle,
-      ]}
-    >
-      {showIcon && iconSide === "left" && (
-        <Icon size={s.iconSize} color={textColor} strokeWidth={2} />
-      )}
-      <Text style={[styles.buttonText, { fontSize: s.fontSize, color: textColor }]}>
-        {label}
-      </Text>
-      {showIcon && iconSide === "right" && (
-        <Icon size={s.iconSize} color={textColor} strokeWidth={2} />
-      )}
-    </Pressable>
-  );
+  return pages;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -136,29 +72,13 @@ const Pagination = React.forwardRef<View, PaginationProps>(
       onItemsPerPageChange,
       showItemsPerPage = true,
       itemsPerPageOptions = [10, 25, 50, 100],
-      showPageInfo = true,
-      pageInfoTemplate = "Page {current} of {total}",
-      showIcons = true,
-      previousLabel = "Previous",
-      nextLabel = "Next",
-      rowsLabel = "Rows",
-      variant = "default",
-      size = "md",
+      rowsLabel = "Items per page",
+      maxPageButtons = 5,
       ...props
     },
     ref,
   ) => {
-    const pageInfo = pageInfoTemplate
-      .replace("{current}", currentPage.toString())
-      .replace("{total}", totalPages.toString());
-
-    const handlePrevious = () => {
-      if (currentPage > 1) onPageChange(currentPage - 1);
-    };
-
-    const handleNext = () => {
-      if (currentPage < totalPages) onPageChange(currentPage + 1);
-    };
+    const pages = getPageNumbers(currentPage, totalPages, maxPageButtons);
 
     return (
       <View ref={ref} style={styles.container} {...props}>
@@ -166,63 +86,80 @@ const Pagination = React.forwardRef<View, PaginationProps>(
         {showItemsPerPage && onItemsPerPageChange && (
           <View style={styles.rowsRow}>
             <Text style={styles.rowsLabel}>{rowsLabel}</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.rowsOptions}
-            >
-              {itemsPerPageOptions.map((opt) => {
-                const active = opt === itemsPerPage;
-                return (
-                  <Pressable
-                    key={opt}
-                    onPress={() => onItemsPerPageChange(opt)}
-                    style={({ pressed }) => [
-                      styles.rowsChip,
-                      active && styles.rowsChipActive,
-                      { opacity: pressed ? 0.7 : 1 },
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.rowsChipText,
-                        active && styles.rowsChipTextActive,
-                      ]}
-                    >
-                      {opt}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
+            <Select
+              size="sm"
+              width="sm"
+              value={itemsPerPage}
+              searchEnabled={false}
+              dropdownDirection="up"
+              options={itemsPerPageOptions.map((op) => ({
+                label: op.toString(),
+                value: op,
+              }))}
+              onChange={() => {}}
+            />
           </View>
         )}
 
         {/* Nav row */}
         <View style={styles.navRow}>
-          <NavButton
-            label={previousLabel}
-            onPress={handlePrevious}
+          {/* Prev chevron */}
+          <Pressable
+            onPress={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            showIcon={showIcons}
-            iconSide="left"
-            variant={variant}
-            size={size}
-          />
+            style={[
+              styles.chevronBtn,
+              currentPage === 1 && styles.chevronBtnDisabled,
+            ]}
+          >
+            <ChevronLeft size={20} color={Colors.foreground} strokeWidth={2} />
+          </Pressable>
 
-          {showPageInfo && (
-            <Text style={styles.pageInfo}>{pageInfo}</Text>
-          )}
+          {/* Page number buttons — horizontal scroll handles overflow */}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.pagesScroll}
+            contentContainerStyle={styles.pagesContent}
+          >
+            {pages.map((page, i) =>
+              page === "..." ? (
+                <Text key={`ellipsis-${i}`} style={styles.ellipsis}>
+                  …
+                </Text>
+              ) : (
+                <Pressable
+                  key={String(page)}
+                  onPress={() => onPageChange(page)}
+                  style={[
+                    styles.pageBtn,
+                    page === currentPage && styles.pageBtnActive,
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.pageBtnText,
+                      page === currentPage && styles.pageBtnTextActive,
+                    ]}
+                  >
+                    {page}
+                  </Text>
+                </Pressable>
+              ),
+            )}
+          </ScrollView>
 
-          <NavButton
-            label={nextLabel}
-            onPress={handleNext}
+          {/* Next chevron */}
+          <Pressable
+            onPress={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            showIcon={showIcons}
-            iconSide="right"
-            variant={variant}
-            size={size}
-          />
+            style={[
+              styles.chevronBtn,
+              currentPage === totalPages && styles.chevronBtnDisabled,
+            ]}
+          >
+            <ChevronRight size={20} color={Colors.foreground} strokeWidth={2} />
+          </Pressable>
         </View>
       </View>
     );
@@ -236,29 +173,35 @@ Pagination.displayName = "Pagination";
 const styles = StyleSheet.create({
   container: {
     gap: 12,
+    marginVertical: 32,
+    borderTopWidth: 1,
+    borderColor: Colors.borderStrong,
+    paddingTop: 8,
   },
   // Items-per-page row
   rowsRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
+    gap: 8,
+    marginVertical: 12,
+    flexDirection: "column",
+    alignItems: "flex-end",
   },
   rowsLabel: {
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Cabin_500Medium",
     color: Colors.foregroundSecondary,
+    textTransform: "capitalize",
+    letterSpacing: 0.6,
   },
-  rowsOptions: {
-    flexDirection: "row",
-    gap: 6,
-  },
+  rowsOptions: {},
   rowsChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 20,
-    backgroundColor: Colors.backgroundSecondary,
-    borderWidth: 1,
-    borderColor: Colors.borderLight,
+    height: 34,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+    borderWidth: 1.5,
+    borderColor: Colors.borderStrong,
+    alignItems: "center",
+    justifyContent: "center",
   },
   rowsChipActive: {
     backgroundColor: Colors.primary,
@@ -266,8 +209,8 @@ const styles = StyleSheet.create({
   },
   rowsChipText: {
     fontSize: 13,
-    fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    fontFamily: "Cabin_600SemiBold",
+    color: Colors.foreground,
   },
   rowsChipTextActive: {
     color: "#fff",
@@ -276,26 +219,60 @@ const styles = StyleSheet.create({
   navRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
+    gap: 6,
+    marginVertical: 12,
   },
-  pageInfo: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+  chevronBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: Colors.backgroundSecondary,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: Colors.borderLight,
+  },
+  chevronBtnDisabled: {
+    opacity: 0.35,
+  },
+  pagesScroll: {
     flex: 1,
-    textAlign: "center",
   },
-  // Buttons
-  button: {
+  pagesContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
-    minWidth: 100,
+    gap: 4,
+    flexGrow: 1,
   },
-  buttonText: {
+  pageBtn: {
+    minWidth: 36,
+    height: 36,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1.5,
+    borderColor: Colors.primary,
+  },
+  pageBtnActive: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  pageBtnText: {
+    fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
+    color: "#000",
+  },
+  pageBtnTextActive: {
+    color: "#fff",
+  },
+  ellipsis: {
+    fontSize: 14,
+    color: Colors.foregroundTertiary,
+    paddingHorizontal: 4,
+    lineHeight: 36,
   },
 });
 

@@ -1,67 +1,78 @@
-import MarketplaceCard from "@/components/shared/Card/MarketplaceCard/MarketplaceCard";
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import Colors from "@/constants/Colors";
 import { DUMMY_PRODUCTS } from "@/features/marketplace/data/dummyProducts";
-import { router } from "expo-router";
-import { Leaf } from "lucide-react-native";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { SlidersHorizontal } from "lucide-react-native";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
+import useProductFilters from "../hooks/useProductFilters";
+import { NAMESPACE } from "../i18n";
+import ProductFiltersSheet from "./ProductFiltersSheet";
+import ProductGrid from "./ProductGrid";
 
 interface Props {
   categoryName: string;
 }
 
 export default function CategoryProductsSection({ categoryName }: Props) {
-  if (DUMMY_PRODUCTS.length === 0) {
-    return (
-      <View style={styles.empty}>
-        <View style={styles.emptyIcon}>
-          <Leaf size={40} color={Colors.primary} strokeWidth={1.5} />
-        </View>
-        <Title level="h5" weight="semibold" align="center">
-          No products yet
-        </Title>
-        <Text
-          size="sm"
-          color="secondary"
-          align="center"
-          style={{ marginTop: 4 }}
-        >
-          Products in {categoryName} will appear here soon
-        </Text>
-      </View>
-    );
-  }
+  const { t } = useTranslation(NAMESPACE);
+  const [filtersVisible, setFiltersVisible] = useState(false);
+  const {
+    filters,
+    applyFilters,
+    hasActiveFilters,
+    filteredCount,
+    paginated,
+    page,
+    totalPages,
+    itemsPerPage,
+    changeItemsPerPage,
+    goToPage,
+  } = useProductFilters(DUMMY_PRODUCTS);
 
   return (
     <View style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
-        <Title level="h5" weight="semibold">
-          Products
-        </Title>
-        <Text size="sm" color="tertiary" style={{ marginTop: 2 }}>
-          {DUMMY_PRODUCTS.length} results (demo)
-        </Text>
+        <View>
+          <Title level="h5" weight="semibold">
+            {t("products")}
+          </Title>
+          <Text size="sm" color="tertiary" style={{ marginTop: 2 }}>
+            {filteredCount} {t("results")}
+          </Text>
+        </View>
+        <Pressable
+          onPress={() => setFiltersVisible(true)}
+          style={[styles.filterBtn, hasActiveFilters && styles.filterBtnActive]}
+        >
+          <SlidersHorizontal
+            size={16}
+            color={hasActiveFilters ? "#fff" : Colors.primary}
+            strokeWidth={2}
+          />
+          {hasActiveFilters && <View style={styles.activeDot} />}
+        </Pressable>
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scroll}
-      >
-        {DUMMY_PRODUCTS.map((product) => (
-          <MarketplaceCard
-            key={product.id}
-            product={product}
-            onPress={() =>
-              router.push({
-                pathname: "/product/[id]",
-                params: { id: product.id },
-              })
-            }
-          />
-        ))}
-      </ScrollView>
+      <ProductGrid
+        products={paginated}
+        page={page}
+        totalPages={totalPages}
+        itemsPerPage={itemsPerPage}
+        filteredCount={filteredCount}
+        onGoToPage={goToPage}
+        onChangeItemsPerPage={changeItemsPerPage}
+        emptyMessage={t("noProductsSubtitle", { categoryName })}
+      />
+
+      <ProductFiltersSheet
+        visible={filtersVisible}
+        initialFilters={filters}
+        onApply={applyFilters}
+        onClose={() => setFiltersVisible(false)}
+      />
     </View>
   );
 }
@@ -71,25 +82,32 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   header: {
-    marginBottom: 4,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginBottom: 12,
   },
-  scroll: {
-    gap: 8,
-    paddingVertical: 12,
-  },
-  empty: {
-    marginTop: 60,
-    alignItems: "center",
-    paddingHorizontal: 40,
-    gap: 8,
-  },
-  emptyIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+  filterBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
     backgroundColor: Colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: Colors.borderFocus,
+  },
+  filterBtnActive: {
+    backgroundColor: Colors.primaryDark,
+    borderColor: Colors.primaryDark,
+  },
+  activeDot: {
+    position: "absolute",
+    top: 6,
+    right: 6,
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: Colors.accent,
   },
 });

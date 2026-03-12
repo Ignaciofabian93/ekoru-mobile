@@ -1,40 +1,53 @@
-import MarketplaceCard from "@/components/shared/Card/MarketplaceCard/MarketplaceCard";
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import { DUMMY_PRODUCTS } from "@/features/marketplace/data/dummyProducts";
-import { router } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
+import { NAMESPACE } from "../i18n";
+import type { Product } from "../types/Product";
+import ProductGrid from "./ProductGrid";
 
-export default function FeaturedProductsSection() {
+interface Props {
+  products: Product[];
+  filteredCount: number;
+  page: number;
+  totalPages: number;
+  itemsPerPage: number;
+  onGoToPage: (p: number) => void;
+  onChangeItemsPerPage: (n: number) => void;
+}
+
+export default function FeaturedProductsSection({
+  products,
+  filteredCount,
+  page,
+  totalPages,
+  itemsPerPage,
+  onGoToPage,
+  onChangeItemsPerPage,
+}: Props) {
+  const { t } = useTranslation(NAMESPACE);
+
   return (
     <View style={styles.container}>
       <View style={styles.sectionHeader}>
         <Title level="h5" weight="semibold">
-          Featured Products
+          {t("featuredProducts")}
         </Title>
         <Text size="sm" color="tertiary" style={{ marginTop: 2 }}>
-          Handpicked eco-friendly picks
+          {filteredCount} {t("results")}
         </Text>
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scroll}
-      >
-        {DUMMY_PRODUCTS.map((product) => (
-          <MarketplaceCard
-            key={product.id}
-            product={product}
-            onPress={() =>
-              router.push({
-                pathname: "/product/[id]",
-                params: { id: product.id },
-              })
-            }
-          />
-        ))}
-      </ScrollView>
+      <ProductGrid
+        products={products}
+        filteredCount={filteredCount}
+        page={page}
+        totalPages={totalPages}
+        itemsPerPage={itemsPerPage}
+        onGoToPage={onGoToPage}
+        onChangeItemsPerPage={onChangeItemsPerPage}
+        emptyMessage={t("noProductsMatchFilters")}
+      />
     </View>
   );
 }
@@ -44,10 +57,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   sectionHeader: {
-    marginBottom: 4,
-  },
-  scroll: {
-    gap: 8,
-    paddingVertical: 12,
+    marginBottom: 12,
   },
 });

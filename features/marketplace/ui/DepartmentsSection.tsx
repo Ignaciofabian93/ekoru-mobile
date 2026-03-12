@@ -4,13 +4,15 @@ import Colors from "@/constants/Colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
-  Dimensions,
   Pressable,
+  ScrollView,
   StyleSheet,
   View,
 } from "react-native";
+import { NAMESPACE } from "../i18n";
 import type { Department } from "../types/Department";
 
 // Gradient palettes cycling for department cards
@@ -23,9 +25,7 @@ const GRADIENTS: [string, string][] = [
   ["#064e3b", "#10b981"],
 ];
 
-const GAP = 10;
-const H_PADDING = 32; // 16px on each side (Container padding)
-const CARD_WIDTH = (Dimensions.get("window").width - H_PADDING - GAP) / 2;
+const CARD_WIDTH = 140;
 const CARD_HEIGHT = 108;
 
 interface Props {
@@ -34,6 +34,7 @@ interface Props {
 }
 
 export default function DepartmentsSection({ departments, loading }: Props) {
+  const { t } = useTranslation(NAMESPACE);
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -48,24 +49,22 @@ export default function DepartmentsSection({ departments, loading }: Props) {
     <View style={styles.container}>
       <View style={styles.sectionHeader}>
         <Title level="h5" weight="semibold">
-          Browse Departments
+          {t("browseDepartments")}
         </Title>
         <Text size="sm" color="tertiary" style={{ marginTop: 2 }}>
-          {departments.length} available
+          {departments.length} {t("available")}
         </Text>
       </View>
 
-      {/* ── 2-column equal-size grid ──────────────────────────────── */}
-      <View style={styles.grid}>
+      {/* ── Horizontal scroll row ──────────────────────────────────── */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scroll}
+      >
         {departments.map((dept, idx) => {
           const gradient = GRADIENTS[idx % GRADIENTS.length];
           const categoryCount = dept.departmentCategory?.length ?? 0;
-          const initials = dept.translation.name
-            .split(" ")
-            .slice(0, 2)
-            .map((w) => w[0] ?? "")
-            .join("")
-            .toUpperCase();
 
           return (
             <Pressable
@@ -90,27 +89,22 @@ export default function DepartmentsSection({ departments, loading }: Props) {
                 end={{ x: 1, y: 1 }}
                 style={styles.gradient}
               >
-                {/* Initial badge */}
-                <View style={styles.badge}>
-                  <Text size="sm" weight="bold" style={styles.badgeText}>
-                    {initials}
+                {/* Name */}
+                <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                  <Text
+                    size="sm"
+                    weight="semibold"
+                    numberOfLines={2}
+                    style={styles.deptName}
+                  >
+                    {dept.translation.name}
                   </Text>
                 </View>
-
-                {/* Name */}
-                <Text
-                  size="sm"
-                  weight="semibold"
-                  numberOfLines={2}
-                  style={styles.deptName}
-                >
-                  {dept.translation.name}
-                </Text>
 
                 {/* Footer */}
                 <View style={styles.footer}>
                   <Text size="xs" style={styles.countLabel}>
-                    {categoryCount} {categoryCount === 1 ? "cat." : "cats."}
+                    {categoryCount} {t("category", { count: categoryCount })}
                   </Text>
                   <ChevronRight
                     size={12}
@@ -122,7 +116,7 @@ export default function DepartmentsSection({ departments, loading }: Props) {
             </Pressable>
           );
         })}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -134,10 +128,9 @@ const styles = StyleSheet.create({
   sectionHeader: {
     marginBottom: 12,
   },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: GAP,
+  scroll: {
+    gap: 10,
+    paddingBottom: 4,
   },
   loadingContainer: {
     marginTop: 24,
@@ -157,7 +150,9 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 14,
     justifyContent: "space-between",
   },
   badge: {
@@ -174,8 +169,6 @@ const styles = StyleSheet.create({
   deptName: {
     color: "#fff",
     lineHeight: 18,
-    flex: 1,
-    marginTop: 4,
   },
   footer: {
     flexDirection: "row",

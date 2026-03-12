@@ -1,46 +1,54 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import Colors from "@/constants/Colors";
-import Container from "@/ui/Layout/Container";
+import { NAMESPACE } from "@/features/marketplace/i18n";
 import { router, useLocalSearchParams } from "expo-router";
 import { LayoutGrid } from "lucide-react-native";
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { useTranslation } from "react-i18next";
+import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
+import Breadcrumb from "../../../components/shared/BreadCrumbs/Breadcrumb";
 import useDepartmentBySlug from "../hooks/useDepartmentBySlug";
-import Breadcrumb from "../ui/Breadcrumb";
 import CategoryProductsSection from "../ui/CategoryProductsSection";
+import Header from "../ui/header/Header";
+import {
+  ContentContainer,
+  OuterContainer,
+  ScrollContainer,
+} from "../ui/layout/Container";
+
+const wallpaperImage = require("@/assets/images/wallpaper-2.jpg");
 
 export default function DepartmentScreen() {
+  const { t } = useTranslation(NAMESPACE);
   const { slug, name } = useLocalSearchParams<{ slug: string; name: string }>();
   const { department, loading, error } = useDepartmentBySlug(slug ?? "");
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator color={Colors.primary} size="large" />
-      </View>
+      <OuterContainer>
+        <View style={styles.centered}>
+          <ActivityIndicator color={Colors.primary} size="large" />
+        </View>
+      </OuterContainer>
     );
   }
 
   if (error || !department) {
     return (
-      <View style={styles.centered}>
-        <View style={styles.emptyIcon}>
-          <LayoutGrid
-            size={40}
-            color={Colors.foregroundTertiary}
-            strokeWidth={1.5}
-          />
+      <OuterContainer>
+        <View style={styles.centered}>
+          <View style={styles.emptyIcon}>
+            <LayoutGrid
+              size={40}
+              color={Colors.foregroundTertiary}
+              strokeWidth={1.5}
+            />
+          </View>
+          <Title level="h5" weight="semibold" align="center" color="tertiary">
+            {t("departmentNotFound")}
+          </Title>
         </View>
-        <Title level="h5" weight="semibold" align="center" color="tertiary">
-          Department not found
-        </Title>
-      </View>
+      </OuterContainer>
     );
   }
 
@@ -48,71 +56,74 @@ export default function DepartmentScreen() {
   const deptName = name ?? department.translation.name;
 
   return (
-    <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-      <Container>
-        {/* ── Breadcrumb ─────────────────────────────────────────── */}
-        <Breadcrumb
-          items={[
-            {
-              label: "Marketplace",
-              onPress: () => router.push("/(marketplace)"),
-            },
-            { label: deptName },
-          ]}
+    <OuterContainer enableBottomInset>
+      <ScrollContainer>
+        <Header
+          wallpaperImage={wallpaperImage}
+          title={deptName}
+          subtitle={t("departmentSubtitle")}
         />
+        <ContentContainer>
+          {/* ── Breadcrumb ─────────────────────────────────────────── */}
+          <Breadcrumb
+            items={[
+              {
+                label: t("marketplace"),
+                onPress: () => router.push("/(marketplace)"),
+              },
+              { label: deptName },
+            ]}
+          />
 
-        {/* ── Category chips ────────────────────────────────────── */}
-        {categories.length > 0 && (
-          <View style={styles.catsSection}>
-            <Text
-              size="xs"
-              weight="semibold"
-              color="tertiary"
-              style={styles.catsLabel}
-            >
-              CATEGORIES
-            </Text>
-            <View style={styles.chips}>
-              {categories.map((cat) => (
-                <Pressable
-                  key={cat.id}
-                  style={({ pressed }) => [
-                    styles.chip,
-                    pressed && styles.chipPressed,
-                  ]}
-                  onPress={() =>
-                    router.push({
-                      pathname: "/(marketplace)/department-category",
-                      params: {
-                        slug: cat.translation.slug,
-                        name: cat.translation.name,
-                        deptSlug: slug,
-                        deptName,
-                      },
-                    })
-                  }
-                >
-                  <Text size="sm" weight="medium" style={styles.chipText}>
-                    {cat.translation.name}
-                  </Text>
-                </Pressable>
-              ))}
+          {/* ── Category chips ────────────────────────────────────── */}
+          {categories.length > 0 && (
+            <View style={styles.catsSection}>
+              <Text
+                size="xs"
+                weight="semibold"
+                color="tertiary"
+                style={styles.catsLabel}
+              >
+                {t("categories")}
+              </Text>
+              <View style={styles.chips}>
+                {categories.map((cat) => (
+                  <Pressable
+                    key={cat.id}
+                    style={({ pressed }) => [
+                      styles.chip,
+                      pressed && styles.chipPressed,
+                    ]}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/(marketplace)/department-category",
+                        params: {
+                          slug: cat.translation.slug,
+                          name: cat.translation.name,
+                          deptSlug: slug,
+                          deptName,
+                        },
+                      })
+                    }
+                  >
+                    <Text size="sm" weight="medium" style={styles.chipText}>
+                      {cat.translation.name}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
             </View>
-          </View>
-        )}
+          )}
 
-        {/* ── Products (mocked) ──────────────────────────────────── */}
-        <CategoryProductsSection categoryName={deptName} />
-      </Container>
-    </ScrollView>
+          {/* ── Products (mocked) ──────────────────────────────────── */}
+          <CategoryProductsSection categoryName={deptName} />
+        </ContentContainer>
+      </ScrollContainer>
+    </OuterContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
   centered: {
     flex: 1,
     alignItems: "center",

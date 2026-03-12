@@ -1,11 +1,19 @@
-import Colors from "@/constants/Colors";
-import Container from "@/ui/Layout/Container";
+import { NAMESPACE } from "@/features/marketplace/i18n";
 import { router, useLocalSearchParams } from "expo-router";
-import { ScrollView, StyleSheet } from "react-native";
-import Breadcrumb from "../ui/Breadcrumb";
+import { useTranslation } from "react-i18next";
+import Breadcrumb from "../../../components/shared/BreadCrumbs/Breadcrumb";
 import CategoryProductsSection from "../ui/CategoryProductsSection";
+import Header from "../ui/header/Header";
+import {
+  ContentContainer,
+  OuterContainer,
+  ScrollContainer,
+} from "../ui/layout/Container";
+
+const wallpaperImage = require("@/assets/images/wallpaper-4.jpg");
 
 export default function ProductCategoryScreen() {
+  const { t } = useTranslation(NAMESPACE);
   const { slug, name, deptCatSlug, deptCatName, deptSlug, deptName } =
     useLocalSearchParams<{
       slug: string;
@@ -16,11 +24,11 @@ export default function ProductCategoryScreen() {
       deptName: string;
     }>();
 
-  const categoryName = name ?? "Products";
+  const categoryName = name ?? t("products");
 
   const breadcrumbItems = [
     {
-      label: "Marketplace",
+      label: t("marketplace"),
       onPress: () => router.push("/(marketplace)"),
     },
     ...(deptName
@@ -56,21 +64,21 @@ export default function ProductCategoryScreen() {
   ];
 
   return (
-    <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-      <Container>
-        {/* ── Breadcrumb ─────────────────────────────────────────── */}
-        <Breadcrumb items={breadcrumbItems} />
+    <OuterContainer enableBottomInset>
+      <ScrollContainer>
+        <Header
+          wallpaperImage={wallpaperImage}
+          title={categoryName}
+          subtitle={t("productCategorySubtitle")}
+        />
+        <ContentContainer>
+          {/* ── Breadcrumb ─────────────────────────────────────────── */}
+          <Breadcrumb items={breadcrumbItems} />
 
-        {/* ── Products (mocked) ──────────────────────────────────── */}
-        <CategoryProductsSection categoryName={categoryName} />
-      </Container>
-    </ScrollView>
+          {/* ── Products (mocked) ──────────────────────────────────── */}
+          <CategoryProductsSection categoryName={categoryName} />
+        </ContentContainer>
+      </ScrollContainer>
+    </OuterContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  scroll: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-});

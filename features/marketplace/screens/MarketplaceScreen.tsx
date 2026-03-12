@@ -1,56 +1,97 @@
 import { Text } from "@/components/shared/Text/Text";
 import Colors from "@/constants/Colors";
-import Container from "@/ui/Layout/Container";
-import { Leaf, Search, SlidersHorizontal } from "lucide-react-native";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { DUMMY_PRODUCTS } from "@/features/marketplace/data/dummyProducts";
+import { NAMESPACE } from "@/features/marketplace/i18n";
+import { Search, SlidersHorizontal } from "lucide-react-native";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
 import useDepartments from "../hooks/useDepartments";
+import useProductFilters from "../hooks/useProductFilters";
 import DepartmentsSection from "../ui/DepartmentsSection";
 import FeaturedProductsSection from "../ui/FeaturedProductsSection";
+import ProductFiltersSheet from "../ui/ProductFiltersSheet";
+import Header from "../ui/header/Header";
+import {
+  ContentContainer,
+  OuterContainer,
+  ScrollContainer,
+} from "../ui/layout/Container";
 
 export default function MarketplaceScreen() {
+  const { t } = useTranslation(NAMESPACE);
   const { departments, loading } = useDepartments();
+  const [filtersVisible, setFiltersVisible] = useState(false);
+  const {
+    filters,
+    applyFilters,
+    hasActiveFilters,
+    filteredCount,
+    paginated,
+    page,
+    totalPages,
+    itemsPerPage,
+    changeItemsPerPage,
+    goToPage,
+  } = useProductFilters(DUMMY_PRODUCTS);
+
+  const wallpaperImage = require("@/assets/images/wallpaper-1.jpg");
 
   return (
-    <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-      <Container>
-        {/* ── Search + filter ────────────────────────────────────────── */}
-        <View style={styles.searchRow}>
-          <View style={styles.searchBox}>
-            <Search
-              size={16}
-              color={Colors.foregroundTertiary}
-              strokeWidth={2}
-            />
-            <Text size="sm" color="tertiary">
-              Search products...
-            </Text>
+    <OuterContainer enableBottomInset>
+      <ScrollContainer>
+        <Header wallpaperImage={wallpaperImage} />
+        <ContentContainer>
+          {/* ── Search + filter ────────────────────────────────────────── */}
+          <View style={styles.searchRow}>
+            <View style={styles.searchBox}>
+              <Search
+                size={16}
+                color={Colors.foregroundTertiary}
+                strokeWidth={2}
+              />
+              <Text size="sm" color="tertiary">
+                {t("searchPlaceholder")}
+              </Text>
+            </View>
+            <Pressable
+              style={[
+                styles.filterBtn,
+                hasActiveFilters && styles.filterBtnActive,
+              ]}
+              onPress={() => setFiltersVisible(true)}
+            >
+              <SlidersHorizontal
+                size={18}
+                color={hasActiveFilters ? "#fff" : Colors.primary}
+                strokeWidth={2}
+              />
+            </Pressable>
           </View>
-          <Pressable style={styles.filterBtn}>
-            <SlidersHorizontal
-              size={18}
-              color={Colors.primary}
-              strokeWidth={2}
-            />
-          </Pressable>
-        </View>
 
-        {/* ── Departments from DB ────────────────────────────────────── */}
-        <DepartmentsSection departments={departments} loading={loading} />
+          {/* ── Departments from DB ────────────────────────────────────── */}
+          <DepartmentsSection departments={departments} loading={loading} />
 
-        {/* ── Featured products (mocks) ──────────────────────────────── */}
-        <FeaturedProductsSection />
+          {/* ── Featured products ──────────────────────────────────── */}
+          <FeaturedProductsSection
+            products={paginated}
+            filteredCount={filteredCount}
+            page={page}
+            totalPages={totalPages}
+            itemsPerPage={itemsPerPage}
+            onGoToPage={goToPage}
+            onChangeItemsPerPage={changeItemsPerPage}
+          />
+        </ContentContainer>
+      </ScrollContainer>
 
-        {/* ── Impact banner ─────────────────────────────────────────── */}
-        <View style={styles.banner}>
-          <View style={styles.bannerIcon}>
-            <Leaf size={20} color={Colors.primary} strokeWidth={1.5} />
-          </View>
-          <Text size="sm" weight="medium" style={styles.bannerText}>
-            Every purchase supports environmental restoration
-          </Text>
-        </View>
-      </Container>
-    </ScrollView>
+      <ProductFiltersSheet
+        visible={filtersVisible}
+        initialFilters={filters}
+        onApply={applyFilters}
+        onClose={() => setFiltersVisible(false)}
+      />
+    </OuterContainer>
   );
 }
 
@@ -63,6 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
+    marginTop: 16,
   },
   searchBox: {
     flex: 1,
@@ -85,6 +127,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderColor: Colors.borderFocus,
+  },
+  filterBtnActive: {
+    backgroundColor: Colors.primaryDark,
+    borderColor: Colors.primaryDark,
   },
   banner: {
     marginTop: 32,

@@ -10,6 +10,8 @@ export default function StoresLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: "Stores" }} />
+      <Stack.Screen name="store-category" options={{ title: "Store" }} />
+      <Stack.Screen name="store-subcategory" options={{ title: "Category" }} />
     </Stack>
   );
 }

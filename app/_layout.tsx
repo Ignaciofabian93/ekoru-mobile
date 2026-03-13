@@ -118,6 +118,7 @@ function RootLayoutNav() {
             <Stack.Screen name="(community)" options={{ headerShown: false }} />
             <Stack.Screen name="(blog)" options={{ headerShown: false }} />
             <Stack.Screen name="(legal)" options={{ headerShown: false }} />
+            <Stack.Screen name="(publish)" options={{ headerShown: false }} />
           </Stack>
           <Drawer />
           <LocationConfirmModal />

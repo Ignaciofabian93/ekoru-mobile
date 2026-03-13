@@ -1,5 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import Colors from "@/constants/Colors";
+import { router } from "expo-router";
 import { Camera, FileText, Leaf, PackagePlus, Tag } from "lucide-react-native";
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
@@ -81,7 +82,10 @@ export default function PublishScreen() {
 
       {/* CTA */}
       <View style={styles.actions}>
-        <Pressable style={styles.primaryBtn}>
+        <Pressable
+          style={styles.primaryBtn}
+          onPress={() => router.push("/(publish)/create")}
+        >
           <PackagePlus size={18} color="#fff" strokeWidth={2} />
           <Text weight="bold" style={styles.primaryBtnLabel}>
             Start listing

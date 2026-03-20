@@ -8,9 +8,9 @@ export interface PublishFormValues {
   conditionDescription: string;
   brand: string;
   color: string;
-  departmentId: string;
-  departmentCategoryId: string;
-  productCategoryId: string;
+  departmentId: number | null;
+  departmentCategoryId: number | null;
+  productCategoryId: number | null;
   price: string;
   isExchangeable: boolean;
   badges: Badge[];
@@ -25,9 +25,9 @@ export const INITIAL_FORM_VALUES: PublishFormValues = {
   conditionDescription: "",
   brand: "",
   color: "",
-  departmentId: "",
-  departmentCategoryId: "",
-  productCategoryId: "",
+  departmentId: null,
+  departmentCategoryId: null,
+  productCategoryId: null,
   price: "",
   isExchangeable: false,
   badges: [],

@@ -1,6 +1,7 @@
 import { uploadProductImage } from "@/api/products/images";
 import { ADD_PRODUCT } from "@/graphql/marketplace/mutations";
 import { showError, showSuccess } from "@/lib/toast";
+import type { ProductCondition } from "@/types/enums";
 import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -24,6 +25,9 @@ function validateStep(step: number, values: PublishFormValues): FormErrors {
 
   if (step === 1) {
     if (!values.name.trim()) errors.name = "Product name is required.";
+    if (!values.description.trim())
+      errors.description = "Description is required.";
+    if (!values.brand.trim()) errors.brand = "Brand is required.";
     if (!values.condition) errors.condition = "Select a condition.";
   }
 
@@ -91,13 +95,13 @@ export default function usePublishProduct() {
         variables: {
           input: {
             name: values.name,
-            description: values.description || null,
-            color: values.color || null,
-            brand: values.brand || null,
-            price: parseFloat(values.price),
-            condition: values.condition || null,
-            conditionDescription: values.conditionDescription || null,
-            productCategoryId: values.productCategoryId,
+            description: values.description,
+            color: values.color || undefined,
+            brand: values.brand,
+            price: parseInt(values.price, 10),
+            condition: values.condition as ProductCondition,
+            conditionDescription: values.conditionDescription || undefined,
+            productCategoryId: values.productCategoryId!,
             isExchangeable: values.isExchangeable,
             badges: values.badges,
             interests: values.interests,

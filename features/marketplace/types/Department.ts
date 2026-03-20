@@ -1,37 +1,37 @@
 export interface ProductCategoryTranslation {
-  id: string;
+  id: number;
   name: string;
   slug: string;
   href: string;
 }
 
 export interface ProductCategory {
-  id: string;
+  id: number;
   translation: ProductCategoryTranslation;
 }
 
 export interface DepartmentCategoryTranslation {
-  id: string;
+  id: number;
   name: string;
   slug: string;
   href: string;
 }
 
 export interface DepartmentCategory {
-  id: string;
+  id: number;
   translation: DepartmentCategoryTranslation;
   productCategory: ProductCategory[];
 }
 
 export interface DepartmentTranslation {
-  id: string;
+  id: number;
   name: string;
   slug: string;
   href: string;
 }
 
 export interface Department {
-  id: string;
+  id: number;
   translation: DepartmentTranslation;
   departmentCategory: DepartmentCategory[];
 }

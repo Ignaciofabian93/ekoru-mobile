@@ -15,7 +15,7 @@ const UPLOAD_TIMEOUT_MS = 15_000;
 
 async function doFetch(uri: string, token: string | null): Promise<Response> {
   const formData = new FormData();
-  formData.append("file", {
+  formData.append("image", {
     uri,
     name: "upload.jpg",
     type: "image/jpeg",
@@ -25,7 +25,7 @@ async function doFetch(uri: string, token: string | null): Promise<Response> {
   const timeoutId = setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
 
   try {
-    return await fetch(`${GATEWAY_BASE_URL}/api/product-image`, {
+    return await fetch(`${GATEWAY_BASE_URL}/api/images/upload/product`, {
       method: "POST",
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: formData,

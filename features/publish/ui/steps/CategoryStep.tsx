@@ -1,5 +1,5 @@
-import { Select } from "@/components/shared/Select/Select";
 import type { Option } from "@/components/shared/Select/Select";
+import { Select } from "@/components/shared/Select/Select";
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import useDepartments from "@/features/marketplace/hooks/useDepartments";
@@ -43,14 +43,14 @@ export default function CategoryStep({ values, errors, set }: Props) {
     })) ?? [];
 
   const handleDeptChange = (deptId: string | number) => {
-    set("departmentId", String(deptId));
-    set("departmentCategoryId", "");
-    set("productCategoryId", "");
+    set("departmentId", Number(deptId));
+    set("departmentCategoryId", null);
+    set("productCategoryId", null);
   };
 
   const handleDeptCatChange = (deptCatId: string | number) => {
-    set("departmentCategoryId", String(deptCatId));
-    set("productCategoryId", "");
+    set("departmentCategoryId", Number(deptCatId));
+    set("productCategoryId", null);
   };
 
   if (loading) {
@@ -77,7 +77,7 @@ export default function CategoryStep({ values, errors, set }: Props) {
         label="Department"
         placeholder="Select department"
         options={departmentOptions}
-        value={values.departmentId}
+        value={values.departmentId ?? undefined}
         onChange={handleDeptChange}
         searchEnabled
       />
@@ -86,7 +86,7 @@ export default function CategoryStep({ values, errors, set }: Props) {
         label="Section"
         placeholder="Select section"
         options={deptCategoryOptions}
-        value={values.departmentCategoryId}
+        value={values.departmentCategoryId ?? undefined}
         onChange={handleDeptCatChange}
         disabled={!values.departmentId}
         searchEnabled
@@ -96,8 +96,8 @@ export default function CategoryStep({ values, errors, set }: Props) {
         label="Category *"
         placeholder="Select category"
         options={productCategoryOptions}
-        value={values.productCategoryId}
-        onChange={(v) => set("productCategoryId", String(v))}
+        value={values.productCategoryId ?? undefined}
+        onChange={(v) => set("productCategoryId", Number(v))}
         disabled={!values.departmentCategoryId}
         errorMessage={errors.productCategoryId}
         searchEnabled

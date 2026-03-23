@@ -56,10 +56,12 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* ── Marketplace ──────────────────────────────────────────── */}
+        {/* ── Products Highlight ──────────────────────────────────── */}
         <ProductsHighlight />
+        {/* ── Marketplace ──────────────────────────────────────────── */}
         <UsedProductsSection />
-
+        {/* Exchangeable Products */}
+        <ExchangeSection />
         {/* Supply-side CTA: users just browsed items → flip to seller mindset */}
         <View style={GAP}>
           <AdBanner
@@ -79,7 +81,6 @@ export default function HomeScreen() {
         </View>
 
         {/* ── Community ────────────────────────────────────────────── */}
-        <ExchangeSection />
         <EventsSection />
 
         {/* Emotional close: last thing users see — leaves them inspired */}

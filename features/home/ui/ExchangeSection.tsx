@@ -2,78 +2,57 @@ import MainButton from "@/components/shared/Button/MainButton";
 import { Text as AppText } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import Colors from "@/constants/Colors";
+import type { ProductCondition } from "@/types/enums";
+import type { Product } from "@/types/product";
+import { displaySellerName } from "@/utils/displaySellerName";
 import { LinearGradient } from "expo-linear-gradient";
 import { ArrowLeftRight, MapPin } from "lucide-react-native";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import useExchangeableProducts from "../hooks/useExchangeableProducts";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Condition display maps ───────────────────────────────────────────────────
 
-interface ExchangeItem {
-  id: string;
-  offering: string;
-  condition: "like_new" | "good" | "fair";
-  wantedFor: string;
-  location: string;
-  ownerName: string;
-  category: string;
-}
-
-// ─── Dummy data ───────────────────────────────────────────────────────────────
-
-const CONDITION_LABEL: Record<ExchangeItem["condition"], string> = {
-  like_new: "Like new",
-  good: "Good",
-  fair: "Fair",
+const CONDITION_LABEL: Record<ProductCondition, string> = {
+  NEW: "New",
+  OPEN_BOX: "Open box",
+  LIKE_NEW: "Like new",
+  FAIR: "Fair",
+  POOR: "Poor",
+  FOR_PARTS: "For parts",
+  REFURBISHED: "Refurbished",
 };
 
-const CONDITION_COLOR: Record<ExchangeItem["condition"], string> = {
-  like_new: Colors.success,
-  good: Colors.primary,
-  fair: Colors.accent,
+const CONDITION_COLOR: Record<ProductCondition, string> = {
+  NEW: Colors.success,
+  OPEN_BOX: Colors.info,
+  LIKE_NEW: Colors.success,
+  FAIR: Colors.accent,
+  POOR: Colors.danger,
+  FOR_PARTS: Colors.danger,
+  REFURBISHED: Colors.primary,
 };
-
-const EXCHANGE_ITEMS: ExchangeItem[] = [
-  {
-    id: "e1",
-    offering: "Road Bike — 21-speed",
-    condition: "good",
-    wantedFor: "Mountain bike or similar",
-    location: "Santiago Centro",
-    ownerName: "Diego R.",
-    category: "Sports",
-  },
-  {
-    id: "e2",
-    offering: "DSLR Camera Kit",
-    condition: "like_new",
-    wantedFor: "Mirrorless camera body",
-    location: "Providencia",
-    ownerName: "Sofía M.",
-    category: "Electronics",
-  },
-  {
-    id: "e3",
-    offering: "Acoustic Guitar",
-    condition: "good",
-    wantedFor: "Electric guitar or bass",
-    location: "Las Condes",
-    ownerName: "Mateo V.",
-    category: "Music",
-  },
-  {
-    id: "e4",
-    offering: "Stand-up Paddleboard",
-    condition: "fair",
-    wantedFor: "Surfboard or kayak",
-    location: "Vitacura",
-    ownerName: "Camila T.",
-    category: "Outdoor",
-  },
-];
 
 // ─── Exchange card ────────────────────────────────────────────────────────────
 
-function ExchangeCard({ item, onPress }: { item: ExchangeItem; onPress: () => void }) {
+function ExchangeCard({
+  product,
+  onPress,
+}: {
+  product: Product;
+  onPress: () => void;
+}) {
+  const categoryName = product.productCategory?.productCategoryName ?? "Item";
+  const location =
+    product.seller?.city?.city ?? product.seller?.region?.region ?? null;
+  const ownerName = product.seller ? displaySellerName(product.seller) : null;
+
   return (
     <Pressable
       onPress={onPress}
@@ -87,7 +66,7 @@ function ExchangeCard({ item, onPress }: { item: ExchangeItem; onPress: () => vo
         style={styles.cardHeader}
       >
         <View style={styles.categoryBadge}>
-          <Text style={styles.categoryText}>{item.category}</Text>
+          <Text style={styles.categoryText}>{categoryName}</Text>
         </View>
         <ArrowLeftRight size={18} color="#fff" strokeWidth={2} />
       </LinearGradient>
@@ -97,31 +76,58 @@ function ExchangeCard({ item, onPress }: { item: ExchangeItem; onPress: () => vo
         {/* Offering */}
         <Text style={styles.offeringLabel}>Offering</Text>
         <Text style={styles.offeringName} numberOfLines={1}>
-          {item.offering}
+          {product.name}
         </Text>
 
         {/* Condition badge */}
-        <View style={[styles.conditionBadge, { borderColor: CONDITION_COLOR[item.condition] }]}>
-          <Text style={[styles.conditionText, { color: CONDITION_COLOR[item.condition] }]}>
-            {CONDITION_LABEL[item.condition]}
+        <View
+          style={[
+            styles.conditionBadge,
+            { borderColor: CONDITION_COLOR[product.condition] },
+          ]}
+        >
+          <Text
+            style={[
+              styles.conditionText,
+              { color: CONDITION_COLOR[product.condition] },
+            ]}
+          >
+            {CONDITION_LABEL[product.condition]}
           </Text>
         </View>
 
-        {/* Divider + wanted */}
-        <View style={styles.divider} />
-        <Text style={styles.wantedLabel}>Wants in return</Text>
-        <Text style={styles.wantedValue} numberOfLines={2}>
-          {item.wantedFor}
-        </Text>
+        {/* Description */}
+        {product.conditionDescription ? (
+          <>
+            <View style={styles.divider} />
+            <Text style={styles.descriptionText} numberOfLines={2}>
+              {product.conditionDescription}
+            </Text>
+          </>
+        ) : null}
 
         {/* Footer */}
-        <View style={styles.cardFooter}>
-          <MapPin size={11} color={Colors.foregroundTertiary} strokeWidth={1.5} />
-          <Text style={styles.locationText} numberOfLines={1}>
-            {item.location}
-          </Text>
-          <Text style={styles.ownerText}>· {item.ownerName}</Text>
-        </View>
+        {location || ownerName ? (
+          <View style={styles.cardFooter}>
+            {location ? (
+              <>
+                <MapPin
+                  size={11}
+                  color={Colors.foregroundTertiary}
+                  strokeWidth={1.5}
+                />
+                <Text style={styles.locationText} numberOfLines={1}>
+                  {location}
+                </Text>
+              </>
+            ) : null}
+            {ownerName ? (
+              <Text style={styles.ownerText}>
+                {location ? `· ${ownerName}` : ownerName}
+              </Text>
+            ) : null}
+          </View>
+        ) : null}
       </View>
     </Pressable>
   );
@@ -130,22 +136,44 @@ function ExchangeCard({ item, onPress }: { item: ExchangeItem; onPress: () => vo
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function ExchangeSection() {
+  const { products, loading } = useExchangeableProducts({
+    pageSize: 10,
+    sort: { field: "createdAt", order: "desc" },
+  });
+
   return (
     <View style={styles.container}>
-      <Title level="h4" align="center">Exchange & Swap</Title>
-      <AppText size="sm" color="secondary" align="center" style={{ marginTop: 4 }}>
+      <Title level="h4" align="center">
+        Exchange & Swap
+      </Title>
+      <AppText
+        size="sm"
+        color="secondary"
+        align="center"
+        style={{ marginTop: 4 }}
+      >
         Trade what you have for what you need
       </AppText>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scroll}
-      >
-        {EXCHANGE_ITEMS.map((item) => (
-          <ExchangeCard key={item.id} item={item} onPress={() => {}} />
-        ))}
-      </ScrollView>
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator color={Colors.primary} />
+        </View>
+      ) : (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scroll}
+        >
+          {products.map((product) => (
+            <ExchangeCard
+              key={product.id}
+              product={product}
+              onPress={() => {}}
+            />
+          ))}
+        </ScrollView>
+      )}
 
       <View style={styles.cta}>
         <MainButton
@@ -174,7 +202,11 @@ const styles = StyleSheet.create({
   cta: {
     paddingHorizontal: 4,
   },
-  // Card
+  loadingContainer: {
+    height: 180,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   card: {
     width: 200,
     backgroundColor: Colors.surface,
@@ -239,14 +271,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.borderLight,
     marginVertical: 6,
   },
-  wantedLabel: {
-    fontSize: 10,
-    fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundTertiary,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
-  wantedValue: {
+  descriptionText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
     color: Colors.foregroundSecondary,

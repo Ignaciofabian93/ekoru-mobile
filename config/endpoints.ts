@@ -16,7 +16,7 @@ const getEndpoints = () => {
       };
     default: {
       const devBase =
-        process.env.EXPO_PUBLIC_GATEWAY_URL ?? "http://192.168.0.8:4000";
+        process.env.EXPO_PUBLIC_GATEWAY_URL ?? "http://192.168.0.7:4000";
       return {
         base: devBase,
         graphql: `${devBase}/graphql`,

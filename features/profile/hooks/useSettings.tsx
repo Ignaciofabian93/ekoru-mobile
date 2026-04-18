@@ -34,15 +34,15 @@ export default function useSettings() {
     // Persist the biometric preference locally so the gate activates on next app open
     await setBiometricEnabled(twoFactorAuthRef.current ?? false);
     showSuccess({
-      title: t("successTitle"),
-      message: t("registerSuccess"),
+      title: t("settingsSavedTitle"),
+      message: t("settingsSavedMessage"),
     });
     router.back();
   };
 
   const onError = (error: Error) => {
     showError({
-      title: t("errorTitle"),
+      title: t("settingsErrorTitle"),
       message: error.message,
     });
   };
@@ -87,6 +87,4 @@ export default function useSettings() {
     sellerPreferences,
     handleSellerPreferences,
     submitSellerPreferences,
-    loadingPreferences,
-  };
-}
+    loadingPref

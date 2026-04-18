@@ -87,8 +87,6 @@ export default function useProfileData() {
     linkedin: seller?.socialMediaLinks?.["linkedin"] ?? "",
   });
 
-  console.log("SELLER:: ", seller);
-
   // ── Location form state ─────────────────────────────────────────────────────
   const [locationValues, setLocationValues] = useState<LocationFormValues>({
     countryId: seller?.country?.id ?? null,
@@ -261,3 +259,4 @@ export default function useProfileData() {
     handleSave,
   };
 }
+                                       

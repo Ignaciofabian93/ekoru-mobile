@@ -10,8 +10,8 @@ import { Title } from "@/components/shared/Title/Title";
 
 export default function NavigationMenu() {
   const router = useRouter();
-
   const { t } = useTranslation(NAMESPACE);
+  const menuRows = useMenuRows();
 
   return (
     <>
@@ -19,14 +19,14 @@ export default function NavigationMenu() {
         {t("account")}
       </Title>
       <View style={styles.menuCard}>
-        {useMenuRows().map((row, index) => {
+        {menuRows.map((row, index) => {
           const Icon = row.icon;
           return (
             <Pressable
               key={row.route}
               style={[
                 styles.menuRow,
-                index < useMenuRows().length - 1 && styles.menuRowBorder,
+                index < menuRows.length - 1 && styles.menuRowBorder,
               ]}
               onPress={() => router.push(row.route as any)}
             >
@@ -79,6 +79,4 @@ const styles = StyleSheet.create({
   menuRowLabel: {
     fontSize: 15,
     fontFamily: "Cabin_500Medium",
-    color: "#1f2937",
-  },
-});
+    color: 

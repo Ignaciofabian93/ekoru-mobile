@@ -1,3 +1,4 @@
+import MainButton from "@/components/shared/Button/MainButton";
 import useAuthStore, {
   useCoverImage,
   useInitials,
@@ -6,20 +7,19 @@ import useAuthStore, {
 } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
-import { Animated, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { Animated, View } from "react-native";
+import { AVATAR_PROTRUDE, COVER_HEIGHT } from "../constants/imageSize";
 import "../i18n";
 import { NAMESPACE } from "../i18n";
-import PhotoPicker from "../ui/main/PhotoPicker";
-import ProfileImageModal from "../ui/main/ProfileImageModal";
-import MainButton from "@/components/shared/Button/MainButton";
-import { AVATAR_PROTRUDE, COVER_HEIGHT } from "../constants/imageSize";
-import ProfileImage from "../ui/main/ProfileImage";
+import { OuterContainer, ScrollContainer } from "../ui/layout/Container";
 import CoverImage from "../ui/main/CoverImage";
 import Identity from "../ui/main/Identity";
-import ProfileDetails from "../ui/main/ProfileDetails";
 import NavigationMenu from "../ui/main/NavigationMenu";
-import { OuterContainer, ScrollContainer } from "../ui/layout/Container";
+import PhotoPicker from "../ui/main/PhotoPicker";
+import ProfileDetails from "../ui/main/ProfileDetails";
+import ProfileImage from "../ui/main/ProfileImage";
+import ProfileImageModal from "../ui/main/ProfileImageModal";
 
 export default function ProfileScreen() {
   const router = useRouter();

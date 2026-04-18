@@ -19,6 +19,7 @@ import useProfileData from "../hooks/useProfileData";
 
 export default function EditProfileScreen() {
   const {
+    seller,
     profileImage,
     coverImage,
     initials,
@@ -115,7 +116,16 @@ export default function EditProfileScreen() {
         )}
 
         {/* ── Location ────────────────────────────────────────────────────── */}
-        <LocationForm values={locationValues} onChange={handleLocationChange} />
+        <LocationForm
+          values={locationValues}
+          onChange={handleLocationChange}
+          fallback={{
+            country: seller?.country,
+            region: seller?.region,
+            city: seller?.city,
+            county: seller?.county,
+          }}
+        />
 
         {/* ── Contact ─────────────────────────────────────────────────────── */}
         <ContactForm

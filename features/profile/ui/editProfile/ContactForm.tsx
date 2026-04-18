@@ -1,13 +1,16 @@
 import Input from "@/components/shared/Input/Input";
 import Select, { Option } from "@/components/shared/Select/Select";
 import { Title } from "@/components/shared/Title/Title";
+import Colors from "@/constants/Colors";
+import { PHONE_PREFIXES, isoToFlag } from "@/constants/phonePrefixes";
 import { ContactMethod } from "@/types/enums";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { NAMESPACE } from "./i18n";
 
 export type ContactFormValues = {
   phone: string;
+  phonePrefix: string;
   website: string;
   preferredContactMethod: ContactMethod | "";
   instagram: string;
@@ -31,6 +34,11 @@ const CONTACT_METHOD_VALUES: ContactMethod[] = [
   "TIKTOK",
 ];
 
+const PREFIX_OPTIONS: Option[] = PHONE_PREFIXES.map((p) => ({
+  label: `${isoToFlag(p.iso)} (${p.dialCode})`,
+  value: p.dialCode,
+}));
+
 export default function ContactForm({ values, onChange }: ContactFormProps) {
   const { t } = useTranslation(NAMESPACE);
 
@@ -45,13 +53,33 @@ export default function ContactForm({ values, onChange }: ContactFormProps) {
         {t("contact")}
       </Title>
       <View style={styles.card}>
-        <Input
-          label={t("phone")}
-          value={values.phone}
-          onChangeText={(v) => onChange("phone", v)}
-          placeholder={t("phonePlaceholder")}
-          type="number"
-        />
+        {/* ── Phone ──────────────────────────────────────────────────────────── */}
+        <View style={styles.phoneFieldWrap}>
+          <Text style={styles.phoneLabel}>{t("phone")}</Text>
+          <View style={styles.phoneRow}>
+            <View style={styles.phonePrefixWrap}>
+              <Select
+                options={PREFIX_OPTIONS}
+                value={values.phonePrefix}
+                onChange={(v) => onChange("phonePrefix", v as string)}
+                placeholder="+?"
+                width="full"
+                searchEnabled
+                noResultsText={t("noResults") ?? "No results"}
+              />
+            </View>
+            <View style={styles.phoneInputWrap}>
+              <Input
+                value={values.phone}
+                onChangeText={(v) => onChange("phone", v)}
+                placeholder={t("phonePlaceholder")}
+                type="number"
+                width="full"
+              />
+            </View>
+          </View>
+        </View>
+
         <Input
           label={t("website")}
           value={values.website}
@@ -132,6 +160,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 16,
     gap: 16,
+  },
+  phoneFieldWrap: {
+    gap: 6,
+  },
+  phoneLabel: {
+    fontSize: 14,
+    fontFamily: "Cabin_500Medium",
+    color: Colors.foreground,
+  },
+  phoneRow: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "flex-start",
+  },
+  phonePrefixWrap: {
+    width: 120,
+  },
+  phoneInputWrap: {
+    flex: 1,
   },
   socialGrid: {
     flexDirection: "row",

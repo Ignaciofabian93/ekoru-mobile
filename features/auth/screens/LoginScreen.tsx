@@ -1,7 +1,3 @@
-// ⚠️ DEPRECATED — file renamed to RegisterScreen.tsx to follow PascalCase convention.
-// This file will be removed. Import from "./RegisterScreen" instead.
-export { default } from "./RegisterScreen";
-
 import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -18,9 +14,9 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import "../i18n";
-import RegisterForm from "../ui/RegisterForm";
+import LoginForm from "../ui/LoginForm";
 
-export default function RegisterScreen() {
+export default function LoginScreen() {
   const router = useRouter();
   const { t } = useTranslation("auth");
   const { top, bottom } = useSafeAreaInsets();
@@ -30,7 +26,7 @@ export default function RegisterScreen() {
   return (
     <KeyboardAvoidingView
       style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "padding"}
     >
       <ScrollView
         contentContainerStyle={styles.scroll}
@@ -39,10 +35,10 @@ export default function RegisterScreen() {
         <View style={styles.logoSection}>
           <Image source={EKORU_LOGO} style={styles.logo} resizeMode="contain" />
           <Text style={styles.headline}>{t("headline")}</Text>
-          <Text style={styles.subtitle}>{t("registerSubtitle")}</Text>
+          <Text style={styles.subtitle}>{t("loginSubtitle")}</Text>
         </View>
 
-        <RegisterForm />
+        <LoginForm />
 
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
@@ -51,12 +47,11 @@ export default function RegisterScreen() {
         </View>
 
         <View style={styles.footer}>
-          <Text style={styles.footerText}>{t("hasAccount")}</Text>
-          <Pressable onPress={() => router.back()}>
-            <Text style={styles.footerLink}> {t("signIn")}</Text>
+          <Text style={styles.footerText}>{t("noAccount")}</Text>
+          <Pressable onPress={() => router.push("/(auth)/register")}>
+            <Text style={styles.footerLink}> {t("signUp")}</Text>
           </Pressable>
         </View>
-
         <Pressable
           onPress={() => router.push("/(tabs)")}
           style={styles.backButton}
@@ -77,7 +72,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     paddingHorizontal: 28,
-    paddingVertical: 40,
+    paddingTop: 40,
   },
 
   // Logo & branding
@@ -139,4 +134,16 @@ const styles = StyleSheet.create({
   footerLink: {
     fontSize: 15,
     fontFamily: "Cabin_700Bold",
-    color: Colors.pri
+    color: Colors.primary,
+  },
+  backButton: {
+    alignItems: "center",
+    marginTop: 16,
+    paddingVertical: 8,
+  },
+  backText: {
+    fontSize: 14,
+    fontFamily: "Cabin_500Medium",
+    color: "#5c5c5c",
+  },
+});

@@ -1,7 +1,3 @@
-// ⚠️ DEPRECATED — file renamed to RegisterScreen.tsx to follow PascalCase convention.
-// This file will be removed. Import from "./RegisterScreen" instead.
-export { default } from "./RegisterScreen";
-
 import Colors from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -139,4 +135,16 @@ const styles = StyleSheet.create({
   footerLink: {
     fontSize: 15,
     fontFamily: "Cabin_700Bold",
-    color: Colors.pri
+    color: Colors.primary,
+  },
+  backButton: {
+    alignItems: "center",
+    marginTop: 16,
+    paddingVertical: 8,
+  },
+  backText: {
+    fontSize: 14,
+    fontFamily: "Cabin_500Medium",
+    color: "#5c5c5c",
+  },
+});

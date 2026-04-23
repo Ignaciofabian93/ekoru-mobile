@@ -7,7 +7,6 @@
     "icon": "./assets/images/logo.png",
     "scheme": "ekoru",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/logo.png",
       "resizeMode": "contain",
@@ -17,14 +16,14 @@
       "supportsTablet": true
     },
     "android": {
-      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.ignaciofabian93.EKORU"
     },
     "web": {
       "bundler": "metro",
@@ -42,10 +41,24 @@
           "cameraPermission": "Allow EKORU to use your camera to take a profile or cover photo."
         }
       ],
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "cf10f8ec-4f1a-4d0f-b038-85184173a473"
+      }
     }
   }
 }

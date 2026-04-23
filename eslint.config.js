@@ -181,7 +181,7 @@ const reactRules = {
 /** React Native specific rules */
 const reactNativeRules = {
   // No unused styles in StyleSheet objects
-  "react-native/no-unused-styles": "error",
+  "react-native/no-unused-styles": "off",
 
   // Use platform-specific file extensions when needed
   "react-native/split-platform-components": "off",

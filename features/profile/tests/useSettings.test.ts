@@ -38,11 +38,11 @@ jest.mock("@/store/useAuthStore", () => {
   const actual = jest.requireActual("@/store/useAuthStore");
   return {
     __esModule: true,
+    ...actual,
     default: jest.fn(() => ({
       seller: { id: "seller-1" },
       setBiometricEnabled: mockSetBiometricEnabled,
     })),
-    ...actual,
   };
 });
 
@@ -126,7 +126,9 @@ describe("useSettings", () => {
 
   it("does not show error toast on successful mutation", async () => {
     const { result } = renderHook(() => useSettings());
-    await act(async () => { await result.current.submitSellerPreferences(); });
+    await act(async () => {
+      await result.current.submitSellerPreferences();
+    });
     expect(mockShowError).not.toHaveBeenCalled();
   });
 });

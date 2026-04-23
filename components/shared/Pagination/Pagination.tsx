@@ -192,29 +192,6 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     letterSpacing: 0.6,
   },
-  rowsOptions: {},
-  rowsChip: {
-    height: 34,
-    paddingHorizontal: 14,
-    borderRadius: 8,
-    backgroundColor: "#fff",
-    borderWidth: 1.5,
-    borderColor: Colors.borderStrong,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rowsChipActive: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
-  },
-  rowsChipText: {
-    fontSize: 13,
-    fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
-  },
-  rowsChipTextActive: {
-    color: "#fff",
-  },
   // Nav row
   navRow: {
     flexDirection: "row",

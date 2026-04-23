@@ -483,26 +483,4 @@ const styles = StyleSheet.create({
   authSection: {
     marginTop: 12,
   },
-  logoutButton: {
-    paddingVertical: 13,
-    borderRadius: 12,
-    backgroundColor: "#fee2e2",
-    alignItems: "center",
-  },
-  logoutText: {
-    fontSize: 14,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#dc2626",
-  },
-  loginButton: {
-    paddingVertical: 13,
-    borderRadius: 12,
-    backgroundColor: Colors.primary,
-    alignItems: "center",
-  },
-  loginText: {
-    fontSize: 14,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#fff",
-  },
 });

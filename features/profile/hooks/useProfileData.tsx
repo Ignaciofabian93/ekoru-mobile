@@ -1,3 +1,9 @@
+import { getDialCodeByIso, splitPhoneNumber } from "@/constants/phonePrefixes";
+import {
+  UPDATE_BUSINESS_PROFILE,
+  UPDATE_PERSON_PROFILE,
+  UPDATE_SELLER,
+} from "@/graphql/auth/profile";
 import useAuthStore, {
   useBusinessProfile,
   useCoverImage,
@@ -6,23 +12,20 @@ import useAuthStore, {
   useProfileImage,
   useSeller,
 } from "@/store/useAuthStore";
+import { useConfirmedLocation } from "@/store/useLocationStore";
+import type { BusinessProfile, PersonProfile, Seller } from "@/types/user";
 import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  UPDATE_BUSINESS_PROFILE,
-  UPDATE_PERSON_PROFILE,
-  UPDATE_SELLER,
-} from "@/graphql/auth/profile";
-import { BusinessFormValues } from "../ui/editProfile/BusinessInfoForm";
-import { ContactFormValues } from "../ui/editProfile/ContactForm";
-import { LocationFormValues } from "../ui/editProfile/LocationForm";
-import { PersonFormValues } from "../ui/editProfile/PersonInfoForm";
-import type { BusinessProfile, PersonProfile, Seller } from "@/types/user";
+import type { BusinessFormValues } from "../ui/editProfile/BusinessInfoForm";
+import type { ContactFormValues } from "../ui/editProfile/ContactForm";
+import type { LocationFormValues } from "../ui/editProfile/LocationForm";
+import type { PersonFormValues } from "../ui/editProfile/PersonInfoForm";
 
 export default function useProfileData() {
   const router = useRouter();
   const seller = useSeller();
+  const confirmedLocation = useConfirmedLocation();
   const profileImage = useProfileImage();
   const coverImage = useCoverImage();
   const initials = useInitials();
@@ -67,8 +70,15 @@ export default function useProfileData() {
   });
 
   // ── Contact form state ──────────────────────────────────────────────────────
+  const { prefix: parsedPrefix, number: parsedNumber } = splitPhoneNumber(
+    seller?.phone ?? "",
+  );
+  const defaultPrefix =
+    parsedPrefix || getDialCodeByIso(confirmedLocation?.isoCode ?? "");
+
   const [contactValues, setContactValues] = useState<ContactFormValues>({
-    phone: seller?.phone ?? "",
+    phone: parsedNumber,
+    phonePrefix: defaultPrefix,
     website: seller?.website ?? "",
     preferredContactMethod: seller?.preferredContactMethod ?? "",
     instagram: seller?.socialMediaLinks?.["instagram"] ?? "",
@@ -79,12 +89,24 @@ export default function useProfileData() {
 
   // ── Location form state ─────────────────────────────────────────────────────
   const [locationValues, setLocationValues] = useState<LocationFormValues>({
-    countryId: seller?.countryId ?? null,
-    regionId: seller?.regionId ?? null,
-    cityId: seller?.cityId ?? null,
-    countyId: seller?.countyId ?? null,
+    countryId: seller?.country?.id ?? null,
+    regionId: seller?.region?.id ?? null,
+    cityId: seller?.city?.id ?? null,
+    countyId: seller?.county?.id ?? null,
     address: seller?.address ?? "",
   });
+
+  // Sync location state once seller data is available (handles async hydration)
+  useEffect(() => {
+    if (!seller) return;
+    setLocationValues({
+      countryId: seller.country?.id ?? null,
+      regionId: seller.region?.id ?? null,
+      cityId: seller.city?.id ?? null,
+      countyId: seller.county?.id ?? null,
+      address: seller.address ?? "",
+    });
+  }, [seller?.id]);
 
   const handleLocationChange = <K extends keyof LocationFormValues>(
     key: K,
@@ -129,6 +151,8 @@ export default function useProfileData() {
         tiktok,
         linkedin,
         preferredContactMethod,
+        phonePrefix,
+        phone,
         ...sellerContact
       } = contactValues;
 
@@ -136,6 +160,7 @@ export default function useProfileData() {
         variables: {
           input: {
             ...sellerContact,
+            phone: phonePrefix ? `${phonePrefix}${phone}` : phone,
             preferredContactMethod: preferredContactMethod || undefined,
             socialMediaLinks: { instagram, facebook, tiktok, linkedin },
             ...locationValues,

@@ -2,8 +2,6 @@ import { Search } from "lucide-react-native";
 import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
-import Colors from "@/constants/Colors";
-
 export default function SearchBar() {
   const [query, setQuery] = useState("");
 

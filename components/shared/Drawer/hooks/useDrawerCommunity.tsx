@@ -53,7 +53,7 @@ export function useDrawerCommunity(enabled: boolean) {
       data?.getCommunityCatalog
         ? mapCatalogToAccordion(data.getCommunityCatalog)
         : [],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [data?.getCommunityCatalog],
   );
 

@@ -1,7 +1,6 @@
 import type { Product } from "@/features/marketplace/types/Product";
 import { useState } from "react";
-import type { StyleProp, ViewStyle } from "react-native";
-import { StyleSheet, View } from "react-native";
+import { type StyleProp, type ViewStyle, StyleSheet, View } from "react-native";
 import Animated, {
   Easing,
   interpolate,

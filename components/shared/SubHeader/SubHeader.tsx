@@ -1,12 +1,12 @@
 import Colors from "@/constants/Colors";
 import { useRouter, useSegments } from "expo-router";
-import type { LucideIcon } from "lucide-react-native";
 import {
   Newspaper,
   Package,
   ScanBarcode,
   Store,
   Users,
+  type LucideIcon,
 } from "lucide-react-native";
 import React, { useEffect, useRef } from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";

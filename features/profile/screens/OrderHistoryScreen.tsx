@@ -3,7 +3,6 @@ import { PackageSearch } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 
 type OrderStatus = "Delivered" | "Shipped" | "Processing" | "Cancelled";

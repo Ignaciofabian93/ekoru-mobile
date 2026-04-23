@@ -45,7 +45,7 @@ function getPageNumbers(
 
   const half = Math.floor(max / 2);
   let start = Math.max(2, current - half);
-  let end = Math.min(total - 1, start + max - 3);
+  const end = Math.min(total - 1, start + max - 3);
 
   if (end - start < max - 3) {
     start = Math.max(2, end - (max - 3));
@@ -191,29 +191,6 @@ const styles = StyleSheet.create({
     color: Colors.foregroundSecondary,
     textTransform: "capitalize",
     letterSpacing: 0.6,
-  },
-  rowsOptions: {},
-  rowsChip: {
-    height: 34,
-    paddingHorizontal: 14,
-    borderRadius: 8,
-    backgroundColor: "#fff",
-    borderWidth: 1.5,
-    borderColor: Colors.borderStrong,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rowsChipActive: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
-  },
-  rowsChipText: {
-    fontSize: 13,
-    fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
-  },
-  rowsChipTextActive: {
-    color: "#fff",
   },
   // Nav row
   navRow: {

@@ -1,4 +1,4 @@
-import { Admin, Seller } from "./user";
+import type { Admin, Seller } from "./user";
 
 export type CommunityEventType = "talk" | "workshop" | "tutorial" | "fair";
 

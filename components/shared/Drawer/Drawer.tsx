@@ -51,7 +51,6 @@ import { useDrawerBlogs } from "./hooks/useDrawerBlogs";
 import { useDrawerCommunity } from "./hooks/useDrawerCommunity";
 import { useDrawerServices } from "./hooks/useDrawerServices";
 import { useDrawerStores } from "./hooks/useDrawerStores";
-import "./i18n";
 import { NAMESPACE } from "./i18n";
 
 const profileMenuItems = [
@@ -482,27 +481,5 @@ const styles = StyleSheet.create({
   // Auth
   authSection: {
     marginTop: 12,
-  },
-  logoutButton: {
-    paddingVertical: 13,
-    borderRadius: 12,
-    backgroundColor: "#fee2e2",
-    alignItems: "center",
-  },
-  logoutText: {
-    fontSize: 14,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#dc2626",
-  },
-  loginButton: {
-    paddingVertical: 13,
-    borderRadius: 12,
-    backgroundColor: Colors.primary,
-    alignItems: "center",
-  },
-  loginText: {
-    fontSize: 14,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#fff",
   },
 });

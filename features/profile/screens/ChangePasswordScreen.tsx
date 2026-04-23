@@ -1,37 +1,24 @@
 import MainButton from "@/components/shared/Button/MainButton";
 import Input from "@/components/shared/Input/Input";
-import { showError } from "@/lib/toast";
 import { KeyRound } from "lucide-react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import "../i18n";
+import useChangePassword from "../hooks/useChangePassword";
 import { NAMESPACE } from "../i18n";
 
 export default function ChangePasswordScreen() {
   const { t } = useTranslation(NAMESPACE);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async () => {
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      showError({ title: "Error", message: t("error_fillFields") });
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      showError({ title: "Error", message: t("error_passwordMismatch") });
-      return;
-    }
-    setLoading(true);
-    try {
-      // TODO: wire to real API
-      await new Promise((r) => setTimeout(r, 1000));
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    currentPassword,
+    setCurrentPassword,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
+    loading,
+    handleSubmit,
+  } = useChangePassword();
 
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.container}>

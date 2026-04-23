@@ -1,6 +1,5 @@
 import Colors from "@/constants/Colors";
-import type { CartItem } from "@/store/useCartStore";
-import useCartStore from "@/store/useCartStore";
+import useCartStore, { type CartItem } from "@/store/useCartStore";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { useRouter } from "expo-router";

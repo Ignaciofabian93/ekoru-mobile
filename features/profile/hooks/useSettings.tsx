@@ -1,7 +1,7 @@
 import { UPDATE_SELLER_PREFERENCES } from "@/graphql/auth/profile";
 import { showError, showSuccess } from "@/lib/toast";
 import useAuthStore from "@/store/useAuthStore";
-import { SellerPreferences } from "@/types/user";
+import type { SellerPreferences } from "@/types/user";
 import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
@@ -34,15 +34,15 @@ export default function useSettings() {
     // Persist the biometric preference locally so the gate activates on next app open
     await setBiometricEnabled(twoFactorAuthRef.current ?? false);
     showSuccess({
-      title: t("successTitle"),
-      message: t("registerSuccess"),
+      title: t("settingsSavedTitle"),
+      message: t("settingsSavedMessage"),
     });
     router.back();
   };
 
   const onError = (error: Error) => {
     showError({
-      title: t("errorTitle"),
+      title: t("settingsErrorTitle"),
       message: error.message,
     });
   };

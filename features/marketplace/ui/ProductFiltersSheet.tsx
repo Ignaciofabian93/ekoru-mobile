@@ -13,8 +13,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import type { ProductFilters } from "../hooks/useProductFilters";
-import { DEFAULT_FILTERS } from "../hooks/useProductFilters";
+import { DEFAULT_FILTERS, type ProductFilters } from "../hooks/useProductFilters";
 import { NAMESPACE } from "../i18n";
 import type { ProductCondition } from "../types/Product";
 

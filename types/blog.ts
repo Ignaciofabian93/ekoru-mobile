@@ -1,5 +1,5 @@
-import { BlogCategory } from "./enums";
-import { Admin } from "./user";
+import type { BlogCategory } from "./enums";
+import type { Admin } from "./user";
 
 export type BlogPost = {
   id: number;

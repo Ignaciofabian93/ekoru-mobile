@@ -14,7 +14,7 @@ const wallpaperImage = require("@/assets/images/wallpaper-4.jpg");
 
 export default function StoreSubcategoryScreen() {
   const { t } = useTranslation(NAMESPACE);
-  const { storeId, storeName, categoryId, categoryName } =
+  const { storeId, storeName, categoryId: _categoryId, categoryName } =
     useLocalSearchParams<{
       storeId: string;
       storeName: string;

@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import "../global.css";
 
-const LightTheme: Theme = {
+const lightTheme: Theme = {
   ...DefaultTheme,
   colors: { ...DefaultTheme.colors, background: "#ffffff" },
 };
@@ -103,7 +103,7 @@ function RootLayoutNav() {
   return (
     <ApolloProvider client={client}>
       <DrawerProvider>
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : LightTheme}>
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : lightTheme}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="(profile)" options={{ headerShown: false }} />

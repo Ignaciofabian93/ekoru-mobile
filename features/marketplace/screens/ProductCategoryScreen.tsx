@@ -14,7 +14,7 @@ const wallpaperImage = require("@/assets/images/wallpaper-4.jpg");
 
 export default function ProductCategoryScreen() {
   const { t } = useTranslation(NAMESPACE);
-  const { slug, name, deptCatSlug, deptCatName, deptSlug, deptName } =
+  const { slug: _slug, name, deptCatSlug, deptCatName, deptSlug, deptName } =
     useLocalSearchParams<{
       slug: string;
       name: string;

@@ -1,8 +1,7 @@
-import Colors from "@/constants/Colors";
 import { Text } from "@/components/shared/Text/Text";
+import Colors from "@/constants/Colors";
 import {
   Calendar,
-  ChevronRight,
   Heart,
   MessageCircle,
   Plus,
@@ -109,7 +108,11 @@ export default function CommunityScreen() {
               {event.date}
             </Text>
             <View style={styles.eventAttending}>
-              <Users size={11} color={Colors.foregroundTertiary} strokeWidth={2} />
+              <Users
+                size={11}
+                color={Colors.foregroundTertiary}
+                strokeWidth={2}
+              />
               <Text size="xs" color="tertiary">
                 {event.attending}
               </Text>
@@ -161,7 +164,11 @@ export default function CommunityScreen() {
             </Text>
             <View style={styles.postActions}>
               <Pressable style={styles.actionBtn}>
-                <ThumbsUp size={14} color={Colors.foregroundSecondary} strokeWidth={2} />
+                <ThumbsUp
+                  size={14}
+                  color={Colors.foregroundSecondary}
+                  strokeWidth={2}
+                />
                 <Text size="xs" color="secondary">
                   {post.likes}
                 </Text>
@@ -177,7 +184,11 @@ export default function CommunityScreen() {
                 </Text>
               </Pressable>
               <Pressable style={styles.actionBtn}>
-                <Heart size={14} color={Colors.foregroundSecondary} strokeWidth={2} />
+                <Heart
+                  size={14}
+                  color={Colors.foregroundSecondary}
+                  strokeWidth={2}
+                />
               </Pressable>
             </View>
           </Pressable>

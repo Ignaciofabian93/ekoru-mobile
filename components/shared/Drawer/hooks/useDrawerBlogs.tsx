@@ -39,7 +39,7 @@ export function useDrawerBlogs(enabled: boolean) {
       data?.getBlogCatalog
         ? mapCatalogToAccordion(data.getBlogCatalog)
         : [],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [data?.getBlogCatalog],
   );
 

@@ -4,7 +4,7 @@ import {
   GET_COUNTRIES,
   GET_REGIONS_BY_COUNTRY,
 } from "@/graphql/location/queries";
-import { City, Country, County, Region } from "@/types/location";
+import type { City, Country, County, Region } from "@/types/location";
 import { useQuery } from "@apollo/client/react";
 
 interface UseLocationParams {

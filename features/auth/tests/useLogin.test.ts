@@ -14,13 +14,11 @@ jest.mock("@/i18n", () => ({
   },
 }));
 
-import { renderHook, act } from "@testing-library/react-native";
-import useLogin from "../hooks/useLogin";
-
 // Mock expo-router
 const mockPush = jest.fn();
+const mockReplace = jest.fn();
 jest.mock("expo-router", () => ({
-  useRouter: () => ({ push: mockPush }),
+  useRouter: () => ({ push: mockPush, replace: mockReplace }),
 }));
 
 // Mock toast
@@ -29,9 +27,41 @@ jest.mock("@/lib/toast", () => ({
   showError: (...args: unknown[]) => mockShowError(...args),
 }));
 
+// Mock Apollo client
+const mockQuery = jest.fn();
+jest.mock("@apollo/client/react", () => ({
+  useApolloClient: () => ({ query: mockQuery }),
+}));
+
+// Mock auth store
+const mockSetSession = jest.fn();
+jest.mock("@/store/useAuthStore", () => ({
+  __esModule: true,
+  default: jest.fn(
+    (selector: (s: { setSession: typeof mockSetSession }) => unknown) =>
+      selector({ setSession: mockSetSession }),
+  ),
+}));
+
+// Mock Login REST API
+const mockLogin = jest.fn();
+jest.mock("@/api/auth/login", () => ({
+  Login: (...args: unknown[]) => mockLogin(...args),
+}));
+
+import { act, renderHook } from "@testing-library/react-native";
+import useLogin from "../hooks/useLogin";
+
 describe("useLogin", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSetSession.mockResolvedValue(undefined);
+    mockLogin.mockResolvedValue({
+      token: "fake-token",
+      refreshToken: "fake-refresh",
+      message: "ok",
+    });
+    mockQuery.mockResolvedValue({ data: { me: { id: "seller-1" } } });
   });
 
   it("initializes with empty fields and default state", () => {
@@ -123,7 +153,6 @@ describe("useLogin", () => {
   });
 
   it("sets loading during handleLogin and resets after", async () => {
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation();
     const { result } = renderHook(() => useLogin());
 
     act(() => {
@@ -138,10 +167,8 @@ describe("useLogin", () => {
       await result.current.handleLogin();
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith("Login");
     expect(mockShowError).not.toHaveBeenCalled();
     expect(result.current.loading).toBe(false);
-    consoleSpy.mockRestore();
   });
 
   it("toggles showPassword via setShowPassword", () => {

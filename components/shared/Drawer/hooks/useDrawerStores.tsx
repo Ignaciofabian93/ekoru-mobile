@@ -56,7 +56,7 @@ export function useDrawerStores(enabled: boolean) {
   const items = useMemo<L1Item[]>(
     () =>
       data?.getStoreCatalog ? mapCatalogToAccordion(data.getStoreCatalog) : [],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [data?.getStoreCatalog],
   );
 

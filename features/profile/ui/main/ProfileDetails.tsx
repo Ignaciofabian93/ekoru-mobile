@@ -2,11 +2,11 @@ import {
   BadgeCheck,
   Flag,
   Globe,
-  LucideIcon,
   MapPin,
   MapPinCheck,
   Phone,
   Pin,
+  type LucideIcon,
 } from "lucide-react-native";
 import { NAMESPACE } from "./i18n";
 import { useTranslation } from "react-i18next";

@@ -8,7 +8,7 @@ import {
   type PersonSubscriptionPlan,
   type SellerType,
 } from "./enums";
-import { City, Country, County, Region } from "./location";
+import type { City, Country, County, Region } from "./location";
 
 export type Admin = {
   id: string;

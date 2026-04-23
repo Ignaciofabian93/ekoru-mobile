@@ -71,7 +71,7 @@ export function useDrawerMarketplace(enabled: boolean) {
       data?.getMarketplaceCatalog
         ? mapCatalogToAccordion(data.getMarketplaceCatalog)
         : [],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [data?.getMarketplaceCatalog],
   );
 

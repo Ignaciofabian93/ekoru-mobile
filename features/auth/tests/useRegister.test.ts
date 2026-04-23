@@ -27,6 +27,12 @@ jest.mock("expo-router", () => ({
 const mockShowError = jest.fn();
 jest.mock("@/lib/toast", () => ({
   showError: (...args: unknown[]) => mockShowError(...args),
+  showSuccess: jest.fn(),
+}));
+
+// Mock Apollo — useMutation is unused for validation logic; just needs to not throw
+jest.mock("@apollo/client/react", () => ({
+  useMutation: () => [jest.fn().mockResolvedValue({}), { loading: false }],
 }));
 
 // Helpers

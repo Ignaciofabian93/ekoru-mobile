@@ -32,12 +32,12 @@ const mockUpdateBusinessProfile = jest.fn();
 
 jest.mock("@apollo/client/react", () => ({
   useMutation: (mutation: unknown) => {
-    const gqlStr = String(mutation);
-    if (gqlStr.includes("UpdateSeller"))
+    const body: string = (mutation as any)?.loc?.source?.body ?? "";
+    if (body.includes("UpdateSeller"))
       return [mockUpdateSeller, { loading: false }];
-    if (gqlStr.includes("UpdatePersonProfile"))
+    if (body.includes("UpdatePersonProfile"))
       return [mockUpdatePersonProfile, { loading: false }];
-    if (gqlStr.includes("UpdateBusinessProfile"))
+    if (body.includes("UpdateBusinessProfile"))
       return [mockUpdateBusinessProfile, { loading: false }];
     return [jest.fn(), { loading: false }];
   },

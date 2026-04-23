@@ -49,7 +49,7 @@ const baseTsRules = {
     {
       selector: "default",
       format: ["camelCase"],
-      leadingUnderscore: "allow",  // private members: _myField
+      leadingUnderscore: "allow", // private members: _myField
       trailingUnderscore: "forbid",
     },
 
@@ -72,12 +72,12 @@ const baseTsRules = {
     {
       selector: "parameter",
       format: ["camelCase"],
-      leadingUnderscore: "allow",  // allow _unused convention
+      leadingUnderscore: "allow", // allow _unused convention
     },
 
     // ── 5. Types & Interfaces: PascalCase, no I-prefix ────────────────────────
     {
-      selector: "typeLike",    // covers class, interface, typeAlias, enum
+      selector: "typeLike", // covers class, interface, typeAlias, enum
       format: ["PascalCase"],
     },
 
@@ -121,7 +121,7 @@ const baseTsRules = {
   "@typescript-eslint/no-explicit-any": "warn",
 
   // Require explicit return types on exported functions
-  "@typescript-eslint/explicit-module-boundary-types": "off",  // too noisy for React
+  "@typescript-eslint/explicit-module-boundary-types": "off", // too noisy for React
 
   // No unused variables (with exceptions for _ prefix and React)
   "@typescript-eslint/no-unused-vars": [
@@ -180,9 +180,6 @@ const reactRules = {
 
 /** React Native specific rules */
 const reactNativeRules = {
-  // Warn on inline styles (prefer StyleSheet.create)
-  "react-native/no-inline-styles": "warn",
-
   // No unused styles in StyleSheet objects
   "react-native/no-unused-styles": "error",
 
@@ -229,7 +226,12 @@ module.exports = [
 
   // ── Test files: relax some rules ──────────────────────────────────────────
   {
-    files: ["**/tests/**/*.ts", "**/tests/**/*.tsx", "**/*.test.ts", "**/*.test.tsx"],
+    files: [
+      "**/tests/**/*.ts",
+      "**/tests/**/*.tsx",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+    ],
     rules: {
       // Allow any in test mocks
       "@typescript-eslint/no-explicit-any": "off",

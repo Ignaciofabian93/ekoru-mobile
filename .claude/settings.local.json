@@ -8,7 +8,10 @@
       "Bash(grep -E \"\\\\.tsx$|\\\\.ts$|^d\")",
       "Bash(npm list *)",
       "Bash(npm install *)",
-      "Bash(grep -oP \"from ['\\\\\"\\\\`][^./][^'\\\\\"]+['\\\\\"\\\\`]\")"
+      "Bash(grep -oP \"from ['\\\\\"\\\\`][^./][^'\\\\\"]+['\\\\\"\\\\`]\")",
+      "Bash(grep -r \"export.*from\" --include=\"*.ts\" --include=\"*.tsx\" ! -path \"./node_modules/*\" ! -path \"./.expo/*\" ! -path \"./.claude/*\")",
+      "Bash(find . -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) ! -path \"./.claude/*\" ! -path \"./.git/*\" ! -path \"./node_modules/*\" ! -path \"./.expo/*\" -exec grep -l \"export.*from\" {} \\\\;)",
+      "Bash(find . -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) ! -path \"./.claude/*\" ! -path \"./.git/*\" ! -path \"./node_modules/*\" ! -path \"./.expo/*\" -exec grep -l \"// @ts-\\\\|/* @ts-\" {} \\\\;)"
     ]
   }
 }

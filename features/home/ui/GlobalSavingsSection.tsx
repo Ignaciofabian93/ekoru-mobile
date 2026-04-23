@@ -2,7 +2,13 @@ import { Text as AppText } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
-import { Droplets, Leaf, Recycle, Users2, ArrowUpRight } from "lucide-react-native";
+import {
+  ArrowUpRight,
+  Droplets,
+  Leaf,
+  Recycle,
+  Users2,
+} from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -68,7 +74,11 @@ function Co2Card() {
             <Leaf size={20} color={colors.primaryDark} strokeWidth={2} />
           </View>
           <Text style={styles.heroLabel}>CO₂ Saved</Text>
-          <ArrowUpRight size={16} color="rgba(255,255,255,0.6)" strokeWidth={2} />
+          <ArrowUpRight
+            size={16}
+            color="rgba(255,255,255,0.6)"
+            strokeWidth={2}
+          />
         </View>
 
         <Text style={styles.heroValue}>
@@ -79,7 +89,8 @@ function Co2Card() {
         <View style={styles.heroDivider} />
 
         <Text style={styles.heroEquivalence}>
-          ≈ {Math.round(PLATFORM.co2Tons * 4500).toLocaleString()} km not driven by car
+          ≈ {Math.round(PLATFORM.co2Tons * 4500).toLocaleString()} km not driven
+          by car
         </Text>
       </View>
     </LinearGradient>
@@ -106,7 +117,12 @@ function MetricCard({
 }) {
   return (
     <View style={[styles.metricCard, { backgroundColor: bgColor }]}>
-      <View style={[styles.metricIconBadge, { backgroundColor: `${accentColor}20` }]}>
+      <View
+        style={[
+          styles.metricIconBadge,
+          { backgroundColor: `${accentColor}20` },
+        ]}
+      >
         <Icon size={16} color={accentColor} strokeWidth={2} />
       </View>
       <Text style={[styles.metricLabel, { color: accentColor }]}>{label}</Text>
@@ -122,7 +138,7 @@ function MetricCard({
 /** Community strip at the bottom */
 function CommunityStrip() {
   const products = useCountUp(PLATFORM.products);
-  const members  = useCountUp(PLATFORM.members);
+  const members = useCountUp(PLATFORM.members);
 
   return (
     <View style={styles.strip}>
@@ -132,7 +148,12 @@ function CommunityStrip() {
       </View>
       <View style={styles.stripDivider} />
       <View style={styles.stripItem}>
-        <Users2 size={16} color={colors.primary} strokeWidth={2} style={styles.stripIcon} />
+        <Users2
+          size={16}
+          color={colors.primary}
+          strokeWidth={2}
+          style={styles.stripIcon}
+        />
         <Text style={styles.stripValue}>{members.toLocaleString()}+</Text>
         <Text style={styles.stripLabel}>Community members</Text>
       </View>
@@ -154,8 +175,15 @@ export default function GlobalSavingsSection() {
   return (
     <Animated.View entering={FadeInDown.duration(500)} style={styles.container}>
       {/* Header */}
-      <Title level="h4" align="center">Our Global Impact</Title>
-      <AppText size="sm" color="secondary" align="center" style={{ marginTop: 4 }}>
+      <Title level="h4" align="center">
+        Our Global Impact
+      </Title>
+      <AppText
+        size="sm"
+        color="secondary"
+        align="center"
+        style={{ marginTop: 4 }}
+      >
         Together we're making a measurable difference
       </AppText>
 
@@ -169,7 +197,7 @@ export default function GlobalSavingsSection() {
           label="Water Saved"
           value={waterDisplay}
           unit="M L"
-          equivalence={`≈ ${Math.round(PLATFORM.waterMillionL * 1e6 / 8).toLocaleString()} showers`}
+          equivalence={`≈ ${Math.round((PLATFORM.waterMillionL * 1e6) / 8).toLocaleString()} showers`}
           accentColor={colors.info}
           bgColor={`${colors.info}12`}
         />
@@ -298,7 +326,7 @@ const styles = StyleSheet.create({
   strip: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 20,

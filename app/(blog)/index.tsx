@@ -1,5 +1,5 @@
-import { colors } from "@/design/tokens";
 import { Text } from "@/components/shared/Text/Text";
+import { colors } from "@/design/tokens";
 import {
   Bookmark,
   ChevronRight,
@@ -136,7 +136,11 @@ export default function BlogScreen() {
               {FEATURED_POST.author}
             </Text>
             <View style={styles.metaDot} />
-            <Clock size={11} color={colors.foregroundTertiary} strokeWidth={2} />
+            <Clock
+              size={11}
+              color={colors.foregroundTertiary}
+              strokeWidth={2}
+            />
             <Text size="xs" color="tertiary">
               {FEATURED_POST.readTime}
             </Text>
@@ -167,13 +171,18 @@ export default function BlogScreen() {
               <View
                 style={[
                   styles.postTag,
-                  { backgroundColor: `${TAG_COLORS[post.tag] ?? colors.primary}18` },
+                  {
+                    backgroundColor: `${TAG_COLORS[post.tag] ?? colors.primary}18`,
+                  },
                 ]}
               >
                 <Text
                   size="xs"
                   weight="semibold"
-                  style={{ color: TAG_COLORS[post.tag] ?? colors.primary, fontSize: 10 }}
+                  style={{
+                    color: TAG_COLORS[post.tag] ?? colors.primary,
+                    fontSize: 10,
+                  }}
                 >
                   {post.tag}
                 </Text>
@@ -186,7 +195,11 @@ export default function BlogScreen() {
                   {post.date}
                 </Text>
                 <View style={styles.metaDot} />
-                <Clock size={11} color={colors.foregroundTertiary} strokeWidth={2} />
+                <Clock
+                  size={11}
+                  color={colors.foregroundTertiary}
+                  strokeWidth={2}
+                />
                 <Text size="xs" color="tertiary">
                   {post.readTime}
                 </Text>
@@ -194,10 +207,18 @@ export default function BlogScreen() {
             </View>
             <View style={styles.postActions}>
               <Pressable hitSlop={8}>
-                <Bookmark size={16} color={colors.foregroundTertiary} strokeWidth={1.75} />
+                <Bookmark
+                  size={16}
+                  color={colors.foregroundTertiary}
+                  strokeWidth={1.75}
+                />
               </Pressable>
               <Pressable hitSlop={8}>
-                <Share2 size={16} color={colors.foregroundTertiary} strokeWidth={1.75} />
+                <Share2
+                  size={16}
+                  color={colors.foregroundTertiary}
+                  strokeWidth={1.75}
+                />
               </Pressable>
             </View>
           </Pressable>
@@ -281,7 +302,7 @@ const styles = StyleSheet.create({
   },
   featuredImage: {
     height: 160,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -294,7 +315,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
     alignSelf: "flex-start",
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 3,
@@ -332,7 +353,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 10,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
@@ -356,7 +377,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 24,
     padding: 16,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.borderFocus,

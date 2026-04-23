@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,

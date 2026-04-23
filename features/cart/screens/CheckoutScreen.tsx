@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   },
   paymentOptionActive: {
     borderColor: colors.primary,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
   },
   paymentOptionText: {
     fontSize: 14,

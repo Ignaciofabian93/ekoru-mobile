@@ -1,12 +1,7 @@
 import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  type ViewProps,
-} from "react-native";
+import { StyleSheet, Text, View, type ViewProps } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 // ─── Variant types (mirrors the web API) ─────────────────────────────────────
@@ -16,7 +11,11 @@ type Variant = "primary" | "secondary" | "outlined" | "ghost";
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 export interface AdBannerProps extends Omit<ViewProps, "style"> {
-  icon?: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
+  icon?: React.ComponentType<{
+    size?: number;
+    color?: string;
+    strokeWidth?: number;
+  }>;
   title?: string;
   description?: string;
   cta: React.ReactNode;
@@ -27,7 +26,10 @@ export interface AdBannerProps extends Omit<ViewProps, "style"> {
 
 // ─── Maps ─────────────────────────────────────────────────────────────────────
 
-const GRADIENT_COLORS: Record<"primary" | "secondary", readonly [string, string, string]> = {
+const GRADIENT_COLORS: Record<
+  "primary" | "secondary",
+  readonly [string, string, string]
+> = {
   primary: [colors.primaryDark, colors.primary, colors.primaryDark],
   secondary: [colors.secondaryDark, colors.secondary, colors.secondaryDark],
 };
@@ -36,8 +38,8 @@ const GRADIENT_COLORS: Record<"primary" | "secondary", readonly [string, string,
 const ICON_BG: Record<Variant, string> = {
   primary: "rgba(255,255,255,0.15)",
   secondary: "rgba(255,255,255,0.15)",
-  outlined: colors.backgroundPrimaryLight,
-  ghost: colors.backgroundPrimaryLight,
+  outlined: colors.background,
+  ghost: colors.background,
 };
 
 // Icon color for each variant
@@ -85,17 +87,25 @@ const AdBanner = React.forwardRef<View, AdBannerProps>(
         {/* Left: icon + text */}
         <View style={styles.left}>
           {Icon && (
-            <View style={[styles.iconBadge, { backgroundColor: ICON_BG[variant] }]}>
+            <View
+              style={[styles.iconBadge, { backgroundColor: ICON_BG[variant] }]}
+            >
               <Icon size={36} color={ICON_COLOR[variant]} strokeWidth={1.75} />
             </View>
           )}
           {title && (
-            <Text style={[styles.title, { color: TEXT_COLOR[variant] }]} numberOfLines={2}>
+            <Text
+              style={[styles.title, { color: TEXT_COLOR[variant] }]}
+              numberOfLines={2}
+            >
               {title}
             </Text>
           )}
           {description && (
-            <Text style={[styles.description, { color: TEXT_MUTED[variant] }]} numberOfLines={3}>
+            <Text
+              style={[styles.description, { color: TEXT_MUTED[variant] }]}
+              numberOfLines={3}
+            >
               {description}
             </Text>
           )}
@@ -130,7 +140,12 @@ const AdBanner = React.forwardRef<View, AdBannerProps>(
     }
 
     return (
-      <Animated.View ref={ref} entering={entering} style={containerStyle} {...props}>
+      <Animated.View
+        ref={ref}
+        entering={entering}
+        style={containerStyle}
+        {...props}
+      >
         {content}
       </Animated.View>
     );

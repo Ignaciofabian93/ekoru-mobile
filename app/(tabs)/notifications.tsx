@@ -1,6 +1,6 @@
+import { Text } from "@/components/shared/Text/Text";
 import { colors } from "@/design/tokens";
 import { useIsAuthenticated } from "@/store/useAuthStore";
-import { Text } from "@/components/shared/Text/Text";
 import { useRouter } from "expo-router";
 import {
   Bell,
@@ -62,7 +62,12 @@ function GuestNotificationsScreen() {
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
           Stay in the loop
         </Text>
-        <Text size="sm" color="secondary" align="center" style={styles.heroSubtitle}>
+        <Text
+          size="sm"
+          color="secondary"
+          align="center"
+          style={styles.heroSubtitle}
+        >
           Create a free account to receive personalised alerts for everything
           that matters to you.
         </Text>
@@ -127,7 +132,12 @@ export default function NotificationsScreen() {
   return (
     <View style={styles.emptyContainer}>
       <Bell size={40} color={colors.foregroundMuted} strokeWidth={1.25} />
-      <Text size="base" weight="semibold" color="secondary" style={{ marginTop: 12 }}>
+      <Text
+        size="base"
+        weight="semibold"
+        color="secondary"
+        style={{ marginTop: 12 }}
+      >
         No notifications yet
       </Text>
       <Text size="sm" color="tertiary" align="center" style={{ marginTop: 4 }}>
@@ -155,7 +165,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,

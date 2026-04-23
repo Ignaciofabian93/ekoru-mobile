@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     borderColor: colors.borderLight,
   },
   pillSelected: {
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderColor: colors.primary,
   },
   emoji: {

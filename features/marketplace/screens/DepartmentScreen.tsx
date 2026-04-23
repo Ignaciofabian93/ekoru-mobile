@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderColor: colors.borderLight,
   },
   chipPressed: {
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderColor: colors.borderFocus,
   },
   chipText: {

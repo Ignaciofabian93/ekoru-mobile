@@ -1,7 +1,13 @@
 import { colors } from "@/design/tokens";
 import * as Location from "expo-location";
 import { Leaf, MapPin, Navigation, X } from "lucide-react-native";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -72,7 +78,9 @@ const OVERPASS_ENDPOINTS = [
   "https://overpass.kumi.systems/api/interpreter",
 ];
 
-function parseOverpassElements(json: { elements?: Record<string, unknown>[] }): RecyclePoint[] {
+function parseOverpassElements(json: {
+  elements?: Record<string, unknown>[];
+}): RecyclePoint[] {
   return (json.elements ?? []).map((el): RecyclePoint => {
     const tags = (el.tags ?? {}) as Record<string, string>;
     const materials = MATERIAL_KEYS.filter(
@@ -562,7 +570,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   materialTag: {
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderWidth: 1,
     borderColor: colors.primary,
     paddingHorizontal: 10,

@@ -1,5 +1,5 @@
-import { colors } from "@/design/tokens";
 import { Text } from "@/components/shared/Text/Text";
+import { colors } from "@/design/tokens";
 import {
   Building2,
   Car,
@@ -93,7 +93,10 @@ export default function ServicesScreen() {
           return (
             <Pressable key={cat.label} style={styles.categoryCard}>
               <View
-                style={[styles.categoryIcon, { backgroundColor: `${cat.color}18` }]}
+                style={[
+                  styles.categoryIcon,
+                  { backgroundColor: `${cat.color}18` },
+                ]}
               >
                 <Icon size={22} color={cat.color} strokeWidth={1.75} />
               </View>
@@ -143,7 +146,11 @@ export default function ServicesScreen() {
                   </Text>
                 </View>
               </View>
-              <ChevronRight size={18} color={colors.foregroundTertiary} strokeWidth={1.5} />
+              <ChevronRight
+                size={18}
+                color={colors.foregroundTertiary}
+                strokeWidth={1.5}
+              />
             </Pressable>
           );
         })}
@@ -187,7 +194,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
@@ -243,7 +250,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 12,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
@@ -257,7 +264,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   tag: {
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 6,
     paddingHorizontal: 7,
     paddingVertical: 2,
@@ -272,7 +279,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 24,
     padding: 16,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.borderFocus,

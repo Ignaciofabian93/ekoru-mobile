@@ -491,6 +491,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1.5,
     borderColor: colors.primary,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
   },
 });

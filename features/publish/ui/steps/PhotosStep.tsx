@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   uploadIconGallery: {
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderWidth: 1,
     borderColor: colors.borderFocus,
   },

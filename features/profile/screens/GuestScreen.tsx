@@ -19,11 +19,36 @@ export default function GuestScreen() {
   const { t } = useTranslation(NAMESPACE);
 
   const PERKS = [
-    { icon: Star, color: colors.accent, titleKey: "perk_points_title", descKey: "perk_points_desc" },
-    { icon: Leaf, color: colors.primary, titleKey: "perk_impact_title", descKey: "perk_impact_desc" },
-    { icon: ShieldCheck, color: colors.secondary, titleKey: "perk_badge_title", descKey: "perk_badge_desc" },
-    { icon: Zap, color: "#a855f7", titleKey: "perk_deals_title", descKey: "perk_deals_desc" },
-    { icon: TreePine, color: "#10b981", titleKey: "perk_trees_title", descKey: "perk_trees_desc" },
+    {
+      icon: Star,
+      color: colors.accent,
+      titleKey: "perk_points_title",
+      descKey: "perk_points_desc",
+    },
+    {
+      icon: Leaf,
+      color: colors.primary,
+      titleKey: "perk_impact_title",
+      descKey: "perk_impact_desc",
+    },
+    {
+      icon: ShieldCheck,
+      color: colors.secondary,
+      titleKey: "perk_badge_title",
+      descKey: "perk_badge_desc",
+    },
+    {
+      icon: Zap,
+      color: "#a855f7",
+      titleKey: "perk_deals_title",
+      descKey: "perk_deals_desc",
+    },
+    {
+      icon: TreePine,
+      color: "#10b981",
+      titleKey: "perk_trees_title",
+      descKey: "perk_trees_desc",
+    },
   ];
 
   return (
@@ -111,7 +136,7 @@ const styles = StyleSheet.create({
     width: 88,
     height: 88,
     borderRadius: 44,
-    backgroundColor: colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,

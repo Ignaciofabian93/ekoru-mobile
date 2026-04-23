@@ -1,9 +1,9 @@
 import Input from "@/components/shared/Input/Input";
-import Select, { Option } from "@/components/shared/Select/Select";
+import Select, { type Option } from "@/components/shared/Select/Select";
 import { Title } from "@/components/shared/Title/Title";
 import Colors from "@/constants/Colors";
 import { PHONE_PREFIXES, isoToFlag } from "@/constants/phonePrefixes";
-import { ContactMethod } from "@/types/enums";
+import type { ContactMethod } from "@/types/enums";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import { NAMESPACE } from "./i18n";

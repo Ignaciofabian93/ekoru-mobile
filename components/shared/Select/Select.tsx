@@ -1,6 +1,5 @@
 import Colors from "@/constants/Colors";
-import { Check, ChevronDown, Circle } from "lucide-react-native";
-import type { LucideIcon } from "lucide-react-native";
+import { Check, ChevronDown, Circle, type LucideIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
@@ -229,7 +228,7 @@ const Select = React.forwardRef<View, SelectProps>(
       );
     };
 
-    const DropdownEntering = dropdownDirection === "up" ? FadeInUp : FadeInDown;
+    const dropdownEntering = dropdownDirection === "up" ? FadeInUp : FadeInDown;
 
     return (
       <View
@@ -324,7 +323,7 @@ const Select = React.forwardRef<View, SelectProps>(
           >
             {/* Dropdown sheet */}
             <Animated.View
-              entering={DropdownEntering.duration(180)}
+              entering={dropdownEntering.duration(180)}
               style={[styles.dropdown, dropdownStyle]}
             >
               <Pressable onPress={(e) => e.stopPropagation()}>

@@ -1,11 +1,10 @@
 import MainButton from "@/components/shared/Button/MainButton";
-import { SellerPreferences } from "@/types/user";
+import type { SellerPreferences } from "@/types/user";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useSettings from "../hooks/useSettings";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 import AboutSection from "../ui/AboutSection";
 import CurrencySection from "../ui/CurrencySection";

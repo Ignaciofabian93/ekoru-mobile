@@ -5,7 +5,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import useChangePassword from "../hooks/useChangePassword";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 
 export default function ChangePasswordScreen() {

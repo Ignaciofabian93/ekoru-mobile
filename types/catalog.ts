@@ -1,4 +1,4 @@
-import { QuotationStatus, ServicePricing } from "./enums";
+import type { QuotationStatus, ServicePricing } from "./enums";
 
 export type StoreCatalog = {
   id: number;

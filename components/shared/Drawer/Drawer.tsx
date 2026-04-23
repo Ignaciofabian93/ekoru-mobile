@@ -51,7 +51,6 @@ import { useDrawerBlogs } from "./hooks/useDrawerBlogs";
 import { useDrawerCommunity } from "./hooks/useDrawerCommunity";
 import { useDrawerServices } from "./hooks/useDrawerServices";
 import { useDrawerStores } from "./hooks/useDrawerStores";
-import "./i18n";
 import { NAMESPACE } from "./i18n";
 
 const profileMenuItems = [

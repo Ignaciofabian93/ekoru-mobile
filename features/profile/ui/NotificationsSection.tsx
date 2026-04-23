@@ -4,7 +4,7 @@ import Colors from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Switch, View } from "react-native";
 import { NAMESPACE } from "../i18n";
-import { SettingsSectionProps } from "../screens/SettingsScreen";
+import type { SettingsSectionProps } from "../screens/SettingsScreen";
 
 export default function NotificationsSection({
   sellerPreferences,

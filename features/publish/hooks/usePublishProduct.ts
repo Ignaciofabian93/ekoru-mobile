@@ -115,7 +115,7 @@ export default function usePublishProduct() {
         message: "Your product is now live.",
       });
       router.replace("/(tabs)");
-    } catch (err) {
+    } catch {
       showError({
         title: "Something went wrong",
         message: "Could not publish your product. Please try again.",

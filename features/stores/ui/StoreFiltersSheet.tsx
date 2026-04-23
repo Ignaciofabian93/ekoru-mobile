@@ -12,8 +12,7 @@ import {
   Switch,
   View,
 } from "react-native";
-import type { StoreFilters } from "../hooks/useStoreFilters";
-import { DEFAULT_FILTERS } from "../hooks/useStoreFilters";
+import { DEFAULT_FILTERS, type StoreFilters } from "../hooks/useStoreFilters";
 import { NAMESPACE } from "../i18n";
 
 const RATING_OPTIONS = [3, 3.5, 4, 4.5, 5];

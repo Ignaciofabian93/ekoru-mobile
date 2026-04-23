@@ -53,7 +53,7 @@ export function useDrawerServices(enabled: boolean) {
       data?.getServicesCatalog
         ? mapCatalogToAccordion(data.getServicesCatalog)
         : [],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     [data?.getServicesCatalog],
   );
 

@@ -45,6 +45,12 @@ const baseTsRules = {
   "@typescript-eslint/naming-convention": [
     "error",
 
+    // ── 0. Imports: camelCase or PascalCase (components, classes, utilities) ──
+    {
+      selector: "import",
+      format: ["camelCase", "PascalCase"],
+    },
+
     // ── 1. Default: camelCase for everything not overridden below ─────────────
     {
       selector: "default",
@@ -68,10 +74,10 @@ const baseTsRules = {
       format: ["camelCase", "PascalCase"],
     },
 
-    // ── 4. Parameters: camelCase ──────────────────────────────────────────────
+    // ── 4. Parameters: camelCase or PascalCase (for component refs like Icon) ──
     {
       selector: "parameter",
-      format: ["camelCase"],
+      format: ["camelCase", "PascalCase"],
       leadingUnderscore: "allow", // allow _unused convention
     },
 
@@ -112,6 +118,19 @@ const baseTsRules = {
         match: true,
       },
       format: null,
+    },
+
+    // ── 10. Object literal properties: unrestricted (font names, UPPER_CASE enum-like keys, etc.) ──
+    {
+      selector: "objectLiteralProperty",
+      format: null,
+    },
+
+    // ── 11. Type/interface properties: camelCase or PascalCase ───────────────
+    {
+      selector: "typeProperty",
+      format: ["camelCase", "PascalCase"],
+      leadingUnderscore: "allow",
     },
   ],
 
@@ -187,7 +206,7 @@ const reactNativeRules = {
   "react-native/split-platform-components": "off",
 
   // No raw text strings outside <Text> components
-  "react-native/no-raw-text": ["error", { skip: ["CustomText"] }],
+  "react-native/no-raw-text": ["error", { skip: ["CustomText", "Title", "AppText"] }],
 };
 
 module.exports = [
@@ -320,6 +339,10 @@ module.exports = [
         {
           selector: "enumMember",
           format: ["UPPER_CASE"],
+        },
+        {
+          selector: "objectLiteralProperty",
+          format: null,
         },
       ],
     },

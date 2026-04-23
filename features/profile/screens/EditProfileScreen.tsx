@@ -3,7 +3,6 @@ import { Save } from "lucide-react-native";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, View } from "react-native";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 import { AVATAR_PROTRUDE, COVER_HEIGHT } from "../constants/imageSize";
 import { OuterContainer, ScrollContainer } from "../ui/layout/Container";

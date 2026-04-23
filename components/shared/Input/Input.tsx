@@ -1,6 +1,5 @@
 import Colors from "@/constants/Colors";
-import type { LucideIcon } from "lucide-react-native";
-import { Eye, EyeOff } from "lucide-react-native";
+import { Eye, EyeOff, type LucideIcon } from "lucide-react-native";
 import React, { useState } from "react";
 import {
   Pressable,

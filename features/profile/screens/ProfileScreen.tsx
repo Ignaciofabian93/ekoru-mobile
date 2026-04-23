@@ -10,7 +10,6 @@ import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, View } from "react-native";
 import { AVATAR_PROTRUDE, COVER_HEIGHT } from "../constants/imageSize";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 import { OuterContainer, ScrollContainer } from "../ui/layout/Container";
 import CoverImage from "../ui/main/CoverImage";

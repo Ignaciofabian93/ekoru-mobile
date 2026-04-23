@@ -11,7 +11,6 @@ import {
   View,
 } from "react-native";
 import useTwoFactorAuth from "../hooks/useTwoFactorAuth";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 
 export default function TwoFactorAuthScreen() {

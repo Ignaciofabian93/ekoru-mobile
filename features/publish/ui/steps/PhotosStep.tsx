@@ -43,8 +43,6 @@ export default function PhotosStep({ images, error, onChange }: Props) {
     onChange(images.filter((_, i) => i !== index));
   };
 
-  const remaining = MAX_IMAGES - images.length;
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>

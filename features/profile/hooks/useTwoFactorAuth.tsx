@@ -3,14 +3,11 @@ import { showError, showSuccess } from "@/lib/toast";
 import useBiometricAuth from "@/hooks/useBiometricAuth";
 import useAuthStore from "@/store/useAuthStore";
 import { useMutation } from "@apollo/client/react";
-import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 
 export default function useTwoFactorAuth() {
-  const router = useRouter();
   const { t } = useTranslation(NAMESPACE);
   const { seller } = useAuthStore();
   const biometricEnabled = useAuthStore((s) => s.biometricEnabled);

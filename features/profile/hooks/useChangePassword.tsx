@@ -4,7 +4,6 @@ import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 
 export default function useChangePassword() {

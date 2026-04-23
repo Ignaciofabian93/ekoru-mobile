@@ -12,7 +12,6 @@ import {
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
-import "../i18n";
 import { NAMESPACE } from "../i18n";
 
 export default function GuestScreen() {

@@ -1,6 +1,5 @@
 import Input from "@/components/shared/Input/Input";
-import { Select } from "@/components/shared/Select/Select";
-import type { Option } from "@/components/shared/Select/Select";
+import { Select, type Option } from "@/components/shared/Select/Select";
 import { Title } from "@/components/shared/Title/Title";
 import TextArea from "@/components/shared/TextArea/TextArea";
 import type { ProductCondition } from "@/types/enums";

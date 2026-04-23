@@ -1,5 +1,4 @@
-import axios from "axios";
-import type { InternalAxiosRequestConfig } from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 
 import { GATEWAY_BASE_URL, REST_URL } from "@/config/endpoints";
 import useAuthStore from "@/store/useAuthStore";

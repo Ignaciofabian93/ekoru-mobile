@@ -1,7 +1,7 @@
 import { UPDATE_SELLER_PREFERENCES } from "@/graphql/auth/profile";
 import { showError, showSuccess } from "@/lib/toast";
 import useAuthStore from "@/store/useAuthStore";
-import { SellerPreferences } from "@/types/user";
+import type { SellerPreferences } from "@/types/user";
 import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";

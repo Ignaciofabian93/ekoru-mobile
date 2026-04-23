@@ -1,5 +1,4 @@
-import type { Option } from "@/components/shared/Select/Select";
-import { Select } from "@/components/shared/Select/Select";
+import { Select, type Option } from "@/components/shared/Select/Select";
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import useDepartments from "@/features/marketplace/hooks/useDepartments";

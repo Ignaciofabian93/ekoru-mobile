@@ -15,7 +15,7 @@ import { uploadCoverImage, uploadProfileImage } from "@/api/profile/images";
 import useAuthStore from "@/store/useAuthStore";
 import { GET_ME } from "@/graphql/auth/login";
 import { useApolloClient } from "@apollo/client/react";
-import { Seller } from "@/types/user";
+import type { Seller } from "@/types/user";
 
 export interface PhotoPickerProps {
   pickerTarget: "profile" | "cover";

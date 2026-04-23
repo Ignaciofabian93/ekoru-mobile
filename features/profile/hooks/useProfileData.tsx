@@ -17,10 +17,10 @@ import type { BusinessProfile, PersonProfile, Seller } from "@/types/user";
 import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { BusinessFormValues } from "../ui/editProfile/BusinessInfoForm";
-import { ContactFormValues } from "../ui/editProfile/ContactForm";
-import { LocationFormValues } from "../ui/editProfile/LocationForm";
-import { PersonFormValues } from "../ui/editProfile/PersonInfoForm";
+import type { BusinessFormValues } from "../ui/editProfile/BusinessInfoForm";
+import type { ContactFormValues } from "../ui/editProfile/ContactForm";
+import type { LocationFormValues } from "../ui/editProfile/LocationForm";
+import type { PersonFormValues } from "../ui/editProfile/PersonInfoForm";
 
 export default function useProfileData() {
   const router = useRouter();

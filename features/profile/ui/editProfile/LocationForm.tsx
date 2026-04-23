@@ -1,5 +1,5 @@
 import Input from "@/components/shared/Input/Input";
-import Select, { Option } from "@/components/shared/Select/Select";
+import Select, { type Option } from "@/components/shared/Select/Select";
 import { Title } from "@/components/shared/Title/Title";
 import type { City, Country, County, Region } from "@/types/location";
 import { useTranslation } from "react-i18next";

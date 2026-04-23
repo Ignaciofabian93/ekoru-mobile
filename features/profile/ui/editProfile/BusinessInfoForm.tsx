@@ -1,6 +1,6 @@
 import Input from "@/components/shared/Input/Input";
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { BusinessType } from "@/types/enums";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   typeRow: {
     flexDirection: "row",
@@ -224,8 +224,8 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   typeChipActive: {
-    backgroundColor: `${Colors.primary}15`,
-    borderColor: Colors.primary,
+    backgroundColor: `${colors.primary}15`,
+    borderColor: colors.primary,
   },
   typeChipText: {
     fontSize: 13,
@@ -234,6 +234,6 @@ const styles = StyleSheet.create({
   },
   typeChipTextActive: {
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
 });

@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { getProductById } from "@/features/marketplace/data/dummyProducts";
 import type { Product } from "@/features/marketplace/types/Product";
 import useCartStore from "@/store/useCartStore";
@@ -131,7 +131,7 @@ function ProductDetail({ product }: { product: Product }) {
                 <Text style={styles.sectionTitle}>Impacto ambiental</Text>
                 <View style={styles.impactRow}>
                   <View style={styles.impactCard}>
-                    <Leaf size={20} color={Colors.primary} strokeWidth={1.5} />
+                    <Leaf size={20} color={colors.primary} strokeWidth={1.5} />
                     <Text style={styles.impactValue}>
                       {product.environmentalImpact.totalCo2SavingsKG} kg
                     </Text>
@@ -140,7 +140,7 @@ function ProductDetail({ product }: { product: Product }) {
                   <View style={styles.impactCard}>
                     <Droplets
                       size={20}
-                      color={Colors.secondary}
+                      color={colors.secondary}
                       strokeWidth={1.5}
                     />
                     <Text style={styles.impactValue}>
@@ -173,7 +173,7 @@ function ProductDetail({ product }: { product: Product }) {
                   <View style={styles.sellerRow}>
                     <User
                       size={16}
-                      color={Colors.foregroundSecondary}
+                      color={colors.foregroundSecondary}
                       strokeWidth={1.5}
                     />
                     <Text style={styles.sellerName}>
@@ -189,7 +189,7 @@ function ProductDetail({ product }: { product: Product }) {
                     <View style={styles.sellerRow}>
                       <MapPin
                         size={16}
-                        color={Colors.foregroundSecondary}
+                        color={colors.foregroundSecondary}
                         strokeWidth={1.5}
                       />
                       <Text style={styles.sellerDetail}>
@@ -204,7 +204,7 @@ function ProductDetail({ product }: { product: Product }) {
                     <View style={styles.sellerRow}>
                       <Phone
                         size={16}
-                        color={Colors.foregroundSecondary}
+                        color={colors.foregroundSecondary}
                         strokeWidth={1.5}
                       />
                       <Text style={styles.sellerDetail}>
@@ -234,7 +234,7 @@ function ProductDetail({ product }: { product: Product }) {
               style={styles.viewCartBtn}
               onPress={() => router.push("/(cart)" as any)}
             >
-              <ShoppingCart size={20} color={Colors.primary} strokeWidth={2} />
+              <ShoppingCart size={20} color={colors.primary} strokeWidth={2} />
             </Pressable>
           </View>
         </View>
@@ -255,7 +255,7 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   scroll: {
     flex: 1,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   notFoundText: {
     fontSize: 16,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   imageContainer: {
     width: "100%",
@@ -320,24 +320,24 @@ const styles = StyleSheet.create({
   brand: {
     fontSize: 13,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   name: {
     fontSize: 22,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
     lineHeight: 28,
   },
   price: {
     fontSize: 22,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
     flexShrink: 0,
   },
   description: {
     fontSize: 15,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     lineHeight: 22,
     marginTop: -8,
   },
@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   detailsGrid: {
     gap: 8,
@@ -357,17 +357,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.borderLight,
+    borderBottomColor: colors.borderLight,
   },
   detailLabel: {
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   detailValue: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   impactRow: {
     flexDirection: "row",
@@ -375,23 +375,23 @@ const styles = StyleSheet.create({
   },
   impactCard: {
     flex: 1,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 10,
     padding: 14,
     alignItems: "center",
     gap: 4,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   impactValue: {
     fontSize: 18,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   impactLabel: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     textAlign: "center",
   },
   materialsContainer: {
@@ -400,32 +400,32 @@ const styles = StyleSheet.create({
   materialsLabel: {
     fontSize: 13,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   materialRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: 6,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.borderLight,
+    borderBottomColor: colors.borderLight,
   },
   materialName: {
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   materialPct: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   sellerCard: {
     gap: 10,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 10,
     padding: 14,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   sellerRow: {
     flexDirection: "row",
@@ -435,11 +435,11 @@ const styles = StyleSheet.create({
   sellerName: {
     fontSize: 15,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
     flex: 1,
   },
   sellerTypeBadge: {
-    backgroundColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 4,
@@ -452,15 +452,15 @@ const styles = StyleSheet.create({
   sellerDetail: {
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     flex: 1,
   },
   footer: {
     paddingHorizontal: 16,
     paddingTop: 12,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
     borderTopWidth: 1,
-    borderTopColor: Colors.borderLight,
+    borderTopColor: colors.borderLight,
   },
   footerRow: {
     flexDirection: "row",
@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
   },
   cartButton: {
     flex: 1,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -477,7 +477,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   cartButtonAdded: {
-    backgroundColor: Colors.success,
+    backgroundColor: colors.success,
   },
   cartButtonText: {
     fontSize: 16,
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 12,
     borderWidth: 1.5,
-    borderColor: Colors.primary,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
   },
 });

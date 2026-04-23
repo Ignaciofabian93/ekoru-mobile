@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useSeller } from "@/store/useAuthStore";
 import {
   Droplets,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   banner: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 16,
     padding: 24,
     alignItems: "center",

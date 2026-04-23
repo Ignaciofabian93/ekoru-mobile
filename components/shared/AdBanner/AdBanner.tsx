@@ -1,12 +1,7 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  type ViewProps,
-} from "react-native";
+import { StyleSheet, Text, View, type ViewProps } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 // ─── Variant types (mirrors the web API) ─────────────────────────────────────
@@ -16,7 +11,11 @@ type Variant = "primary" | "secondary" | "outlined" | "ghost";
 // ─── Props ────────────────────────────────────────────────────────────────────
 
 export interface AdBannerProps extends Omit<ViewProps, "style"> {
-  icon?: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
+  icon?: React.ComponentType<{
+    size?: number;
+    color?: string;
+    strokeWidth?: number;
+  }>;
   title?: string;
   description?: string;
   cta: React.ReactNode;
@@ -27,40 +26,43 @@ export interface AdBannerProps extends Omit<ViewProps, "style"> {
 
 // ─── Maps ─────────────────────────────────────────────────────────────────────
 
-const GRADIENT_COLORS: Record<"primary" | "secondary", readonly [string, string, string]> = {
-  primary: [Colors.primaryDark, Colors.primary, Colors.primaryDark],
-  secondary: [Colors.secondaryDark, Colors.secondary, Colors.secondaryDark],
+const GRADIENT_COLORS: Record<
+  "primary" | "secondary",
+  readonly [string, string, string]
+> = {
+  primary: [colors.primaryDark, colors.primary, colors.primaryDark],
+  secondary: [colors.secondaryDark, colors.secondary, colors.secondaryDark],
 };
 
 // Icon container background for each variant
 const ICON_BG: Record<Variant, string> = {
   primary: "rgba(255,255,255,0.15)",
   secondary: "rgba(255,255,255,0.15)",
-  outlined: Colors.backgroundPrimaryLight,
-  ghost: Colors.backgroundPrimaryLight,
+  outlined: colors.background,
+  ghost: colors.background,
 };
 
 // Icon color for each variant
 const ICON_COLOR: Record<Variant, string> = {
   primary: "#ffffff",
   secondary: "#ffffff",
-  outlined: Colors.primary,
-  ghost: Colors.primary,
+  outlined: colors.primary,
+  ghost: colors.primary,
 };
 
 // Title / description color for each variant
 const TEXT_COLOR: Record<Variant, string> = {
   primary: "#ffffff",
   secondary: "#ffffff",
-  outlined: Colors.foreground,
-  ghost: Colors.foreground,
+  outlined: colors.foreground,
+  ghost: colors.foreground,
 };
 
 const TEXT_MUTED: Record<Variant, string> = {
   primary: "rgba(255,255,255,0.75)",
   secondary: "rgba(255,255,255,0.75)",
-  outlined: Colors.foregroundSecondary,
-  ghost: Colors.foregroundSecondary,
+  outlined: colors.foregroundSecondary,
+  ghost: colors.foregroundSecondary,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -85,17 +87,25 @@ const AdBanner = React.forwardRef<View, AdBannerProps>(
         {/* Left: icon + text */}
         <View style={styles.left}>
           {Icon && (
-            <View style={[styles.iconBadge, { backgroundColor: ICON_BG[variant] }]}>
+            <View
+              style={[styles.iconBadge, { backgroundColor: ICON_BG[variant] }]}
+            >
               <Icon size={36} color={ICON_COLOR[variant]} strokeWidth={1.75} />
             </View>
           )}
           {title && (
-            <Text style={[styles.title, { color: TEXT_COLOR[variant] }]} numberOfLines={2}>
+            <Text
+              style={[styles.title, { color: TEXT_COLOR[variant] }]}
+              numberOfLines={2}
+            >
               {title}
             </Text>
           )}
           {description && (
-            <Text style={[styles.description, { color: TEXT_MUTED[variant] }]} numberOfLines={3}>
+            <Text
+              style={[styles.description, { color: TEXT_MUTED[variant] }]}
+              numberOfLines={3}
+            >
               {description}
             </Text>
           )}
@@ -130,7 +140,12 @@ const AdBanner = React.forwardRef<View, AdBannerProps>(
     }
 
     return (
-      <Animated.View ref={ref} entering={entering} style={containerStyle} {...props}>
+      <Animated.View
+        ref={ref}
+        entering={entering}
+        style={containerStyle}
+        {...props}
+      >
         {content}
       </Animated.View>
     );
@@ -152,14 +167,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   outlined: {
-    backgroundColor: Colors.background,
-    borderColor: Colors.primary,
+    backgroundColor: colors.background,
+    borderColor: colors.primary,
     borderWidth: 1,
     borderRadius: 12,
   },
   ghost: {
     backgroundColor: "rgba(255,255,255,0.5)",
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   inner: {
     flexDirection: "row",

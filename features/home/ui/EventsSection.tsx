@@ -1,7 +1,7 @@
 import MainButton from "@/components/shared/Button/MainButton";
 import { Text as AppText } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { CommunityEvent, CommunityEventType } from "@/types/community";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -22,10 +22,10 @@ const TYPE_CONFIG: Record<
   CommunityEventType,
   { label: string; icon: typeof Mic2; gradient: [string, string] }
 > = {
-  talk:     { label: "Talk",     icon: Mic2,        gradient: [Colors.secondaryDark, Colors.secondary] },
-  workshop: { label: "Workshop", icon: Wrench,      gradient: [Colors.primaryDark,   Colors.primary]   },
-  tutorial: { label: "Tutorial", icon: BookOpen,    gradient: [Colors.accentHover,   Colors.accent]    },
-  fair:     { label: "Fair",     icon: ShoppingBag, gradient: ["#2563eb",            Colors.info]      },
+  talk:     { label: "Talk",     icon: Mic2,        gradient: [colors.secondaryDark, colors.secondary] },
+  workshop: { label: "Workshop", icon: Wrench,      gradient: [colors.primaryDark,   colors.primary]   },
+  tutorial: { label: "Tutorial", icon: BookOpen,    gradient: [colors.accentHover,   colors.accent]    },
+  fair:     { label: "Fair",     icon: ShoppingBag, gradient: ["#2563eb",            colors.info]      },
 };
 
 // ─── Dummy data ───────────────────────────────────────────────────────────────
@@ -135,7 +135,7 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
 
         {/* Date */}
         <View style={styles.infoRow}>
-          <Calendar size={13} color={Colors.foregroundSecondary} strokeWidth={1.75} />
+          <Calendar size={13} color={colors.foregroundSecondary} strokeWidth={1.75} />
           <Text style={styles.infoText}>{event.date}</Text>
           <Text style={styles.infoSep}>·</Text>
           <Text style={styles.infoText}>{event.time}</Text>
@@ -144,8 +144,8 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
         {/* Location */}
         <View style={styles.infoRow}>
           {event.isOnline
-            ? <Wifi size={13} color={Colors.foregroundSecondary} strokeWidth={1.75} />
-            : <MapPin size={13} color={Colors.foregroundSecondary} strokeWidth={1.75} />
+            ? <Wifi size={13} color={colors.foregroundSecondary} strokeWidth={1.75} />
+            : <MapPin size={13} color={colors.foregroundSecondary} strokeWidth={1.75} />
           }
           <Text style={styles.infoText} numberOfLines={1}>{event.location}</Text>
         </View>
@@ -156,7 +156,7 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
         <View style={styles.capacityRow}>
           <Users
             size={12}
-            color={almostFull ? Colors.danger : Colors.foregroundTertiary}
+            color={almostFull ? colors.danger : colors.foregroundTertiary}
             strokeWidth={1.75}
           />
           <Text style={[styles.capacityText, almostFull && styles.capacityDanger]}>
@@ -168,7 +168,7 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
                 styles.barFill,
                 {
                   width: `${fillPct}%` as any,
-                  backgroundColor: almostFull ? Colors.danger : cfg.gradient[1],
+                  backgroundColor: almostFull ? colors.danger : cfg.gradient[1],
                 },
               ]}
             />
@@ -239,11 +239,11 @@ const styles = StyleSheet.create({
   // ── Card ──────────────────────────────────────────────────────────────────
   card: {
     width: 240,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     elevation: 3,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
     lineHeight: 20,
     marginBottom: 2,
   },
@@ -302,17 +302,17 @@ const styles = StyleSheet.create({
   infoText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     flexShrink: 1,
   },
   infoSep: {
     fontSize: 12,
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
   },
   organizer: {
     fontSize: 11,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     marginTop: 2,
   },
 
@@ -326,16 +326,16 @@ const styles = StyleSheet.create({
   capacityText: {
     fontSize: 11,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     minWidth: 72,
   },
   capacityDanger: {
-    color: Colors.danger,
+    color: colors.danger,
   },
   barTrack: {
     flex: 1,
     height: 4,
-    backgroundColor: Colors.borderLight,
+    backgroundColor: colors.borderLight,
     borderRadius: 99,
     overflow: "hidden",
   },
@@ -351,16 +351,16 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   tag: {
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   tagText: {
     fontSize: 10,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
 });

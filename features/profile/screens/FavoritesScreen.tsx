@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useRouter } from "expo-router";
 import { Heart } from "lucide-react-native";
 import React from "react";
@@ -14,7 +14,7 @@ export default function FavouritesScreen() {
     <View style={styles.container}>
       <View style={styles.empty}>
         <View style={styles.iconWrap}>
-          <Heart size={48} color={Colors.primary} strokeWidth={1.5} />
+          <Heart size={48} color={colors.primary} strokeWidth={1.5} />
         </View>
         <Text style={styles.title}>{t("noFavorites")}</Text>
         <Text style={styles.subtitle}>{t("noFavoritesSubtitle")}</Text>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     width: 88,
     height: 88,
     borderRadius: 44,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingVertical: 12,
     paddingHorizontal: 24,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 10,
   },
   buttonText: {

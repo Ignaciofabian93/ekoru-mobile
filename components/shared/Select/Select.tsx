@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Check, ChevronDown, Circle, type LucideIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -88,25 +88,25 @@ interface VariantStyle {
 
 const VARIANT_MAP: Record<Variant, VariantStyle> = {
   default: {
-    bg: Colors.inputBg,
-    borderColor: Colors.inputBorder,
+    bg: colors.inputBg,
+    borderColor: colors.inputBorder,
     borderWidth: 2,
-    focusedBorderColor: Colors.inputBorderFocus,
-    errorBorderColor: Colors.danger,
+    focusedBorderColor: colors.inputBorderFocus,
+    errorBorderColor: colors.danger,
   },
   filled: {
-    bg: Colors.backgroundSecondary,
+    bg: colors.backgroundSecondary,
     borderColor: "transparent",
     borderWidth: 2,
-    focusedBorderColor: Colors.inputBorderFocus,
-    errorBorderColor: Colors.danger,
+    focusedBorderColor: colors.inputBorderFocus,
+    errorBorderColor: colors.danger,
   },
   outline: {
     bg: "transparent",
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
     borderWidth: 2,
-    focusedBorderColor: Colors.primaryActive,
-    errorBorderColor: Colors.danger,
+    focusedBorderColor: colors.primaryActive,
+    errorBorderColor: colors.danger,
   },
 };
 
@@ -259,7 +259,7 @@ const Select = React.forwardRef<View, SelectProps>(
             <View style={styles.leftIconWrap}>
               <LeftIcon
                 size={s.iconSize}
-                color={isOpen ? Colors.primary : Colors.foregroundTertiary}
+                color={isOpen ? colors.primary : colors.foregroundTertiary}
                 strokeWidth={2}
               />
             </View>
@@ -289,10 +289,10 @@ const Select = React.forwardRef<View, SelectProps>(
               size={s.iconSize}
               color={
                 hasError
-                  ? Colors.danger
+                  ? colors.danger
                   : isOpen
-                    ? Colors.primary
-                    : Colors.foregroundTertiary
+                    ? colors.primary
+                    : colors.foregroundTertiary
               }
               strokeWidth={2}
             />
@@ -330,7 +330,7 @@ const Select = React.forwardRef<View, SelectProps>(
                 {searchEnabled && (
                   <TextInput
                     placeholder="Search..."
-                    placeholderTextColor={Colors.inputPlaceholder}
+                    placeholderTextColor={colors.inputPlaceholder}
                     value={search}
                     onChangeText={setSearch}
                     style={styles.searchInput}
@@ -376,7 +376,7 @@ const Select = React.forwardRef<View, SelectProps>(
                             {isSelected && (
                               <Check
                                 size={16}
-                                color={Colors.primary}
+                                color={colors.primary}
                                 strokeWidth={2.5}
                               />
                             )}
@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   trigger: {
     flexDirection: "row",
@@ -430,16 +430,16 @@ const styles = StyleSheet.create({
   },
   triggerText: {
     fontFamily: "Cabin_400Regular",
-    color: Colors.inputText,
+    color: colors.inputText,
     flex: 1,
   },
   placeholder: {
-    color: Colors.inputPlaceholder,
+    color: colors.inputPlaceholder,
   },
   errorText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.danger,
+    color: colors.danger,
   },
   // Dropdown
   backdrop: {
@@ -447,9 +447,9 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     position: "absolute",
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1.5,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     borderRadius: 12,
     overflow: "hidden",
     maxHeight: 320,
@@ -465,24 +465,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.borderLight,
-    color: Colors.inputText,
+    borderBottomColor: colors.borderLight,
+    color: colors.inputText,
   },
   list: {
     maxHeight: 268,
   },
   separator: {
     height: 1,
-    backgroundColor: Colors.borderLight,
+    backgroundColor: colors.borderLight,
   },
   option: {
     overflow: "hidden",
   },
   optionSelected: {
-    backgroundColor: `${Colors.primary}1A`,
+    backgroundColor: `${colors.primary}1A`,
   },
   optionPressed: {
-    backgroundColor: `${Colors.primary}0D`,
+    backgroundColor: `${colors.primary}0D`,
   },
   optionContent: {
     flexDirection: "row",
@@ -493,21 +493,21 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontFamily: "Cabin_400Regular",
-    color: Colors.foreground,
+    color: colors.foreground,
     fontSize: 15,
     lineHeight: 20,
     flex: 1,
   },
   optionTextSelected: {
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primary,
+    color: colors.primary,
   },
   emptyText: {
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     fontStyle: "italic",
   },
 });

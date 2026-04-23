@@ -1,5 +1,5 @@
-import Colors from "@/constants/Colors";
 import { Text } from "@/components/shared/Text/Text";
+import { colors } from "@/design/tokens";
 import {
   Bookmark,
   ChevronRight,
@@ -64,7 +64,7 @@ const TAG_COLORS: Record<string, string> = {
   Lifestyle: "#10b981",
   Policy: "#6366f1",
   Tech: "#3b82f6",
-  Tips: Colors.primary,
+  Tips: colors.primary,
   Climate: "#f59e0b",
 };
 
@@ -78,7 +78,7 @@ export default function BlogScreen() {
       {/* Search */}
       <View style={styles.searchRow}>
         <View style={styles.searchBox}>
-          <Search size={16} color={Colors.foregroundTertiary} strokeWidth={2} />
+          <Search size={16} color={colors.foregroundTertiary} strokeWidth={2} />
           <Text size="sm" color="tertiary">
             Search articles...
           </Text>
@@ -116,11 +116,11 @@ export default function BlogScreen() {
       <Pressable style={styles.featuredCard}>
         {/* Image placeholder */}
         <View style={styles.featuredImage}>
-          <TreePine size={48} color={Colors.primary} strokeWidth={1} />
+          <TreePine size={48} color={colors.primary} strokeWidth={1} />
         </View>
         <View style={styles.featuredBody}>
           <View style={styles.featuredTag}>
-            <Leaf size={11} color={Colors.primaryDark} strokeWidth={2} />
+            <Leaf size={11} color={colors.primaryDark} strokeWidth={2} />
             <Text size="xs" weight="semibold" style={styles.featuredTagLabel}>
               Editor's Pick
             </Text>
@@ -136,7 +136,11 @@ export default function BlogScreen() {
               {FEATURED_POST.author}
             </Text>
             <View style={styles.metaDot} />
-            <Clock size={11} color={Colors.foregroundTertiary} strokeWidth={2} />
+            <Clock
+              size={11}
+              color={colors.foregroundTertiary}
+              strokeWidth={2}
+            />
             <Text size="xs" color="tertiary">
               {FEATURED_POST.readTime}
             </Text>
@@ -150,7 +154,7 @@ export default function BlogScreen() {
           Latest Articles
         </Text>
         <Pressable style={styles.trendingBtn}>
-          <TrendingUp size={13} color={Colors.primary} strokeWidth={2} />
+          <TrendingUp size={13} color={colors.primary} strokeWidth={2} />
           <Text size="xs" color="primary" weight="medium">
             Trending
           </Text>
@@ -161,19 +165,24 @@ export default function BlogScreen() {
           <Pressable key={post.id} style={styles.postCard}>
             {/* Thumbnail */}
             <View style={styles.postThumb}>
-              <Newspaper size={20} color={Colors.primary} strokeWidth={1.5} />
+              <Newspaper size={20} color={colors.primary} strokeWidth={1.5} />
             </View>
             <View style={styles.postInfo}>
               <View
                 style={[
                   styles.postTag,
-                  { backgroundColor: `${TAG_COLORS[post.tag] ?? Colors.primary}18` },
+                  {
+                    backgroundColor: `${TAG_COLORS[post.tag] ?? colors.primary}18`,
+                  },
                 ]}
               >
                 <Text
                   size="xs"
                   weight="semibold"
-                  style={{ color: TAG_COLORS[post.tag] ?? Colors.primary, fontSize: 10 }}
+                  style={{
+                    color: TAG_COLORS[post.tag] ?? colors.primary,
+                    fontSize: 10,
+                  }}
                 >
                   {post.tag}
                 </Text>
@@ -186,7 +195,11 @@ export default function BlogScreen() {
                   {post.date}
                 </Text>
                 <View style={styles.metaDot} />
-                <Clock size={11} color={Colors.foregroundTertiary} strokeWidth={2} />
+                <Clock
+                  size={11}
+                  color={colors.foregroundTertiary}
+                  strokeWidth={2}
+                />
                 <Text size="xs" color="tertiary">
                   {post.readTime}
                 </Text>
@@ -194,10 +207,18 @@ export default function BlogScreen() {
             </View>
             <View style={styles.postActions}>
               <Pressable hitSlop={8}>
-                <Bookmark size={16} color={Colors.foregroundTertiary} strokeWidth={1.75} />
+                <Bookmark
+                  size={16}
+                  color={colors.foregroundTertiary}
+                  strokeWidth={1.75}
+                />
               </Pressable>
               <Pressable hitSlop={8}>
-                <Share2 size={16} color={Colors.foregroundTertiary} strokeWidth={1.75} />
+                <Share2
+                  size={16}
+                  color={colors.foregroundTertiary}
+                  strokeWidth={1.75}
+                />
               </Pressable>
             </View>
           </Pressable>
@@ -206,23 +227,23 @@ export default function BlogScreen() {
 
       {/* Newsletter CTA */}
       <Pressable style={styles.newsletterCard}>
-        <Leaf size={20} color={Colors.primaryDark} strokeWidth={1.5} />
+        <Leaf size={20} color={colors.primaryDark} strokeWidth={1.5} />
         <View style={{ flex: 1 }}>
-          <Text size="sm" weight="bold" style={{ color: Colors.primaryDark }}>
+          <Text size="sm" weight="bold" style={{ color: colors.primaryDark }}>
             Weekly Eco Digest
           </Text>
-          <Text size="xs" style={{ color: Colors.primaryDark, opacity: 0.8 }}>
+          <Text size="xs" style={{ color: colors.primaryDark, opacity: 0.8 }}>
             Get the latest green news in your inbox
           </Text>
         </View>
-        <ChevronRight size={18} color={Colors.primaryDark} strokeWidth={2} />
+        <ChevronRight size={18} color={colors.primaryDark} strokeWidth={2} />
       </Pressable>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { paddingBottom: 32 },
   searchRow: {
     paddingHorizontal: 16,
@@ -232,12 +253,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 40,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   topicsRow: {
     paddingHorizontal: 16,
@@ -248,15 +269,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 20,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   topicChipActive: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderColor: "transparent",
   },
-  chipLabel: { color: Colors.foregroundSecondary },
+  chipLabel: { color: colors.foregroundSecondary },
   chipLabelActive: { color: "#fff" },
   sectionHeader: {
     flexDirection: "row",
@@ -273,15 +294,15 @@ const styles = StyleSheet.create({
   },
   featuredCard: {
     marginHorizontal: 16,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   featuredImage: {
     height: 160,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -294,14 +315,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
     alignSelf: "flex-start",
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
-  featuredTagLabel: { color: Colors.primaryDark, fontSize: 10 },
+  featuredTagLabel: { color: colors.primaryDark, fontSize: 10 },
   postMeta: {
     flexDirection: "row",
     alignItems: "center",
@@ -312,7 +333,7 @@ const styles = StyleSheet.create({
     width: 3,
     height: 3,
     borderRadius: 2,
-    backgroundColor: Colors.foregroundTertiary,
+    backgroundColor: colors.foregroundTertiary,
   },
   postList: {
     paddingHorizontal: 16,
@@ -322,21 +343,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   postThumb: {
     width: 60,
     height: 60,
     borderRadius: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   postInfo: { flex: 1, gap: 5 },
   postTag: {
@@ -356,9 +377,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 24,
     padding: 16,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
 });

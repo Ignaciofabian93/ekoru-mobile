@@ -1,7 +1,7 @@
 import PaymentCard, {
   type CardData,
 } from "@/components/PaymentCard/PaymentCard";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useSeller } from "@/store/useAuthStore";
 import { BadgeCheck, ChevronDown, ChevronUp, CreditCard } from "lucide-react-native";
 import React, { useState } from "react";
@@ -121,7 +121,7 @@ function PlanCard({
       )}
       {isCurrent && (
         <View style={[styles.popularBadge, styles.currentBadge]}>
-          <BadgeCheck size={11} color={Colors.primaryDark} strokeWidth={2.5} />
+          <BadgeCheck size={11} color={colors.primaryDark} strokeWidth={2.5} />
           <Text style={[styles.popularBadgeText, styles.currentBadgeText]}>
             Current Plan
           </Text>
@@ -209,7 +209,7 @@ export default function SubscriptionScreen() {
               </Text>
             </View>
             <View style={styles.currentPlanBadge}>
-              <BadgeCheck size={20} color={Colors.primary} strokeWidth={2} />
+              <BadgeCheck size={20} color={colors.primary} strokeWidth={2} />
               <Text style={styles.currentPlanBadgeText}>Active</Text>
             </View>
           </View>
@@ -235,7 +235,7 @@ export default function SubscriptionScreen() {
         {savedCard && !showPaymentForm ? (
           <View style={styles.savedCardRow}>
             <View style={styles.savedCardIcon}>
-              <CreditCard size={20} color={Colors.primary} strokeWidth={1.8} />
+              <CreditCard size={20} color={colors.primary} strokeWidth={1.8} />
             </View>
             <View style={styles.savedCardInfo}>
               <Text style={styles.savedCardNumber}>{maskedCardNumber}</Text>
@@ -257,9 +257,9 @@ export default function SubscriptionScreen() {
           onPress={() => setShowPaymentForm((v) => !v)}
         >
           {showPaymentForm ? (
-            <ChevronUp size={16} color={Colors.primaryDark} strokeWidth={2} />
+            <ChevronUp size={16} color={colors.primaryDark} strokeWidth={2} />
           ) : (
-            <ChevronDown size={16} color={Colors.primaryDark} strokeWidth={2} />
+            <ChevronDown size={16} color={colors.primaryDark} strokeWidth={2} />
           )}
           <Text style={styles.toggleFormText}>
             {showPaymentForm
@@ -285,7 +285,7 @@ export default function SubscriptionScreen() {
 const styles = StyleSheet.create({
   scroll: {
     flex: 1,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
   },
   container: {
     padding: 20,
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   currentPlanBadgeText: {
     fontSize: 13,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
 
   // ── Plans ──────────────────────────────────────────────────────────────────
@@ -355,14 +355,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   planCardHighlighted: {
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
   },
   planCardCurrent: {
-    borderColor: Colors.secondary,
+    borderColor: colors.secondary,
   },
   popularBadge: {
     alignSelf: "flex-start",
-    backgroundColor: `${Colors.primary}20`,
+    backgroundColor: `${colors.primary}20`,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
@@ -371,16 +371,16 @@ const styles = StyleSheet.create({
   popularBadgeText: {
     fontSize: 11,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   currentBadge: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: `${Colors.secondary}20`,
+    backgroundColor: `${colors.secondary}20`,
   },
   currentBadgeText: {
-    color: Colors.secondaryDark,
+    color: colors.secondaryDark,
   },
   planHeader: {
     flexDirection: "row",
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
   planPrice: {
     fontSize: 20,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   planPeriod: {
     fontSize: 13,
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
   },
   featureText: {
     fontSize: 13,
@@ -433,11 +433,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     borderWidth: 1.5,
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
   },
   selectButtonHighlighted: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   selectButtonPressed: {
     opacity: 0.75,
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
   selectButtonText: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   selectButtonTextHighlighted: {
     color: "#fff",
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -492,12 +492,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 7,
     borderRadius: 8,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
   },
   editCardText: {
     fontSize: 13,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   toggleFormButton: {
     flexDirection: "row",
@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
   toggleFormText: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   cardFormWrapper: {
     padding: 16,

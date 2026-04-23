@@ -1,7 +1,7 @@
 import Input from "@/components/shared/Input/Input";
 import Select, { type Option } from "@/components/shared/Select/Select";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { PHONE_PREFIXES, isoToFlag } from "@/constants/phonePrefixes";
 import type { ContactMethod } from "@/types/enums";
 import { useTranslation } from "react-i18next";
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   phoneLabel: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   phoneRow: {
     flexDirection: "row",

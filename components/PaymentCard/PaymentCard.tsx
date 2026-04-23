@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { Lock } from "lucide-react-native";
 import React, { useRef, useState } from "react";
@@ -181,7 +181,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
         <TextInput
           style={styles.input}
           placeholder="1234 5678 9012 3456"
-          placeholderTextColor={Colors.inputPlaceholder}
+          placeholderTextColor={colors.inputPlaceholder}
           keyboardType="numeric"
           maxLength={19}
           value={
@@ -203,7 +203,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
         <TextInput
           style={styles.input}
           placeholder="Full Name"
-          placeholderTextColor={Colors.inputPlaceholder}
+          placeholderTextColor={colors.inputPlaceholder}
           autoCapitalize="characters"
           value={card.holder}
           onChangeText={(v) =>
@@ -218,7 +218,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
             <TextInput
               style={styles.input}
               placeholder="MM/YY"
-              placeholderTextColor={Colors.inputPlaceholder}
+              placeholderTextColor={colors.inputPlaceholder}
               keyboardType="numeric"
               maxLength={5}
               value={formatExpiry(card.expiry.replace(/\D/g, ""))}
@@ -234,7 +234,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
             <TextInput
               style={styles.input}
               placeholder="•••"
-              placeholderTextColor={Colors.inputPlaceholder}
+              placeholderTextColor={colors.inputPlaceholder}
               keyboardType="numeric"
               maxLength={4}
               secureTextEntry
@@ -431,13 +431,13 @@ const styles = StyleSheet.create({
   input: {
     height: 48,
     borderWidth: 1.5,
-    borderColor: Colors.inputBorder,
+    borderColor: colors.inputBorder,
     borderRadius: 10,
     paddingHorizontal: 14,
     fontFamily: "Cabin_500Medium",
     fontSize: 15,
-    color: Colors.inputText,
-    backgroundColor: Colors.inputBg,
+    color: colors.inputText,
+    backgroundColor: colors.inputBg,
   },
   inputRow: {
     flexDirection: "row",
@@ -454,10 +454,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 14,
     borderRadius: 12,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
   },
   saveButtonPressed: {
-    backgroundColor: Colors.primaryActive,
+    backgroundColor: colors.primaryActive,
   },
   saveButtonText: {
     fontFamily: "Cabin_700Bold",

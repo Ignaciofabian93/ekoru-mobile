@@ -1,6 +1,6 @@
-import Colors from "@/constants/Colors";
-import { useIsAuthenticated } from "@/store/useAuthStore";
 import { Text } from "@/components/shared/Text/Text";
+import { colors } from "@/design/tokens";
+import { useIsAuthenticated } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
 import {
   Bell,
@@ -16,7 +16,7 @@ import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 const PREVIEW_ITEMS = [
   {
     icon: PackageCheck,
-    color: Colors.primary,
+    color: colors.primary,
     title: "Order updates",
     desc: "Track every step of your purchases in real time.",
   },
@@ -28,13 +28,13 @@ const PREVIEW_ITEMS = [
   },
   {
     icon: MessageCircle,
-    color: Colors.secondary,
+    color: colors.secondary,
     title: "Messages",
     desc: "Replies from sellers and community members.",
   },
   {
     icon: ShoppingBag,
-    color: Colors.accent,
+    color: colors.accent,
     title: "New listings",
     desc: "Items matching your interests posted nearby.",
   },
@@ -57,12 +57,17 @@ function GuestNotificationsScreen() {
     >
       <View style={styles.heroBox}>
         <View style={styles.heroIconRing}>
-          <Bell size={36} color={Colors.primary} strokeWidth={1.5} />
+          <Bell size={36} color={colors.primary} strokeWidth={1.5} />
         </View>
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
           Stay in the loop
         </Text>
-        <Text size="sm" color="secondary" align="center" style={styles.heroSubtitle}>
+        <Text
+          size="sm"
+          color="secondary"
+          align="center"
+          style={styles.heroSubtitle}
+        >
           Create a free account to receive personalised alerts for everything
           that matters to you.
         </Text>
@@ -126,8 +131,13 @@ export default function NotificationsScreen() {
   // TODO: Replace with real notifications list
   return (
     <View style={styles.emptyContainer}>
-      <Bell size={40} color={Colors.foregroundMuted} strokeWidth={1.25} />
-      <Text size="base" weight="semibold" color="secondary" style={{ marginTop: 12 }}>
+      <Bell size={40} color={colors.foregroundMuted} strokeWidth={1.25} />
+      <Text
+        size="base"
+        weight="semibold"
+        color="secondary"
+        style={{ marginTop: 12 }}
+      >
         No notifications yet
       </Text>
       <Text size="sm" color="tertiary" align="center" style={{ marginTop: 4 }}>
@@ -140,7 +150,7 @@ export default function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   content: {
     paddingBottom: 40,
@@ -155,12 +165,12 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   heroTitle: {
     marginBottom: 10,
@@ -176,11 +186,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 14,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   previewIconBox: {
     width: 44,
@@ -199,7 +209,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   primaryBtn: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 12,
     paddingVertical: 15,
     alignItems: "center",
@@ -217,6 +227,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 32,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
 });

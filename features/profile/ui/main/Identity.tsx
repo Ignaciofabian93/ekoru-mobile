@@ -3,7 +3,7 @@ import { useDisplayName, useSeller } from "@/store/useAuthStore";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { NAMESPACE } from "./i18n";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Star } from "lucide-react-native";
 
 export default function Identity() {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   badgeRow: { flexDirection: "row", gap: 8, marginBottom: 8 },
   badge: {
-    backgroundColor: `${Colors.primary}22`,
+    backgroundColor: `${colors.primary}22`,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 12,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   badgeLevel: {
     flexDirection: "row",

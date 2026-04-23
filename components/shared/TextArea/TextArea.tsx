@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     height: 128,
   },
   inputFocused: {
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
     borderWidth: 1.5,
   },
 });

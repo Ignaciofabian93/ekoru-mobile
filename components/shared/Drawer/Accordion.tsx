@@ -14,7 +14,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { NAMESPACE } from "./i18n";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -226,7 +226,7 @@ function AccordionSection({
           onPress={() => onNavigate(section.baseRoute)}
         >
           <View style={styles.iconWrap}>
-            <Icon size={18} strokeWidth={1.5} color={Colors.primary} />
+            <Icon size={18} strokeWidth={1.5} color={colors.primary} />
           </View>
           <Text style={styles.menuLabel}>{t(section.tKey)}</Text>
         </Pressable>
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
   },

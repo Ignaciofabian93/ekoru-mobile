@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import React from "react";
 import { Platform, StyleSheet, View, type TextStyle } from "react-native";
 import Animated from "react-native-reanimated";
@@ -52,14 +52,14 @@ const WEIGHT_MAP: Record<Weight, string> = {
 };
 
 const COLOR_MAP: Record<TextColor, string> = {
-  default: Colors.foreground,
-  primary: Colors.primary,
-  secondary: Colors.foregroundSecondary,
-  tertiary: Colors.foregroundTertiary,
-  muted: Colors.foregroundMuted,
-  error: Colors.danger,
-  success: Colors.success,
-  warning: Colors.warning,
+  default: colors.foreground,
+  primary: colors.primary,
+  secondary: colors.foregroundSecondary,
+  tertiary: colors.foregroundTertiary,
+  muted: colors.foregroundMuted,
+  error: colors.danger,
+  success: colors.success,
+  warning: colors.warning,
 };
 
 // Each variant can override size / weight defaults
@@ -98,7 +98,7 @@ const Text = React.forwardRef<React.ComponentRef<typeof Animated.Text>, TextProp
       ...(variant === "blockquote" && { fontStyle: "italic", paddingLeft: 12 }),
       ...(variant === "code" && {
         fontFamily: Platform.OS === "ios" ? "Courier New" : "monospace",
-        backgroundColor: Colors.backgroundSecondary,
+        backgroundColor: colors.backgroundSecondary,
         borderRadius: 4,
         paddingHorizontal: 4,
         paddingVertical: 2,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   blockquoteBorder: {
     width: 3,
     borderRadius: 2,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
   },
 });
 

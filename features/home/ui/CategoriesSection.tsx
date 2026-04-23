@@ -1,6 +1,6 @@
 import { Text as AppText } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import {
@@ -44,7 +44,7 @@ const CATEGORIES: Record<CategoryId, Category> = {
     description: "Buy & sell pre-loved sustainable items",
     Icon: Package2,
     route: "/(tabs)/marketplace",
-    gradient: [Colors.primaryDark, "#3f6212", Colors.primary],
+    gradient: [colors.primaryDark, "#3f6212", colors.primary],
     tags: ["Clothing", "Bikes", "Plants", "Electronics"],
     topItems: [
       { name: "Recycled Wool Jacket", value: "$45" },
@@ -59,7 +59,7 @@ const CATEGORIES: Record<CategoryId, Category> = {
     description: "Discover verified sustainable shops near you",
     Icon: Store,
     route: "/(tabs)/stores",
-    gradient: [Colors.secondaryDark, Colors.secondary],
+    gradient: [colors.secondaryDark, colors.secondary],
     tags: ["Organic", "Zero Waste", "Fair Trade"],
     topItems: [
       { name: "Verde Market", value: "⭐ 4.9" },
@@ -74,7 +74,7 @@ const CATEGORIES: Record<CategoryId, Category> = {
     description: "Repair, rent & swap — give things a second life",
     Icon: ScanBarcode,
     route: "/(tabs)/services",
-    gradient: ["#92400e", Colors.accent],
+    gradient: ["#92400e", colors.accent],
     tags: ["Repair", "Rental", "Swap", "Upcycle"],
     topItems: [
       { name: "Bike Repair Workshop", value: "⭐ 4.9" },

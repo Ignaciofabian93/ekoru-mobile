@@ -1,7 +1,7 @@
 import { Pagination } from "@/components/shared/Pagination/Pagination";
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { router } from "expo-router";
 import { Leaf, MapPin, ShieldCheck, Star, Store } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -38,7 +38,7 @@ export default function StoreGrid({
     return (
       <View style={styles.empty}>
         <View style={styles.emptyIcon}>
-          <Leaf size={32} color={Colors.primary} strokeWidth={1.5} />
+          <Leaf size={32} color={colors.primary} strokeWidth={1.5} />
         </View>
         <Title level="h5" weight="semibold" align="center">
           {emptyMessage ?? t("noStoresFound")}
@@ -69,7 +69,7 @@ export default function StoreGrid({
             }
           >
             <View style={styles.avatar}>
-              <Store size={28} color={Colors.primary} strokeWidth={1.5} />
+              <Store size={28} color={colors.primary} strokeWidth={1.5} />
             </View>
 
             <View style={styles.info}>
@@ -85,7 +85,7 @@ export default function StoreGrid({
                 {store.verified && (
                   <ShieldCheck
                     size={15}
-                    color={Colors.primary}
+                    color={colors.primary}
                     strokeWidth={2}
                   />
                 )}
@@ -97,8 +97,8 @@ export default function StoreGrid({
                 <View style={styles.metaRow}>
                   <Star
                     size={12}
-                    color={Colors.accent}
-                    fill={Colors.accent}
+                    color={colors.accent}
+                    fill={colors.accent}
                     strokeWidth={0}
                   />
                   <Text size="xs" weight="medium">
@@ -111,7 +111,7 @@ export default function StoreGrid({
                 <View style={styles.metaRow}>
                   <MapPin
                     size={12}
-                    color={Colors.foregroundTertiary}
+                    color={colors.foregroundTertiary}
                     strokeWidth={2}
                   />
                   <Text size="xs" color="tertiary">
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   cardPressed: {
     opacity: 0.85,
@@ -175,11 +175,11 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 12,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   info: {
     flex: 1,
@@ -204,13 +204,13 @@ const styles = StyleSheet.create({
   visitBtn: {
     paddingHorizontal: 14,
     paddingVertical: 7,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   visitLabel: {
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   empty: {
     marginTop: 60,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,

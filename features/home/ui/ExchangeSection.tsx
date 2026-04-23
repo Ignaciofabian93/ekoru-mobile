@@ -1,7 +1,7 @@
 import MainButton from "@/components/shared/Button/MainButton";
 import { Text as AppText } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { ProductCondition } from "@/types/enums";
 import type { Product } from "@/types/product";
 import { displaySellerName } from "@/utils/displaySellerName";
@@ -30,13 +30,13 @@ const CONDITION_LABEL: Record<ProductCondition, string> = {
 };
 
 const CONDITION_COLOR: Record<ProductCondition, string> = {
-  NEW: Colors.success,
-  OPEN_BOX: Colors.info,
-  LIKE_NEW: Colors.success,
-  FAIR: Colors.accent,
-  POOR: Colors.danger,
-  FOR_PARTS: Colors.danger,
-  REFURBISHED: Colors.primary,
+  NEW: colors.success,
+  OPEN_BOX: colors.info,
+  LIKE_NEW: colors.success,
+  FAIR: colors.accent,
+  POOR: colors.danger,
+  FOR_PARTS: colors.danger,
+  REFURBISHED: colors.primary,
 };
 
 // ─── Exchange card ────────────────────────────────────────────────────────────
@@ -60,7 +60,7 @@ function ExchangeCard({
     >
       {/* Gradient header */}
       <LinearGradient
-        colors={[Colors.accentHover, Colors.accent]}
+        colors={[colors.accentHover, colors.accent]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.cardHeader}
@@ -113,7 +113,7 @@ function ExchangeCard({
               <>
                 <MapPin
                   size={11}
-                  color={Colors.foregroundTertiary}
+                  color={colors.foregroundTertiary}
                   strokeWidth={1.5}
                 />
                 <Text style={styles.locationText} numberOfLines={1}>
@@ -157,7 +157,7 @@ export default function ExchangeSection() {
 
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator color={Colors.primary} />
+          <ActivityIndicator color={colors.primary} />
         </View>
       ) : (
         <ScrollView
@@ -209,11 +209,11 @@ const styles = StyleSheet.create({
   },
   card: {
     width: 200,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 14,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     elevation: 2,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -245,14 +245,14 @@ const styles = StyleSheet.create({
   offeringLabel: {
     fontSize: 10,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   offeringName: {
     fontSize: 14,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   conditionBadge: {
     alignSelf: "flex-start",
@@ -268,13 +268,13 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: StyleSheet.hairlineWidth,
-    backgroundColor: Colors.borderLight,
+    backgroundColor: colors.borderLight,
     marginVertical: 6,
   },
   descriptionText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     lineHeight: 17,
   },
   cardFooter: {
@@ -286,12 +286,12 @@ const styles = StyleSheet.create({
   locationText: {
     fontSize: 11,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     flex: 1,
   },
   ownerText: {
     fontSize: 11,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
   },
 });

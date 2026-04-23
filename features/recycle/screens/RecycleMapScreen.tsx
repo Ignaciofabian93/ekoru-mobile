@@ -1,7 +1,13 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import * as Location from "expo-location";
 import { Leaf, MapPin, Navigation, X } from "lucide-react-native";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -72,7 +78,9 @@ const OVERPASS_ENDPOINTS = [
   "https://overpass.kumi.systems/api/interpreter",
 ];
 
-function parseOverpassElements(json: { elements?: Record<string, unknown>[] }): RecyclePoint[] {
+function parseOverpassElements(json: {
+  elements?: Record<string, unknown>[];
+}): RecyclePoint[] {
   return (json.elements ?? []).map((el): RecyclePoint => {
     const tags = (el.tags ?? {}) as Record<string, string>;
     const materials = MATERIAL_KEYS.filter(
@@ -128,7 +136,7 @@ async function fetchRecyclePoints(
 function PermissionDenied() {
   return (
     <View style={styles.centered}>
-      <MapPin size={52} color={Colors.foregroundMuted} strokeWidth={1.5} />
+      <MapPin size={52} color={colors.foregroundMuted} strokeWidth={1.5} />
       <Text style={styles.stateTitle}>Permiso de ubicación requerido</Text>
       <Text style={styles.stateSubtitle}>
         Activa el permiso de ubicación en Configuración para encontrar puntos de
@@ -141,7 +149,7 @@ function PermissionDenied() {
 function ErrorState({ onRetry }: { onRetry: () => void }) {
   return (
     <View style={styles.centered}>
-      <X size={52} color={Colors.danger} strokeWidth={1.5} />
+      <X size={52} color={colors.danger} strokeWidth={1.5} />
       <Text style={styles.stateTitle}>No se pudo cargar</Text>
       <Text style={styles.stateSubtitle}>
         Revisa tu conexión e intenta de nuevo.
@@ -194,13 +202,13 @@ function PointSheet({ point, onClose }: PointSheetProps) {
     <View style={styles.sheet}>
       <View style={styles.sheetHeader}>
         <View style={styles.sheetTitleRow}>
-          <Leaf size={16} color={Colors.primary} strokeWidth={2} />
+          <Leaf size={16} color={colors.primary} strokeWidth={2} />
           <Text style={styles.sheetTitle} numberOfLines={2}>
             {point.name ?? "Punto de Reciclaje"}
           </Text>
         </View>
         <Pressable onPress={onClose} hitSlop={8}>
-          <X size={18} color={Colors.foregroundSecondary} strokeWidth={2} />
+          <X size={18} color={colors.foregroundSecondary} strokeWidth={2} />
         </Pressable>
       </View>
 
@@ -342,7 +350,7 @@ export default function RecycleMapScreen() {
       {(status === "loading" || isFetching) && (
         <View style={styles.loadingOverlay}>
           <View style={styles.loadingBadge}>
-            <ActivityIndicator size="small" color={Colors.primary} />
+            <ActivityIndicator size="small" color={colors.primary} />
             <Text style={styles.loadingText}>
               {status === "loading"
                 ? "Obteniendo ubicación..."
@@ -371,7 +379,7 @@ export default function RecycleMapScreen() {
           onPress={centerOnUser}
           hitSlop={8}
         >
-          <Navigation size={20} color={Colors.primary} strokeWidth={2} />
+          <Navigation size={20} color={colors.primary} strokeWidth={2} />
         </Pressable>
       )}
 
@@ -390,7 +398,7 @@ export default function RecycleMapScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   map: {
     flex: 1,
@@ -402,25 +410,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 32,
     gap: 12,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   stateTitle: {
     fontSize: 17,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
     textAlign: "center",
     marginTop: 8,
   },
   stateSubtitle: {
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     textAlign: "center",
     lineHeight: 21,
   },
   retryBtn: {
     marginTop: 8,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 10,
@@ -435,7 +443,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
@@ -458,7 +466,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 24,
@@ -471,13 +479,13 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 13,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   // Count badge
   countBadge: {
     position: "absolute",
     alignSelf: "center",
-    backgroundColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 20,
@@ -499,11 +507,11 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
@@ -516,7 +524,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingHorizontal: 16,
@@ -544,27 +552,27 @@ const styles = StyleSheet.create({
   sheetTitle: {
     fontSize: 16,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
     flex: 1,
   },
   sheetOperator: {
     fontSize: 13,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   sheetHours: {
     fontSize: 13,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   materialList: {
     gap: 6,
     paddingVertical: 2,
   },
   materialTag: {
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderWidth: 1,
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
@@ -572,12 +580,12 @@ const styles = StyleSheet.create({
   materialTagText: {
     fontSize: 12,
     fontFamily: "Cabin_500Medium",
-    color: Colors.primary,
+    color: colors.primary,
   },
   noMaterials: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     fontStyle: "italic",
   },
 });

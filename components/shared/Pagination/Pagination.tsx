@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import React from "react";
 import {
@@ -112,7 +112,7 @@ const Pagination = React.forwardRef<View, PaginationProps>(
               currentPage === 1 && styles.chevronBtnDisabled,
             ]}
           >
-            <ChevronLeft size={20} color={Colors.foreground} strokeWidth={2} />
+            <ChevronLeft size={20} color={colors.foreground} strokeWidth={2} />
           </Pressable>
 
           {/* Page number buttons — horizontal scroll handles overflow */}
@@ -158,7 +158,7 @@ const Pagination = React.forwardRef<View, PaginationProps>(
               currentPage === totalPages && styles.chevronBtnDisabled,
             ]}
           >
-            <ChevronRight size={20} color={Colors.foreground} strokeWidth={2} />
+            <ChevronRight size={20} color={colors.foreground} strokeWidth={2} />
           </Pressable>
         </View>
       </View>
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     gap: 12,
     marginVertical: 32,
     borderTopWidth: 1,
-    borderColor: Colors.borderStrong,
+    borderColor: colors.borderStrong,
     paddingTop: 8,
   },
   // Items-per-page row
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   rowsLabel: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     textTransform: "capitalize",
     letterSpacing: 0.6,
   },
@@ -203,11 +203,11 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 8,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   chevronBtnDisabled: {
     opacity: 0.35,
@@ -231,11 +231,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1.5,
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
   },
   pageBtnActive: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   pageBtnText: {
     fontSize: 14,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   },
   ellipsis: {
     fontSize: 14,
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     paddingHorizontal: 4,
     lineHeight: 36,
   },

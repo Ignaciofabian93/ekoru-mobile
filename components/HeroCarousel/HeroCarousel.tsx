@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   ArrowRight,
@@ -50,7 +50,7 @@ const SLIDES: SlideData[] = [
     label: "Marketplace",
     title: "Shop Sustainably",
     subtitle: "Discover pre-loved products that care for the planet",
-    gradient: [Colors.primaryDark, "#2d6a0f", Colors.primary],
+    gradient: [colors.primaryDark, "#2d6a0f", colors.primary],
     Icon: Leaf,
     cta: "Explore Now",
   },
@@ -59,7 +59,7 @@ const SLIDES: SlideData[] = [
     label: "Eco Stores",
     title: "Local & Verified",
     subtitle: "Shop from sustainable businesses in your community",
-    gradient: [Colors.secondaryDark, "#0c7b95", "#14b8a6"],
+    gradient: [colors.secondaryDark, "#0c7b95", "#14b8a6"],
     Icon: Store,
     cta: "Find Stores",
   },
@@ -77,7 +77,7 @@ const SLIDES: SlideData[] = [
     label: "Circular",
     title: "Close the Loop",
     subtitle: "Sell, swap & repair — give your items a second life",
-    gradient: [Colors.primaryDark, "#1e4d10", Colors.secondaryDark],
+    gradient: [colors.primaryDark, "#1e4d10", colors.secondaryDark],
     Icon: Footprints,
     cta: "Join Now",
   },

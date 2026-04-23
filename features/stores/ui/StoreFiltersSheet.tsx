@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -82,7 +82,7 @@ export default function StoreFiltersSheet({
             {t("filters")}
           </Title>
           <Pressable onPress={onClose} hitSlop={10}>
-            <X size={20} color={Colors.foreground} strokeWidth={2} />
+            <X size={20} color={colors.foreground} strokeWidth={2} />
           </Pressable>
         </View>
 
@@ -106,10 +106,10 @@ export default function StoreFiltersSheet({
                 setDraft((prev) => ({ ...prev, verified: v ? true : null }))
               }
               trackColor={{
-                false: Colors.backgroundTertiary,
-                true: Colors.primary,
+                false: colors.backgroundTertiary,
+                true: colors.primary,
               }}
-              thumbColor={Colors.surface}
+              thumbColor={colors.surface}
             />
           </View>
 
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
   },
   sheet: {
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: "80%",
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   content: {
     paddingHorizontal: 20,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   section: {
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   sectionLast: {
     borderBottomWidth: 0,
@@ -241,16 +241,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   chipActive: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderColor: "transparent",
   },
   chipText: {
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   chipTextActive: {
     color: "#fff",
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderStrong,
+    borderColor: colors.borderStrong,
   },
   applyBtn: {
     flex: 2,
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
   },
   applyLabel: {
     color: "#fff",

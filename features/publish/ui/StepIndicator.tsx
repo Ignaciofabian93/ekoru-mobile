@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -24,7 +24,7 @@ function StepDot({ active, done }: { active: boolean; done: boolean }) {
   const animatedStyle = useAnimatedStyle(() => ({
     width: withTiming(active ? 24 : 8, { duration: 250 }),
     backgroundColor: withTiming(
-      active || done ? Colors.primary : Colors.borderLight,
+      active || done ? colors.primary : colors.borderLight,
       { duration: 250 },
     ),
   }));

@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import useCartStore from "@/store/useCartStore";
 import { formatPrice } from "@/utils/formatPrice";
 import { useRouter } from "expo-router";
@@ -72,7 +72,7 @@ function Field({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor={Colors.inputPlaceholder}
+        placeholderTextColor={colors.inputPlaceholder}
         keyboardType={keyboardType}
         multiline={multiline}
         numberOfLines={multiline ? 3 : 1}
@@ -126,7 +126,7 @@ export default function CheckoutScreen() {
         {/* Delivery */}
         <View style={styles.section}>
           <SectionTitle
-            icon={<MapPin size={18} color={Colors.primary} strokeWidth={2} />}
+            icon={<MapPin size={18} color={colors.primary} strokeWidth={2} />}
             title="Datos de entrega"
           />
           <Field
@@ -166,7 +166,7 @@ export default function CheckoutScreen() {
         {/* Payment method */}
         <View style={styles.section}>
           <SectionTitle
-            icon={<Wallet size={18} color={Colors.primary} strokeWidth={2} />}
+            icon={<Wallet size={18} color={colors.primary} strokeWidth={2} />}
             title="Método de pago"
           />
           <View style={styles.paymentOptions}>
@@ -181,8 +181,8 @@ export default function CheckoutScreen() {
                 size={20}
                 color={
                   paymentMethod === "card"
-                    ? Colors.primary
-                    : Colors.foregroundTertiary
+                    ? colors.primary
+                    : colors.foregroundTertiary
                 }
                 strokeWidth={1.8}
               />
@@ -207,8 +207,8 @@ export default function CheckoutScreen() {
                 size={20}
                 color={
                   paymentMethod === "cash"
-                    ? Colors.primary
-                    : Colors.foregroundTertiary
+                    ? colors.primary
+                    : colors.foregroundTertiary
                 }
                 strokeWidth={1.8}
               />
@@ -227,7 +227,7 @@ export default function CheckoutScreen() {
         {/* Order Summary */}
         <View style={styles.section}>
           <SectionTitle
-            icon={<Package size={18} color={Colors.primary} strokeWidth={2} />}
+            icon={<Package size={18} color={colors.primary} strokeWidth={2} />}
             title="Resumen del pedido"
           />
           {items.map((item) => (
@@ -248,7 +248,7 @@ export default function CheckoutScreen() {
             <View style={styles.summaryShipping}>
               <Truck
                 size={14}
-                color={Colors.foregroundSecondary}
+                color={colors.foregroundSecondary}
                 strokeWidth={1.8}
               />
               <Text style={styles.summaryLabel}>Envío</Text>
@@ -289,17 +289,17 @@ export default function CheckoutScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
   },
   scroll: {
     padding: 16,
     gap: 16,
   },
   section: {
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     padding: 16,
     gap: 12,
   },
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 15,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   // Fields
   field: {
@@ -321,18 +321,18 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 13,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   input: {
     height: 44,
     borderWidth: 1,
-    borderColor: Colors.inputBorder,
+    borderColor: colors.inputBorder,
     borderRadius: 8,
     paddingHorizontal: 12,
     fontFamily: "Cabin_400Regular",
     fontSize: 14,
-    color: Colors.inputText,
-    backgroundColor: Colors.inputBg,
+    color: colors.inputText,
+    backgroundColor: colors.inputBg,
   },
   inputMultiline: {
     height: 80,
@@ -352,20 +352,20 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: Colors.borderStrong,
-    backgroundColor: Colors.backgroundSecondary,
+    borderColor: colors.borderStrong,
+    backgroundColor: colors.backgroundSecondary,
   },
   paymentOptionActive: {
-    borderColor: Colors.primary,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
   },
   paymentOptionText: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
   },
   paymentOptionTextActive: {
-    color: Colors.primary,
+    color: colors.primary,
   },
   // Summary
   summaryRow: {
@@ -376,17 +376,17 @@ const styles = StyleSheet.create({
   summaryName: {
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foreground,
+    color: colors.foreground,
     flex: 1,
     marginRight: 8,
   },
   summaryQty: {
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
   },
   summaryPrice: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   summaryShipping: {
     flexDirection: "row",
@@ -396,11 +396,11 @@ const styles = StyleSheet.create({
   summaryLabel: {
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   divider: {
     height: 1,
-    backgroundColor: Colors.borderLight,
+    backgroundColor: colors.borderLight,
     marginVertical: 4,
   },
   totalRow: {
@@ -409,23 +409,23 @@ const styles = StyleSheet.create({
   totalLabel: {
     fontSize: 16,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   totalValue: {
     fontSize: 18,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   // Footer
   footer: {
     padding: 16,
     paddingTop: 12,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderTopWidth: 1,
-    borderTopColor: Colors.borderLight,
+    borderTopColor: colors.borderLight,
   },
   placeOrderBtn: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 15,
     borderRadius: 12,
     alignItems: "center",

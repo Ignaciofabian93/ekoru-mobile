@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { AVATAR_PROTRUDE, AVATAR_SIZE } from "../../constants/imageSize";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 
 export interface ProfileImageProps {
   profileImage: string | undefined;
@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
     borderRadius: AVATAR_SIZE / 2,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderWidth: 3,
     borderColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
-  avatarUploading: { backgroundColor: Colors.primary + "99" },
+  avatarUploading: { backgroundColor: colors.primary + "99" },
   avatarText: {
     fontSize: 28,
     fontFamily: "Cabin_700Bold",
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderWidth: 2,
     borderColor: "#fff",
     alignItems: "center",

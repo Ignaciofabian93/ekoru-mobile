@@ -33,7 +33,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useDrawer } from "@/context/DrawerContext";
 import useAuthStore, {
   useDisplayName,
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
     letterSpacing: 1,
   },
   closeButton: {
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     gap: 12,
-    backgroundColor: `${Colors.secondary}10`,
+    backgroundColor: `${colors.secondary}10`,
     borderRadius: 12,
     padding: 14,
     marginBottom: 8,
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
   badge: {
     alignSelf: "flex-start",
     marginTop: 4,
-    backgroundColor: `${Colors.primary}22`,
+    backgroundColor: `${colors.primary}22`,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 20,
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 11,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
 
   // Sections

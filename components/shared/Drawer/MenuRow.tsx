@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Text } from "../Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 
 export default function MenuRow({
   icon: Icon,
@@ -20,7 +20,7 @@ export default function MenuRow({
       onPress={onPress}
     >
       <View style={styles.iconWrap}>
-        <Icon size={18} strokeWidth={1.5} color={Colors.primary} />
+        <Icon size={18} strokeWidth={1.5} color={colors.primary} />
       </View>
       <Text style={styles.menuLabel}>{label}</Text>
     </Pressable>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
   },

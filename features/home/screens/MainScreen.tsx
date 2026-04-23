@@ -2,7 +2,7 @@ import HeroCarousel from "@/components/HeroCarousel/HeroCarousel";
 import AdBanner from "@/components/shared/AdBanner/AdBanner";
 import Banner from "@/components/shared/Banner/Banner";
 import MainButton from "@/components/shared/Button/MainButton";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import Container from "@/ui/Layout/Container";
 import { Tag } from "lucide-react-native";
 import { ScrollView, StyleSheet, View } from "react-native";
@@ -99,6 +99,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   scroll: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
 });

@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -92,7 +92,7 @@ export default function ProductFiltersSheet({
             {t("filters")}
           </Title>
           <Pressable onPress={onClose} hitSlop={10}>
-            <X size={20} color={Colors.foreground} strokeWidth={2} />
+            <X size={20} color={colors.foreground} strokeWidth={2} />
           </Pressable>
         </View>
 
@@ -108,7 +108,7 @@ export default function ProductFiltersSheet({
             <TextInput
               style={styles.input}
               placeholder={t("brandPlaceholder")}
-              placeholderTextColor={Colors.foregroundTertiary}
+              placeholderTextColor={colors.foregroundTertiary}
               value={draft.brand}
               onChangeText={(t) => setDraft((prev) => ({ ...prev, brand: t }))}
             />
@@ -123,7 +123,7 @@ export default function ProductFiltersSheet({
               <TextInput
                 style={[styles.input, styles.priceInput]}
                 placeholder={t("min")}
-                placeholderTextColor={Colors.foregroundTertiary}
+                placeholderTextColor={colors.foregroundTertiary}
                 keyboardType="numeric"
                 value={draft.minPrice}
                 onChangeText={(t) =>
@@ -136,7 +136,7 @@ export default function ProductFiltersSheet({
               <TextInput
                 style={[styles.input, styles.priceInput]}
                 placeholder={t("max")}
-                placeholderTextColor={Colors.foregroundTertiary}
+                placeholderTextColor={colors.foregroundTertiary}
                 keyboardType="numeric"
                 value={draft.maxPrice}
                 onChangeText={(t) =>
@@ -193,10 +193,10 @@ export default function ProductFiltersSheet({
                   }))
                 }
                 trackColor={{
-                  false: Colors.backgroundTertiary,
-                  true: Colors.primary,
+                  false: colors.backgroundTertiary,
+                  true: colors.primary,
                 }}
-                thumbColor={Colors.surface}
+                thumbColor={colors.surface}
               />
             </View>
           </View>
@@ -208,7 +208,7 @@ export default function ProductFiltersSheet({
             <Text
               size="sm"
               weight="medium"
-              style={{ color: Colors.foregroundSecondary }}
+              style={{ color: colors.foregroundSecondary }}
             >
               {t("reset")}
             </Text>
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
   },
   sheet: {
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: "82%",
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   content: {
     paddingHorizontal: 20,
@@ -250,23 +250,23 @@ const styles = StyleSheet.create({
   section: {
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   sectionLast: {
     borderBottomWidth: 0,
   },
   sectionLabel: {
     marginBottom: 10,
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   input: {
     height: 42,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     paddingHorizontal: 12,
-    backgroundColor: Colors.backgroundSecondary,
-    color: Colors.foreground,
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.foreground,
     fontSize: 14,
   },
   priceRow: {
@@ -287,15 +287,15 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
-    backgroundColor: Colors.backgroundSecondary,
+    borderColor: colors.borderLight,
+    backgroundColor: colors.backgroundSecondary,
   },
   chipActive: {
-    backgroundColor: Colors.primaryDark,
-    borderColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
   },
   chipText: {
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   chipTextActive: {
     color: "#fff",
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     gap: 12,
     padding: 16,
     borderTopWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   resetBtn: {
     flex: 1,
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: colors.border,
   },
   applyBtn: {
     flex: 2,
@@ -328,6 +328,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 12,
-    backgroundColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
   },
 });

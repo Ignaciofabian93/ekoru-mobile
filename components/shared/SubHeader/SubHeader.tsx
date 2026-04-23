@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useRouter, useSegments } from "expo-router";
 import {
   Newspaper,
@@ -96,7 +96,7 @@ export default function SubHeader() {
                   <Icon
                     size={16}
                     color={
-                      isActive ? Colors.primary : Colors.foregroundSecondary
+                      isActive ? colors.primary : colors.foregroundSecondary
                     }
                     strokeWidth={2}
                   />
@@ -139,10 +139,10 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 20,
     marginRight: 6,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
   },
   itemActive: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
   },
   itemPressed: {
     opacity: 0.7,
@@ -159,9 +159,9 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   labelInactive: {
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   labelActive: {
-    color: Colors.primary,
+    color: colors.primary,
   },
 });

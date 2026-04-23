@@ -1,5 +1,5 @@
-import Colors from "@/constants/Colors";
 import { Text } from "@/components/shared/Text/Text";
+import { colors } from "@/design/tokens";
 import {
   Building2,
   Car,
@@ -19,8 +19,8 @@ import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 const SERVICE_CATEGORIES = [
   { label: "Solar", icon: Sun, color: "#f59e0b" },
-  { label: "Repair", icon: Wrench, color: Colors.primary },
-  { label: "Recycling", icon: Recycle, color: Colors.secondary },
+  { label: "Repair", icon: Wrench, color: colors.primary },
+  { label: "Recycling", icon: Recycle, color: colors.secondary },
   { label: "Composting", icon: Sprout, color: "#10b981" },
   { label: "Consulting", icon: Building2, color: "#6366f1" },
   { label: "EV Charging", icon: Zap, color: "#3b82f6" },
@@ -71,13 +71,13 @@ export default function ServicesScreen() {
       {/* Search */}
       <View style={styles.searchRow}>
         <View style={styles.searchBox}>
-          <Search size={16} color={Colors.foregroundTertiary} strokeWidth={2} />
+          <Search size={16} color={colors.foregroundTertiary} strokeWidth={2} />
           <Text size="sm" color="tertiary">
             Search services...
           </Text>
         </View>
         <Pressable style={styles.filterBtn}>
-          <SlidersHorizontal size={18} color={Colors.primary} strokeWidth={2} />
+          <SlidersHorizontal size={18} color={colors.primary} strokeWidth={2} />
         </Pressable>
       </View>
 
@@ -93,7 +93,10 @@ export default function ServicesScreen() {
           return (
             <Pressable key={cat.label} style={styles.categoryCard}>
               <View
-                style={[styles.categoryIcon, { backgroundColor: `${cat.color}18` }]}
+                style={[
+                  styles.categoryIcon,
+                  { backgroundColor: `${cat.color}18` },
+                ]}
               >
                 <Icon size={22} color={cat.color} strokeWidth={1.75} />
               </View>
@@ -123,7 +126,7 @@ export default function ServicesScreen() {
           return (
             <Pressable key={svc.id} style={styles.serviceCard}>
               <View style={styles.serviceIconBox}>
-                <Icon size={22} color={Colors.primary} strokeWidth={1.75} />
+                <Icon size={22} color={colors.primary} strokeWidth={1.75} />
               </View>
               <View style={styles.serviceInfo}>
                 <Text size="sm" weight="semibold" numberOfLines={1}>
@@ -143,7 +146,11 @@ export default function ServicesScreen() {
                   </Text>
                 </View>
               </View>
-              <ChevronRight size={18} color={Colors.foregroundTertiary} strokeWidth={1.5} />
+              <ChevronRight
+                size={18}
+                color={colors.foregroundTertiary}
+                strokeWidth={1.5}
+              />
             </Pressable>
           );
         })}
@@ -151,18 +158,18 @@ export default function ServicesScreen() {
 
       {/* CTA */}
       <Pressable style={styles.ctaBanner}>
-        <Wrench size={20} color={Colors.primaryDark} strokeWidth={1.75} />
+        <Wrench size={20} color={colors.primaryDark} strokeWidth={1.75} />
         <Text size="sm" weight="semibold" style={styles.ctaText}>
           Offer your eco service
         </Text>
-        <ChevronRight size={18} color={Colors.primaryDark} strokeWidth={2} />
+        <ChevronRight size={18} color={colors.primaryDark} strokeWidth={2} />
       </Pressable>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { paddingBottom: 32 },
   searchRow: {
     flexDirection: "row",
@@ -176,22 +183,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 40,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   filterBtn: {
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -212,10 +219,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     padding: 12,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     marginHorizontal: "1.5%",
   },
   categoryIcon: {
@@ -233,21 +240,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   serviceIconBox: {
     width: 48,
     height: 48,
     borderRadius: 12,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   serviceInfo: { flex: 1, gap: 3 },
   serviceMeta: {
@@ -257,14 +264,14 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   tag: {
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 6,
     paddingHorizontal: 7,
     paddingVertical: 2,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
-  tagLabel: { color: Colors.primaryDark, fontSize: 10 },
+  tagLabel: { color: colors.primaryDark, fontSize: 10 },
   ctaBanner: {
     flexDirection: "row",
     alignItems: "center",
@@ -272,10 +279,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 24,
     padding: 16,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
-  ctaText: { flex: 1, color: Colors.primaryDark },
+  ctaText: { flex: 1, color: colors.primaryDark },
 });

@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { PackageSearch } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   totalValue: {
     fontSize: 15,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
   },
   empty: {
     alignItems: "center",

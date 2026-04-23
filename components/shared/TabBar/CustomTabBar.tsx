@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useIsAuthenticated } from "@/store/useAuthStore";
 
 // Tabs that immediately redirect guests to auth (no landing screen shown)
@@ -55,7 +55,7 @@ export default function CustomTabBar({
 
   return (
     <LinearGradient
-      colors={[Colors.primaryDark, Colors.primary, Colors.primaryDark]}
+      colors={[colors.primaryDark, colors.primary, colors.primaryDark]}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
       style={[styles.container, { paddingBottom: insets.bottom + 12 }]}
@@ -71,7 +71,7 @@ export default function CustomTabBar({
             ? options.tabBarLabel
             : (options.title ?? route.name);
         const isFocused = state.index === index;
-        const color = isFocused ? Colors.primary : "#fff";
+        const color = isFocused ? colors.primary : "#fff";
         const isProtected = PROTECTED_TABS.includes(route.name);
 
         const onPress = () => {

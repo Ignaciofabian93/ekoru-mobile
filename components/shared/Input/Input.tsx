@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react-native";
 import React, { useState } from "react";
 import {
@@ -68,25 +68,25 @@ interface VariantStyle {
 
 const VARIANT_MAP: Record<Variant, VariantStyle> = {
   default: {
-    bg: Colors.inputBg,
-    borderColor: Colors.inputBorder,
+    bg: colors.inputBg,
+    borderColor: colors.inputBorder,
     borderWidth: 2,
-    focusedBg: Colors.inputBg,
-    focusedBorderColor: Colors.inputBorderFocus,
+    focusedBg: colors.inputBg,
+    focusedBorderColor: colors.inputBorderFocus,
   },
   filled: {
-    bg: Colors.backgroundSecondary,
+    bg: colors.backgroundSecondary,
     borderColor: "transparent",
     borderWidth: 2,
-    focusedBg: Colors.inputBg,
-    focusedBorderColor: Colors.inputBorderFocus,
+    focusedBg: colors.inputBg,
+    focusedBorderColor: colors.inputBorderFocus,
   },
   outline: {
     bg: "transparent",
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
     borderWidth: 2,
-    focusedBg: `${Colors.primary}0D`,
-    focusedBorderColor: Colors.primaryActive,
+    focusedBg: `${colors.primary}0D`,
+    focusedBorderColor: colors.primaryActive,
   },
 };
 
@@ -146,16 +146,16 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
     // ── Dynamic input styles ─────────────────────────────────────────────────
     const bg = focused ? v.focusedBg : v.bg;
     const resolvedBorderColor = showError
-      ? Colors.danger
+      ? colors.danger
       : focused
         ? v.focusedBorderColor
         : v.borderColor;
 
     const iconColor = showError
-      ? Colors.danger
+      ? colors.danger
       : focused
-        ? Colors.primary
-        : Colors.foregroundTertiary;
+        ? colors.primary
+        : colors.foregroundTertiary;
 
     return (
       <View style={[styles.container, { width: WIDTH_MAP[width] as any }]}>
@@ -178,7 +178,7 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
             autoCorrect={type !== "email" && type !== "password"}
             maxLength={maxLength}
             placeholder={placeholder}
-            placeholderTextColor={Colors.inputPlaceholder}
+            placeholderTextColor={colors.inputPlaceholder}
             onFocus={(e) => { setFocused(true); onFocus?.(e); }}
             onBlur={(e)  => { setFocused(false); onBlur?.(e); }}
             style={[
@@ -202,8 +202,8 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
             <Pressable onPress={togglePassword} style={styles.rightIconWrap} hitSlop={8}>
               <Animated.View style={eyeStyle}>
                 {showPassword
-                  ? <EyeOff size={s.iconSize} color={Colors.foregroundTertiary} strokeWidth={2} />
-                  : <Eye    size={s.iconSize} color={Colors.foregroundTertiary} strokeWidth={2} />
+                  ? <EyeOff size={s.iconSize} color={colors.foregroundTertiary} strokeWidth={2} />
+                  : <Eye    size={s.iconSize} color={colors.foregroundTertiary} strokeWidth={2} />
                 }
               </Animated.View>
             </Pressable>
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   wrapper: {
     position: "relative",
@@ -250,13 +250,13 @@ const styles = StyleSheet.create({
   },
   input: {
     fontFamily: "Cabin_400Regular",
-    color: Colors.inputText,
+    color: colors.inputText,
     borderRadius: 10,
   },
   errorText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.danger,
+    color: colors.danger,
   },
 });
 

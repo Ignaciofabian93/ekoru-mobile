@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import React from "react";
 import { type TextStyle } from "react-native";
 import Animated from "react-native-reanimated";
@@ -51,13 +51,13 @@ const WEIGHT_MAP: Record<Weight, string> = {
 };
 
 const COLOR_MAP: Record<TitleColor, string> = {
-  default: Colors.foreground,
-  primary: Colors.primary,
-  secondary: Colors.foregroundSecondary,
-  tertiary: Colors.foregroundTertiary,
-  error: Colors.danger,
-  success: Colors.success,
-  warning: Colors.warning,
+  default: colors.foreground,
+  primary: colors.primary,
+  secondary: colors.foregroundSecondary,
+  tertiary: colors.foregroundTertiary,
+  error: colors.danger,
+  success: colors.success,
+  warning: colors.warning,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { BottomTabHeaderProps } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image, StyleSheet, View } from "react-native";
@@ -12,7 +12,7 @@ export default function CustomHeader(_props: BottomTabHeaderProps) {
 
   return (
     <LinearGradient
-      colors={[Colors.primaryDark, Colors.primary, Colors.primaryDark]}
+      colors={[colors.primaryDark, colors.primary, colors.primaryDark]}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
       style={[{ paddingTop: insets.top }]}

@@ -1,6 +1,6 @@
 import { MainButton } from "@/components/shared/Button/MainButton";
 import Modal from "@/components/shared/Modal/Modal";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import DateTimePicker, {
   type DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -105,7 +105,7 @@ export default function DatePicker({
       >
         <Calendar
           size={18}
-          color={Colors.foregroundTertiary}
+          color={colors.foregroundTertiary}
           strokeWidth={2}
         />
         <Text style={[styles.value, !value && styles.placeholder]}>
@@ -163,30 +163,30 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   field: {
     flexDirection: "row",
     alignItems: "center",
     height: 44,
-    backgroundColor: Colors.inputBg,
+    backgroundColor: colors.inputBg,
     borderWidth: 2,
-    borderColor: Colors.inputBorder,
+    borderColor: colors.inputBorder,
     borderRadius: 10,
     paddingHorizontal: 12,
     gap: 8,
   },
   fieldActive: {
-    borderColor: Colors.inputBorderFocus,
+    borderColor: colors.inputBorderFocus,
   },
   value: {
     flex: 1,
     fontSize: 16,
     fontFamily: "Cabin_400Regular",
-    color: Colors.inputText,
+    color: colors.inputText,
   },
   placeholder: {
-    color: Colors.inputPlaceholder,
+    color: colors.inputPlaceholder,
   },
   iosPicker: {
     width: "100%",

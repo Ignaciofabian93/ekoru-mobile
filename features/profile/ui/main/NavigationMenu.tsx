@@ -2,7 +2,7 @@ import { Text } from "@/components/shared/Text/Text";
 import { Pressable, StyleSheet, View } from "react-native";
 import { useMenuRows } from "../../constants/menuRows";
 import { ChevronRight } from "lucide-react-native";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useTranslation } from "react-i18next";
 import { NAMESPACE } from "./i18n";
 import { useRouter } from "expo-router";
@@ -32,7 +32,7 @@ export default function NavigationMenu() {
             >
               <View style={styles.menuRowLeft}>
                 <View style={styles.iconWrap}>
-                  <Icon size={18} strokeWidth={1.5} color={Colors.primary} />
+                  <Icon size={18} strokeWidth={1.5} color={colors.primary} />
                 </View>
                 <Text style={styles.menuRowLabel}>{row.label}</Text>
               </View>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 8,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
   },

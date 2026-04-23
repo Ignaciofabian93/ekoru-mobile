@@ -1,6 +1,6 @@
 import Input from "@/components/shared/Input/Input";
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Switch, View } from "react-native";
 import { NAMESPACE } from "./i18n";
@@ -80,8 +80,8 @@ export default function PersonInfoForm({
           <Switch
             value={values.allowExchanges}
             onValueChange={(v) => onChange("allowExchanges", v)}
-            trackColor={{ false: "#e5e7eb", true: `${Colors.primary}60` }}
-            thumbColor={values.allowExchanges ? Colors.primary : "#9ca3af"}
+            trackColor={{ false: "#e5e7eb", true: `${colors.primary}60` }}
+            thumbColor={values.allowExchanges ? colors.primary : "#9ca3af"}
           />
         </View>
       </View>

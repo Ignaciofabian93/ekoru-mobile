@@ -2,7 +2,7 @@ import MarketplaceCard from "@/components/shared/Card/MarketplaceCard/Marketplac
 import { Pagination } from "@/components/shared/Pagination/Pagination";
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { router } from "expo-router";
 import { Leaf } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -42,7 +42,7 @@ export default function ProductGrid({
     return (
       <View style={styles.empty}>
         <View style={styles.emptyIcon}>
-          <Leaf size={32} color={Colors.primary} strokeWidth={1.5} />
+          <Leaf size={32} color={colors.primary} strokeWidth={1.5} />
         </View>
         <Title level="h5" weight="semibold" align="center">
           {emptyMessage ?? t("noProductsFound")}
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,

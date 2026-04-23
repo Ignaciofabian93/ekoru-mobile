@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { LucideIcon } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 import { Text } from "../Text/Text";
@@ -32,7 +32,7 @@ export default function UploadImageCard({
           alignItems: "center",
           justifyContent: "center",
           gap: 6,
-          backgroundColor: Colors.surface,
+          backgroundColor: colors.surface,
           borderRadius: 16,
           paddingVertical: 20,
           paddingHorizontal: 12,

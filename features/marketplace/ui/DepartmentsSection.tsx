@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ChevronRight, SlidersHorizontal } from "lucide-react-native";
@@ -12,9 +12,9 @@ import DepartmentsSectionSkeleton from "./skeletons/DepartmentsSectionSkeleton";
 
 // Gradient palettes cycling for department cards
 const GRADIENTS: [string, string][] = [
-  [Colors.primaryDark, Colors.primary],
-  [Colors.secondaryDark, Colors.secondary],
-  ["#92400e", Colors.accent],
+  [colors.primaryDark, colors.primary],
+  [colors.secondaryDark, colors.secondary],
+  ["#92400e", colors.accent],
   ["#1e3a5f", "#3b82f6"],
   ["#4a044e", "#a21caf"],
   ["#064e3b", "#10b981"],
@@ -54,7 +54,7 @@ export default function DepartmentsSection({
           style={[styles.filterBtn]}
           onPress={() => setFiltersVisible?.(true)}
         >
-          <SlidersHorizontal size={18} color={Colors.primary} strokeWidth={2} />
+          <SlidersHorizontal size={18} color={colors.primary} strokeWidth={2} />
         </Pressable>
       </View>
 
@@ -181,14 +181,14 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   filterBtnActive: {
-    backgroundColor: Colors.primaryDark,
-    borderColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
   },
 });

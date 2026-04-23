@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useRouter } from "expo-router";
 import { CheckCircle, House, Package } from "lucide-react-native";
 import React from "react";
@@ -15,7 +15,7 @@ export default function OrderConfirmationScreen() {
     <View style={[styles.root, { paddingBottom: insets.bottom + 24 }]}>
       {/* Icon */}
       <View style={styles.iconWrapper}>
-        <CheckCircle size={72} color={Colors.success} strokeWidth={1.5} />
+        <CheckCircle size={72} color={colors.success} strokeWidth={1.5} />
       </View>
 
       <Text style={styles.title}>¡Pedido confirmado!</Text>
@@ -28,7 +28,7 @@ export default function OrderConfirmationScreen() {
         <View style={styles.cardRow}>
           <Package
             size={18}
-            color={Colors.foregroundSecondary}
+            color={colors.foregroundSecondary}
             strokeWidth={1.8}
           />
           <Text style={styles.cardLabel}>Número de orden</Text>
@@ -55,7 +55,7 @@ export default function OrderConfirmationScreen() {
           style={styles.secondaryBtn}
           onPress={() => router.replace("/(tabs)")}
         >
-          <House size={18} color={Colors.foreground} strokeWidth={2} />
+          <House size={18} color={colors.foreground} strokeWidth={2} />
           <Text style={styles.secondaryBtnText}>Volver al inicio</Text>
         </Pressable>
       </View>
@@ -66,7 +66,7 @@ export default function OrderConfirmationScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
     padding: 32,
@@ -78,22 +78,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
     textAlign: "center",
   },
   subtitle: {
     fontSize: 15,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     textAlign: "center",
     lineHeight: 22,
   },
   card: {
     width: "100%",
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     padding: 16,
     gap: 12,
     marginTop: 8,
@@ -107,21 +107,21 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   cardValue: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   divider: {
     height: 1,
-    backgroundColor: Colors.borderLight,
+    backgroundColor: colors.borderLight,
   },
   cardNote: {
     fontSize: 13,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     lineHeight: 19,
   },
   actions: {
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   primaryBtn: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -151,11 +151,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderStrong,
+    borderColor: colors.borderStrong,
   },
   secondaryBtnText: {
     fontSize: 15,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
 });

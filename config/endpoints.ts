@@ -4,19 +4,18 @@ const getEndpoints = () => {
   switch (ENVIRONMENT) {
     case "production":
       return {
-        base: "https://gateway.ekoru.cl",
-        graphql: "https://gateway.ekoru.cl/graphql",
-        rest: "https://gateway.ekoru.cl/session",
+        base: "https://api.ekoru.cl",
+        graphql: "https://api.ekoru.cl/graphql",
+        rest: "https://api.ekoru.cl/session",
       };
-    case "qa":
+    case "staging":
       return {
-        base: "https://qa.gateway.ekoru.cl",
-        graphql: "https://qa.gateway.ekoru.cl/graphql",
-        rest: "https://qa.gateway.ekoru.cl/session",
+        base: "https://api.staging.ekoru.cl",
+        graphql: "https://api.staging.ekoru.cl/graphql",
+        rest: "https://api.staging.ekoru.cl/session",
       };
     default: {
-      const devBase =
-        process.env.EXPO_PUBLIC_GATEWAY_URL ?? "http://192.168.1.9:4000";
+      const devBase = "https://api.staging.ekoru.cl";
       return {
         base: devBase,
         graphql: `${devBase}/graphql`,

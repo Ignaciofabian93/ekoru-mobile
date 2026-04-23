@@ -139,4 +139,16 @@ const styles = StyleSheet.create({
   footerLink: {
     fontSize: 15,
     fontFamily: "Cabin_700Bold",
-    color: Colors.pri
+    color: Colors.primary,
+  },
+  backButton: {
+    alignItems: "center",
+    marginTop: 16,
+    paddingVertical: 8,
+  },
+  backText: {
+    fontSize: 14,
+    fontFamily: "Cabin_500Medium",
+    color: "#5c5c5c",
+  },
+});

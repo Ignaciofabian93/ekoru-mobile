@@ -43,7 +43,15 @@ export default function useLogin() {
     setLoading(true);
     try {
       // Step 1: REST call — sets the auth cookie and returns the JWT
-      const authData = await Login({ email, password });
+      let authData: { token: string; refreshToken: string; message: string };
+      try {
+        authData = await Login({ email, password });
+      } catch (restErr) {
+        console.error("[Login] REST /session/auth failed:", restErr);
+        showError({ title: t("errorTitle"), message: t("networkError") });
+        return;
+      }
+
       if (!authData?.token) {
         showError({
           title: t("errorTitle"),
@@ -55,13 +63,21 @@ export default function useLogin() {
       // Step 2: GraphQL call — fetch the full seller profile
       // The Apollo authLink automatically attaches the token from the store,
       // but since setSession hasn't been called yet we pass it explicitly here.
-      const { data } = await client.query<{ me: Seller }>({
-        query: GET_ME,
-        context: {
-          headers: { Authorization: `Bearer ${authData.token}` },
-        },
-        fetchPolicy: "no-cache",
-      });
+      let data: { me: Seller } | null = null;
+      try {
+        const result = await client.query<{ me: Seller }>({
+          query: GET_ME,
+          context: {
+            headers: { Authorization: `Bearer ${authData.token}` },
+          },
+          fetchPolicy: "no-cache",
+        });
+        data = result.data;
+      } catch (gqlErr) {
+        console.error("[Login] GraphQL GET_ME failed:", gqlErr);
+        showError({ title: t("errorTitle"), message: t("networkError") });
+        return;
+      }
 
       if (!data?.me) {
         showError({
@@ -76,6 +92,7 @@ export default function useLogin() {
 
       router.replace("/(tabs)");
     } catch (err) {
+      console.error("[Login] Unexpected error:", err);
       showError({
         title: t("errorTitle"),
         message: t("networkError"),

@@ -79,4 +79,6 @@ const styles = StyleSheet.create({
   menuRowLabel: {
     fontSize: 15,
     fontFamily: "Cabin_500Medium",
-    color: 
+    color: "#1f2937",
+  },
+});

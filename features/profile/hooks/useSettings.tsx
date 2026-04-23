@@ -87,4 +87,6 @@ export default function useSettings() {
     sellerPreferences,
     handleSellerPreferences,
     submitSellerPreferences,
-    loadingPref
+    loadingPreferences,
+  };
+}

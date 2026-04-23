@@ -27,4 +27,7 @@ export function useMenuRows(): MenuRow[] {
     { label: t("orderHistory"),       icon: PackageSearch, route: "/(profile)/order-history" },
     { label: t("favorites"),          icon: Heart,         route: "/(profile)/favorites" },
     { label: t("environmentalImpact"),icon: Leaf,          route: "/(profile)/environmental-impact" },
-    { label: t("subscription"),       icon: Gem,           route: "/(profile)/subs
+    { label: t("subscription"),       icon: Gem,           route: "/(profile)/subscription" },
+    { label: t("settings"),           icon: Settings,      route: "/(profile)/settings" },
+  ];
+}

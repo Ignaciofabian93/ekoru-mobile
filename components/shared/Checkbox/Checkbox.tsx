@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Check } from "lucide-react-native";
 import React, { useEffect } from "react";
 import {
@@ -46,9 +46,9 @@ const SIZE_MAP: Record<Size, { box: number; icon: number; radius: number }> = {
 
 // Unchecked border / background per variant
 const VARIANT_IDLE: Record<Variant, { borderColor: string; bg: string }> = {
-  default: { borderColor: Colors.inputBorder,      bg: "#fff" },
-  filled:  { borderColor: "transparent",           bg: Colors.backgroundSecondary },
-  outline: { borderColor: Colors.primary,          bg: "transparent" },
+  default: { borderColor: colors.inputBorder,      bg: "#fff" },
+  filled:  { borderColor: "transparent",           bg: colors.backgroundSecondary },
+  outline: { borderColor: colors.primary,          bg: "transparent" },
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -110,10 +110,10 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
 
     const hasLabel = label || description;
     const labelColor = errorMessage
-      ? Colors.danger
+      ? colors.danger
       : disabled
-        ? Colors.foregroundTertiary
-        : Colors.foreground;
+        ? colors.foregroundTertiary
+        : colors.foreground;
 
     return (
       <View ref={ref} style={styles.wrapper} {...props}>
@@ -132,8 +132,8 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
                 width: s.box,
                 height: s.box,
                 borderRadius: s.radius,
-                borderColor: checked ? Colors.primary : idle.borderColor,
-                backgroundColor: checked ? Colors.primary : idle.bg,
+                borderColor: checked ? colors.primary : idle.borderColor,
+                backgroundColor: checked ? colors.primary : idle.bg,
               },
               pressStyle,
             ]}
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 13,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     lineHeight: 18,
   },
   errorRow: {
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.danger,
+    color: colors.danger,
   },
 });
 

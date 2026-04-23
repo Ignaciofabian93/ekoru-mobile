@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { LucideIcon } from "lucide-react-native";
 import React from "react";
 import {
@@ -105,64 +105,64 @@ interface VariantStyle {
 
 const VARIANT_MAP: Record<Variant, VariantStyle> = {
   primary: {
-    bg: Colors.primary,
-    border: Colors.primary,
+    bg: colors.primary,
+    border: colors.primary,
     textColor: "#fff",
     spinnerColor: "#fff",
     iconColor: "#fff",
   },
   filled: {
-    bg: Colors.primary,
-    border: Colors.primary,
+    bg: colors.primary,
+    border: colors.primary,
     textColor: "#fff",
     spinnerColor: "#fff",
     iconColor: "#fff",
   },
   secondary: {
-    bg: Colors.secondary,
-    border: Colors.secondary,
+    bg: colors.secondary,
+    border: colors.secondary,
     textColor: "#fff",
     spinnerColor: "#fff",
     iconColor: "#fff",
   },
   secondary_outline: {
     bg: "#fff",
-    border: Colors.secondary,
-    textColor: Colors.secondary,
-    spinnerColor: Colors.secondary,
-    iconColor: Colors.secondary,
+    border: colors.secondary,
+    textColor: colors.secondary,
+    spinnerColor: colors.secondary,
+    iconColor: colors.secondary,
   },
   outline: {
     bg: "#fff",
-    border: Colors.primary,
-    textColor: Colors.primary,
-    spinnerColor: Colors.primary,
-    iconColor: Colors.primary,
+    border: colors.primary,
+    textColor: colors.primary,
+    spinnerColor: colors.primary,
+    iconColor: colors.primary,
   },
   ghost: {
     bg: "transparent",
     border: "transparent",
-    textColor: Colors.primary,
-    spinnerColor: Colors.primary,
-    iconColor: Colors.primary,
+    textColor: colors.primary,
+    spinnerColor: colors.primary,
+    iconColor: colors.primary,
   },
   success: {
-    bg: Colors.success,
-    border: Colors.success,
+    bg: colors.success,
+    border: colors.success,
     textColor: "#fff",
     spinnerColor: "#fff",
     iconColor: "#fff",
   },
   warning: {
-    bg: Colors.warning,
-    border: Colors.warning,
+    bg: colors.warning,
+    border: colors.warning,
     textColor: "#fff",
     spinnerColor: "#fff",
     iconColor: "#fff",
   },
   error: {
-    bg: Colors.danger,
-    border: Colors.danger,
+    bg: colors.danger,
+    border: colors.danger,
     textColor: "#fff",
     spinnerColor: "#fff",
     iconColor: "#fff",

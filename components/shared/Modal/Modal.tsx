@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { X } from "lucide-react-native";
 import React from "react";
 import {
@@ -102,7 +102,7 @@ export default function Modal({
                     ]}
                     hitSlop={8}
                   >
-                    <X size={20} color={Colors.foregroundSecondary} strokeWidth={2} />
+                    <X size={20} color={colors.foregroundSecondary} strokeWidth={2} />
                   </Pressable>
                 )}
               </View>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   sheet: {
     width: "100%",
     maxHeight: "90%",
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     overflow: "hidden",
     // Shadow
@@ -156,14 +156,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.borderLight,
+    borderBottomColor: colors.borderLight,
     gap: 12,
   },
   title: {
     flex: 1,
     fontSize: 17,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   closeButton: {
     padding: 4,

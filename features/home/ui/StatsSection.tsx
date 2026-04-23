@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   Package2,
@@ -129,7 +129,7 @@ function StatItem({
 }) {
   return (
     <View style={styles.item}>
-      <Icon size={14} color={Colors.primary} strokeWidth={2} />
+      <Icon size={14} color={colors.primary} strokeWidth={2} />
       <Text size="lg" weight="bold">{value}</Text>
       <Text size="sm" color="secondary">{label}</Text>
       <View style={styles.dot} />
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     overflow: "hidden",
     paddingVertical: 14,
-    borderColor: Colors.borderStrong,
+    borderColor: colors.borderStrong,
   },
   ticker: {
     flexDirection: "row",
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 3,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     marginLeft: 8,
     opacity: 0.6,
   },

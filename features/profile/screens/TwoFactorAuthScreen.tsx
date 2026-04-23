@@ -1,5 +1,5 @@
 import MainButton from "@/components/shared/Button/MainButton";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Fingerprint, ShieldCheck, ShieldOff } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -26,7 +26,7 @@ export default function TwoFactorAuthScreen() {
       {/* ── Icon ─────────────────────────────────────────────────────────────── */}
       <View style={styles.iconWrap}>
         {isEnabled ? (
-          <ShieldCheck size={56} color={Colors.primary} strokeWidth={1.5} />
+          <ShieldCheck size={56} color={colors.primary} strokeWidth={1.5} />
         ) : (
           <ShieldOff size={56} color="#9ca3af" strokeWidth={1.5} />
         )}
@@ -56,7 +56,7 @@ export default function TwoFactorAuthScreen() {
       {/* ── Explanation ──────────────────────────────────────────────────────── */}
       {isAvailable ? (
         <View style={styles.infoCard}>
-          <Fingerprint size={20} color={Colors.primary} strokeWidth={1.5} />
+          <Fingerprint size={20} color={colors.primary} strokeWidth={1.5} />
           <Text style={styles.infoText}>{t("twoFaUsesBiometric")}</Text>
           {(hasFace || hasFingerprint) && (
             <Text style={styles.infoSubText}>
@@ -79,7 +79,7 @@ export default function TwoFactorAuthScreen() {
       {loading ? (
         <ActivityIndicator
           size="large"
-          color={Colors.primary}
+          color={colors.primary}
           style={styles.loader}
         />
       ) : (
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   statusCardEnabled: {
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
   },
   statusCardDisabled: {
     backgroundColor: "#f3f4f6",
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     fontFamily: "Cabin_500Medium",
   },
   statusTextEnabled: {
-    color: Colors.primary,
+    color: colors.primary,
   },
   statusTextDisabled: {
     color: "#6b7280",
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   infoSubText: {
     fontSize: 12,
     fontFamily: "Cabin_500Medium",
-    color: Colors.primary,
+    color: colors.primary,
   },
   infoTextMuted: {
     fontSize: 13,

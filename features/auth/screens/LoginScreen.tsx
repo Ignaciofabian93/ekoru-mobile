@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useRouter } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   headline: {
     fontSize: 20,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
     textAlign: "center",
     lineHeight: 28,
     letterSpacing: -0.3,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   footerLink: {
     fontSize: 15,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
   },
   backButton: {
     alignItems: "center",

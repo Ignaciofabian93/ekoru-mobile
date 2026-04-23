@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Droplets, Info, Leaf } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -94,10 +94,10 @@ export default function EnvironmentalImpactModal({
           {/* CO₂ card */}
           <View style={[styles.summaryCard, styles.co2Card]}>
             <View style={styles.summaryHeader}>
-              <Leaf size={18} color={Colors.success} strokeWidth={2} />
+              <Leaf size={18} color={colors.success} strokeWidth={2} />
               <Text style={styles.summaryTitle}>{co2SavingsTitle}</Text>
             </View>
-            <Text style={[styles.summaryValue, { color: Colors.success }]}>
+            <Text style={[styles.summaryValue, { color: colors.success }]}>
               {formatNumber(environmentalImpact.totalCo2SavingsKG)} kg
             </Text>
             <Text style={styles.summaryEquivalence}>
@@ -110,10 +110,10 @@ export default function EnvironmentalImpactModal({
           {/* Water card */}
           <View style={[styles.summaryCard, styles.waterCard]}>
             <View style={styles.summaryHeader}>
-              <Droplets size={18} color={Colors.info} strokeWidth={2} />
+              <Droplets size={18} color={colors.info} strokeWidth={2} />
               <Text style={styles.summaryTitle}>{waterSavingsTitle}</Text>
             </View>
-            <Text style={[styles.summaryValue, { color: Colors.info }]}>
+            <Text style={[styles.summaryValue, { color: colors.info }]}>
               {formatNumber(environmentalImpact.totalWaterSavingsLT)} L
             </Text>
             <Text style={styles.summaryEquivalence}>
@@ -128,7 +128,7 @@ export default function EnvironmentalImpactModal({
         {environmentalImpact.materialBreakdown.length > 0 && (
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
-              <Info size={18} color={Colors.foreground} strokeWidth={2} />
+              <Info size={18} color={colors.foreground} strokeWidth={2} />
               <Text style={styles.sectionTitle}>{materialBreakdownLabel}</Text>
             </View>
 
@@ -153,13 +153,13 @@ export default function EnvironmentalImpactModal({
                     </View>
                     <View style={styles.statItem}>
                       <Text style={styles.statLabel}>{co2SavingsLabel}</Text>
-                      <Text style={[styles.statValue, { color: Colors.success }]}>
+                      <Text style={[styles.statValue, { color: colors.success }]}>
                         {formatNumber(material.co2SavingsKG)} kg
                       </Text>
                     </View>
                     <View style={styles.statItem}>
                       <Text style={styles.statLabel}>{waterSavingsLabel}</Text>
-                      <Text style={[styles.statValue, { color: Colors.info }]}>
+                      <Text style={[styles.statValue, { color: colors.info }]}>
                         {formatNumber(material.waterSavingsLT)} L
                       </Text>
                     </View>
@@ -175,7 +175,7 @@ export default function EnvironmentalImpactModal({
 
         {/* ── Info footer ───────────────────────────────────────────── */}
         <View style={styles.infoFooter}>
-          <Info size={14} color={Colors.primary} strokeWidth={2} style={styles.infoIcon} />
+          <Info size={14} color={colors.primary} strokeWidth={2} style={styles.infoIcon} />
           <Text style={styles.infoText}>{infoText}</Text>
         </View>
 
@@ -202,10 +202,10 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   co2Card: {
-    backgroundColor: `${Colors.success}1A`,
+    backgroundColor: `${colors.success}1A`,
   },
   waterCard: {
-    backgroundColor: `${Colors.info}1A`,
+    backgroundColor: `${colors.info}1A`,
   },
   summaryHeader: {
     flexDirection: "row",
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   summaryTitle: {
     fontSize: 13,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     flexShrink: 1,
   },
   summaryValue: {
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   summaryEquivalence: {
     fontSize: 11,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     lineHeight: 15,
   },
   // Section
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   // Material cards
   materialList: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   },
   materialCard: {
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     borderRadius: 10,
     padding: 14,
     gap: 10,
@@ -263,13 +263,13 @@ const styles = StyleSheet.create({
   materialName: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
     flex: 1,
   },
   materialPercentage: {
     fontSize: 16,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
   },
   // Stat columns
   statsRow: {
@@ -283,23 +283,23 @@ const styles = StyleSheet.create({
   statLabel: {
     fontSize: 11,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   statValue: {
     fontSize: 13,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   // Progress bar
   progressTrack: {
     height: 6,
-    backgroundColor: `${Colors.primary}1A`,
+    backgroundColor: `${colors.primary}1A`,
     borderRadius: 99,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 99,
   },
   // Info footer
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 8,
-    backgroundColor: `${Colors.primary}0D`,
+    backgroundColor: `${colors.primary}0D`,
     borderRadius: 10,
     padding: 14,
   },
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     lineHeight: 18,
   },
 });

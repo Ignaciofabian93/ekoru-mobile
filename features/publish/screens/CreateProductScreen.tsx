@@ -1,6 +1,6 @@
 import { MainButton } from "@/components/shared/Button/MainButton";
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { ArrowLeft, PackagePlus } from "lucide-react-native";
 import React from "react";
 import {
@@ -47,7 +47,7 @@ export default function CreateProductScreen() {
       <View style={[styles.topBar, { paddingTop: 12 }]}>
         {step > 0 ? (
           <Pressable onPress={handleBack} style={styles.backBtn} hitSlop={8}>
-            <ArrowLeft size={20} color={Colors.foreground} strokeWidth={2} />
+            <ArrowLeft size={20} color={colors.foreground} strokeWidth={2} />
           </Pressable>
         ) : (
           <View style={styles.backBtn} />
@@ -104,7 +104,7 @@ export default function CreateProductScreen() {
       {loading && (
         <View style={styles.loadingOverlay}>
           <View style={styles.loadingCard}>
-            <ActivityIndicator color={Colors.primary} size="large" />
+            <ActivityIndicator color={colors.primary} size="large" />
             <Text size="sm" color="secondary" style={{ marginTop: 12 }}>
               Uploading photos and publishing…
             </Text>
@@ -118,7 +118,7 @@ export default function CreateProductScreen() {
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   topBar: {
     flexDirection: "row",
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingBottom: 4,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   backBtn: {
     width: 36,
@@ -142,9 +142,9 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 20,
     paddingTop: 12,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
     borderTopWidth: 1,
-    borderTopColor: Colors.borderLight,
+    borderTopColor: colors.borderLight,
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   loadingCard: {
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 20,
     paddingVertical: 32,
     paddingHorizontal: 40,

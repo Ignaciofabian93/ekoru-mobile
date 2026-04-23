@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { AlertCircle, CheckCircle, Info } from "lucide-react-native";
 import { StyleSheet, Text, View } from "react-native";
 import type { BaseToastProps } from "react-native-toast-message";
@@ -38,8 +38,8 @@ const toastConfig = {
   info: (props: BaseToastProps) => (
     <ToastBase
       {...props}
-      accentColor={Colors.primary}
-      icon={<Info size={20} color={Colors.primary} strokeWidth={2} />}
+      accentColor={colors.primary}
+      icon={<Info size={20} color={colors.primary} strokeWidth={2} />}
     />
   ),
 };

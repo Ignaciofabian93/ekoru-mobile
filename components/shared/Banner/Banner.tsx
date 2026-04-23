@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
@@ -39,7 +39,7 @@ export interface BannerProps {
 
 const VARIANT_CONFIG = {
   primary: {
-    gradient: [Colors.primaryDark, Colors.primary, Colors.primaryDark] as const,
+    gradient: [colors.primaryDark, colors.primary, colors.primaryDark] as const,
     textColor: "#fff",
     dotColor: "#fff",
     borderWidth: 0,
@@ -47,7 +47,7 @@ const VARIANT_CONFIG = {
     shadow: true,
   },
   secondary: {
-    gradient: [Colors.secondaryDark, Colors.secondary, Colors.secondaryDark] as const,
+    gradient: [colors.secondaryDark, colors.secondary, colors.secondaryDark] as const,
     textColor: "#fff",
     dotColor: "#fff",
     borderWidth: 0,
@@ -56,16 +56,16 @@ const VARIANT_CONFIG = {
   },
   outlined: {
     gradient: null,
-    textColor: Colors.foreground,
-    dotColor: Colors.primary,
+    textColor: colors.foreground,
+    dotColor: colors.primary,
     borderWidth: 2,
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
     shadow: true,
   },
   ghost: {
     gradient: null,
-    textColor: Colors.foreground,
-    dotColor: Colors.foregroundSecondary,
+    textColor: colors.foreground,
+    dotColor: colors.foregroundSecondary,
     borderWidth: 0,
     borderColor: "transparent",
     shadow: false,
@@ -185,7 +185,7 @@ const Banner = React.forwardRef<View, BannerProps>(
       config.shadow && styles.shadow,
       config.borderWidth > 0 && { borderWidth: config.borderWidth, borderColor: config.borderColor },
       !config.gradient && {
-        backgroundColor: variant === "ghost" ? "rgba(255,255,255,0.5)" : Colors.background,
+        backgroundColor: variant === "ghost" ? "rgba(255,255,255,0.5)" : colors.background,
       },
       style,
     ];

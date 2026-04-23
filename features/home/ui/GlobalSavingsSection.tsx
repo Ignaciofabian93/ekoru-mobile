@@ -1,6 +1,6 @@
 import { Text as AppText } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { Droplets, Leaf, Recycle, Users2, ArrowUpRight } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
@@ -57,7 +57,7 @@ function Co2Card() {
 
   return (
     <LinearGradient
-      colors={[Colors.primaryDark, Colors.primary, Colors.primaryDark]}
+      colors={[colors.primaryDark, colors.primary, colors.primaryDark]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.heroBg}
@@ -65,7 +65,7 @@ function Co2Card() {
       <View style={styles.heroContent}>
         <View style={styles.metricHeader}>
           <View style={styles.iconBadge}>
-            <Leaf size={20} color={Colors.primaryDark} strokeWidth={2} />
+            <Leaf size={20} color={colors.primaryDark} strokeWidth={2} />
           </View>
           <Text style={styles.heroLabel}>CO₂ Saved</Text>
           <ArrowUpRight size={16} color="rgba(255,255,255,0.6)" strokeWidth={2} />
@@ -132,7 +132,7 @@ function CommunityStrip() {
       </View>
       <View style={styles.stripDivider} />
       <View style={styles.stripItem}>
-        <Users2 size={16} color={Colors.primary} strokeWidth={2} style={styles.stripIcon} />
+        <Users2 size={16} color={colors.primary} strokeWidth={2} style={styles.stripIcon} />
         <Text style={styles.stripValue}>{members.toLocaleString()}+</Text>
         <Text style={styles.stripLabel}>Community members</Text>
       </View>
@@ -170,8 +170,8 @@ export default function GlobalSavingsSection() {
           value={waterDisplay}
           unit="M L"
           equivalence={`≈ ${Math.round(PLATFORM.waterMillionL * 1e6 / 8).toLocaleString()} showers`}
-          accentColor={Colors.info}
-          bgColor={`${Colors.info}12`}
+          accentColor={colors.info}
+          bgColor={`${colors.info}12`}
         />
         <MetricCard
           icon={Recycle}
@@ -179,8 +179,8 @@ export default function GlobalSavingsSection() {
           value={wasteDisplay}
           unit="t"
           equivalence="Kept out of landfills"
-          accentColor={Colors.accent}
-          bgColor={`${Colors.accent}12`}
+          accentColor={colors.accent}
+          bgColor={`${colors.accent}12`}
         />
       </View>
 
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   metricValue: {
     fontSize: 26,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
     letterSpacing: -0.5,
     lineHeight: 32,
   },
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   metricEquivalence: {
     fontSize: 11,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     lineHeight: 15,
   },
 
@@ -298,12 +298,12 @@ const styles = StyleSheet.create({
   strip: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderWidth: 1,
-    borderColor: `${Colors.primary}30`,
+    borderColor: `${colors.primary}30`,
   },
   stripItem: {
     flex: 1,
@@ -316,18 +316,18 @@ const styles = StyleSheet.create({
   stripDivider: {
     width: 1,
     height: 36,
-    backgroundColor: `${Colors.primary}30`,
+    backgroundColor: `${colors.primary}30`,
     marginHorizontal: 16,
   },
   stripValue: {
     fontSize: 22,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
     letterSpacing: -0.5,
   },
   stripLabel: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
 });

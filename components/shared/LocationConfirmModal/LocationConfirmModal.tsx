@@ -1,5 +1,5 @@
 import MainButton from "@/components/shared/Button/MainButton";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import useLocationStore, {
   useDetectedLocation,
   useIsLocationConfirmed,
@@ -66,7 +66,7 @@ export default function LocationConfirmModal() {
 
           {/* Icon */}
           <View style={styles.iconWrapper}>
-            <MapPin size={28} color={Colors.primary} />
+            <MapPin size={28} color={colors.primary} />
           </View>
 
           {/* Title */}
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 4,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   locationText: {
     fontFamily: "Cabin_600SemiBold",
     fontSize: 16,
-    color: Colors.primary,
+    color: colors.primary,
     textAlign: "center",
   },
   subtitle: {

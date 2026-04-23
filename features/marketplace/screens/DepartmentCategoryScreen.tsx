@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import { router, useLocalSearchParams } from "expo-router";
 import { LayoutGrid } from "lucide-react-native";
@@ -35,7 +35,7 @@ export default function DepartmentCategoryScreen() {
     return (
       <OuterContainer>
         <View style={styles.centered}>
-          <ActivityIndicator color={Colors.primary} size="large" />
+          <ActivityIndicator color={colors.primary} size="large" />
         </View>
       </OuterContainer>
     );
@@ -48,7 +48,7 @@ export default function DepartmentCategoryScreen() {
           <View style={styles.emptyIcon}>
             <LayoutGrid
               size={40}
-              color={Colors.foregroundTertiary}
+              color={colors.foregroundTertiary}
               strokeWidth={1.5}
             />
           </View>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: Colors.backgroundTertiary,
+    backgroundColor: colors.backgroundTertiary,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 8,
@@ -171,18 +171,18 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   chip: {
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   chipPressed: {
-    backgroundColor: Colors.backgroundPrimaryLight,
-    borderColor: Colors.borderFocus,
+    backgroundColor: colors.backgroundPrimaryLight,
+    borderColor: colors.borderFocus,
   },
   chipText: {
-    color: Colors.foreground,
+    color: colors.foreground,
   },
 });

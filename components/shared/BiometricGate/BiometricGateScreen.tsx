@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import useBiometricAuth from "@/hooks/useBiometricAuth";
 import useAuthStore, { useSeller } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
@@ -60,7 +60,7 @@ export default function BiometricGateScreen() {
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.iconWrap}>
-          <ShieldCheck size={40} color={Colors.primary} strokeWidth={1.5} />
+          <ShieldCheck size={40} color={colors.primary} strokeWidth={1.5} />
         </View>
 
         <Text style={styles.greeting}>Welcome back</Text>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: `${Colors.primary}15`,
+    backgroundColor: `${colors.primary}15`,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 4,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 14,
     paddingHorizontal: 28,
     borderRadius: 14,

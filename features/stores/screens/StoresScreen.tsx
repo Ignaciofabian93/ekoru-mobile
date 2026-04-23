@@ -1,5 +1,5 @@
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import Header from "@/features/marketplace/ui/header/Header";
 import {
   ContentContainer,
@@ -48,7 +48,7 @@ export default function StoresScreen() {
             <View style={styles.searchBox}>
               <Search
                 size={16}
-                color={Colors.foregroundTertiary}
+                color={colors.foregroundTertiary}
                 strokeWidth={2}
               />
               <Text size="sm" color="tertiary">
@@ -64,7 +64,7 @@ export default function StoresScreen() {
             >
               <SlidersHorizontal
                 size={18}
-                color={hasActiveFilters ? "#fff" : Colors.primary}
+                color={hasActiveFilters ? "#fff" : colors.primary}
                 strokeWidth={2}
               />
             </Pressable>
@@ -84,7 +84,7 @@ export default function StoresScreen() {
           {/* ── Sell banner ────────────────────────────────────────────── */}
           <View style={styles.banner}>
             <View style={styles.bannerIcon}>
-              <Leaf size={20} color={Colors.primary} strokeWidth={2} />
+              <Leaf size={20} color={colors.primary} strokeWidth={2} />
             </View>
             <Text
               size="sm"
@@ -125,26 +125,26 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 42,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   filterBtn: {
     width: 42,
     height: 42,
     borderRadius: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   filterBtnActive: {
-    backgroundColor: Colors.primaryDark,
-    borderColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
   },
   banner: {
     marginTop: 32,
@@ -152,11 +152,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   bannerIcon: {
     width: 36,
@@ -168,12 +168,12 @@ const styles = StyleSheet.create({
   },
   bannerText: {
     flex: 1,
-    color: Colors.primaryDark,
+    color: colors.primaryDark,
   },
   openBtn: {
     paddingHorizontal: 12,
     paddingVertical: 7,
-    backgroundColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
     borderRadius: 8,
   },
   openLabel: {

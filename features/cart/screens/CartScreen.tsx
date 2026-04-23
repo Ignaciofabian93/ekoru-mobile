@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import useCartStore, { type CartItem } from "@/store/useCartStore";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
@@ -27,7 +27,7 @@ function EmptyCart() {
     <View style={styles.empty}>
       <ShoppingCart
         size={60}
-        color={Colors.foregroundMuted}
+        color={colors.foregroundMuted}
         strokeWidth={1.5}
       />
       <Text style={styles.emptyTitle}>Tu carrito está vacío</Text>
@@ -64,7 +64,7 @@ function CartItemCard({ item }: { item: CartItem }) {
           <View style={styles.thumbPlaceholder}>
             <ImageOff
               size={24}
-              color={Colors.foregroundMuted}
+              color={colors.foregroundMuted}
               strokeWidth={1.5}
             />
           </View>
@@ -90,7 +90,7 @@ function CartItemCard({ item }: { item: CartItem }) {
             onPress={() => updateQuantity(item.product.id, item.quantity - 1)}
             hitSlop={6}
           >
-            <Minus size={14} color={Colors.foreground} strokeWidth={2} />
+            <Minus size={14} color={colors.foreground} strokeWidth={2} />
           </Pressable>
           <Text style={styles.qtyText}>{item.quantity}</Text>
           <Pressable
@@ -98,7 +98,7 @@ function CartItemCard({ item }: { item: CartItem }) {
             onPress={() => updateQuantity(item.product.id, item.quantity + 1)}
             hitSlop={6}
           >
-            <Plus size={14} color={Colors.foreground} strokeWidth={2} />
+            <Plus size={14} color={colors.foreground} strokeWidth={2} />
           </Pressable>
 
           <View style={{ flex: 1 }} />
@@ -108,7 +108,7 @@ function CartItemCard({ item }: { item: CartItem }) {
             hitSlop={6}
             style={styles.removeBtn}
           >
-            <Trash2 size={16} color={Colors.danger} strokeWidth={1.8} />
+            <Trash2 size={16} color={colors.danger} strokeWidth={1.8} />
           </Pressable>
         </View>
       </View>
@@ -160,7 +160,7 @@ export default function CartScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   list: {
     padding: 16,
@@ -173,23 +173,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 32,
     gap: 12,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   emptyTitle: {
     fontSize: 18,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
     marginTop: 8,
   },
   emptySubtitle: {
     fontSize: 14,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     textAlign: "center",
   },
   shopButton: {
     marginTop: 8,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 10,
@@ -202,10 +202,10 @@ const styles = StyleSheet.create({
   // Card
   card: {
     flexDirection: "row",
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     overflow: "hidden",
   },
   thumb: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   thumbPlaceholder: {
     width: "100%",
     height: "100%",
-    backgroundColor: Colors.backgroundTertiary,
+    backgroundColor: colors.backgroundTertiary,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -231,20 +231,20 @@ const styles = StyleSheet.create({
   brand: {
     fontSize: 11,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   name: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
     lineHeight: 19,
   },
   price: {
     fontSize: 15,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primary,
+    color: colors.primary,
     marginTop: 2,
   },
   qtyRow: {
@@ -258,14 +258,14 @@ const styles = StyleSheet.create({
     height: 26,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: Colors.borderStrong,
+    borderColor: colors.borderStrong,
     alignItems: "center",
     justifyContent: "center",
   },
   qtyText: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.foreground,
+    color: colors.foreground,
     minWidth: 20,
     textAlign: "center",
   },
@@ -282,16 +282,16 @@ const styles = StyleSheet.create({
   clearBtnText: {
     fontSize: 13,
     fontFamily: "Cabin_400Regular",
-    color: Colors.danger,
+    color: colors.danger,
     textDecorationLine: "underline",
   },
   // Footer
   footer: {
     paddingHorizontal: 16,
     paddingTop: 12,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderTopWidth: 1,
-    borderTopColor: Colors.borderLight,
+    borderTopColor: colors.borderLight,
     gap: 10,
   },
   subtotalRow: {
@@ -302,15 +302,15 @@ const styles = StyleSheet.create({
   subtotalLabel: {
     fontSize: 15,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   subtotalValue: {
     fontSize: 18,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   checkoutBtn: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: "center",

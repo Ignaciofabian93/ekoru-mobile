@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { Badge } from "@/types/enums";
 import { Check } from "lucide-react-native";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
@@ -75,7 +75,7 @@ export default function BadgesStep({ values, set }: Props) {
                 {b.label}
               </Text>
               {selected && (
-                <Check size={14} color={Colors.primary} strokeWidth={2.5} />
+                <Check size={14} color={colors.primary} strokeWidth={2.5} />
               )}
             </Pressable>
           );
@@ -116,21 +116,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 9,
     borderRadius: 20,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderWidth: 1.5,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   pillSelected: {
-    backgroundColor: Colors.backgroundPrimaryLight,
-    borderColor: Colors.primary,
+    backgroundColor: colors.backgroundPrimaryLight,
+    borderColor: colors.primary,
   },
   emoji: {
     fontSize: 14,
   },
   label: {
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   labelSelected: {
-    color: Colors.primary,
+    color: colors.primary,
   },
 });

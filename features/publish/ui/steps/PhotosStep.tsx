@@ -1,7 +1,7 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import UploadImageCard from "@/components/shared/UploadImageCard/UploadImageCard";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import * as ImagePicker from "expo-image-picker";
 import { Camera, Image as ImageIcon, X } from "lucide-react-native";
 import { Image, Pressable, ScrollView, StyleSheet, View } from "react-native";
@@ -66,7 +66,7 @@ export default function PhotosStep({ images, error, onChange }: Props) {
             description="Browse and select from your gallery"
             icon={ImageIcon}
             iconStyle={styles.uploadIconGallery}
-            iconColor={Colors.primary}
+            iconColor={colors.primary}
             disabled={images.length >= MAX_IMAGES}
           />
           <UploadImageCard
@@ -75,7 +75,7 @@ export default function PhotosStep({ images, error, onChange }: Props) {
             description="Capture a new image with your camera"
             icon={Camera}
             iconStyle={styles.uploadIconCamera}
-            iconColor={Colors.secondaryDark}
+            iconColor={colors.secondaryDark}
             disabled={images.length >= MAX_IMAGES}
           />
         </View>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 6,
     left: 6,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 4,
     paddingHorizontal: 6,
     paddingVertical: 2,
@@ -192,15 +192,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 16,
     paddingVertical: 20,
     paddingHorizontal: 12,
     borderWidth: 1.5,
-    borderColor: Colors.borderStrong,
+    borderColor: colors.borderStrong,
   },
   uploadCardPressed: {
-    backgroundColor: Colors.backgroundTertiary,
+    backgroundColor: colors.backgroundTertiary,
   },
   uploadIconWrap: {
     width: 52,
@@ -211,9 +211,9 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   uploadIconGallery: {
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   uploadIconCamera: {
     backgroundColor: "#ecfeff",
@@ -221,6 +221,6 @@ const styles = StyleSheet.create({
     borderColor: "#a5f3fc",
   },
   error: {
-    color: Colors.danger,
+    color: colors.danger,
   },
 });

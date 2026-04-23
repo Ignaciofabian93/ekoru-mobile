@@ -1,5 +1,5 @@
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import {
   Calendar,
   Heart,
@@ -99,7 +99,7 @@ export default function CommunityScreen() {
         {EVENTS.map((event) => (
           <Pressable key={event.id} style={styles.eventCard}>
             <View style={styles.eventIconBox}>
-              <Calendar size={20} color={Colors.primary} strokeWidth={1.75} />
+              <Calendar size={20} color={colors.primary} strokeWidth={1.75} />
             </View>
             <Text size="xs" weight="semibold" numberOfLines={2}>
               {event.name}
@@ -110,7 +110,7 @@ export default function CommunityScreen() {
             <View style={styles.eventAttending}>
               <Users
                 size={11}
-                color={Colors.foregroundTertiary}
+                color={colors.foregroundTertiary}
                 strokeWidth={2}
               />
               <Text size="xs" color="tertiary">
@@ -120,7 +120,7 @@ export default function CommunityScreen() {
           </Pressable>
         ))}
         <Pressable style={styles.eventCardNew}>
-          <TreePine size={22} color={Colors.primary} strokeWidth={1.5} />
+          <TreePine size={22} color={colors.primary} strokeWidth={1.5} />
           <Text size="xs" weight="medium" color="primary" align="center">
             Create Event
           </Text>
@@ -166,7 +166,7 @@ export default function CommunityScreen() {
               <Pressable style={styles.actionBtn}>
                 <ThumbsUp
                   size={14}
-                  color={Colors.foregroundSecondary}
+                  color={colors.foregroundSecondary}
                   strokeWidth={2}
                 />
                 <Text size="xs" color="secondary">
@@ -176,7 +176,7 @@ export default function CommunityScreen() {
               <Pressable style={styles.actionBtn}>
                 <MessageCircle
                   size={14}
-                  color={Colors.foregroundSecondary}
+                  color={colors.foregroundSecondary}
                   strokeWidth={2}
                 />
                 <Text size="xs" color="secondary">
@@ -186,7 +186,7 @@ export default function CommunityScreen() {
               <Pressable style={styles.actionBtn}>
                 <Heart
                   size={14}
-                  color={Colors.foregroundSecondary}
+                  color={colors.foregroundSecondary}
                   strokeWidth={2}
                 />
               </Pressable>
@@ -207,7 +207,7 @@ export default function CommunityScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
+  container: { flex: 1, backgroundColor: colors.background },
   content: { paddingBottom: 32 },
   tabsRow: {
     paddingHorizontal: 16,
@@ -218,15 +218,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 7,
     borderRadius: 20,
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   tabActive: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderColor: "transparent",
   },
-  tabLabel: { color: Colors.foregroundSecondary },
+  tabLabel: { color: colors.foregroundSecondary },
   tabLabelActive: { color: "#fff" },
   sectionHeader: {
     flexDirection: "row",
@@ -244,29 +244,29 @@ const styles = StyleSheet.create({
   eventCard: {
     flex: 1,
     gap: 6,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   eventCardNew: {
     width: 90,
     gap: 6,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 12,
     padding: 12,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
     borderStyle: "dashed",
   },
   eventIconBox: {
     width: 36,
     height: 36,
     borderRadius: 9,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -281,12 +281,12 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   postCard: {
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 14,
     gap: 8,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   postHeader: {
     flexDirection: "row",
@@ -297,27 +297,27 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
   },
   avatarText: { color: "#fff" },
   postTagBadge: {
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.background,
     borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
-  postTagLabel: { color: Colors.primaryDark, fontSize: 10 },
+  postTagLabel: { color: colors.primaryDark, fontSize: 10 },
   postActions: {
     flexDirection: "row",
     gap: 16,
     marginTop: 4,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: Colors.borderLight,
+    borderTopColor: colors.borderLight,
   },
   actionBtn: {
     flexDirection: "row",
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 20,
     paddingVertical: 14,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 12,
   },
 });

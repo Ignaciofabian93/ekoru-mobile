@@ -17,7 +17,7 @@ import {
 } from "@/store/useAuthStore";
 import { Text } from "@/components/shared/Text/Text";
 import { StyleSheet, View } from "react-native";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Title } from "@/components/shared/Title/Title";
 
 function DetailRow({
@@ -34,7 +34,7 @@ function DetailRow({
   return (
     <View style={[styles.detailRow, !last && styles.detailRowBorder]}>
       <View style={styles.detailIconWrap}>
-        <Icon size={16} strokeWidth={1.5} color={Colors.primary} />
+        <Icon size={16} strokeWidth={1.5} color={colors.primary} />
       </View>
       <View style={styles.detailContent}>
         <Text style={styles.detailLabel}>{label}</Text>
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: `${Colors.primary}18`,
+    backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
   },

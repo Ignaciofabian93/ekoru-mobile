@@ -1,5 +1,5 @@
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { router } from "expo-router";
 import { Camera, FileText, Leaf, PackagePlus, Tag } from "lucide-react-native";
 import React from "react";
@@ -26,7 +26,7 @@ export default function PublishScreen() {
       {/* Hero */}
       <View style={styles.heroBox}>
         <View style={styles.heroIcon}>
-          <PackagePlus size={36} color={Colors.primary} strokeWidth={1.5} />
+          <PackagePlus size={36} color={colors.primary} strokeWidth={1.5} />
         </View>
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
           List a product
@@ -59,13 +59,13 @@ export default function PublishScreen() {
                 <Text
                   size="xs"
                   weight="bold"
-                  style={{ color: Colors.primaryDark }}
+                  style={{ color: colors.primaryDark }}
                 >
                   {i + 1}
                 </Text>
               </View>
               <View style={styles.stepIconBox}>
-                <Icon size={18} color={Colors.primary} strokeWidth={1.75} />
+                <Icon size={18} color={colors.primary} strokeWidth={1.75} />
               </View>
               <View style={styles.stepText}>
                 <Text size="sm" weight="semibold">
@@ -102,7 +102,7 @@ export default function PublishScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   content: {
     paddingBottom: 40,
@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 18,
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   heroTitle: {
     marginBottom: 8,
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
   },
   stepsCard: {
     marginHorizontal: 20,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     gap: 14,
   },
   stepsLabel: {
@@ -151,17 +151,17 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   stepIconBox: {
     width: 36,
     height: 36,
     borderRadius: 9,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 12,
     paddingVertical: 15,
     paddingHorizontal: 32,

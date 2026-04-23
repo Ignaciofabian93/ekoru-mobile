@@ -11,7 +11,13 @@
       "Bash(grep -oP \"from ['\\\\\"\\\\`][^./][^'\\\\\"]+['\\\\\"\\\\`]\")",
       "Bash(grep -r \"export.*from\" --include=\"*.ts\" --include=\"*.tsx\" ! -path \"./node_modules/*\" ! -path \"./.expo/*\" ! -path \"./.claude/*\")",
       "Bash(find . -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) ! -path \"./.claude/*\" ! -path \"./.git/*\" ! -path \"./node_modules/*\" ! -path \"./.expo/*\" -exec grep -l \"export.*from\" {} \\\\;)",
-      "Bash(find . -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) ! -path \"./.claude/*\" ! -path \"./.git/*\" ! -path \"./node_modules/*\" ! -path \"./.expo/*\" -exec grep -l \"// @ts-\\\\|/* @ts-\" {} \\\\;)"
+      "Bash(find . -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) ! -path \"./.claude/*\" ! -path \"./.git/*\" ! -path \"./node_modules/*\" ! -path \"./.expo/*\" -exec grep -l \"// @ts-\\\\|/* @ts-\" {} \\\\;)",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(cp \"/c/Users/Ignacio/.claude/projects/c--Users-Ignacio-Documents-Workspace-Projects-ekoru-apps-new-app-app-ekoru-repos-ekoru-mobile/2f654c86-b3a1-4403-833f-dd7a254002d5/tool-results/webfetch-1776971677581-27ebt7.bin\" /tmp/design.gz)",
+      "Bash(gunzip -f /tmp/design.gz)",
+      "Bash(tar xf *)"
     ]
   }
 }

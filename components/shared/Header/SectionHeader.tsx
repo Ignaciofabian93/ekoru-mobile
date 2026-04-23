@@ -1,5 +1,5 @@
 import SubHeader from "@/components/shared/SubHeader/SubHeader";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import { ArrowLeft } from "lucide-react-native";
@@ -17,7 +17,7 @@ export default function SectionHeader({
 
   return (
     <LinearGradient
-      colors={[Colors.primaryDark, Colors.primary, Colors.primaryDark]}
+      colors={[colors.primaryDark, colors.primary, colors.primaryDark]}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
       style={{ paddingTop: insets.top }}

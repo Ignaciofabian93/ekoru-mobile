@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Fragment } from "react";
@@ -9,7 +9,7 @@ export default function AuthLayout() {
       <StatusBar style="dark" backgroundColor="#fff" />
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: Colors.primary },
+          headerStyle: { backgroundColor: colors.primary },
           headerTintColor: "#fff",
           headerTitleStyle: { fontWeight: "bold" },
           headerTitleAlign: "center",

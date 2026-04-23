@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { DUMMY_PRODUCTS } from "@/features/marketplace/data/dummyProducts";
 import { SlidersHorizontal } from "lucide-react-native";
 import { useState } from "react";
@@ -49,7 +49,7 @@ export default function CategoryProductsSection({ categoryName }: Props) {
         >
           <SlidersHorizontal
             size={16}
-            color={hasActiveFilters ? "#fff" : Colors.primary}
+            color={hasActiveFilters ? "#fff" : colors.primary}
             strokeWidth={2}
           />
           {hasActiveFilters && <View style={styles.activeDot} />}
@@ -91,15 +91,15 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   filterBtnActive: {
-    backgroundColor: Colors.primaryDark,
-    borderColor: Colors.primaryDark,
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
   },
   activeDot: {
     position: "absolute",
@@ -108,6 +108,6 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderRadius: 4,
-    backgroundColor: Colors.accent,
+    backgroundColor: colors.accent,
   },
 });

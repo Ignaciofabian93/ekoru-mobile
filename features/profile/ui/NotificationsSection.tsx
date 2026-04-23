@@ -1,6 +1,6 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Switch, View } from "react-native";
 import { NAMESPACE } from "../i18n";
@@ -27,8 +27,8 @@ export default function NotificationsSection({
                 value: !sellerPreferences.pushNotifications,
               })
             }
-            trackColor={{ true: Colors.primaryHover, false: "#ccc" }}
-            thumbColor={Colors.primary}
+            trackColor={{ true: colors.primaryHover, false: "#ccc" }}
+            thumbColor={colors.primary}
           />
         </View>
         <View style={[styles.row, styles.rowBorder]}>
@@ -41,8 +41,8 @@ export default function NotificationsSection({
                 value: !sellerPreferences.emailNotifications,
               })
             }
-            trackColor={{ true: Colors.primaryHover, false: "#ccc" }}
-            thumbColor={Colors.primary}
+            trackColor={{ true: colors.primaryHover, false: "#ccc" }}
+            thumbColor={colors.primary}
           />
         </View>
         <View style={styles.row}>
@@ -55,8 +55,8 @@ export default function NotificationsSection({
                 value: !sellerPreferences.orderUpdates,
               })
             }
-            trackColor={{ true: Colors.primaryHover, false: "#ccc" }}
-            thumbColor={Colors.primary}
+            trackColor={{ true: colors.primaryHover, false: "#ccc" }}
+            thumbColor={colors.primary}
           />
         </View>
         <View style={styles.row}>
@@ -69,8 +69,8 @@ export default function NotificationsSection({
                 value: !sellerPreferences.communityUpdates,
               })
             }
-            trackColor={{ true: Colors.primaryHover, false: "#ccc" }}
-            thumbColor={Colors.primary}
+            trackColor={{ true: colors.primaryHover, false: "#ccc" }}
+            thumbColor={colors.primary}
           />
         </View>
         <View style={styles.row}>
@@ -83,8 +83,8 @@ export default function NotificationsSection({
                 value: !sellerPreferences.securityAlerts,
               })
             }
-            trackColor={{ true: Colors.primaryHover, false: "#ccc" }}
-            thumbColor={Colors.primary}
+            trackColor={{ true: colors.primaryHover, false: "#ccc" }}
+            thumbColor={colors.primary}
           />
         </View>
         <View style={styles.row}>
@@ -97,8 +97,8 @@ export default function NotificationsSection({
                 value: !sellerPreferences.weeklySummary,
               })
             }
-            trackColor={{ true: Colors.primaryHover, false: "#ccc" }}
-            thumbColor={Colors.primary}
+            trackColor={{ true: colors.primaryHover, false: "#ccc" }}
+            thumbColor={colors.primary}
           />
         </View>
         <View style={styles.row}>
@@ -111,8 +111,8 @@ export default function NotificationsSection({
                 value: !sellerPreferences.twoFactorAuth,
               })
             }
-            trackColor={{ true: Colors.primaryHover, false: "#ccc" }}
-            thumbColor={Colors.primary}
+            trackColor={{ true: colors.primaryHover, false: "#ccc" }}
+            thumbColor={colors.primary}
           />
         </View>
       </View>

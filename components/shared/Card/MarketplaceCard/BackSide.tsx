@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { Product } from "@/features/marketplace/types/Product";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { sellerTypeTranslate } from "@/utils/sellerTypeTranslate";
@@ -94,7 +94,7 @@ export default function CardBackSide({ product, onFlip, onShowImpact }: Props) {
                   <Text style={styles.viewMoreText}>Ver impacto completo</Text>
                   <ChevronRight
                     size={12}
-                    color={Colors.primary}
+                    color={colors.primary}
                     strokeWidth={2}
                   />
                 </Pressable>
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 8,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     width: 28,
     height: 28,
     borderRadius: 14,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 4,
     marginTop: 8,
-    backgroundColor: `${Colors.primary}1A`,
+    backgroundColor: `${colors.primary}1A`,
     paddingVertical: 6,
     paddingHorizontal: 8,
     borderRadius: 6,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   viewMoreText: {
     fontSize: 10,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primary,
+    color: colors.primary,
   },
   sellerSection: {
     borderTopWidth: 1,
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   sellerBadge: {
-    backgroundColor: `${Colors.primary}1A`,
+    backgroundColor: `${colors.primary}1A`,
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 4,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   sellerBadgeText: {
     fontSize: 9,
     fontFamily: "Cabin_600SemiBold",
-    color: Colors.primary,
+    color: colors.primary,
   },
   sellerRow: {
     flexDirection: "row",

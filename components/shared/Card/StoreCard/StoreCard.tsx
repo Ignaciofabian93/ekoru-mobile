@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { Store } from "@/features/marketplace/types/Store";
 import { sellerTypeTranslate } from "@/utils/sellerTypeTranslate";
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,7 +27,7 @@ export default function StoreCard({ store, onPress }: Props) {
     >
       {/* Gradient header band */}
       <LinearGradient
-        colors={[Colors.secondaryDark, Colors.secondary]}
+        colors={[colors.secondaryDark, colors.secondary]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.header}
@@ -36,7 +36,7 @@ export default function StoreCard({ store, onPress }: Props) {
       {/* Floating initials avatar */}
       <View style={styles.avatarWrapper}>
         <LinearGradient
-          colors={[Colors.secondaryDark, Colors.secondary]}
+          colors={[colors.secondaryDark, colors.secondary]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.avatar}
@@ -61,7 +61,7 @@ export default function StoreCard({ store, onPress }: Props) {
 
         {/* Rating */}
         <View style={styles.ratingRow}>
-          <Star size={13} color={Colors.accent} fill={Colors.accent} strokeWidth={0} />
+          <Star size={13} color={colors.accent} fill={colors.accent} strokeWidth={0} />
           <Text style={styles.ratingValue}>{store.rating.toFixed(1)}</Text>
           <Text style={styles.ratingCount}>({store.reviewCount})</Text>
           <Text style={styles.dot}>·</Text>
@@ -71,7 +71,7 @@ export default function StoreCard({ store, onPress }: Props) {
         {/* Location */}
         {county && (
           <View style={styles.locationRow}>
-            <MapPin size={12} color={Colors.foregroundTertiary} strokeWidth={1.5} />
+            <MapPin size={12} color={colors.foregroundTertiary} strokeWidth={1.5} />
             <Text style={styles.locationText} numberOfLines={1}>
               {county}
             </Text>
@@ -151,21 +151,21 @@ const styles = StyleSheet.create({
   storeName: {
     fontSize: 15,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
     flex: 1,
   },
   typeBadge: {
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 6,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   typeBadgeText: {
     fontSize: 10,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   ratingRow: {
     flexDirection: "row",
@@ -175,22 +175,22 @@ const styles = StyleSheet.create({
   ratingValue: {
     fontSize: 13,
     fontFamily: "Cabin_700Bold",
-    color: Colors.foreground,
+    color: colors.foreground,
   },
   ratingCount: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   dot: {
     fontSize: 12,
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
     marginHorizontal: 2,
   },
   productCount: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
   locationRow: {
     flexDirection: "row",
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   locationText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     flex: 1,
   },
   tagsRow: {
@@ -210,16 +210,16 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   tag: {
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: colors.backgroundSecondary,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   tagText: {
     fontSize: 11,
     fontFamily: "Cabin_500Medium",
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
   },
 });

@@ -1,6 +1,6 @@
 import MainButton from "@/components/shared/Button/MainButton";
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useRouter } from "expo-router";
 import {
   Leaf,
@@ -19,9 +19,9 @@ export default function GuestScreen() {
   const { t } = useTranslation(NAMESPACE);
 
   const PERKS = [
-    { icon: Star, color: Colors.accent, titleKey: "perk_points_title", descKey: "perk_points_desc" },
-    { icon: Leaf, color: Colors.primary, titleKey: "perk_impact_title", descKey: "perk_impact_desc" },
-    { icon: ShieldCheck, color: Colors.secondary, titleKey: "perk_badge_title", descKey: "perk_badge_desc" },
+    { icon: Star, color: colors.accent, titleKey: "perk_points_title", descKey: "perk_points_desc" },
+    { icon: Leaf, color: colors.primary, titleKey: "perk_impact_title", descKey: "perk_impact_desc" },
+    { icon: ShieldCheck, color: colors.secondary, titleKey: "perk_badge_title", descKey: "perk_badge_desc" },
     { icon: Zap, color: "#a855f7", titleKey: "perk_deals_title", descKey: "perk_deals_desc" },
     { icon: TreePine, color: "#10b981", titleKey: "perk_trees_title", descKey: "perk_trees_desc" },
   ];
@@ -35,7 +35,7 @@ export default function GuestScreen() {
       {/* Avatar placeholder */}
       <View style={styles.heroBox}>
         <View style={styles.avatarRing}>
-          <UserRound size={40} color={Colors.primary} strokeWidth={1.25} />
+          <UserRound size={40} color={colors.primary} strokeWidth={1.25} />
         </View>
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
           {t("joinCommunity")}
@@ -96,7 +96,7 @@ export default function GuestScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   content: {
     paddingBottom: 40,
@@ -111,12 +111,12 @@ const styles = StyleSheet.create({
     width: 88,
     height: 88,
     borderRadius: 44,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
     borderWidth: 2,
-    borderColor: Colors.borderFocus,
+    borderColor: colors.borderFocus,
   },
   heroTitle: {
     marginBottom: 10,
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 14,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   perkIconBox: {
     width: 44,
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   primaryBtn: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     borderRadius: 12,
     paddingVertical: 15,
     alignItems: "center",

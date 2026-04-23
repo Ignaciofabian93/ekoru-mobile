@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import Animated, {
@@ -50,7 +50,7 @@ function SkeletonBox({
   return (
     <Animated.View
       style={[
-        { width, height, borderRadius, backgroundColor: Colors.borderLight },
+        { width, height, borderRadius, backgroundColor: colors.borderLight },
         animatedStyle,
         style,
       ]}

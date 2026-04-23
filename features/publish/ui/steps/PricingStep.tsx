@@ -1,7 +1,7 @@
 import Input from "@/components/shared/Input/Input";
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { ArrowLeftRight, DollarSign } from "lucide-react-native";
 import { StyleSheet, Switch, View } from "react-native";
 import type { PublishFormValues } from "../../types/PublishForm";
@@ -39,7 +39,7 @@ export default function PricingStep({ values, errors, set }: Props) {
           <View style={styles.toggleIcon}>
             <ArrowLeftRight
               size={18}
-              color={Colors.primary}
+              color={colors.primary}
               strokeWidth={1.75}
             />
           </View>
@@ -55,7 +55,7 @@ export default function PricingStep({ values, errors, set }: Props) {
         <Switch
           value={values.isExchangeable}
           onValueChange={(v) => set("isExchangeable", v)}
-          trackColor={{ false: Colors.borderLight, true: Colors.primary }}
+          trackColor={{ false: colors.borderLight, true: colors.primary }}
           thumbColor="#fff"
         />
       </View>
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
     padding: 14,
     gap: 12,
   },
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 10,
-    backgroundColor: Colors.backgroundPrimaryLight,
+    backgroundColor: colors.backgroundPrimaryLight,
     alignItems: "center",
     justifyContent: "center",
   },

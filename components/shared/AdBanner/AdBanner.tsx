@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
@@ -28,39 +28,39 @@ export interface AdBannerProps extends Omit<ViewProps, "style"> {
 // ─── Maps ─────────────────────────────────────────────────────────────────────
 
 const GRADIENT_COLORS: Record<"primary" | "secondary", readonly [string, string, string]> = {
-  primary: [Colors.primaryDark, Colors.primary, Colors.primaryDark],
-  secondary: [Colors.secondaryDark, Colors.secondary, Colors.secondaryDark],
+  primary: [colors.primaryDark, colors.primary, colors.primaryDark],
+  secondary: [colors.secondaryDark, colors.secondary, colors.secondaryDark],
 };
 
 // Icon container background for each variant
 const ICON_BG: Record<Variant, string> = {
   primary: "rgba(255,255,255,0.15)",
   secondary: "rgba(255,255,255,0.15)",
-  outlined: Colors.backgroundPrimaryLight,
-  ghost: Colors.backgroundPrimaryLight,
+  outlined: colors.backgroundPrimaryLight,
+  ghost: colors.backgroundPrimaryLight,
 };
 
 // Icon color for each variant
 const ICON_COLOR: Record<Variant, string> = {
   primary: "#ffffff",
   secondary: "#ffffff",
-  outlined: Colors.primary,
-  ghost: Colors.primary,
+  outlined: colors.primary,
+  ghost: colors.primary,
 };
 
 // Title / description color for each variant
 const TEXT_COLOR: Record<Variant, string> = {
   primary: "#ffffff",
   secondary: "#ffffff",
-  outlined: Colors.foreground,
-  ghost: Colors.foreground,
+  outlined: colors.foreground,
+  ghost: colors.foreground,
 };
 
 const TEXT_MUTED: Record<Variant, string> = {
   primary: "rgba(255,255,255,0.75)",
   secondary: "rgba(255,255,255,0.75)",
-  outlined: Colors.foregroundSecondary,
-  ghost: Colors.foregroundSecondary,
+  outlined: colors.foregroundSecondary,
+  ghost: colors.foregroundSecondary,
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -152,14 +152,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   outlined: {
-    backgroundColor: Colors.background,
-    borderColor: Colors.primary,
+    backgroundColor: colors.background,
+    borderColor: colors.primary,
     borderWidth: 1,
     borderRadius: 12,
   },
   ghost: {
     backgroundColor: "rgba(255,255,255,0.5)",
-    borderColor: Colors.borderLight,
+    borderColor: colors.borderLight,
   },
   inner: {
     flexDirection: "row",

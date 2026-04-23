@@ -1,7 +1,7 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import { LANGUAGES_SUPPORTED } from "@/config/languages";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
   check: {
     fontSize: 16,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
   },
 });

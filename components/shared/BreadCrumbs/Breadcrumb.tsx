@@ -1,5 +1,5 @@
 import { Text } from "@/components/shared/Text/Text";
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import { ChevronRight } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 
@@ -22,7 +22,7 @@ export default function Breadcrumb({ items }: Props) {
             {idx > 0 && (
               <ChevronRight
                 size={12}
-                color={Colors.foregroundTertiary}
+                color={colors.foregroundTertiary}
                 strokeWidth={2}
               />
             )}
@@ -67,13 +67,13 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   link: {
-    color: Colors.foregroundSecondary,
+    color: colors.foregroundSecondary,
     textDecorationLine: "underline",
   },
   muted: {
-    color: Colors.foregroundTertiary,
+    color: colors.foregroundTertiary,
   },
   current: {
-    color: Colors.foreground,
+    color: colors.foreground,
   },
 });

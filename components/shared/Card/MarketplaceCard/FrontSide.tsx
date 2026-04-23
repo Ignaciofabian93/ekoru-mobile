@@ -1,4 +1,4 @@
-import Colors from "@/constants/Colors";
+import { colors } from "@/design/tokens";
 import type { Product } from "@/features/marketplace/types/Product";
 import { conditionTranslate } from "@/utils/conditionTranslate";
 import { formatPrice } from "@/utils/formatPrice";
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 8,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     width: 28,
     height: 28,
     borderRadius: 14,
@@ -183,10 +183,10 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 18,
     fontFamily: "Cabin_700Bold",
-    color: Colors.primary,
+    color: colors.primary,
   },
   cartButton: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     width: 32,
     height: 32,
     borderRadius: 8,

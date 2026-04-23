@@ -1,3 +1,0 @@
-// ⚠️ DEPRECATED — file renamed to LoginScreen.tsx to follow PascalCase convention.
-// This file will be removed. Import from "./LoginScreen" instead.
-export { default } from "./LoginScreen";

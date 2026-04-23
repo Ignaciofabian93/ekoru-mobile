@@ -3,10 +3,11 @@ import {
   ApolloLink,
   HttpLink,
   InMemoryCache,
-  Observable,
 } from "@apollo/client";
+import { CombinedGraphQLErrors } from "@apollo/client/errors";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { Observable } from "rxjs";
 
 import { RefreshToken } from "@/api/auth/login";
 import { GRAPHQL_URL } from "@/config/endpoints";
@@ -33,73 +34,72 @@ const resolvePendingRequests = () => {
   pendingRequests = [];
 };
 
-const errorLink = onError(
-  ({ graphQLErrors, networkError, operation, forward }) => {
-    const isUnauthenticated =
-      graphQLErrors?.some(
-        (e) =>
+const errorLink = onError(({ error, operation, forward }) => {
+  const isUnauthenticated =
+    (CombinedGraphQLErrors.is(error) &&
+      error.errors.some(
+        (e: { extensions?: Record<string, unknown> }) =>
           e.extensions?.code === "UNAUTHENTICATED" ||
           e.extensions?.code === "UNAUTHORIZED" ||
           e.extensions?.statusCode === 401 ||
           e.extensions?.status === 401,
-      ) ||
-      (networkError &&
-        "statusCode" in networkError &&
-        networkError.statusCode === 401);
+      )) ||
+    (!CombinedGraphQLErrors.is(error) &&
+      "statusCode" in error &&
+      (error as { statusCode: unknown }).statusCode === 401);
 
-    if (!isUnauthenticated) return;
+  if (!isUnauthenticated) return;
 
-    if (isRefreshing) {
-      // Queue subsequent operations until the refresh resolves
-      return new Observable((observer) => {
-        pendingRequests.push(() => {
-          forward(operation).subscribe({
-            next: observer.next.bind(observer),
-            error: observer.error.bind(observer),
-            complete: observer.complete.bind(observer),
-          });
+  if (isRefreshing) {
+    // Queue subsequent operations until the refresh resolves
+    return new Observable((observer) => {
+      pendingRequests.push(() => {
+        forward(operation).subscribe({
+          next: observer.next.bind(observer),
+          error: observer.error.bind(observer),
+          complete: observer.complete.bind(observer),
         });
       });
-    }
+    });
+  }
 
-    isRefreshing = true;
+  isRefreshing = true;
 
-    return new Observable((observer) => {
-      RefreshToken()
-        .then((data) => {
-          if (!data?.token) {
-            useAuthStore.getState().logout();
-            observer.complete();
-            return;
-          }
-
-          // Persist the new token and update the operation header
-          useAuthStore.getState().updateToken(data.token);
-          operation.setContext(
-            ({ headers = {} }: { headers: Record<string, string> }) => ({
-              headers: { ...headers, Authorization: `Bearer ${data.token}` },
-            }),
-          );
-
-          resolvePendingRequests();
-
-          forward(operation).subscribe({
-            next: observer.next.bind(observer),
-            error: observer.error.bind(observer),
-            complete: observer.complete.bind(observer),
-          });
-        })
-        .catch(() => {
-          pendingRequests = [];
+  return new Observable((observer) => {
+    RefreshToken()
+      .then((data) => {
+        if (!data?.token) {
           useAuthStore.getState().logout();
           observer.complete();
-        })
-        .finally(() => {
-          isRefreshing = false;
+          return;
+        }
+
+        // Persist the new token and update the operation header
+        useAuthStore.getState().updateToken(data.token);
+        operation.setContext(
+          ({ headers = {} }: { headers: Record<string, string> }) => ({
+            headers: { ...headers, Authorization: `Bearer ${data.token}` },
+          }),
+        );
+
+        resolvePendingRequests();
+
+        forward(operation).subscribe({
+          next: observer.next.bind(observer),
+          error: observer.error.bind(observer),
+          complete: observer.complete.bind(observer),
         });
-    });
-  },
-);
+      })
+      .catch(() => {
+        pendingRequests = [];
+        useAuthStore.getState().logout();
+        observer.complete();
+      })
+      .finally(() => {
+        isRefreshing = false;
+      });
+  });
+});
 
 const httpLink = new HttpLink({ uri: GRAPHQL_URL });
 

@@ -68,8 +68,8 @@ export default function BadgesStep({ values, set }: Props) {
               <Text style={styles.emoji}>{b.emoji}</Text>
               <Text
                 size="sm"
-                weight={selected ? "semibold" : "regular"}
-                style={[styles.label, selected && styles.labelSelected]}
+                weight={selected ? "semibold" : "normal"}
+                style={[styles.label, selected ? styles.labelSelected : {}]}
                 numberOfLines={1}
               >
                 {b.label}

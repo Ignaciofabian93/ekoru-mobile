@@ -72,7 +72,7 @@ export default function useLogin() {
           },
           fetchPolicy: "no-cache",
         });
-        data = result.data;
+        data = result.data ?? null;
       } catch (gqlErr) {
         console.error("[Login] GraphQL GET_ME failed:", gqlErr);
         showError({ title: t("errorTitle"), message: t("networkError") });

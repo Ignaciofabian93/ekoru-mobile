@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, {
+  cancelAnimation,
   Easing,
   interpolate,
   useAnimatedStyle,
@@ -51,6 +52,7 @@ function AccordionContent({
       duration: 220,
       easing: Easing.bezier(0.25, 0.1, 0.25, 1),
     });
+    return () => cancelAnimation(height);
   }, [isOpen, height]);
 
   const animStyle = useAnimatedStyle(() => ({
@@ -79,6 +81,7 @@ function AccordionL2Row({
 
   useEffect(() => {
     chevron.value = withTiming(isOpen ? 1 : 0, { duration: 200 });
+    return () => cancelAnimation(chevron);
   }, [isOpen, chevron]);
 
   const chevronStyle = useAnimatedStyle(() => ({
@@ -147,6 +150,7 @@ function AccordionL1Row({
 
   useEffect(() => {
     chevron.value = withTiming(isOpen ? 1 : 0, { duration: 200 });
+    return () => cancelAnimation(chevron);
   }, [isOpen, chevron]);
 
   const chevronStyle = useAnimatedStyle(() => ({
@@ -210,6 +214,7 @@ function AccordionSection({
 
   useEffect(() => {
     chevron.value = withTiming(isOpen ? 1 : 0, { duration: 200 });
+    return () => cancelAnimation(chevron);
   }, [isOpen, chevron]);
 
   const chevronStyle = useAnimatedStyle(() => ({

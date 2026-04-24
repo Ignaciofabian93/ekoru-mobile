@@ -9,6 +9,7 @@ import {
   type ViewProps,
 } from "react-native";
 import Animated, {
+  cancelAnimation,
   FadeInDown,
   useAnimatedStyle,
   useSharedValue,
@@ -87,6 +88,10 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
       pressScale.value = withSpring(1, { stiffness: 400, damping: 17 });
     };
 
+    useEffect(() => {
+      return () => cancelAnimation(pressScale);
+    }, []);
+
     // ── Check icon animation ─────────────────────────────────────────────────
     const checkScale = useSharedValue(checked ? 1 : 0.5);
     const checkOpacity = useSharedValue(checked ? 1 : 0);
@@ -94,6 +99,10 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
     useEffect(() => {
       checkScale.value = withTiming(checked ? 1 : 0.5, { duration: 200 });
       checkOpacity.value = withTiming(checked ? 1 : 0, { duration: 200 });
+      return () => {
+        cancelAnimation(checkScale);
+        cancelAnimation(checkOpacity);
+      };
     }, [checked]);
 
     const checkStyle = useAnimatedStyle(() => ({

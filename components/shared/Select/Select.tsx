@@ -11,6 +11,7 @@ import {
   View,
 } from "react-native";
 import Animated, {
+  cancelAnimation,
   FadeIn,
   FadeInDown,
   FadeInUp,
@@ -165,6 +166,7 @@ const Select = React.forwardRef<View, SelectProps>(
 
     useEffect(() => {
       chevronRot.value = withTiming(isOpen ? 180 : 0, { duration: 200 });
+      return () => cancelAnimation(chevronRot);
     }, [isOpen]);
 
     // ── Open / close ────────────────────────────────────────────────────────

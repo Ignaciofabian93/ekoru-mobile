@@ -3,6 +3,7 @@ import { Droplets, Info, Leaf } from "lucide-react-native";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -54,6 +55,7 @@ function ProgressBar({ percentage }: { percentage: number }) {
 
   useEffect(() => {
     width.value = withTiming(percentage, { duration: 600 });
+    return () => cancelAnimation(width);
   }, [percentage]);
 
   const barStyle = useAnimatedStyle(() => ({

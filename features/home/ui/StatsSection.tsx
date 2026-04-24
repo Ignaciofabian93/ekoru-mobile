@@ -48,6 +48,7 @@ export default function StatsSection() {
       -1,
       false,
     );
+    return () => cancelAnimation(translateX);
   }, [setWidth]);
 
   const animStyle = useAnimatedStyle(() => ({

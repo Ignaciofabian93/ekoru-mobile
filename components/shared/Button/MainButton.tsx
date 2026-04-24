@@ -1,6 +1,6 @@
 import { colors } from "@/design/tokens";
 import type { LucideIcon } from "lucide-react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -11,6 +11,7 @@ import {
   type ViewStyle,
 } from "react-native";
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -212,6 +213,12 @@ const MainButton = React.forwardRef<View, MainButtonProps>(
     const animatedStyle = useAnimatedStyle(() => ({
       transform: [{ scale: scale.value }],
     }));
+
+    useEffect(() => {
+      return () => {
+        cancelAnimation(scale);
+      };
+    }, [scale]);
 
     const handlePressIn = () => {
       scale.value = withSpring(0.96, { stiffness: 400, damping: 17 });

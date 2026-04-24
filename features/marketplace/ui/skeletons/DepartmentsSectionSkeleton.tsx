@@ -2,6 +2,7 @@ import { colors } from "@/design/tokens";
 import { useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -28,6 +29,7 @@ function usePulse(delay = 0) {
       -1,
       false,
     );
+    return () => cancelAnimation(opacity);
   }, []);
 
   return useAnimatedStyle(() => ({ opacity: opacity.value }));

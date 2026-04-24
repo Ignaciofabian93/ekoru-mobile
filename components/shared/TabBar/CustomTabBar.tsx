@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { Dimensions, Pressable, StyleSheet } from "react-native";
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -47,6 +48,7 @@ export default function CustomTabBar({
       state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2,
       SPRING_CONFIG,
     );
+    return () => cancelAnimation(translateX);
   }, [state.index, tabWidth, translateX]);
 
   const indicatorStyle = useAnimatedStyle(() => ({

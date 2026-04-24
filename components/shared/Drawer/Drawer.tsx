@@ -25,6 +25,7 @@ import {
   View,
 } from "react-native";
 import Animated, {
+  cancelAnimation,
   Easing,
   interpolate,
   useAnimatedStyle,
@@ -183,6 +184,7 @@ export default function Drawer() {
       duration: 300,
       easing: Easing.bezier(0.25, 0.1, 0.25, 1),
     });
+    return () => cancelAnimation(progress);
   }, [isOpen, progress]);
 
   const backdropStyle = useAnimatedStyle(() => ({

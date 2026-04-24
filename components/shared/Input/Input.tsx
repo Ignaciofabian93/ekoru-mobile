@@ -1,6 +1,6 @@
 import { colors } from "@/design/tokens";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   type TextInputProps as RNTextInputProps,
 } from "react-native";
 import Animated, {
+  cancelAnimation,
   FadeInDown,
   useAnimatedStyle,
   useSharedValue,
@@ -135,6 +136,13 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
       opacity:   eyeOpacity.value,
       transform: [{ scale: eyeScale.value }],
     }));
+
+    useEffect(() => {
+      return () => {
+        cancelAnimation(eyeOpacity);
+        cancelAnimation(eyeScale);
+      };
+    }, []);
 
     const togglePassword = () => {
       eyeOpacity.value = withSequence(withTiming(0, { duration: 80 }), withTiming(1, { duration: 80 }));

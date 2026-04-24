@@ -10,6 +10,7 @@ import {
   type ViewStyle,
 } from "react-native";
 import Animated, {
+  cancelAnimation,
   Easing,
   FadeIn,
   FadeInDown,
@@ -100,6 +101,7 @@ function Shimmer({ width }: { width: number }) {
       -1,
       false,
     );
+    return () => cancelAnimation(translateX);
   }, [width]);
 
   const animatedStyle = useAnimatedStyle(() => ({

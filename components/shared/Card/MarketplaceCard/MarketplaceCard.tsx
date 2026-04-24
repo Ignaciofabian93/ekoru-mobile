@@ -1,7 +1,8 @@
 import type { Product } from "@/features/marketplace/types/Product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type StyleProp, type ViewStyle, StyleSheet, View } from "react-native";
 import Animated, {
+  cancelAnimation,
   Easing,
   interpolate,
   useAnimatedStyle,
@@ -28,6 +29,10 @@ export default function MarketplaceCard({
 }: Props) {
   const [isFlipped, setIsFlipped] = useState(false);
   const rotation = useSharedValue(0);
+
+  useEffect(() => {
+    return () => cancelAnimation(rotation);
+  }, []);
 
   const flip = () => {
     const toValue = isFlipped ? 0 : 1;

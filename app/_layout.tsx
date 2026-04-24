@@ -6,12 +6,6 @@ import {
   Cabin_700Bold,
 } from "@expo-google-fonts/cabin";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  type Theme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -20,20 +14,12 @@ import { useEffect, useState } from "react";
 import "react-native-reanimated";
 import "../global.css";
 
-const lightTheme: Theme = {
-  ...DefaultTheme,
-  colors: { ...DefaultTheme.colors, background: "#ffffff" },
-};
-
 import { ApolloProvider } from "@apollo/client/react";
 
 import BiometricGateScreen from "@/components/shared/BiometricGate/BiometricGateScreen";
 import Drawer from "@/components/shared/Drawer/Drawer";
-import LocationConfirmModal from "@/components/shared/LocationConfirmModal/LocationConfirmModal";
 import toastConfig from "@/components/shared/Toast/toastConfig";
 import { DrawerProvider } from "@/context/DrawerContext";
-import { useColorScheme } from "@/hooks/useColorScheme";
-import useLocationDetection from "@/hooks/useLocationDetection";
 import client from "@/lib/apollo";
 import useAuthStore from "@/store/useAuthStore";
 import useLocationStore from "@/store/useLocationStore";
@@ -96,35 +82,27 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
   const requiresBiometric = useAuthStore((s) => s.requiresBiometric);
-  useLocationDetection();
 
   return (
     <ApolloProvider client={client}>
       <DrawerProvider>
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : lightTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="product" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="(marketplace)"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="(stores)" options={{ headerShown: false }} />
-            <Stack.Screen name="(services)" options={{ headerShown: false }} />
-            <Stack.Screen name="(community)" options={{ headerShown: false }} />
-            <Stack.Screen name="(blog)" options={{ headerShown: false }} />
-            <Stack.Screen name="(legal)" options={{ headerShown: false }} />
-            <Stack.Screen name="(publish)" options={{ headerShown: false }} />
-          </Stack>
-          <Drawer />
-          <LocationConfirmModal />
-          <StatusBar style="light" />
-          {requiresBiometric && <BiometricGateScreen />}
-        </ThemeProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(profile)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="product" options={{ headerShown: false }} />
+          <Stack.Screen name="(marketplace)" options={{ headerShown: false }} />
+          <Stack.Screen name="(stores)" options={{ headerShown: false }} />
+          <Stack.Screen name="(services)" options={{ headerShown: false }} />
+          <Stack.Screen name="(community)" options={{ headerShown: false }} />
+          <Stack.Screen name="(blog)" options={{ headerShown: false }} />
+          <Stack.Screen name="(legal)" options={{ headerShown: false }} />
+          <Stack.Screen name="(publish)" options={{ headerShown: false }} />
+        </Stack>
+        <Drawer />
+        <StatusBar style="auto" />
+        {requiresBiometric && <BiometricGateScreen />}
       </DrawerProvider>
       <Toast config={toastConfig} />
     </ApolloProvider>

@@ -18,17 +18,38 @@ import { ApolloProvider } from "@apollo/client/react";
 
 import BiometricGateScreen from "@/components/shared/BiometricGate/BiometricGateScreen";
 import Drawer from "@/components/shared/Drawer/Drawer";
+import ErrorScreen from "@/components/shared/ErrorScreen/ErrorScreen";
 import toastConfig from "@/components/shared/Toast/toastConfig";
 import { DrawerProvider } from "@/context/DrawerContext";
 import client from "@/lib/apollo";
+import { logger } from "@/lib/logger";
 import useAuthStore from "@/store/useAuthStore";
 import useLocationStore from "@/store/useLocationStore";
 import Toast from "react-native-toast-message";
 
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
+// ─── Global Error Boundary ────────────────────────────────────────────────────
+// Expo Router expects a named export `ErrorBoundary` from the root layout.
+// Exporting a custom component here instead of re-exporting from expo-router
+// gives us full control over the UI and lets us log the error.
+export function ErrorBoundary({
+  error,
+  retry,
+}: {
+  error: Error;
+  retry: () => void;
+}) {
+  logger.error("RootErrorBoundary", error, { stack: error.stack });
+
+  return (
+    <ErrorScreen
+      title="Something went wrong"
+      message="An unexpected error occurred. You can try again or go back to the home screen."
+      onAction={retry}
+      actionLabel="Try again"
+      showHomeLink
+    />
+  );
+}
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.

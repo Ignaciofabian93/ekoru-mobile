@@ -49,6 +49,7 @@ export default function useLogin() {
       } catch (restErr) {
         console.error("[Login] REST /session/auth failed:", restErr);
         showError({ title: t("errorTitle"), message: t("networkError") });
+        setLoading(false);
         return;
       }
 
@@ -57,6 +58,7 @@ export default function useLogin() {
           title: t("errorTitle"),
           message: t("invalidCredentials"),
         });
+        setLoading(false);
         return;
       }
 
@@ -73,10 +75,10 @@ export default function useLogin() {
           fetchPolicy: "no-cache",
         });
         data = result.data ?? null;
-        console.log("DATA:: ", data);
       } catch (gqlErr) {
         console.error("[Login] GraphQL GET_ME failed:", gqlErr);
         showError({ title: t("errorTitle"), message: t("networkError") });
+        setLoading(false);
         return;
       }
 
@@ -85,11 +87,13 @@ export default function useLogin() {
           title: t("errorTitle"),
           message: t("userNotFound"),
         });
+        setLoading(false);
         return;
       }
 
       // Step 3: Persist token + refreshToken + seller in secure storage and global state
       await setSession(authData.token, data.me, authData.refreshToken);
+      setLoading(false);
 
       router.replace("/(tabs)");
     } catch (err) {
@@ -98,8 +102,6 @@ export default function useLogin() {
         title: t("errorTitle"),
         message: t("networkError"),
       });
-    } finally {
-      setLoading(false);
     }
   };
 

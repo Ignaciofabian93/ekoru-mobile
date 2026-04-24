@@ -40,6 +40,7 @@ export default function useProfileData() {
     if (!seller) {
       router.replace("/(auth)");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seller]);
 
   // ── Person form state ───────────────────────────────────────────────────────
@@ -106,7 +107,7 @@ export default function useProfileData() {
       countyId: seller.county?.id ?? null,
       address: seller.address ?? "",
     });
-  }, [seller?.id]);
+  }, [seller, seller?.id]);
 
   const handleLocationChange = <K extends keyof LocationFormValues>(
     key: K,

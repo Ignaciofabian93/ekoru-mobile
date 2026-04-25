@@ -1,5 +1,6 @@
 import { Login } from "@/api/auth/login";
 import { GET_ME } from "@/graphql/auth/login";
+import { logger } from "@/lib/logger";
 import { showError } from "@/lib/toast";
 import useAuthStore from "@/store/useAuthStore";
 import type { Seller } from "@/types/user";
@@ -20,13 +21,7 @@ export default function useLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleFieldChange = ({
-    name,
-    value,
-  }: {
-    name: string;
-    value: string;
-  }) => {
+  const handleFieldChange = ({ name, value }: { name: string; value: string }) => {
     if (name === "email") setEmail(value);
     if (name === "password") setPassword(value);
   };
@@ -47,7 +42,7 @@ export default function useLogin() {
       try {
         authData = await Login({ email, password });
       } catch (restErr) {
-        console.error("[Login] REST /session/auth failed:", restErr);
+        logger.error("[Login] REST Login failed:", restErr);
         showError({ title: t("errorTitle"), message: t("networkError") });
         setLoading(false);
         return;
@@ -76,7 +71,7 @@ export default function useLogin() {
         });
         data = result.data ?? null;
       } catch (gqlErr) {
-        console.error("[Login] GraphQL GET_ME failed:", gqlErr);
+        logger.error("[Login] GraphQL GET_ME failed:", gqlErr);
         showError({ title: t("errorTitle"), message: t("networkError") });
         setLoading(false);
         return;
@@ -93,15 +88,19 @@ export default function useLogin() {
 
       // Step 3: Persist token + refreshToken + seller in secure storage and global state
       await setSession(authData.token, data.me, authData.refreshToken);
-      setLoading(false);
 
+      // Reset loading BEFORE navigating away.
+      // Any setState call after router.replace risks updating an unmounting component
+      // mid-transition (Reanimated), which crashes the bridge.
+      setLoading(false);
       router.replace("/(tabs)");
     } catch (err) {
-      console.error("[Login] Unexpected error:", err);
+      logger.error("[Login] Unexpected error:", err);
       showError({
         title: t("errorTitle"),
         message: t("networkError"),
       });
+      setLoading(false);
     }
   };
 

@@ -28,9 +28,10 @@ function log(
   } else if (level === "warn") {
     console.warn(prefix, error, extra ?? "");
   } else {
-    console.log(prefix, error, extra ?? "");
+    console.warn(prefix, error, extra ?? "");
   }
 
+  // ─── Sentry reporting ────────────────────────────────────────────
   if (level === "error" && error instanceof Error) {
     Sentry.captureException(error, { extra: { context, ...extra } });
   }

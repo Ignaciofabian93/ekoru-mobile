@@ -46,3 +46,5 @@ yarn-error.*
 
 # Claude AI worktrees
 .claude/worktrees/
+
+.env.local

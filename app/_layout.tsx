@@ -7,7 +7,7 @@ import {
 } from "@expo-google-fonts/cabin";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
@@ -26,6 +26,26 @@ import { logger } from "@/lib/logger";
 import useAuthStore from "@/store/useAuthStore";
 import useLocationStore from "@/store/useLocationStore";
 import Toast from "react-native-toast-message";
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://05ed505b03dd01c1f1d7b6bbf4c8135c@o4511275955847168.ingest.us.sentry.io/4511275958272000',
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Enable Logs
+  enableLogs: true,
+
+  // Configure Session Replay
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1,
+  integrations: [Sentry.mobileReplayIntegration()],
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 
 // ─── Global Error Boundary ────────────────────────────────────────────────────
 // Expo Router expects a named export `ErrorBoundary` from the root layout.
@@ -59,7 +79,7 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default Sentry.wrap(function RootLayout() {
   const [loaded, error] = useFonts({
     Cabin_400Regular,
     Cabin_500Medium,
@@ -100,10 +120,21 @@ export default function RootLayout() {
   }
 
   return <RootLayoutNav />;
-}
+});
 
 function RootLayoutNav() {
   const requiresBiometric = useAuthStore((s) => s.requiresBiometric);
+  const router = useRouter();
+
+  // On every cold start, reset the navigation stack to (tabs).
+  // expo-router persists navigation state between dev-server restarts, so the
+  // app can wake up sitting on (auth) even though the home screen is public.
+  // Navigating to (tabs) here ensures a consistent entry point regardless of
+  // whatever stale state was saved.
+  useEffect(() => {
+    router.replace("/(tabs)");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ApolloProvider client={client}>

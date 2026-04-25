@@ -256,6 +256,16 @@ export default function RecycleMapScreen() {
   const insets = useSafeAreaInsets();
   const mapRef = useRef<MapView>(null);
 
+  // Track mount state so async callbacks don't setState after the tab unmounts.
+  // This can happen when the user switches away mid-permission-request or mid-fetch.
+  const isMounted = useRef(true);
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   const [status, setStatus] = useState<Status>("loading");
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
@@ -267,21 +277,26 @@ export default function RecycleMapScreen() {
   const [isFetching, setIsFetching] = useState(false);
 
   const loadPoints = useCallback(async (lat: number, lng: number) => {
+    if (!isMounted.current) return;
     setIsFetching(true);
     try {
       const data = await fetchRecyclePoints(lat, lng, 5000);
+      if (!isMounted.current) return;
       setPoints(data.slice(0, 100));
     } catch (err) {
       console.error("[RecycleMap] Failed to load points:", err);
+      if (!isMounted.current) return;
       setStatus("error");
     } finally {
-      setIsFetching(false);
+      if (isMounted.current) setIsFetching(false);
     }
   }, []);
 
   const init = useCallback(async () => {
+    if (!isMounted.current) return;
     setStatus("loading");
     const { status: perm } = await Location.requestForegroundPermissionsAsync();
+    if (!isMounted.current) return;
     if (perm !== "granted") {
       setStatus("permission_denied");
       return;
@@ -289,6 +304,7 @@ export default function RecycleMapScreen() {
     const loc = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Balanced,
     });
+    if (!isMounted.current) return;
     const { latitude, longitude } = loc.coords;
     setUserLocation({ latitude, longitude });
     const r: Region = {

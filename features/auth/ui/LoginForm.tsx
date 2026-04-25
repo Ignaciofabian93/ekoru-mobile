@@ -6,8 +6,7 @@ import { StyleSheet, View } from "react-native";
 import useLogin from "../hooks/useLogin";
 
 export default function LoginForm() {
-  const { handleFieldChange, handleLogin, email, password, loading } =
-    useLogin();
+  const { handleFieldChange, handleLogin, email, password, loading } = useLogin();
   const { t } = useTranslation("auth");
 
   return (

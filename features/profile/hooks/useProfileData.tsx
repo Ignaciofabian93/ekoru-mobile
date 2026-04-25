@@ -1,9 +1,5 @@
 import { getDialCodeByIso, splitPhoneNumber } from "@/constants/phonePrefixes";
-import {
-  UPDATE_BUSINESS_PROFILE,
-  UPDATE_PERSON_PROFILE,
-  UPDATE_SELLER,
-} from "@/graphql/auth/profile";
+import { UPDATE_BUSINESS_PROFILE, UPDATE_PERSON_PROFILE, UPDATE_SELLER } from "@/graphql/auth/profile";
 import useAuthStore, {
   useBusinessProfile,
   useCoverImage,
@@ -35,14 +31,6 @@ export default function useProfileData() {
   const personProfile = usePersonProfile();
   const bizProfile = useBusinessProfile();
 
-  // ── Redirect if unauthenticated ─────────────────────────────────────────────
-  useEffect(() => {
-    if (!seller) {
-      router.replace("/(auth)");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seller]);
-
   // ── Person form state ───────────────────────────────────────────────────────
   const [personValues, setPersonValues] = useState<PersonFormValues>({
     firstName: personProfile?.firstName ?? "",
@@ -71,11 +59,8 @@ export default function useProfileData() {
   });
 
   // ── Contact form state ──────────────────────────────────────────────────────
-  const { prefix: parsedPrefix, number: parsedNumber } = splitPhoneNumber(
-    seller?.phone ?? "",
-  );
-  const defaultPrefix =
-    parsedPrefix || getDialCodeByIso(confirmedLocation?.isoCode ?? "");
+  const { prefix: parsedPrefix, number: parsedNumber } = splitPhoneNumber(seller?.phone ?? "");
+  const defaultPrefix = parsedPrefix || getDialCodeByIso(confirmedLocation?.isoCode ?? "");
 
   const [contactValues, setContactValues] = useState<ContactFormValues>({
     phone: parsedNumber,
@@ -187,16 +172,13 @@ export default function useProfileData() {
           },
         });
       } else if (bizProfile) {
-        const { yearsOfExperience, travelRadius, businessType, ...bizRest } =
-          bizValues;
+        const { yearsOfExperience, travelRadius, businessType, ...bizRest } = bizValues;
         profilePromise = updateBusinessProfile({
           variables: {
             input: {
               ...bizRest,
               businessType: businessType || undefined,
-              yearsOfExperience: yearsOfExperience
-                ? Number(yearsOfExperience)
-                : undefined,
+              yearsOfExperience: yearsOfExperience ? Number(yearsOfExperience) : undefined,
               travelRadius: travelRadius ? Number(travelRadius) : undefined,
             },
           },
@@ -205,27 +187,16 @@ export default function useProfileData() {
         profilePromise = Promise.resolve(undefined);
       }
 
-      const [sellerResult, profileResult] = await Promise.all([
-        sellerPromise,
-        profilePromise,
-      ]);
+      const [sellerResult, profileResult] = await Promise.all([sellerPromise, profilePromise]);
 
       // ── Merge results back into the auth store ──────────────────────────────
       const updatedSeller = sellerResult.data?.updateSeller;
 
       let updatedProfile: PersonProfile | BusinessProfile = seller.profile;
       const profileData = profileResult?.data;
-      if (
-        profileData &&
-        "updatePersonProfile" in profileData &&
-        profileData.updatePersonProfile
-      ) {
+      if (profileData && "updatePersonProfile" in profileData && profileData.updatePersonProfile) {
         updatedProfile = profileData.updatePersonProfile;
-      } else if (
-        profileData &&
-        "updateBusinessProfile" in profileData &&
-        profileData.updateBusinessProfile
-      ) {
+      } else if (profileData && "updateBusinessProfile" in profileData && profileData.updateBusinessProfile) {
         updatedProfile = profileData.updateBusinessProfile;
       }
 

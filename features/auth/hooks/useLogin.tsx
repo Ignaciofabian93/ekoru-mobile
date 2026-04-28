@@ -6,7 +6,7 @@ import useAuthStore from "@/store/useAuthStore";
 import type { Seller } from "@/types/user";
 import { useApolloClient } from "@apollo/client/react";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n";
 
@@ -87,13 +87,26 @@ export default function useLogin() {
       }
 
       // Step 3: Persist token + refreshToken + seller in secure storage and global state
-      await setSession(authData.token, data.me, authData.refreshToken);
+      try {
+        await setSession(authData.token, data.me, authData.refreshToken);
+      } catch {
+        showError({ title: t("errorTitle"), message: t("networkError") });
+        setLoading(false);
+        return;
+      }
 
-      // Reset loading BEFORE navigating away.
-      // Any setState call after router.replace risks updating an unmounting component
-      // mid-transition (Reanimated), which crashes the bridge.
-      setLoading(false);
-      router.replace("/(tabs)");
+      // startTransition marks this work as a non-urgent "transition" so Fabric
+      // batches the spinner removal (setLoading false) and the navigation tree
+      // swap in a single deferred commit, preventing the double-parent
+      // IllegalStateException caused by two overlapping Fabric commit batches.
+      startTransition(() => {
+        setLoading(false);
+        if (router.canGoBack()) {
+          router.back();
+        } else {
+          router.replace("/(tabs)");
+        }
+      });
     } catch (err) {
       logger.error("[Login] Unexpected error:", err);
       showError({

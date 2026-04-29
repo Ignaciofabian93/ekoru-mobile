@@ -1,7 +1,6 @@
 import { colors } from "@/design/tokens";
 import React from "react";
-import { Platform, StyleSheet, View, type TextStyle } from "react-native";
-import Animated from "react-native-reanimated";
+import { Platform, StyleSheet, Text as RNText, View, type TextStyle } from "react-native";
 
 // ─── Variant types (mirrors the web API) ─────────────────────────────────────
 
@@ -21,10 +20,12 @@ type Align = "left" | "center" | "right" | "justify";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
-// Extend Animated.Text so entering/exiting/layout props work out of the box
-type AnimatedTextProps = React.ComponentPropsWithRef<typeof Animated.Text>;
+// Usa plain Text de RN — no se necesita Animated.Text porque ningún caller
+// pasa entering/exiting/layout a este componente, y evitar Animated.Text
+// elimina registros innecesarios en el layer nativo de Reanimated.
+type RNTextProps = React.ComponentPropsWithRef<typeof RNText>;
 
-export interface TextProps extends Omit<AnimatedTextProps, "style"> {
+export interface TextProps extends Omit<RNTextProps, "style"> {
   variant?: Variant;
   size?: Size;
   weight?: Weight;
@@ -71,7 +72,7 @@ const VARIANT_DEFAULTS: Partial<Record<Variant, { size?: Size; weight?: Weight }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const Text = React.forwardRef<React.ComponentRef<typeof Animated.Text>, TextProps>(
+const Text = React.forwardRef<React.ComponentRef<typeof RNText>, TextProps>(
   (
     {
       variant = "p",
@@ -113,17 +114,17 @@ const Text = React.forwardRef<React.ComponentRef<typeof Animated.Text>, TextProp
       return (
         <View style={styles.blockquoteWrapper}>
           <View style={styles.blockquoteBorder} />
-          <Animated.Text ref={ref} style={flatStyle} {...props}>
+          <RNText ref={ref} style={flatStyle} {...props}>
             {children}
-          </Animated.Text>
+          </RNText>
         </View>
       );
     }
 
     return (
-      <Animated.Text ref={ref} style={flatStyle} {...props}>
+      <RNText ref={ref} style={flatStyle} {...props}>
         {children}
-      </Animated.Text>
+      </RNText>
     );
   },
 );

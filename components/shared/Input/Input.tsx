@@ -1,7 +1,9 @@
 import { colors } from "@/design/tokens";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
+  Animated,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -9,20 +11,12 @@ import {
   View,
   type TextInputProps as RNTextInputProps,
 } from "react-native";
-import Animated, {
-  cancelAnimation,
-  FadeInDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withSequence,
-  withTiming,
-} from "react-native-reanimated";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type Variant = "default" | "filled" | "outline";
-type Size   = "sm" | "md" | "lg";
-type Width  = "sm" | "md" | "lg" | "full";
+type Size = "sm" | "md" | "lg";
+type Width = "sm" | "md" | "lg" | "full";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -53,9 +47,9 @@ const SIZE_MAP: Record<Size, { height: number; fontSize: number; iconSize: numbe
 };
 
 const WIDTH_MAP: Record<Width, `${number}%` | "100%"> = {
-  sm:   "33%",
-  md:   "50%",
-  lg:   "66%",
+  sm: "33%",
+  md: "50%",
+  lg: "66%",
   full: "100%",
 };
 
@@ -124,46 +118,39 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
     const isPassword = type === "password";
 
     const keyboardType: RNTextInputProps["keyboardType"] =
-      type === "email"  ? "email-address" :
-      type === "number" ? "numeric" :
-      type === "search" ? "web-search" :
-      "default";
+      type === "email"
+        ? "email-address"
+        : type === "number"
+          ? "numeric"
+          : type === "search"
+            ? "web-search"
+            : "default";
 
-    // ── Eye-toggle animation ─────────────────────────────────────────────────
-    const eyeOpacity = useSharedValue(1);
-    const eyeScale   = useSharedValue(1);
-    const eyeStyle   = useAnimatedStyle(() => ({
-      opacity:   eyeOpacity.value,
-      transform: [{ scale: eyeScale.value }],
-    }));
-
-    useEffect(() => {
-      return () => {
-        cancelAnimation(eyeOpacity);
-        cancelAnimation(eyeScale);
-      };
-    }, []);
+    // ── Eye-toggle animation (RN Animated — no Reanimated) ──────────────────
+    const eyeOpacity = useRef(new Animated.Value(1)).current;
+    const eyeScale = useRef(new Animated.Value(1)).current;
+    const eyeStyle = { opacity: eyeOpacity, transform: [{ scale: eyeScale }] };
 
     const togglePassword = () => {
-      eyeOpacity.value = withSequence(withTiming(0, { duration: 80 }), withTiming(1, { duration: 80 }));
-      eyeScale.value   = withSequence(withTiming(0.8, { duration: 80 }), withTiming(1, { duration: 80 }));
+      Animated.sequence([
+        Animated.parallel([
+          Animated.timing(eyeOpacity, { toValue: 0, duration: 80, useNativeDriver: true }),
+          Animated.timing(eyeScale, { toValue: 0.8, duration: 80, useNativeDriver: true }),
+        ]),
+        Animated.parallel([
+          Animated.timing(eyeOpacity, { toValue: 1, duration: 80, useNativeDriver: true }),
+          Animated.timing(eyeScale, { toValue: 1, duration: 80, useNativeDriver: true }),
+        ]),
+      ]).start();
       // flip state mid-animation
       setTimeout(() => setShowPassword((p) => !p), 80);
     };
 
     // ── Dynamic input styles ─────────────────────────────────────────────────
     const bg = focused ? v.focusedBg : v.bg;
-    const resolvedBorderColor = showError
-      ? colors.danger
-      : focused
-        ? v.focusedBorderColor
-        : v.borderColor;
+    const resolvedBorderColor = showError ? colors.danger : focused ? v.focusedBorderColor : v.borderColor;
 
-    const iconColor = showError
-      ? colors.danger
-      : focused
-        ? colors.primary
-        : colors.foregroundTertiary;
+    const iconColor = showError ? colors.danger : focused ? colors.primary : colors.foregroundTertiary;
 
     return (
       <View style={[styles.container, { width: WIDTH_MAP[width] as any }]}>
@@ -171,7 +158,7 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
         {label && <Text style={styles.label}>{label}</Text>}
 
         {/* Input wrapper */}
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, { height: s.height }]}>
           {LeftIcon && (
             <View style={styles.leftIconWrap}>
               <LeftIcon size={s.iconSize} color={iconColor} strokeWidth={2} />
@@ -187,20 +174,32 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
             maxLength={maxLength}
             placeholder={placeholder}
             placeholderTextColor={colors.inputPlaceholder}
-            onFocus={(e) => { setFocused(true); onFocus?.(e); }}
-            onBlur={(e)  => { setFocused(false); onBlur?.(e); }}
+            scrollEnabled={false}
+            onFocus={(e) => {
+              setFocused(true);
+              onFocus?.(e);
+            }}
+            onBlur={(e) => {
+              setFocused(false);
+              onBlur?.(e);
+            }}
             style={[
               styles.input,
               {
-                height: s.height,
                 fontSize: s.fontSize,
                 paddingHorizontal: s.px,
+                paddingVertical: 0,
                 backgroundColor: bg,
                 borderWidth: v.borderWidth,
                 borderColor: resolvedBorderColor,
                 paddingLeft: LeftIcon ? s.px + s.iconSize + 8 : s.px,
                 paddingRight: isPassword ? s.px + s.iconSize + 8 : s.px,
               },
+              // includeFontPadding was removed from TextInputProps types in RN 0.74+
+              // but still works at runtime on Android via the style object.
+              // It removes the extra vertical font metric padding that gives
+              // Android's EditText internal scroll room.
+              Platform.OS === "android" && ({ includeFontPadding: false } as object),
             ]}
             {...rest}
           />
@@ -209,10 +208,11 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
           {isPassword && (
             <Pressable onPress={togglePassword} style={styles.rightIconWrap} hitSlop={8}>
               <Animated.View style={eyeStyle}>
-                {showPassword
-                  ? <EyeOff size={s.iconSize} color={colors.foregroundTertiary} strokeWidth={2} />
-                  : <Eye    size={s.iconSize} color={colors.foregroundTertiary} strokeWidth={2} />
-                }
+                {showPassword ? (
+                  <EyeOff size={s.iconSize} color={colors.foregroundTertiary} strokeWidth={2} />
+                ) : (
+                  <Eye size={s.iconSize} color={colors.foregroundTertiary} strokeWidth={2} />
+                )}
               </Animated.View>
             </Pressable>
           )}
@@ -220,9 +220,9 @@ const Input = React.forwardRef<RNTextInput, InputProps>(
 
         {/* Error message */}
         {errorMessage && (
-          <Animated.View entering={FadeInDown.duration(200)}>
+          <View style={styles.errorMessageWrap}>
             <Text style={styles.errorText}>{errorMessage}</Text>
-          </Animated.View>
+          </View>
         )}
       </View>
     );
@@ -235,7 +235,8 @@ Input.displayName = "Input";
 
 const styles = StyleSheet.create({
   container: {
-    gap: 6,
+    gap: 1,
+    position: "relative",
   },
   label: {
     fontSize: 14,
@@ -257,14 +258,20 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   input: {
+    flex: 1,
     fontFamily: "Cabin_400Regular",
     color: colors.inputText,
     borderRadius: 10,
+    textAlignVertical: "center",
   },
   errorText: {
     fontSize: 12,
     fontFamily: "Cabin_400Regular",
     color: colors.danger,
+  },
+  errorMessageWrap: {
+    position: "absolute",
+    bottom: -18,
   },
 });
 

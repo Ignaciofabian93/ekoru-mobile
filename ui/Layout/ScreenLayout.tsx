@@ -34,7 +34,7 @@ export default function ScreenLayout({
             height,
           },
         ]}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         {children}
       </KeyboardAvoidingView>

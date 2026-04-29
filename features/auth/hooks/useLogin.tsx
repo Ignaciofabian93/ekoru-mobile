@@ -3,15 +3,16 @@ import { GET_ME } from "@/graphql/auth/login";
 import { logger } from "@/lib/logger";
 import { showError } from "@/lib/toast";
 import useAuthStore from "@/store/useAuthStore";
+import useAppRouter from "@/hooks/useAppRouter";
 import type { Seller } from "@/types/user";
 import { useApolloClient } from "@apollo/client/react";
-import { useRouter } from "expo-router";
-import { startTransition, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n";
+import { sanitizeEmail, sanitizeOnSubmit } from "@/utils/inputSanitize";
 
 export default function useLogin() {
-  const router = useRouter();
+  const { back } = useAppRouter();
   const { t } = useTranslation("auth");
   const client = useApolloClient();
   const setSession = useAuthStore((s) => s.setSession);
@@ -22,7 +23,7 @@ export default function useLogin() {
   const [loading, setLoading] = useState(false);
 
   const handleFieldChange = ({ name, value }: { name: string; value: string }) => {
-    if (name === "email") setEmail(value);
+    if (name === "email") setEmail(sanitizeEmail(value));
     if (name === "password") setPassword(value);
   };
 
@@ -40,7 +41,7 @@ export default function useLogin() {
       // Step 1: REST call — sets the auth cookie and returns the JWT
       let authData: { token: string; refreshToken: string; message: string };
       try {
-        authData = await Login({ email, password });
+        authData = await Login({ email: sanitizeOnSubmit(email), password });
       } catch (restErr) {
         logger.error("[Login] REST Login failed:", restErr);
         showError({ title: t("errorTitle"), message: t("networkError") });
@@ -95,18 +96,11 @@ export default function useLogin() {
         return;
       }
 
-      // startTransition marks this work as a non-urgent "transition" so Fabric
-      // batches the spinner removal (setLoading false) and the navigation tree
-      // swap in a single deferred commit, preventing the double-parent
-      // IllegalStateException caused by two overlapping Fabric commit batches.
-      startTransition(() => {
-        setLoading(false);
-        if (router.canGoBack()) {
-          router.back();
-        } else {
-          router.replace("/(tabs)");
-        }
-      });
+      // setLoading(false) must be co-located with back() inside the same
+      // startTransition (which useAppRouter applies internally) so that Fabric
+      // batches the spinner removal and the navigation tree swap in a single
+      // deferred commit — preventing the double-parent IllegalStateException.
+      back("/(tabs)", () => setLoading(false));
     } catch (err) {
       logger.error("[Login] Unexpected error:", err);
       showError({

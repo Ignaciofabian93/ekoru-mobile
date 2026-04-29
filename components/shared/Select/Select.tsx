@@ -1,25 +1,7 @@
 import { colors } from "@/design/tokens";
 import { Check, ChevronDown, Circle, type LucideIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Dimensions,
-  FlatList,
-  Modal,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
-import Animated, {
-  cancelAnimation,
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-  FadeOut,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { Animated, Dimensions, FlatList, Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { Text } from "../Text/Text";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -63,10 +45,7 @@ export interface SelectProps {
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
-const SIZE_MAP: Record<
-  Size,
-  { height: number; fontSize: number; px: number; iconSize: number }
-> = {
+const SIZE_MAP: Record<Size, { height: number; fontSize: number; px: number; iconSize: number }> = {
   sm: { height: 36, fontSize: 14, px: 10, iconSize: 16 },
   md: { height: 44, fontSize: 16, px: 12, iconSize: 18 },
   lg: { height: 56, fontSize: 18, px: 14, iconSize: 20 },
@@ -111,8 +90,6 @@ const VARIANT_MAP: Record<Variant, VariantStyle> = {
   },
 };
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const Select = React.forwardRef<View, SelectProps>(
@@ -154,35 +131,42 @@ const Select = React.forwardRef<View, SelectProps>(
     });
 
     const selectedOption = options.find((o) => o.value === value);
-    const filteredOptions = options.filter((o) =>
-      o.label.toLowerCase().includes(search.toLowerCase()),
-    );
+    const filteredOptions = options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()));
 
-    // ── Chevron rotation ────────────────────────────────────────────────────
-    const chevronRot = useSharedValue(0);
-    const chevronStyle = useAnimatedStyle(() => ({
-      transform: [{ rotate: `${chevronRot.value}deg` }],
-    }));
+    // ── Chevron rotation (RN Animated — no Reanimated in main view tree) ────
+    const chevronRot = useRef(new Animated.Value(0)).current;
+    const chevronStyle = {
+      transform: [
+        {
+          rotate: chevronRot.interpolate({
+            inputRange: [0, 1],
+            outputRange: ["0deg", "180deg"],
+          }),
+        },
+      ],
+    };
 
     useEffect(() => {
-      chevronRot.value = withTiming(isOpen ? 180 : 0, { duration: 200 });
-      return () => cancelAnimation(chevronRot);
+      Animated.timing(chevronRot, {
+        toValue: isOpen ? 1 : 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
 
     // ── Open / close ────────────────────────────────────────────────────────
     const handleOpen = () => {
       if (disabled || readOnly) return;
-      (triggerRef.current as View | null)?.measureInWindow(
-        (x, y, width, height) => {
-          setDropdownPos({
-            x,
-            width,
-            y: y + height + 8, // bottom of trigger + gap (for "down")
-            triggerY: y - 8, // top of trigger - gap (for "up")
-          });
-          setIsOpen(true);
-        },
-      );
+      (triggerRef.current as View | null)?.measureInWindow((x, y, width, height) => {
+        setDropdownPos({
+          x,
+          width,
+          y: y + height + 8, // bottom of trigger + gap (for "down")
+          triggerY: y - 8, // top of trigger - gap (for "up")
+        });
+        setIsOpen(true);
+      });
     };
 
     const handleClose = () => {
@@ -210,11 +194,7 @@ const Select = React.forwardRef<View, SelectProps>(
           };
 
     // ── Trigger border ──────────────────────────────────────────────────────
-    const borderColor = hasError
-      ? v.errorBorderColor
-      : isOpen
-        ? v.focusedBorderColor
-        : v.borderColor;
+    const borderColor = hasError ? v.errorBorderColor : isOpen ? v.focusedBorderColor : v.borderColor;
 
     // ── Color circle helper ─────────────────────────────────────────────────
     const renderColorCircle = (option?: Option) => {
@@ -230,13 +210,8 @@ const Select = React.forwardRef<View, SelectProps>(
       );
     };
 
-    const dropdownEntering = dropdownDirection === "up" ? FadeInUp : FadeInDown;
-
     return (
-      <View
-        ref={ref}
-        style={[styles.container, { width: WIDTH_MAP[width] as any }]}
-      >
+      <View ref={ref} style={[styles.container, { width: WIDTH_MAP[width] as any }]}>
         {/* Label */}
         {label && <Text style={styles.label}>{label}</Text>}
 
@@ -267,12 +242,7 @@ const Select = React.forwardRef<View, SelectProps>(
             </View>
           )}
 
-          <View
-            style={[
-              styles.triggerContent,
-              LeftIcon && { paddingLeft: s.iconSize + 8 },
-            ]}
-          >
+          <View style={[styles.triggerContent, LeftIcon && { paddingLeft: s.iconSize + 8 }]}>
             {renderColorCircle(selectedOption)}
             <Text
               style={[
@@ -286,16 +256,10 @@ const Select = React.forwardRef<View, SelectProps>(
             </Text>
           </View>
 
-          <Animated.View style={chevronStyle}>
+          <Animated.View style={[chevronStyle]}>
             <ChevronDown
               size={s.iconSize}
-              color={
-                hasError
-                  ? colors.danger
-                  : isOpen
-                    ? colors.primary
-                    : colors.foregroundTertiary
-              }
+              color={hasError ? colors.danger : isOpen ? colors.primary : colors.foregroundTertiary}
               strokeWidth={2}
             />
           </Animated.View>
@@ -303,9 +267,9 @@ const Select = React.forwardRef<View, SelectProps>(
 
         {/* Error message */}
         {errorMessage && (
-          <Animated.View entering={FadeInDown.duration(200)}>
+          <View>
             <Text style={styles.errorText}>{errorMessage}</Text>
-          </Animated.View>
+          </View>
         )}
 
         {/* Dropdown modal */}
@@ -317,17 +281,9 @@ const Select = React.forwardRef<View, SelectProps>(
           onRequestClose={handleClose}
         >
           {/* Backdrop */}
-          <AnimatedPressable
-            entering={FadeIn.duration(150)}
-            exiting={FadeOut.duration(150)}
-            style={styles.backdrop}
-            onPress={handleClose}
-          >
+          <Pressable style={styles.backdrop} onPress={handleClose}>
             {/* Dropdown sheet */}
-            <Animated.View
-              entering={dropdownEntering.duration(180)}
-              style={[styles.dropdown, dropdownStyle]}
-            >
+            <View style={[styles.dropdown, dropdownStyle]}>
               <Pressable onPress={(e) => e.stopPropagation()}>
                 {searchEnabled && (
                   <TextInput
@@ -343,13 +299,9 @@ const Select = React.forwardRef<View, SelectProps>(
                   data={filteredOptions}
                   keyExtractor={(item) => String(item.value)}
                   style={styles.list}
-                  ItemSeparatorComponent={() => (
-                    <View style={styles.separator} />
-                  )}
+                  ItemSeparatorComponent={() => <View style={styles.separator} />}
                   keyboardShouldPersistTaps="handled"
-                  ListEmptyComponent={
-                    <Text style={styles.emptyText}>{noResultsText}</Text>
-                  }
+                  ListEmptyComponent={<Text style={styles.emptyText}>{noResultsText}</Text>}
                   renderItem={({ item }) => {
                     const isSelected = item.value === value;
                     return (
@@ -375,13 +327,7 @@ const Select = React.forwardRef<View, SelectProps>(
                             >
                               {item.label}
                             </Text>
-                            {isSelected && (
-                              <Check
-                                size={16}
-                                color={colors.primary}
-                                strokeWidth={2.5}
-                              />
-                            )}
+                            {isSelected && <Check size={16} color={colors.primary} strokeWidth={2.5} />}
                           </View>
                         )}
                       </Pressable>
@@ -389,8 +335,8 @@ const Select = React.forwardRef<View, SelectProps>(
                   }}
                 />
               </Pressable>
-            </Animated.View>
-          </AnimatedPressable>
+            </View>
+          </Pressable>
         </Modal>
       </View>
     );
@@ -403,7 +349,7 @@ Select.displayName = "Select";
 
 const styles = StyleSheet.create({
   container: {
-    gap: 6,
+    gap: 1,
   },
   label: {
     fontSize: 14,

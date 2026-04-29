@@ -13,8 +13,8 @@ export const REGISTER_PERSON = gql`
 `;
 
 export const REGISTER_BUSINESS = gql`
-  mutation RegisterBusiness($input: RegisterBusinessInput!) {
-    registerBusiness(input: $input) {
+  mutation RegisterBusiness($input: RegisterBusinessInput!, $language: Language) {
+    registerBusiness(input: $input, language: $language) {
       id
       email
       sellerType

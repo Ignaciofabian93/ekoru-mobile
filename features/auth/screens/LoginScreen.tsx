@@ -1,5 +1,4 @@
 import { colors } from "@/design/tokens";
-import { useRouter } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,9 +14,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import "../i18n";
 import LoginForm from "../ui/LoginForm";
+import useAppRouter from "@/hooks/useAppRouter";
 
 export default function LoginScreen() {
-  const router = useRouter();
+  const { replace, navigate } = useAppRouter();
   const { t } = useTranslation("auth");
   const { top, bottom } = useSafeAreaInsets();
 
@@ -26,12 +26,9 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}
-      behavior={Platform.OS === "ios" ? "padding" : "padding"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <View style={styles.logoSection}>
           <Image source={EKORU_LOGO} style={styles.logo} resizeMode="contain" />
           <Text style={styles.headline}>{t("headline")}</Text>
@@ -48,14 +45,11 @@ export default function LoginScreen() {
 
         <View style={styles.footer}>
           <Text style={styles.footerText}>{t("noAccount")}</Text>
-          <Pressable onPress={() => router.push("/(auth)/register")}>
+          <Pressable onPress={() => navigate("/(auth)/register")}>
             <Text style={styles.footerLink}> {t("signUp")}</Text>
           </Pressable>
         </View>
-        <Pressable
-          onPress={() => router.push("/(tabs)")}
-          style={styles.backButton}
-        >
+        <Pressable onPress={() => replace("/(tabs)")} style={styles.backButton}>
           <Text style={styles.backText}>{t("goBackHome")}</Text>
         </Pressable>
       </ScrollView>

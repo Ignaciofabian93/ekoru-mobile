@@ -1,29 +1,36 @@
 import { REGISTER_BUSINESS, REGISTER_PERSON } from "@/graphql/auth/register";
 import { showError, showSuccess } from "@/lib/toast";
-import type { SellerType } from "@/types/enums";
+import type { SellerType, BusinessType } from "@/types/enums";
 import { useMutation } from "@apollo/client/react";
-import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n";
+import useAppRouter from "@/hooks/useAppRouter";
+import useStoredLanguage from "@/hooks/useStoredLanguage";
+import { sanitizeEmail, sanitizeInput, sanitizeOnSubmit } from "@/utils/inputSanitize";
 
 export default function useRegister() {
-  const router = useRouter();
+  const { navigate } = useAppRouter();
   const { t } = useTranslation("auth");
+  const storedLanguage = useStoredLanguage();
 
   const [sellerType, setSellerType] = useState<SellerType>("PERSON");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [businessType, setBusinessType] = useState<BusinessType>("RETAIL");
+  const [businessName, setBusinessName] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 
   const onCompleted = () => {
     showSuccess({
       title: t("successTitle"),
       message: t("registerSuccess"),
     });
-    router.back();
+    navigate("/(auth)");
   };
 
   const onError = (error: Error) => {
@@ -33,47 +40,59 @@ export default function useRegister() {
     });
   };
 
-  const [registerPerson, { loading: loadingPerson }] = useMutation(
-    REGISTER_PERSON,
-    {
-      onCompleted,
-      onError,
-      fetchPolicy: "no-cache",
-    },
-  );
+  const [registerPerson, { loading: loadingPerson }] = useMutation(REGISTER_PERSON, {
+    onCompleted,
+    onError,
+    fetchPolicy: "no-cache",
+  });
 
-  const [registerBusiness, { loading: loadingBusiness }] = useMutation(
-    REGISTER_BUSINESS,
-    {
-      onCompleted,
-      onError,
-      fetchPolicy: "no-cache",
-    },
-  );
+  const [registerBusiness, { loading: loadingBusiness }] = useMutation(REGISTER_BUSINESS, {
+    onCompleted,
+    onError,
+    fetchPolicy: "no-cache",
+  });
 
   const loading = loadingPerson || loadingBusiness;
 
-  const handleFieldChange = ({
-    name,
-    value,
-  }: {
-    name: string;
-    value: string;
-  }) => {
-    if (name === "firstName") setFirstName(value);
-    if (name === "lastName") setLastName(value);
-    if (name === "email") setEmail(value);
+  const handleFieldChange = ({ name, value }: { name: string; value: string }) => {
+    if (name === "firstName") setFirstName(sanitizeInput(value));
+    if (name === "lastName") setLastName(sanitizeInput(value));
+    if (name === "email") setEmail(sanitizeEmail(value));
     if (name === "password") setPassword(value);
     if (name === "confirmPassword") setConfirmPassword(value);
+    if (name === "businessName") setBusinessName(sanitizeInput(value));
+    if (name === "displayName") setDisplayName(sanitizeInput(value));
+    if (name === "businessType") setBusinessType(value as BusinessType);
+    if (name === "sellerType") setSellerType(value as SellerType);
   };
 
   const handleRegister = async () => {
-    if (!firstName || !email || !password || !confirmPassword) {
+    if (!termsAccepted) {
       showError({
         title: t("errorTitle"),
-        message: t("registerFieldsRequired"),
+        message: t("termsRequired"),
       });
       return;
+    }
+
+    if (sellerType === "PERSON") {
+      if (!firstName || !email || !password || !confirmPassword) {
+        showError({
+          title: t("errorTitle"),
+          message: t("registerFieldsRequired"),
+        });
+        return;
+      }
+    }
+
+    if (sellerType !== "PERSON") {
+      if (!businessType || !businessName || !displayName || !email || !password || !confirmPassword) {
+        showError({
+          title: t("errorTitle"),
+          message: t("registerFieldsRequired"),
+        });
+        return;
+      }
     }
 
     if (password !== confirmPassword) {
@@ -87,21 +106,45 @@ export default function useRegister() {
     if (sellerType === "PERSON") {
       await registerPerson({
         variables: {
-          input: { firstName, lastName, email, password },
+          input: {
+            sellerType,
+            firstName: sanitizeOnSubmit(firstName),
+            lastName: sanitizeOnSubmit(lastName),
+            email,
+            password,
+          },
+          language: storedLanguage?.toUpperCase() || "ES",
         },
       });
     } else {
       await registerBusiness({
         variables: {
-          input: { firstName, lastName, email, password },
+          input: {
+            sellerType,
+            businessType,
+            businessName: sanitizeOnSubmit(businessName),
+            displayName: sanitizeOnSubmit(displayName),
+            email,
+            password,
+          },
+          language: storedLanguage?.toUpperCase() || "ES",
         },
       });
     }
   };
 
+  const isSubmitEnabled = () => {
+    if (!termsAccepted) return false;
+
+    if (sellerType === "PERSON") {
+      return firstName && email && password && confirmPassword;
+    }
+
+    return businessType && businessName && displayName && email && password && confirmPassword;
+  };
+
   return {
     sellerType,
-    setSellerType,
     firstName,
     lastName,
     email,
@@ -110,5 +153,11 @@ export default function useRegister() {
     loading,
     handleFieldChange,
     handleRegister,
+    businessType,
+    businessName,
+    displayName,
+    termsAccepted,
+    setTermsAccepted,
+    isSubmitEnabled,
   };
 }

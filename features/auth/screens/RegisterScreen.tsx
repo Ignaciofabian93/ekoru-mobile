@@ -1,4 +1,5 @@
 import { colors } from "@/design/tokens";
+import useKeyboardPadding from "@/hooks/useKeyboardPadding";
 import { useRouter } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -20,16 +21,18 @@ export default function RegisterScreen() {
   const router = useRouter();
   const { t } = useTranslation("auth");
   const { top, bottom } = useSafeAreaInsets();
+  const keyboardPadding = useKeyboardPadding();
 
   const EKORU_LOGO = require("@/assets/images/logo.png");
 
   return (
     <KeyboardAvoidingView
-      style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={[styles.container, { paddingTop: top }]}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
-        contentContainerStyle={styles.scroll}
+        style={styles.scrollView}
+        contentContainerStyle={[styles.scroll, { paddingBottom: bottom + 40 + keyboardPadding }]}
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.logoSection}>
@@ -54,7 +57,7 @@ export default function RegisterScreen() {
         </View>
 
         <Pressable
-          onPress={() => router.push("/(tabs)")}
+          onPress={() => (router.canGoBack() ? router.back() : router.replace("/(tabs)"))}
           style={styles.backButton}
         >
           <Text style={styles.backText}>{t("goBackHome")}</Text>
@@ -69,11 +72,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  scrollView: {
+    backgroundColor: "#fff",
+  },
   scroll: {
     flexGrow: 1,
     justifyContent: "center",
     paddingHorizontal: 28,
-    paddingVertical: 40,
+    paddingTop: 40,
   },
 
   // Logo & branding

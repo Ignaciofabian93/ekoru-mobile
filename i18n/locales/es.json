@@ -38,8 +38,7 @@
       "subscription": "Suscripción"
     },
     "legal": {
-      "termsOfService": "Términos de Servicio",
-      "privacyPolicy": "Política de Privacidad"
+      "termsAndPolicies": "Términos y Políticas"
     }
   }
 }

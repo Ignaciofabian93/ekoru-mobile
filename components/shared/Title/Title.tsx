@@ -1,7 +1,6 @@
 import { colors } from "@/design/tokens";
 import React from "react";
-import { type TextStyle } from "react-native";
-import Animated from "react-native-reanimated";
+import { Text, type TextStyle } from "react-native";
 
 // ─── Variant types (mirrors the web API) ─────────────────────────────────────
 
@@ -19,9 +18,11 @@ type Align = "left" | "center" | "right";
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
-type AnimatedTextProps = React.ComponentPropsWithRef<typeof Animated.Text>;
+// Usa plain Text de RN — no se necesita Animated.Text porque ningún caller
+// pasa entering/exiting/layout a este componente.
+type RNTextProps = React.ComponentPropsWithRef<typeof Text>;
 
-export interface TitleProps extends Omit<AnimatedTextProps, "style"> {
+export interface TitleProps extends Omit<RNTextProps, "style"> {
   level?: Level;
   weight?: Weight;
   color?: TitleColor;
@@ -62,7 +63,7 @@ const COLOR_MAP: Record<TitleColor, string> = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const Title = React.forwardRef<React.ComponentRef<typeof Animated.Text>, TitleProps>(
+const Title = React.forwardRef<React.ComponentRef<typeof Text>, TitleProps>(
   (
     {
       level = "h1",
@@ -87,9 +88,9 @@ const Title = React.forwardRef<React.ComponentRef<typeof Animated.Text>, TitlePr
     const flatStyle = [computed, ...(Array.isArray(style) ? style : style ? [style] : [])];
 
     return (
-      <Animated.Text ref={ref} style={flatStyle} {...props}>
+      <Text ref={ref} style={flatStyle} {...props}>
         {children}
-      </Animated.Text>
+      </Text>
     );
   },
 );

@@ -12,12 +12,8 @@ export default function LegalLayout() {
       }}
     >
       <Stack.Screen
-        name="terms-of-service"
-        options={{ title: t("screens.legal.termsOfService") }}
-      />
-      <Stack.Screen
-        name="privacy-policy"
-        options={{ title: t("screens.legal.privacyPolicy") }}
+        name="terms-and-policies"
+        options={{ title: t("screens.legal.termsAndPolicies") }}
       />
     </Stack>
   );

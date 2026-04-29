@@ -26,7 +26,7 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}
-      behavior={Platform.OS === "ios" ? "padding" : "padding"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         contentContainerStyle={styles.scroll}
@@ -53,7 +53,7 @@ export default function LoginScreen() {
           </Pressable>
         </View>
         <Pressable
-          onPress={() => router.push("/(tabs)")}
+          onPress={() => router.canGoBack() ? router.back() : router.replace("/(tabs)")}
           style={styles.backButton}
         >
           <Text style={styles.backText}>{t("goBackHome")}</Text>

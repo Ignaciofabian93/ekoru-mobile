@@ -52,6 +52,16 @@ jest.mock("@/store/useAuthStore", () => ({
   ),
 }));
 
+// Mock logger — prevents @sentry/react-native from spinning up background
+// workers/timers that would keep Jest alive after the test run completes.
+jest.mock("@/lib/logger", () => ({
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  },
+}));
+
 // Mock Login REST API
 const mockLogin = jest.fn();
 jest.mock("@/api/auth/login", () => ({

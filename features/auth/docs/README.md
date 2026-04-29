@@ -156,3 +156,13 @@ npm test
 # or in watch mode
 npm run test:watch
 ```
+
+Run individual auth hook tests:
+
+```bash
+# useLogin
+npx jest features/auth/tests/useLogin.test.ts
+
+# useRegister
+npx jest features/auth/tests/useRegister.test.ts
+```

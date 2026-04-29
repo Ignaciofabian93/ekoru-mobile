@@ -152,6 +152,7 @@ const Select = React.forwardRef<View, SelectProps>(
         duration: 200,
         useNativeDriver: true,
       }).start();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen]);
 
     // ── Open / close ────────────────────────────────────────────────────────

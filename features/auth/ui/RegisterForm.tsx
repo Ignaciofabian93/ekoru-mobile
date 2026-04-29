@@ -124,6 +124,10 @@ export default function RegisterForm() {
         value={confirmPassword}
         onChangeText={(value) => handleFieldChange({ name: "confirmPassword", value })}
         type="password"
+        isInvalid={confirmPassword.length > 0 && password !== confirmPassword}
+        errorMessage={
+          confirmPassword.length > 0 && password !== confirmPassword ? t("confirmPasswordError") : undefined
+        }
       />
       {/* Terms & Policies checkbox */}
       <View style={styles.termsRow}>

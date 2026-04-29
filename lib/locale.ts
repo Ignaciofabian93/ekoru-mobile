@@ -1,12 +1,12 @@
 import { getLocales } from "expo-localization";
 
 import { storageGet, storageSet } from "@/lib/storage";
-
-export const SUPPORTED_LANGUAGES = ["es", "en", "fr"] as const;
-export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
-
-export const DEFAULT_LANGUAGE: SupportedLanguage = "es";
-export const LANGUAGE_STORAGE_KEY = "app_language";
+import {
+  DEFAULT_LANGUAGE,
+  LANGUAGE_STORAGE_KEY,
+  SUPPORTED_LANGUAGES,
+  type SupportedLanguage,
+} from "@/constants/locale";
 
 /**
  * Resolves the app language on startup:

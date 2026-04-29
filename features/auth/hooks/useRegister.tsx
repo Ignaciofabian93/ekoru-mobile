@@ -6,10 +6,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n";
 import useAppRouter from "@/hooks/useAppRouter";
+import useStoredLanguage from "@/hooks/useStoredLanguage";
+import { sanitizeEmail, sanitizeInput, sanitizeOnSubmit } from "@/utils/inputSanitize";
 
 export default function useRegister() {
-  const { back } = useAppRouter();
+  const { navigate } = useAppRouter();
   const { t } = useTranslation("auth");
+  const storedLanguage = useStoredLanguage();
 
   const [sellerType, setSellerType] = useState<SellerType>("PERSON");
   const [businessType, setBusinessType] = useState<BusinessType>("RETAIL");
@@ -27,7 +30,7 @@ export default function useRegister() {
       title: t("successTitle"),
       message: t("registerSuccess"),
     });
-    back();
+    navigate("/(auth)");
   };
 
   const onError = (error: Error) => {
@@ -52,13 +55,13 @@ export default function useRegister() {
   const loading = loadingPerson || loadingBusiness;
 
   const handleFieldChange = ({ name, value }: { name: string; value: string }) => {
-    if (name === "firstName") setFirstName(value);
-    if (name === "lastName") setLastName(value);
-    if (name === "email") setEmail(value);
+    if (name === "firstName") setFirstName(sanitizeInput(value));
+    if (name === "lastName") setLastName(sanitizeInput(value));
+    if (name === "email") setEmail(sanitizeEmail(value));
     if (name === "password") setPassword(value);
     if (name === "confirmPassword") setConfirmPassword(value);
-    if (name === "businessName") setBusinessName(value);
-    if (name === "displayName") setDisplayName(value);
+    if (name === "businessName") setBusinessName(sanitizeInput(value));
+    if (name === "displayName") setDisplayName(sanitizeInput(value));
     if (name === "businessType") setBusinessType(value as BusinessType);
     if (name === "sellerType") setSellerType(value as SellerType);
   };
@@ -103,13 +106,28 @@ export default function useRegister() {
     if (sellerType === "PERSON") {
       await registerPerson({
         variables: {
-          input: { sellerType, firstName, lastName, email, password },
+          input: {
+            sellerType,
+            firstName: sanitizeOnSubmit(firstName),
+            lastName: sanitizeOnSubmit(lastName),
+            email,
+            password,
+          },
+          language: storedLanguage?.toUpperCase() || "ES",
         },
       });
     } else {
       await registerBusiness({
         variables: {
-          input: { sellerType, businessType, businessName, displayName, email, password },
+          input: {
+            sellerType,
+            businessType,
+            businessName: sanitizeOnSubmit(businessName),
+            displayName: sanitizeOnSubmit(displayName),
+            email,
+            password,
+          },
+          language: storedLanguage?.toUpperCase() || "ES",
         },
       });
     }

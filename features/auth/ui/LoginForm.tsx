@@ -4,6 +4,7 @@ import { ArrowRight, Lock, Mail } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import useLogin from "../hooks/useLogin";
+import { isEmailValid } from "@/utils/regexValidations";
 
 export default function LoginForm() {
   const { handleFieldChange, handleLogin, email, password, loading } = useLogin();
@@ -19,6 +20,8 @@ export default function LoginForm() {
         onChangeText={(value) => handleFieldChange({ name: "email", value })}
         type="email"
         leftIcon={Mail}
+        isInvalid={email.length > 0 && !isEmailValid(email)}
+        errorMessage={email.length > 0 && !isEmailValid(email) ? t("emailError") : undefined}
       />
       <Input
         name="password"

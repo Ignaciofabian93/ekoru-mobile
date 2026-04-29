@@ -9,6 +9,7 @@ import { useApolloClient } from "@apollo/client/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n";
+import { sanitizeEmail, sanitizeOnSubmit } from "@/utils/inputSanitize";
 
 export default function useLogin() {
   const { back } = useAppRouter();
@@ -22,7 +23,7 @@ export default function useLogin() {
   const [loading, setLoading] = useState(false);
 
   const handleFieldChange = ({ name, value }: { name: string; value: string }) => {
-    if (name === "email") setEmail(value);
+    if (name === "email") setEmail(sanitizeEmail(value));
     if (name === "password") setPassword(value);
   };
 
@@ -40,7 +41,7 @@ export default function useLogin() {
       // Step 1: REST call — sets the auth cookie and returns the JWT
       let authData: { token: string; refreshToken: string; message: string };
       try {
-        authData = await Login({ email, password });
+        authData = await Login({ email: sanitizeOnSubmit(email), password });
       } catch (restErr) {
         logger.error("[Login] REST Login failed:", restErr);
         showError({ title: t("errorTitle"), message: t("networkError") });

@@ -7,6 +7,7 @@
   "emailError": "Veuillez entrer une adresse courriel valide",
   "password": "Mot de passe",
   "passwordPlaceholder": "Entrez votre mot de passe",
+  "confirmPasswordError": "Les mots de passe ne correspondent pas",
   "login": "Se connecter",
   "register": "S'inscrire",
   "or": "ou",

@@ -1,7 +1,6 @@
 import { type Href, useRouter } from "expo-router";
 import {
   BookOpen,
-  HelpCircle,
   House,
   Leaf,
   Mail,
@@ -54,10 +53,7 @@ const profileMenuItems = [
   },
 ];
 
-const supportMenuItems = [
-  { route: "/(tabs)/help", tKey: "help", icon: HelpCircle },
-  { route: "/(tabs)/contact", tKey: "contact", icon: Mail },
-];
+const supportMenuItems = [{ route: "/(contact)", tKey: "contact", icon: Mail }];
 
 // ── SectionLabel ──────────────────────────────────────────────────────────────
 function SectionLabel({ label }: { label: string }) {
@@ -184,21 +180,12 @@ export default function Drawer() {
   return (
     <>
       {/* Backdrop — only visible/interactive when open */}
-      <Animated.View
-        style={[styles.backdrop, backdropStyle]}
-        pointerEvents={isOpen ? "auto" : "none"}
-      >
+      <Animated.View style={[styles.backdrop, backdropStyle]} pointerEvents={isOpen ? "auto" : "none"}>
         <Pressable style={StyleSheet.absoluteFill} onPress={closeDrawer} />
       </Animated.View>
 
       {/* Drawer panel — offscreen when closed, visible when open */}
-      <Animated.View
-        style={[
-          styles.drawer,
-          drawerStyle,
-          { paddingTop: top, paddingBottom: bottom },
-        ]}
-      >
+      <Animated.View style={[styles.drawer, drawerStyle, { paddingTop: top, paddingBottom: bottom }]}>
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{t("header")}</Text>

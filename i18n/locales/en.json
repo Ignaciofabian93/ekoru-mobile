@@ -39,6 +39,9 @@
     },
     "legal": {
       "termsAndPolicies": "Terms and Policies"
+    },
+    "contact": {
+      "title": "Contact Us"
     }
   }
 }

@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, input as inputSizes, shadows, spacing } from "@/design/tokens";
 import { Check, ChevronDown, Circle, type LucideIcon } from "lucide-react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, FlatList, Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
@@ -46,9 +46,9 @@ export interface SelectProps {
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 const SIZE_MAP: Record<Size, { height: number; fontSize: number; px: number; iconSize: number }> = {
-  sm: { height: 36, fontSize: 14, px: 10, iconSize: 16 },
-  md: { height: 44, fontSize: 16, px: 12, iconSize: 18 },
-  lg: { height: 56, fontSize: 18, px: 14, iconSize: 20 },
+  sm: { height: inputSizes.sm.height, fontSize: inputSizes.sm.fontSize, px: inputSizes.sm.paddingHorizontal, iconSize: inputSizes.sm.iconSize },
+  md: { height: inputSizes.md.height, fontSize: inputSizes.md.fontSize, px: inputSizes.md.paddingHorizontal, iconSize: inputSizes.md.iconSize },
+  lg: { height: inputSizes.lg.height, fontSize: inputSizes.lg.fontSize, px: inputSizes.lg.paddingHorizontal, iconSize: inputSizes.lg.iconSize },
 };
 
 const WIDTH_MAP: Record<Width, `${number}%` | "100%"> = {
@@ -352,32 +352,32 @@ const styles = StyleSheet.create({
     gap: 1,
   },
   label: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
     color: colors.foreground,
   },
   trigger: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 10,
-    gap: 8,
+    borderRadius: borderRadius.md,
+    gap: spacing[2],
   },
   disabled: {
     opacity: 0.5,
   },
   leftIconWrap: {
     position: "absolute",
-    left: 12,
+    left: spacing[3],
     zIndex: 1,
   },
   triggerContent: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: spacing[2],
   },
   triggerText: {
-    fontFamily: "Cabin_400Regular",
+    fontFamily: fontFamily.regular,
     color: colors.inputText,
     flex: 1,
   },
@@ -385,8 +385,8 @@ const styles = StyleSheet.create({
     color: colors.inputPlaceholder,
   },
   errorText: {
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.danger,
   },
   // Dropdown
@@ -398,20 +398,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderWidth: 1.5,
     borderColor: colors.borderLight,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     overflow: "hidden",
     maxHeight: 320,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.12,
-    shadowRadius: 16,
-    elevation: 10,
+    ...shadows.md,
   },
   searchInput: {
-    fontFamily: "Cabin_400Regular",
-    fontSize: 15,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.base,
+    paddingHorizontal: spacing[4],
+    paddingVertical: spacing[2],
     borderBottomWidth: 1,
     borderBottomColor: colors.borderLight,
     color: colors.inputText,
@@ -440,21 +436,21 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   optionText: {
-    fontFamily: "Cabin_400Regular",
+    fontFamily: fontFamily.regular,
     color: colors.foreground,
-    fontSize: 15,
+    fontSize: fontSize.base,
     lineHeight: 20,
     flex: 1,
   },
   optionTextSelected: {
-    fontFamily: "Cabin_600SemiBold",
+    fontFamily: fontFamily.semibold,
     color: colors.primary,
   },
   emptyText: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 14,
-    fontFamily: "Cabin_400Regular",
+    paddingHorizontal: spacing[4],
+    paddingVertical: spacing[3],
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
     fontStyle: "italic",
   },

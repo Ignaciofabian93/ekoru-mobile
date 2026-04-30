@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   ArrowRight,
@@ -16,15 +16,8 @@ import {
   StyleSheet,
   Text,
   View,
-  type NativeScrollEvent,
-  type NativeSyntheticEvent,
   type ViewToken,
 } from "react-native";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -83,27 +76,18 @@ const SLIDES: SlideData[] = [
   },
 ];
 
-// ─── Dot indicator (expanding pill) ──────────────────────────────────────────
+// ─── Dot indicator (static) ───────────────────────────────────────────────────
 
-function Dot({
-  index,
-  scrollX,
-}: {
-  index: number;
-  scrollX: ReturnType<typeof useSharedValue<number>>;
-}) {
-  const animatedStyle = useAnimatedStyle(() => {
-    const inputRange = [
-      (index - 1) * SCREEN_WIDTH,
-      index * SCREEN_WIDTH,
-      (index + 1) * SCREEN_WIDTH,
-    ];
-    const width = interpolate(scrollX.value, inputRange, [6, 20, 6], "clamp");
-    const opacity = interpolate(scrollX.value, inputRange, [0.4, 1, 0.4], "clamp");
-    return { width, opacity };
-  });
-
-  return <Animated.View style={[styles.dot, animatedStyle]} />;
+function Dot({ index, currentIndex }: { index: number; currentIndex: number }) {
+  const isActive = index === currentIndex;
+  return (
+    <View
+      style={[
+        styles.dot,
+        { width: isActive ? 20 : 6, opacity: isActive ? 1 : 0.4 },
+      ]}
+    />
+  );
 }
 
 // ─── Slide ────────────────────────────────────────────────────────────────────
@@ -140,7 +124,7 @@ function SlideItem({ item }: { item: SlideData }) {
         {/* Top row: icon badge + label pill */}
         <View style={styles.topRow}>
           <View style={styles.iconBadge}>
-            <Icon size={18} color="#fff" strokeWidth={1.5} />
+            <Icon size={18} color={colors.onPrimary} strokeWidth={1.5} />
           </View>
           <View style={styles.labelPill}>
             <Text style={styles.labelText}>{item.label}</Text>
@@ -155,7 +139,7 @@ function SlideItem({ item }: { item: SlideData }) {
           </Text>
           <Pressable style={styles.ctaBtn} hitSlop={8} onPress={() => {}}>
             <Text style={styles.ctaText}>{item.cta}</Text>
-            <ArrowRight size={13} color="#fff" strokeWidth={2.5} />
+            <ArrowRight size={13} color={colors.onPrimary} strokeWidth={2.5} />
           </Pressable>
         </View>
       </View>
@@ -167,7 +151,6 @@ function SlideItem({ item }: { item: SlideData }) {
 
 export default function HeroCarousel() {
   const flatListRef = useRef<FlatList<SlideData>>(null);
-  const scrollX = useSharedValue(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isUserScrolling = useRef(false);
@@ -190,13 +173,6 @@ export default function HeroCarousel() {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     };
   }, [startAutoPlay]);
-
-  const onScroll = useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      scrollX.value = event.nativeEvent.contentOffset.x;
-    },
-    [scrollX],
-  );
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -230,7 +206,6 @@ export default function HeroCarousel() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         bounces={false}
-        onScroll={onScroll}
         scrollEventThrottle={16}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
@@ -247,10 +222,9 @@ export default function HeroCarousel() {
       {/* Pill dots — bottom-right for modern look */}
       <View style={styles.dotsContainer} pointerEvents="none">
         {SLIDES.map((_, index) => (
-          <Dot key={index} index={index} scrollX={scrollX} />
+          <Dot key={index} index={index} currentIndex={currentIndex} />
         ))}
       </View>
-
     </View>
   );
 }
@@ -272,7 +246,7 @@ const styles = StyleSheet.create({
   // ── Decorative circles ────────────────────────────────────────────────────
   circle: {
     position: "absolute",
-    borderRadius: 9999,
+    borderRadius: borderRadius.full,
     backgroundColor: "rgba(255,255,255,0.07)",
   },
   circleTR: {
@@ -321,7 +295,7 @@ const styles = StyleSheet.create({
   iconBadge: {
     width: 38,
     height: 38,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     backgroundColor: "rgba(255,255,255,0.18)",
     alignItems: "center",
     justifyContent: "center",
@@ -332,14 +306,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.18)",
     paddingHorizontal: 12,
     paddingVertical: 5,
-    borderRadius: 20,
+    borderRadius: borderRadius["2xl"],
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.3)",
   },
   labelText: {
-    fontSize: 12,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#fff",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
+    color: colors.onPrimary,
     letterSpacing: 0.3,
   },
 
@@ -348,15 +322,15 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   slideTitle: {
-    fontSize: 30,
-    fontFamily: "Cabin_700Bold",
-    color: "#fff",
+    fontSize: fontSize["3xl"],
+    fontFamily: fontFamily.bold,
+    color: colors.onPrimary,
     letterSpacing: -0.5,
     lineHeight: 34,
   },
   slideSubtitle: {
-    fontSize: 14,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
     color: "rgba(255,255,255,0.82)",
     lineHeight: 20,
   },
@@ -372,13 +346,13 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.35)",
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: borderRadius["2xl"],
     marginTop: 2,
   },
   ctaText: {
-    fontSize: 13,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#fff",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.semibold,
+    color: colors.onPrimary,
   },
 
   // ── Dots ──────────────────────────────────────────────────────────────────
@@ -393,7 +367,6 @@ const styles = StyleSheet.create({
   dot: {
     height: 4,
     borderRadius: 2,
-    backgroundColor: "#fff",
+    backgroundColor: colors.onPrimary,
   },
-
 });

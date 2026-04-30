@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import type { Store } from "@/features/marketplace/types/Store";
 import { sellerTypeTranslate } from "@/utils/sellerTypeTranslate";
 import { LinearGradient } from "expo-linear-gradient";
@@ -96,16 +96,12 @@ export default function StoreCard({ store, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     width: 210,
-    backgroundColor: "#fff",
-    borderRadius: 14,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "#e5e7eb",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.07,
-    shadowRadius: 6,
+    borderColor: colors.borderStrong,
+    ...shadows.sm,
   },
   header: {
     height: 56,
@@ -114,26 +110,21 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 28,
     left: 16,
-    // Elevation so avatar sits above the header gradient
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
+    ...shadows.sm,
   },
   avatar: {
     width: 52,
     height: 52,
-    borderRadius: 14,
+    borderRadius: borderRadius.xl,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
-    borderColor: "#fff",
+    borderColor: colors.surface,
   },
   avatarText: {
-    fontSize: 18,
-    fontFamily: "Cabin_700Bold",
-    color: "#fff",
+    fontSize: fontSize.lg,
+    fontFamily: fontFamily.bold,
+    color: colors.onPrimary,
     letterSpacing: 0.5,
   },
   body: {
@@ -149,8 +140,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   storeName: {
-    fontSize: 15,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.bold,
     color: colors.foreground,
     flex: 1,
   },
@@ -158,13 +149,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundSecondary,
     paddingHorizontal: 7,
     paddingVertical: 3,
-    borderRadius: 6,
+    borderRadius: borderRadius.sm,
     borderWidth: 1,
     borderColor: colors.borderLight,
   },
   typeBadgeText: {
-    fontSize: 10,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.medium,
     color: colors.foregroundSecondary,
   },
   ratingRow: {
@@ -173,23 +164,23 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   ratingValue: {
-    fontSize: 13,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.bold,
     color: colors.foreground,
   },
   ratingCount: {
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
   },
   dot: {
-    fontSize: 12,
+    fontSize: fontSize.xs,
     color: colors.foregroundTertiary,
     marginHorizontal: 2,
   },
   productCount: {
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
   },
   locationRow: {
@@ -198,8 +189,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   locationText: {
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
     flex: 1,
   },
@@ -213,13 +204,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundSecondary,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 20,
+    borderRadius: borderRadius["2xl"],
     borderWidth: 1,
     borderColor: colors.borderLight,
   },
   tagText: {
-    fontSize: 11,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.medium,
     color: colors.foregroundSecondary,
   },
 });

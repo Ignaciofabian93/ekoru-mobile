@@ -30,7 +30,7 @@ export default function SectionHeader({
               style={styles.backButton}
               hitSlop={8}
             >
-              <ArrowLeft size={22} color="#fff" strokeWidth={2} />
+              <ArrowLeft size={22} color={colors.onPrimary} strokeWidth={2} />
             </Pressable>
           )}
         </View>

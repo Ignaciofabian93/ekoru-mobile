@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import { AlertCircle, CheckCircle, Info } from "lucide-react-native";
 import { StyleSheet, Text, View } from "react-native";
 import type { BaseToastProps } from "react-native-toast-message";
@@ -24,15 +24,15 @@ const toastConfig = {
   success: (props: BaseToastProps) => (
     <ToastBase
       {...props}
-      accentColor="#16a34a"
-      icon={<CheckCircle size={20} color="#16a34a" strokeWidth={2} />}
+      accentColor={colors.success}
+      icon={<CheckCircle size={20} color={colors.success} strokeWidth={2} />}
     />
   ),
   error: (props: BaseToastProps) => (
     <ToastBase
       {...props}
-      accentColor="#dc2626"
-      icon={<AlertCircle size={20} color="#dc2626" strokeWidth={2} />}
+      accentColor={colors.danger}
+      icon={<AlertCircle size={20} color={colors.danger} strokeWidth={2} />}
     />
   ),
   info: (props: BaseToastProps) => (
@@ -51,17 +51,13 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 10,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
     borderLeftWidth: 4,
     paddingHorizontal: 14,
     paddingVertical: 12,
     gap: 12,
-    elevation: 6,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.12,
-    shadowRadius: 8,
+    ...shadows.md,
   },
   iconWrapper: {
     flexShrink: 0,
@@ -71,13 +67,13 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   title: {
-    fontSize: 14,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#111827",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.semibold,
+    color: colors.foreground,
   },
   message: {
-    fontSize: 13,
-    fontFamily: "Cabin_400Regular",
-    color: "#6b7280",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
   },
 });

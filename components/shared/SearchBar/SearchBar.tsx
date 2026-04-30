@@ -1,3 +1,4 @@
+import { borderRadius, colors, fontSize, iconSize, spacing } from "@/design/tokens";
 import { Search } from "lucide-react-native";
 import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
@@ -8,11 +9,11 @@ export default function SearchBar() {
   return (
     <View style={styles.container}>
       <View style={styles.inputWrapper}>
-        <Search size={18} color="#9ca3af" strokeWidth={2} />
+        <Search size={iconSize.md} color={colors.inputPlaceholder} strokeWidth={2} />
         <TextInput
           style={styles.input}
           placeholder="Search..."
-          placeholderTextColor="#9ca3af"
+          placeholderTextColor={colors.inputPlaceholder}
           value={query}
           onChangeText={setQuery}
           returnKeyType="search"
@@ -25,23 +26,23 @@ export default function SearchBar() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "transparent",
-    paddingHorizontal: 16,
-    paddingTop: 4,
-    paddingBottom: 12,
+    paddingHorizontal: spacing[4],
+    paddingTop: spacing[1],
+    paddingBottom: spacing[3],
   },
   inputWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    height: 40,
-    gap: 8,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing[3],
+    height: spacing[10],
+    gap: spacing[2],
   },
   input: {
     flex: 1,
-    fontSize: 15,
-    color: "#1f2937",
+    fontSize: fontSize.base,
+    color: colors.foreground,
     padding: 0,
   },
 });

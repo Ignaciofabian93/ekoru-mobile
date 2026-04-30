@@ -1,5 +1,5 @@
 import MainButton from "@/components/shared/Button/MainButton";
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import useLocationStore, {
   useDetectedLocation,
   useIsLocationConfirmed,
@@ -7,12 +7,6 @@ import useLocationStore, {
 import { MapPin, X } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  SlideInDown,
-  SlideOutDown,
-} from "react-native-reanimated";
 
 /**
  * LocationConfirmModal — appears once when the app detects the user's location
@@ -46,22 +40,11 @@ export default function LocationConfirmModal() {
       statusBarTranslucent
       onRequestClose={handleDismiss}
     >
-      <Animated.View
-        entering={FadeIn.duration(200)}
-        exiting={FadeOut.duration(200)}
-        style={styles.backdrop}
-      >
-        <Animated.View
-          entering={SlideInDown.duration(300)
-            .springify()
-            .damping(26)
-            .stiffness(260)}
-          exiting={SlideOutDown.duration(220)}
-          style={styles.sheet}
-        >
+      <View style={styles.backdrop}>
+        <View style={styles.sheet}>
           {/* Dismiss button */}
           <Pressable style={styles.closeButton} onPress={handleDismiss}>
-            <X size={18} color="#888" />
+            <X size={18} color={colors.foregroundTertiary} />
           </Pressable>
 
           {/* Icon */}
@@ -97,8 +80,8 @@ export default function LocationConfirmModal() {
               </Text>
             </Pressable>
           </View>
-        </Animated.View>
-      </Animated.View>
+        </View>
+      </View>
     </Modal>
   );
 }
@@ -110,9 +93,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   sheet: {
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    backgroundColor: colors.surface,
+    borderTopLeftRadius: borderRadius["2xl"],
+    borderTopRightRadius: borderRadius["2xl"],
     paddingHorizontal: 28,
     paddingTop: 32,
     paddingBottom: 40,
@@ -128,35 +111,35 @@ const styles = StyleSheet.create({
   iconWrapper: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: borderRadius.full,
     backgroundColor: `${colors.primary}18`,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 4,
   },
   title: {
-    fontFamily: "Cabin_700Bold",
-    fontSize: 18,
-    color: "#1a1a1a",
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.lg,
+    color: colors.foreground,
     textAlign: "center",
   },
   locationRow: {
-    backgroundColor: "#f4f6f9",
+    backgroundColor: colors.backgroundSecondary,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     marginVertical: 4,
   },
   locationText: {
-    fontFamily: "Cabin_600SemiBold",
-    fontSize: 16,
+    fontFamily: fontFamily.semibold,
+    fontSize: fontSize.base,
     color: colors.primary,
     textAlign: "center",
   },
   subtitle: {
-    fontFamily: "Cabin_400Regular",
-    fontSize: 14,
-    color: "#666",
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.sm,
+    color: colors.foregroundSecondary,
     textAlign: "center",
     lineHeight: 20,
   },
@@ -173,8 +156,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   dismissText: {
-    fontFamily: "Cabin_500Medium",
-    fontSize: 14,
-    color: "#888",
+    fontFamily: fontFamily.medium,
+    fontSize: fontSize.sm,
+    color: colors.foregroundTertiary,
   },
 });

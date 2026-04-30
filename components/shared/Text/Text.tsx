@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors } from "@/design/tokens";
 import React from "react";
 import { Platform, StyleSheet, Text as RNText, View, type TextStyle } from "react-native";
 
@@ -100,7 +100,7 @@ const Text = React.forwardRef<React.ComponentRef<typeof RNText>, TextProps>(
       ...(variant === "code" && {
         fontFamily: Platform.OS === "ios" ? "Courier New" : "monospace",
         backgroundColor: colors.backgroundSecondary,
-        borderRadius: 4,
+        borderRadius: borderRadius.sm / 2,
         paddingHorizontal: 4,
         paddingVertical: 2,
         overflow: "hidden",
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   blockquoteBorder: {
     width: 3,
-    borderRadius: 2,
+    borderRadius: borderRadius.sm / 4,
     backgroundColor: colors.primary,
   },
 });

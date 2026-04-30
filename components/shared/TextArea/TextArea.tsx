@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -40,7 +40,7 @@ export default function TextArea({
         textAlignVertical="top"
         maxLength={maxLength}
         placeholder={placeholder}
-        placeholderTextColor="#9ca3af"
+        placeholderTextColor={colors.inputPlaceholder}
         style={[styles.input, focused && styles.inputFocused, style]}
         {...rest}
       />
@@ -54,20 +54,20 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
-    color: "#374151",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
+    color: colors.foregroundSecondary,
   },
   input: {
-    fontFamily: "Cabin_400Regular",
-    fontSize: 16,
-    color: "#111827",
-    backgroundColor: "#fff",
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.base,
+    color: colors.foreground,
+    backgroundColor: colors.surface,
     borderWidth: 2,
-    borderColor: "#d1d5db",
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    borderColor: colors.inputBorder,
+    borderRadius: borderRadius.md,
+    paddingVertical: spacing[3],
+    paddingHorizontal: spacing[4],
     height: 128,
   },
   inputFocused: {

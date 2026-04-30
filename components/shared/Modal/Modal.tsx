@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import { X } from "lucide-react-native";
 import React from "react";
 import {
@@ -11,12 +11,6 @@ import {
   View,
   type ViewStyle,
 } from "react-native";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  SlideInDown,
-  SlideOutDown,
-} from "react-native-reanimated";
 
 // ─── Variant types (mirrors the web API) ─────────────────────────────────────
 
@@ -49,8 +43,6 @@ const SIZE_MAP: Record<Size, number> = {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
 export default function Modal({
   isOpen = false,
   onClose,
@@ -70,18 +62,12 @@ export default function Modal({
       onRequestClose={onClose}
     >
       {/* Backdrop */}
-      <AnimatedPressable
-        entering={FadeIn.duration(200)}
-        exiting={FadeOut.duration(200)}
+      <Pressable
         style={styles.backdrop}
         onPress={closeOnOverlayClick ? onClose : undefined}
       >
         {/* Modal sheet — stop propagation so taps inside don't close */}
-        <Animated.View
-          entering={SlideInDown.duration(300).springify().damping(26).stiffness(260)}
-          exiting={SlideOutDown.duration(220)}
-          style={[styles.sheet, { maxWidth: SIZE_MAP[size] }, style]}
-        >
+        <View style={[styles.sheet, { maxWidth: SIZE_MAP[size] }, style]}>
           <Pressable onPress={(e) => e.stopPropagation()} style={styles.inner}>
             {/* Header */}
             {(title || showCloseButton) && (
@@ -117,8 +103,8 @@ export default function Modal({
               {children}
             </ScrollView>
           </Pressable>
-        </Animated.View>
-      </AnimatedPressable>
+        </View>
+      </Pressable>
     </RNModal>
   );
 }
@@ -137,14 +123,9 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: "90%",
     backgroundColor: colors.surface,
-    borderRadius: 16,
+    borderRadius: borderRadius["2xl"],
     overflow: "hidden",
-    // Shadow
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.18,
-    shadowRadius: 24,
-    elevation: 12,
+    ...shadows.xl,
   },
   inner: {
     flex: 1,
@@ -161,13 +142,13 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    fontSize: 17,
-    fontFamily: "Cabin_600SemiBold",
+    fontSize: fontSize.lg,
+    fontFamily: fontFamily.semibold,
     color: colors.foreground,
   },
   closeButton: {
     padding: 4,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
   },
   body: {
     padding: 20,

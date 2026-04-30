@@ -1,4 +1,6 @@
-import { Animated, Modal, Pressable, StyleSheet } from "react-native";
+import { Animated, Modal, Pressable, StyleSheet, View } from "react-native";
+import { X } from "lucide-react-native";
+import { BlurView } from "expo-blur";
 
 export interface ProfileImageModalProps {
   profileModalVisible: boolean;
@@ -22,15 +24,24 @@ export default function ProfileImageModal({
       animationType="none"
     >
       <Animated.View style={[styles.modalBackdrop, { opacity: modalAnim }]}>
-        <Pressable
-          style={StyleSheet.absoluteFill}
-          onPress={closeProfileModal}
-        />
-        <Animated.Image
-          source={{ uri: profileImage ?? "" }}
-          style={[styles.modalImage, { transform: [{ scale: modalAnim }] }]}
-          resizeMode="contain"
-        />
+        <BlurView intensity={100} style={StyleSheet.absoluteFill} tint="systemMaterialDark" />
+        <View style={styles.container}>
+          <Animated.View
+            style={[styles.closeButton, { opacity: modalAnim, transform: [{ scale: modalAnim }] }]}
+          >
+            <Pressable
+              onPress={closeProfileModal}
+              style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+            >
+              <X color={"#fff"} size={24} />
+            </Pressable>
+          </Animated.View>
+          <Animated.Image
+            source={{ uri: profileImage ?? "" }}
+            style={[styles.modalImage, { transform: [{ scale: modalAnim }] }]}
+            resizeMode="cover"
+          />
+        </View>
       </Animated.View>
     </Modal>
   );
@@ -39,13 +50,26 @@ export default function ProfileImageModal({
 const styles = StyleSheet.create({
   modalBackdrop: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.9)",
     alignItems: "center",
     justifyContent: "center",
   },
+  container: {
+    position: "relative",
+    width: "70%",
+    height: "40%",
+  },
   modalImage: {
-    width: "90%",
-    height: "60%",
-    borderRadius: 12,
+    width: "100%",
+    height: "100%",
+    borderRadius: 20,
+  },
+  closeButton: {
+    position: "absolute",
+    top: "5%",
+    right: "5%",
+    zIndex: 999,
+    backgroundColor: "#222",
+    borderRadius: "50%",
+    padding: 3,
   },
 });

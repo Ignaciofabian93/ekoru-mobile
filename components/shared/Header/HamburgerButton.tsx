@@ -1,4 +1,5 @@
 import { useDrawer } from "@/context/DrawerContext";
+import { colors, iconSize, spacing } from "@/design/tokens";
 import { Menu, ShoppingCart } from "lucide-react-native";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
@@ -9,10 +10,10 @@ export default function HeaderRight() {
   return (
     <View style={styles.container}>
       <Pressable hitSlop={8}>
-        <ShoppingCart size={24} strokeWidth={1.5} color="#fff" />
+        <ShoppingCart size={iconSize.xl} strokeWidth={1.5} color={colors.onPrimary} />
       </Pressable>
       <Pressable onPress={openDrawer} hitSlop={8}>
-        <Menu size={28} strokeWidth={1.5} color="#fff" />
+        <Menu size={iconSize["2xl"]} strokeWidth={1.5} color={colors.onPrimary} />
       </Pressable>
     </View>
   );
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
-    marginRight: 10,
+    gap: spacing[4],
+    marginRight: spacing[2],
   },
 });

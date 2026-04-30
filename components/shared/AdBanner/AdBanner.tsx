@@ -1,8 +1,7 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { StyleSheet, Text, View, type ViewProps } from "react-native";
-import Animated, { FadeIn } from "react-native-reanimated";
 
 // ─── Variant types (mirrors the web API) ─────────────────────────────────────
 
@@ -20,7 +19,7 @@ export interface AdBannerProps extends Omit<ViewProps, "style"> {
   description?: string;
   cta: React.ReactNode;
   variant?: Variant;
-  /** Fade-in on mount */
+  /** Kept for API compatibility — no longer triggers animation */
   animated?: boolean;
 }
 
@@ -44,16 +43,16 @@ const ICON_BG: Record<Variant, string> = {
 
 // Icon color for each variant
 const ICON_COLOR: Record<Variant, string> = {
-  primary: "#ffffff",
-  secondary: "#ffffff",
+  primary: colors.onPrimary,
+  secondary: colors.onPrimary,
   outlined: colors.primary,
   ghost: colors.primary,
 };
 
 // Title / description color for each variant
 const TEXT_COLOR: Record<Variant, string> = {
-  primary: "#ffffff",
-  secondary: "#ffffff",
+  primary: colors.onPrimary,
+  secondary: colors.onPrimary,
   outlined: colors.foreground,
   ghost: colors.foreground,
 };
@@ -75,7 +74,7 @@ const AdBanner = React.forwardRef<View, AdBannerProps>(
       description,
       cta,
       variant = "primary",
-      animated = true,
+      animated: _animated,
       ...props
     },
     ref,
@@ -122,11 +121,9 @@ const AdBanner = React.forwardRef<View, AdBannerProps>(
       variant === "ghost" && styles.ghost,
     ];
 
-    const entering = animated ? FadeIn.duration(450) : undefined;
-
     if (isGradient) {
       return (
-        <Animated.View ref={ref} entering={entering} {...props}>
+        <View ref={ref} {...props}>
           <LinearGradient
             colors={GRADIENT_COLORS[variant as "primary" | "secondary"]}
             start={{ x: 0, y: 0 }}
@@ -135,19 +132,14 @@ const AdBanner = React.forwardRef<View, AdBannerProps>(
           >
             {content}
           </LinearGradient>
-        </Animated.View>
+        </View>
       );
     }
 
     return (
-      <Animated.View
-        ref={ref}
-        entering={entering}
-        style={containerStyle}
-        {...props}
-      >
+      <View ref={ref} style={containerStyle} {...props}>
         {content}
-      </Animated.View>
+      </View>
     );
   },
 );
@@ -170,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderColor: colors.primary,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
   },
   ghost: {
     backgroundColor: "rgba(255,255,255,0.5)",
@@ -191,18 +183,18 @@ const styles = StyleSheet.create({
   iconBadge: {
     width: 64,
     height: 64,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 4,
   },
   title: {
-    fontSize: 16,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.bold,
   },
   description: {
-    fontSize: 13,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
     lineHeight: 18,
   },
   cta: {

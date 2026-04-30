@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import React from "react";
 import {
@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   rowsLabel: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
     color: colors.foregroundSecondary,
     textTransform: "capitalize",
     letterSpacing: 0.6,
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   chevronBtn: {
     width: 36,
     height: 36,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     backgroundColor: colors.backgroundSecondary,
     alignItems: "center",
     justifyContent: "center",
@@ -225,9 +225,9 @@ const styles = StyleSheet.create({
   pageBtn: {
     minWidth: 36,
     height: 36,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     paddingHorizontal: 12,
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1.5,
@@ -238,15 +238,15 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   pageBtnText: {
-    fontSize: 14,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#000",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.semibold,
+    color: colors.foreground,
   },
   pageBtnTextActive: {
-    color: "#fff",
+    color: colors.onPrimary,
   },
   ellipsis: {
-    fontSize: 14,
+    fontSize: fontSize.sm,
     color: colors.foregroundTertiary,
     paddingHorizontal: 4,
     lineHeight: 36,

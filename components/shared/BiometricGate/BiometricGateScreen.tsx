@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import useBiometricAuth from "@/hooks/useBiometricAuth";
 import useAuthStore, { useSeller } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
@@ -77,10 +77,10 @@ export default function BiometricGateScreen() {
           disabled={loading}
         >
           {loading ? (
-            <ActivityIndicator color="#fff" size="small" />
+            <ActivityIndicator color={colors.onPrimary} size="small" />
           ) : (
             <>
-              <BiometricIcon size={22} color="#fff" strokeWidth={1.75} />
+              <BiometricIcon size={22} color={colors.onPrimary} strokeWidth={1.75} />
               <Text style={styles.biometricBtnText}>
                 Unlock with {biometricLabel}
               </Text>
@@ -101,49 +101,45 @@ export default function BiometricGateScreen() {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#f3f4f6",
+    backgroundColor: colors.backgroundTertiary,
     alignItems: "center",
     justifyContent: "center",
     zIndex: 9999,
     padding: 24,
   },
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 20,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius["2xl"],
     padding: 32,
     alignItems: "center",
     width: "100%",
     gap: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 8,
+    ...shadows.xl,
   },
   iconWrap: {
     width: 72,
     height: 72,
-    borderRadius: 36,
+    borderRadius: borderRadius.full,
     backgroundColor: `${colors.primary}15`,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 4,
   },
   greeting: {
-    fontSize: 14,
-    fontFamily: "Cabin_400Regular",
-    color: "#6b7280",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
   },
   name: {
-    fontSize: 22,
-    fontFamily: "Cabin_700Bold",
-    color: "#1f2937",
+    fontSize: fontSize.xl,
+    fontFamily: fontFamily.bold,
+    color: colors.foreground,
     marginTop: -4,
   },
   subtitle: {
-    fontSize: 14,
-    fontFamily: "Cabin_400Regular",
-    color: "#9ca3af",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundTertiary,
     textAlign: "center",
     marginBottom: 8,
   },
@@ -154,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     paddingVertical: 14,
     paddingHorizontal: 28,
-    borderRadius: 14,
+    borderRadius: borderRadius.xl,
     width: "100%",
     justifyContent: "center",
   },
@@ -162,22 +158,22 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   biometricBtnText: {
-    fontSize: 16,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#fff",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.semibold,
+    color: colors.onPrimary,
   },
   errorText: {
-    fontSize: 13,
-    fontFamily: "Cabin_400Regular",
-    color: "#dc2626",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
+    color: colors.danger,
     textAlign: "center",
   },
   passwordBtn: {
     paddingVertical: 8,
   },
   passwordBtnText: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
-    color: "#6b7280",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
+    color: colors.foregroundSecondary,
   },
 });

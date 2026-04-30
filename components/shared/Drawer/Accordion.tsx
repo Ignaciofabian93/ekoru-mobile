@@ -3,19 +3,11 @@ import {
   ChevronRight,
   type LucideIcon,
 } from "lucide-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import Animated, {
-  cancelAnimation,
-  Easing,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
 
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { NAMESPACE } from "./i18n";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -33,8 +25,6 @@ export type AccordionSectionDef = {
 
 // ── AccordionContent ──────────────────────────────────────────────────────────
 // Children are NOT mounted until the accordion is opened for the first time.
-// This avoids rendering all nested rows (each with their own Reanimated shared
-// values) while the section is still collapsed, which was the main render cost.
 // After first open, children stay mounted so re-open is instant.
 function AccordionContent({
   isOpen,
@@ -44,25 +34,21 @@ function AccordionContent({
   children: React.ReactNode;
 }) {
   const [hasEverOpened, setHasEverOpened] = useState(false);
-  const height = useSharedValue(0);
 
-  useEffect(() => {
+  if (isOpen && !hasEverOpened) {
+    // Use a microtask-safe approach: set flag on next render
+    // We rely on the re-render triggered by isOpen changing to set the flag
+  }
+
+  // Track if opened at least once
+  React.useEffect(() => {
     if (isOpen) setHasEverOpened(true);
-    height.value = withTiming(isOpen ? 800 : 0, {
-      duration: 220,
-      easing: Easing.bezier(0.25, 0.1, 0.25, 1),
-    });
-    return () => cancelAnimation(height);
-  }, [isOpen, height]);
-
-  const animStyle = useAnimatedStyle(() => ({
-    maxHeight: height.value,
-    overflow: "hidden",
-  }));
+  }, [isOpen]);
 
   if (!hasEverOpened) return null;
+  if (!isOpen) return null;
 
-  return <Animated.View style={animStyle}>{children}</Animated.View>;
+  return <View>{children}</View>;
 }
 
 // ── AccordionL2Row (DepartmentCategory / StoreSubCategory / etc.) ─────────────
@@ -77,18 +63,6 @@ function AccordionL2Row({
 }) {
   const hasChildren = !!item.children?.length;
   const [isOpen, setIsOpen] = useState(false);
-  const chevron = useSharedValue(0);
-
-  useEffect(() => {
-    chevron.value = withTiming(isOpen ? 1 : 0, { duration: 200 });
-    return () => cancelAnimation(chevron);
-  }, [isOpen, chevron]);
-
-  const chevronStyle = useAnimatedStyle(() => ({
-    transform: [
-      { rotate: `${interpolate(chevron.value, [0, 1], [0, 90])}deg` },
-    ],
-  }));
 
   return (
     <View>
@@ -107,9 +81,9 @@ function AccordionL2Row({
             hitSlop={8}
             style={styles.chevronBtn}
           >
-            <Animated.View style={chevronStyle}>
-              <ChevronRight size={13} color="#b0b8c4" strokeWidth={2} />
-            </Animated.View>
+            <View style={{ transform: [{ rotate: isOpen ? "90deg" : "0deg" }] }}>
+              <ChevronRight size={13} color={colors.foregroundMuted} strokeWidth={2} />
+            </View>
           </Pressable>
         )}
       </View>
@@ -146,18 +120,6 @@ function AccordionL1Row({
 }) {
   const hasChildren = !!item.children?.length;
   const [isOpen, setIsOpen] = useState(false);
-  const chevron = useSharedValue(0);
-
-  useEffect(() => {
-    chevron.value = withTiming(isOpen ? 1 : 0, { duration: 200 });
-    return () => cancelAnimation(chevron);
-  }, [isOpen, chevron]);
-
-  const chevronStyle = useAnimatedStyle(() => ({
-    transform: [
-      { rotate: `${interpolate(chevron.value, [0, 1], [0, 90])}deg` },
-    ],
-  }));
 
   return (
     <View>
@@ -176,9 +138,9 @@ function AccordionL1Row({
             hitSlop={8}
             style={styles.chevronBtn}
           >
-            <Animated.View style={chevronStyle}>
-              <ChevronRight size={14} color="#9ca3af" strokeWidth={2} />
-            </Animated.View>
+            <View style={{ transform: [{ rotate: isOpen ? "90deg" : "0deg" }] }}>
+              <ChevronRight size={14} color={colors.foregroundTertiary} strokeWidth={2} />
+            </View>
           </Pressable>
         )}
       </View>
@@ -210,18 +172,6 @@ function AccordionSection({
   const { t } = useTranslation(NAMESPACE);
   const [isOpen, setIsOpen] = useState(false);
   const Icon = section.icon;
-  const chevron = useSharedValue(0);
-
-  useEffect(() => {
-    chevron.value = withTiming(isOpen ? 1 : 0, { duration: 200 });
-    return () => cancelAnimation(chevron);
-  }, [isOpen, chevron]);
-
-  const chevronStyle = useAnimatedStyle(() => ({
-    transform: [
-      { rotate: `${interpolate(chevron.value, [0, 1], [0, 180])}deg` },
-    ],
-  }));
 
   return (
     <View>
@@ -240,9 +190,9 @@ function AccordionSection({
           hitSlop={8}
           style={styles.chevronBtn}
         >
-          <Animated.View style={chevronStyle}>
-            <ChevronDown size={16} color="#9ca3af" strokeWidth={2} />
-          </Animated.View>
+          <View style={{ transform: [{ rotate: isOpen ? "180deg" : "0deg" }] }}>
+            <ChevronDown size={16} color={colors.foregroundTertiary} strokeWidth={2} />
+          </View>
         </Pressable>
       </View>
 
@@ -261,8 +211,6 @@ function AccordionSection({
 }
 
 // ── Compound export ───────────────────────────────────────────────────────────
-// Use as <Accordion.Section /> for the top-level entry point.
-// Sub-components are accessible for targeted use: Accordion.L1Row, etc.
 export const Accordion = Object.assign(AccordionSection, {
   Content: AccordionContent,
   L1Row: AccordionL1Row,
@@ -279,20 +227,20 @@ const styles = StyleSheet.create({
   },
   menuItemBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#e5e7eb",
+    borderBottomColor: colors.borderStrong,
   },
   iconWrap: {
     width: 32,
     height: 32,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
   },
   menuLabel: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
-    color: "#1f2937",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
+    color: colors.foreground,
   },
   rowMain: {
     flex: 1,
@@ -310,13 +258,13 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     paddingLeft: 18,
     paddingRight: 14,
-    backgroundColor: "#f9fafb",
+    backgroundColor: colors.backgroundSecondary,
   },
   l1Label: {
     flex: 1,
-    fontSize: 13,
-    fontFamily: "Cabin_500Medium",
-    color: "#374151",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
+    color: colors.foregroundSecondary,
   },
   l2Row: {
     flexDirection: "row",
@@ -324,13 +272,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingLeft: 32,
     paddingRight: 14,
-    backgroundColor: "#f3f4f6",
+    backgroundColor: colors.backgroundTertiary,
   },
   l2Label: {
     flex: 1,
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
-    color: "#4b5563",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
   },
   l3Row: {
     flexDirection: "row",
@@ -338,12 +286,12 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     paddingLeft: 46,
     paddingRight: 14,
-    backgroundColor: "#eef0f3",
+    backgroundColor: colors.surfaceActive,
   },
   l3Label: {
     flex: 1,
-    fontSize: 11,
-    fontFamily: "Cabin_400Regular",
-    color: "#6b7280",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundTertiary,
   },
 });

@@ -1,8 +1,9 @@
-import { colors } from "@/design/tokens";
+import { button as buttonSizes, colors, fontFamily, spacing } from "@/design/tokens";
 import type { LucideIcon } from "lucide-react-native";
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import {
   ActivityIndicator,
+  Animated,
   Pressable,
   StyleSheet,
   Text,
@@ -10,12 +11,6 @@ import {
   type StyleProp,
   type ViewStyle,
 } from "react-native";
-import Animated, {
-  cancelAnimation,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
 
 // ─── Variant / Size types ─────────────────────────────────────────────────────
 
@@ -66,31 +61,31 @@ const SIZE_MAP: Record<
   }
 > = {
   sm: {
-    py: 8,
-    px: 16,
-    fontSize: 14,
-    iconSize: 16,
-    gap: 6,
-    radius: 8,
-    minHeight: 36,
+    py: spacing[2],
+    px: buttonSizes.sm.paddingHorizontal,
+    fontSize: buttonSizes.sm.fontSize,
+    iconSize: buttonSizes.sm.iconSize,
+    gap: spacing[1],
+    radius: buttonSizes.sm.borderRadius,
+    minHeight: buttonSizes.sm.minHeight,
   },
   md: {
-    py: 12,
-    px: 24,
-    fontSize: 16,
-    iconSize: 18,
-    gap: 8,
-    radius: 10,
-    minHeight: 44,
+    py: spacing[3],
+    px: buttonSizes.md.paddingHorizontal,
+    fontSize: buttonSizes.md.fontSize,
+    iconSize: buttonSizes.md.iconSize,
+    gap: spacing[2],
+    radius: buttonSizes.md.borderRadius,
+    minHeight: buttonSizes.md.minHeight,
   },
   lg: {
-    py: 16,
-    px: 32,
-    fontSize: 16,
-    iconSize: 20,
-    gap: 10,
-    radius: 14,
-    minHeight: 56,
+    py: spacing[4],
+    px: buttonSizes.lg.paddingHorizontal,
+    fontSize: buttonSizes.lg.fontSize,
+    iconSize: buttonSizes.lg.iconSize,
+    gap: spacing[2],
+    radius: buttonSizes.lg.borderRadius,
+    minHeight: buttonSizes.lg.minHeight,
   },
 };
 
@@ -108,33 +103,33 @@ const VARIANT_MAP: Record<Variant, VariantStyle> = {
   primary: {
     bg: colors.primary,
     border: colors.primary,
-    textColor: "#fff",
-    spinnerColor: "#fff",
-    iconColor: "#fff",
+    textColor: colors.onPrimary,
+    spinnerColor: colors.onPrimary,
+    iconColor: colors.onPrimary,
   },
   filled: {
     bg: colors.primary,
     border: colors.primary,
-    textColor: "#fff",
-    spinnerColor: "#fff",
-    iconColor: "#fff",
+    textColor: colors.onPrimary,
+    spinnerColor: colors.onPrimary,
+    iconColor: colors.onPrimary,
   },
   secondary: {
     bg: colors.secondary,
     border: colors.secondary,
-    textColor: "#fff",
-    spinnerColor: "#fff",
-    iconColor: "#fff",
+    textColor: colors.onPrimary,
+    spinnerColor: colors.onPrimary,
+    iconColor: colors.onPrimary,
   },
   secondary_outline: {
-    bg: "#fff",
+    bg: colors.surface,
     border: colors.secondary,
     textColor: colors.secondary,
     spinnerColor: colors.secondary,
     iconColor: colors.secondary,
   },
   outline: {
-    bg: "#fff",
+    bg: colors.surface,
     border: colors.primary,
     textColor: colors.primary,
     spinnerColor: colors.primary,
@@ -150,41 +145,35 @@ const VARIANT_MAP: Record<Variant, VariantStyle> = {
   success: {
     bg: colors.success,
     border: colors.success,
-    textColor: "#fff",
-    spinnerColor: "#fff",
-    iconColor: "#fff",
+    textColor: colors.onPrimary,
+    spinnerColor: colors.onPrimary,
+    iconColor: colors.onPrimary,
   },
   warning: {
     bg: colors.warning,
     border: colors.warning,
-    textColor: "#fff",
-    spinnerColor: "#fff",
-    iconColor: "#fff",
+    textColor: colors.onPrimary,
+    spinnerColor: colors.onPrimary,
+    iconColor: colors.onPrimary,
   },
   error: {
     bg: colors.danger,
     border: colors.danger,
-    textColor: "#fff",
-    spinnerColor: "#fff",
-    iconColor: "#fff",
+    textColor: colors.onPrimary,
+    spinnerColor: colors.onPrimary,
+    iconColor: colors.onPrimary,
   },
 };
 
 // ─── Helper: render icon ──────────────────────────────────────────────────────
 
-function renderIcon(
-  icon: LucideIcon | React.ReactElement,
-  size: number,
-  color: string,
-): React.ReactNode {
+function renderIcon(icon: LucideIcon | React.ReactElement, size: number, color: string): React.ReactNode {
   if (React.isValidElement(icon)) return icon;
   const Icon = icon as LucideIcon;
   return <Icon size={size} color={color} strokeWidth={2} />;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const MainButton = React.forwardRef<View, MainButtonProps>(
   (
@@ -208,36 +197,32 @@ const MainButton = React.forwardRef<View, MainButtonProps>(
     const isDisabled = disabled || loading;
     const label = loading && loadingText ? loadingText : text;
 
-    // ── Press animation ───────────────────────────────────────────────────────
-    const scale = useSharedValue(1);
-    const animatedStyle = useAnimatedStyle(() => ({
-      transform: [{ scale: scale.value }],
-    }));
-
-    useEffect(() => {
-      return () => {
-        cancelAnimation(scale);
-      };
-    }, [scale]);
+    // ── Press animation (RN Animated — no Reanimated) ─────────────────────────
+    const scale = useRef(new Animated.Value(1)).current;
+    const animatedStyle = { transform: [{ scale }] };
 
     const handlePressIn = () => {
-      scale.value = withSpring(0.96, { stiffness: 400, damping: 17 });
+      Animated.spring(scale, {
+        toValue: 0.96,
+        useNativeDriver: true,
+        speed: 40,
+        bounciness: 4,
+      }).start();
     };
     const handlePressOut = () => {
-      scale.value = withSpring(1, { stiffness: 400, damping: 17 });
+      Animated.spring(scale, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 40,
+        bounciness: 4,
+      }).start();
     };
 
-    const hasBorder =
-      variant === "outline" ||
-      variant === "secondary_outline" ||
-      variant === "ghost";
+    const hasBorder = variant === "outline" || variant === "secondary_outline" || variant === "ghost";
 
     return (
-      <Animated.View
-        ref={ref}
-        style={[animatedStyle, fullWidth && styles.fullWidth]}
-      >
-        <AnimatedPressable
+      <Animated.View ref={ref} style={[animatedStyle, fullWidth && styles.fullWidth]}>
+        <Pressable
           onPress={onPress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
@@ -259,30 +244,15 @@ const MainButton = React.forwardRef<View, MainButtonProps>(
           ]}
         >
           {/* Content row — hidden behind spinner while loading */}
-          <View
-            style={[styles.content, { gap: s.gap, opacity: loading ? 0 : 1 }]}
-          >
+          <View style={[styles.content, { gap: s.gap, opacity: loading ? 0 : 1 }]}>
             {leftIcon && renderIcon(leftIcon, s.iconSize, v.iconColor)}
-            <Text
-              style={[
-                styles.text,
-                { fontSize: s.fontSize, color: v.textColor },
-              ]}
-            >
-              {label}
-            </Text>
+            <Text style={[styles.text, { fontSize: s.fontSize, color: v.textColor }]}>{label}</Text>
             {rightIcon && renderIcon(rightIcon, s.iconSize, v.iconColor)}
           </View>
 
           {/* Spinner overlay */}
-          {loading && (
-            <ActivityIndicator
-              color={v.spinnerColor}
-              size="small"
-              style={styles.spinner}
-            />
-          )}
-        </AnimatedPressable>
+          {loading && <ActivityIndicator color={v.spinnerColor} size="small" style={styles.spinner} />}
+        </Pressable>
       </Animated.View>
     );
   },
@@ -299,11 +269,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
     minWidth: 140,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   content: {
     flexDirection: "row",
@@ -316,7 +281,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   text: {
-    fontFamily: "Cabin_700Bold",
+    fontFamily: fontFamily.bold,
     textAlign: "center",
   },
 });

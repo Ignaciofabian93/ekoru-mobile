@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { type Href, useRouter } from "expo-router";
 import {
   BookOpen,
   HelpCircle,
@@ -16,14 +16,14 @@ import {
 } from "lucide-react-native";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { useDrawer } from "@/context/DrawerContext";
+import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
+import useAuthStore, { useDisplayName, useInitials, useProfileImage } from "@/store/useAuthStore";
+import { useDrawerMarketplace } from "./hooks/useDrawerMarketplace";
+
 import Animated, {
   cancelAnimation,
   Easing,
@@ -32,17 +32,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { colors } from "@/design/tokens";
-import { useDrawer } from "@/context/DrawerContext";
-import useAuthStore, {
-  useDisplayName,
-  useInitials,
-  useProfileImage,
-} from "@/store/useAuthStore";
-import { useDrawerMarketplace } from "./hooks/useDrawerMarketplace";
-
 import MainButton from "../Button/MainButton";
 import { Title } from "../Title/Title";
 import { Accordion, type AccordionSectionDef } from "./Accordion";
@@ -116,8 +105,6 @@ export default function Drawer() {
   };
 
   // Defer the catalog query until the drawer is opened for the first time.
-  // The Drawer is always mounted in the layout tree (just hidden via transform),
-  // so calling useQuery unconditionally would fire on every app startup.
   const [hasOpened, setHasOpened] = useState(false);
   useEffect(() => {
     if (isOpen && !hasOpened) setHasOpened(true);
@@ -138,10 +125,7 @@ export default function Drawer() {
         tKey: "marketplace",
         icon: Package,
         baseRoute: "/(tabs)/marketplace",
-        items:
-          marketplaceItems.length > 0
-            ? marketplaceItems
-            : [MARKETPLACE_FALLBACK_MESSAGE],
+        items: marketplaceItems.length > 0 ? marketplaceItems : [MARKETPLACE_FALLBACK_MESSAGE],
       },
       {
         key: "stores",
@@ -155,18 +139,14 @@ export default function Drawer() {
         tKey: "services",
         icon: ScanBarcode,
         baseRoute: "/(tabs)/services",
-        items:
-          serviceItems.length > 0 ? serviceItems : [SERVICES_FALLBACK_MESSAGE],
+        items: serviceItems.length > 0 ? serviceItems : [SERVICES_FALLBACK_MESSAGE],
       },
       {
         key: "community",
         tKey: "community",
         icon: MessageSquare,
         baseRoute: "/(tabs)/community",
-        items:
-          communityItems.length > 0
-            ? communityItems
-            : [COMMUNITY_FALLBACK_MESSAGE],
+        items: communityItems.length > 0 ? communityItems : [COMMUNITY_FALLBACK_MESSAGE],
       },
       {
         key: "blog",
@@ -176,6 +156,7 @@ export default function Drawer() {
         items: blogItems.length > 0 ? blogItems : [BLOG_FALLBACK_MESSAGE],
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [marketplaceItems, storeItems, serviceItems, communityItems, blogItems],
   );
 
@@ -189,26 +170,28 @@ export default function Drawer() {
 
   const backdropStyle = useAnimatedStyle(() => ({
     opacity: interpolate(progress.value, [0, 1], [0, 0.4]),
-    pointerEvents: progress.value > 0 ? "auto" : "none",
   }));
 
   const drawerStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: interpolate(progress.value, [0, 1], [DRAWER_WIDTH, 0]) },
-    ],
+    transform: [{ translateX: interpolate(progress.value, [0, 1], [DRAWER_WIDTH, 0]) }],
   }));
 
   const handleNavigate = (route: string) => {
     closeDrawer();
-    router.push(route as any);
+    router.push(route as Href);
   };
 
   return (
     <>
-      <Animated.View style={[styles.backdrop, backdropStyle]}>
+      {/* Backdrop — only visible/interactive when open */}
+      <Animated.View
+        style={[styles.backdrop, backdropStyle]}
+        pointerEvents={isOpen ? "auto" : "none"}
+      >
         <Pressable style={StyleSheet.absoluteFill} onPress={closeDrawer} />
       </Animated.View>
 
+      {/* Drawer panel — offscreen when closed, visible when open */}
       <Animated.View
         style={[
           styles.drawer,
@@ -219,12 +202,8 @@ export default function Drawer() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.headerTitle}>{t("header")}</Text>
-          <Pressable
-            onPress={closeDrawer}
-            hitSlop={8}
-            style={styles.closeButton}
-          >
-            <X size={20} color="#6b7280" strokeWidth={2} />
+          <Pressable onPress={closeDrawer} hitSlop={8} style={styles.closeButton}>
+            <X size={20} color={colors.foregroundSecondary} strokeWidth={2} />
           </Pressable>
         </View>
 
@@ -237,10 +216,7 @@ export default function Drawer() {
           {seller && (
             <View style={styles.userSection}>
               {profileImage ? (
-                <Image
-                  source={{ uri: profileImage }}
-                  style={styles.userAvatarImage}
-                />
+                <Image source={{ uri: profileImage }} style={styles.userAvatarImage} />
               ) : (
                 <View style={styles.userAvatar}>
                   <Text style={styles.userInitials}>{initials || "?"}</Text>
@@ -254,9 +230,7 @@ export default function Drawer() {
                   {seller.email}
                 </Text>
                 <View style={styles.badge}>
-                  <Text style={styles.badgeText}>
-                    {t(`sellerType.${seller.sellerType}`)}
-                  </Text>
+                  <Text style={styles.badgeText}>{t(`sellerType.${seller.sellerType}`)}</Text>
                 </View>
               </View>
             </View>
@@ -285,18 +259,9 @@ export default function Drawer() {
           <View style={styles.section}>
             <SectionLabel label={t("sections.explore")} />
             <View style={styles.menuCard}>
-              <MenuRow
-                icon={House}
-                label={t("home")}
-                onPress={() => handleNavigate("/(tabs)")}
-                hasBorder
-              />
+              <MenuRow icon={House} label={t("home")} onPress={() => handleNavigate("/(tabs)")} hasBorder />
               {accordionSections.map((section) => (
-                <Accordion
-                  key={section.key}
-                  section={section}
-                  onNavigate={handleNavigate}
-                />
+                <Accordion key={section.key} section={section} onNavigate={handleNavigate} />
               ))}
               <MenuRow
                 icon={PackagePlus}
@@ -356,7 +321,7 @@ export default function Drawer() {
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#000",
+    backgroundColor: "rgba(0,0,0,0.4)",
     zIndex: 100,
   },
   drawer: {
@@ -366,12 +331,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: DRAWER_WIDTH,
     zIndex: 101,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: -2, height: 0 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 20,
+    backgroundColor: colors.surface,
+    ...shadows.lg,
   },
   header: {
     flexDirection: "row",
@@ -380,21 +341,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 16,
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#e5e7eb",
+    borderBottomColor: colors.borderStrong,
   },
   headerTitle: {
-    fontSize: 20,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.xl,
+    fontFamily: fontFamily.bold,
     color: colors.primary,
     letterSpacing: 1,
   },
   closeButton: {
     width: 32,
     height: 32,
-    borderRadius: 8,
-    backgroundColor: "#f3f4f6",
+    borderRadius: borderRadius.sm,
+    backgroundColor: colors.backgroundTertiary,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -412,14 +373,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     backgroundColor: `${colors.secondary}10`,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     padding: 14,
     marginBottom: 8,
   },
   userAvatar: {
     width: 52,
     height: 52,
-    borderRadius: 26,
+    borderRadius: borderRadius.full,
     backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
@@ -428,27 +389,27 @@ const styles = StyleSheet.create({
   userAvatarImage: {
     width: 130,
     height: 130,
-    borderRadius: 65,
+    borderRadius: borderRadius.full,
     flexShrink: 0,
   },
   userInitials: {
-    fontSize: 18,
-    fontFamily: "Cabin_700Bold",
-    color: "#fff",
+    fontSize: fontSize.lg,
+    fontFamily: fontFamily.bold,
+    color: colors.onPrimary,
   },
   userInfo: {
     flex: 1,
     gap: 2,
   },
   userName: {
-    fontSize: 15,
-    fontFamily: "Cabin_700Bold",
-    color: "#1f2937",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.bold,
+    color: colors.foreground,
   },
   userEmail: {
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
-    color: "#6b7280",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
   },
   badge: {
     alignSelf: "flex-start",
@@ -456,11 +417,11 @@ const styles = StyleSheet.create({
     backgroundColor: `${colors.primary}22`,
     paddingHorizontal: 8,
     paddingVertical: 2,
-    borderRadius: 20,
+    borderRadius: borderRadius["2xl"],
   },
   badgeText: {
-    fontSize: 11,
-    fontFamily: "Cabin_600SemiBold",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
     color: colors.primaryDark,
   },
 
@@ -475,8 +436,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   menuCard: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
     overflow: "hidden",
   },
 

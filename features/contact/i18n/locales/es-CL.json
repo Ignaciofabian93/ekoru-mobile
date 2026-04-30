@@ -1,0 +1,32 @@
+{
+  "title": "Contáctanos",
+  "subtitle": "Nos encantaría saber de ti. Completa el formulario y te responderemos a la brevedad.",
+  "form": {
+    "name": "Nombre completo",
+    "namePlaceholder": "Tu nombre",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "emailError": "Por favor ingresa una dirección de correo válida",
+    "subject": "Asunto",
+    "subjectPlaceholder": "¿En qué podemos ayudarte?",
+    "message": "Mensaje",
+    "messagePlaceholder": "Cuéntanos más sobre tu consulta o inquietud...",
+    "submit": "Enviar mensaje",
+    "submitting": "Enviando...",
+    "fieldsRequired": "Por favor completa todos los campos requeridos",
+    "emailInvalid": "Por favor ingresa una dirección de correo válida"
+  },
+  "info": {
+    "title": "Otras formas de contactarnos",
+    "email": "contacto@ekoru.cl",
+    "responseTime": "Generalmente respondemos dentro de 24 horas"
+  },
+  "success": {
+    "title": "¡Mensaje enviado!",
+    "message": "Gracias por contactarnos. Nos pondremos en contacto contigo pronto."
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "message": "No pudimos enviar tu mensaje. Por favor intenta nuevamente o escríbenos directamente."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "title": "Nous contacter",
+  "subtitle": "Nous serions ravis d'avoir de vos nouvelles. Remplissez le formulaire et nous vous répondrons dès que possible.",
+  "form": {
+    "name": "Nom complet",
+    "namePlaceholder": "Votre nom",
+    "email": "Courriel",
+    "emailPlaceholder": "votre@courriel.com",
+    "emailError": "Veuillez entrer une adresse courriel valide",
+    "subject": "Sujet",
+    "subjectPlaceholder": "Comment pouvons-nous vous aider?",
+    "message": "Message",
+    "messagePlaceholder": "Dites-nous-en plus sur votre question ou préoccupation...",
+    "submit": "Envoyer le message",
+    "submitting": "Envoi en cours...",
+    "fieldsRequired": "Veuillez remplir tous les champs requis",
+    "emailInvalid": "Veuillez entrer une adresse courriel valide"
+  },
+  "info": {
+    "title": "Autres façons de nous joindre",
+    "email": "contacto@ekoru.cl",
+    "responseTime": "Nous répondons généralement dans les 24 heures"
+  },
+  "success": {
+    "title": "Message envoyé!",
+    "message": "Merci de nous avoir contactés. Nous vous répondrons bientôt."
+  },
+  "error": {
+    "title": "Quelque chose s'est mal passé",
+    "message": "Nous n'avons pas pu envoyer votre message. Veuillez réessayer ou nous écrire directement."
+  }
+}

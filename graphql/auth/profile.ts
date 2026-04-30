@@ -44,11 +44,8 @@ export const UPDATE_SELLER_PREFERENCES = gql`
 `;
 
 export const UPDATE_PASSWORD = gql`
-  mutation UpdatePassword($currentPassword: String!, $newPassword: String!) {
-    updatePassword(
-      currentPassword: $currentPassword
-      newPassword: $newPassword
-    ) {
+  mutation UpdatePassword($currentPassword: String!, $newPassword: String!, $language: Language) {
+    updatePassword(currentPassword: $currentPassword, newPassword: $newPassword) {
       id
       email
     }

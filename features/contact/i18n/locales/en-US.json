@@ -1,0 +1,32 @@
+{
+  "title": "Contact Us",
+  "subtitle": "We'd love to hear from you. Fill in the form and we'll get back to you as soon as possible.",
+  "form": {
+    "name": "Full Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "emailError": "Please enter a valid email address",
+    "subject": "Subject",
+    "subjectPlaceholder": "How can we help?",
+    "message": "Message",
+    "messagePlaceholder": "Tell us more about your question or concern...",
+    "submit": "Send Message",
+    "submitting": "Sending...",
+    "fieldsRequired": "Please fill in all required fields",
+    "emailInvalid": "Please enter a valid email address"
+  },
+  "info": {
+    "title": "Other ways to reach us",
+    "email": "contacto@ekoru.cl",
+    "responseTime": "We usually respond within 24 hours"
+  },
+  "success": {
+    "title": "Message sent!",
+    "message": "Thanks for reaching out. We'll be in touch soon."
+  },
+  "error": {
+    "title": "Something went wrong",
+    "message": "We couldn't send your message. Please try again or email us directly."
+  }
+}

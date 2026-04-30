@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, input as inputSizes, spacing } from "@/design/tokens";
 import { Eye, EyeOff, type LucideIcon } from "lucide-react-native";
 import React, { useRef, useState } from "react";
 import {
@@ -41,9 +41,9 @@ export interface InputProps extends Omit<RNTextInputProps, "onChange"> {
 // ─── Maps ─────────────────────────────────────────────────────────────────────
 
 const SIZE_MAP: Record<Size, { height: number; fontSize: number; iconSize: number; px: number }> = {
-  sm: { height: 36, fontSize: 14, iconSize: 16, px: 10 },
-  md: { height: 44, fontSize: 16, iconSize: 18, px: 12 },
-  lg: { height: 56, fontSize: 18, iconSize: 20, px: 14 },
+  sm: { height: inputSizes.sm.height, fontSize: inputSizes.sm.fontSize, iconSize: inputSizes.sm.iconSize, px: inputSizes.sm.paddingHorizontal },
+  md: { height: inputSizes.md.height, fontSize: inputSizes.md.fontSize, iconSize: inputSizes.md.iconSize, px: inputSizes.md.paddingHorizontal },
+  lg: { height: inputSizes.lg.height, fontSize: inputSizes.lg.fontSize, iconSize: inputSizes.lg.iconSize, px: inputSizes.lg.paddingHorizontal },
 };
 
 const WIDTH_MAP: Record<Width, `${number}%` | "100%"> = {
@@ -239,8 +239,8 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   label: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
     color: colors.foreground,
   },
   wrapper: {
@@ -249,24 +249,24 @@ const styles = StyleSheet.create({
   },
   leftIconWrap: {
     position: "absolute",
-    left: 12,
+    left: spacing[3],
     zIndex: 1,
   },
   rightIconWrap: {
     position: "absolute",
-    right: 12,
+    right: spacing[3],
     zIndex: 1,
   },
   input: {
     flex: 1,
-    fontFamily: "Cabin_400Regular",
+    fontFamily: fontFamily.regular,
     color: colors.inputText,
-    borderRadius: 10,
+    borderRadius: borderRadius.md,
     textAlignVertical: "center",
   },
   errorText: {
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.danger,
   },
   errorMessageWrap: {

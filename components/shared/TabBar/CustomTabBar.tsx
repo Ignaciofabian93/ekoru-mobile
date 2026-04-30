@@ -11,7 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontSize } from "@/design/tokens";
 import { useIsAuthenticated } from "@/store/useAuthStore";
 
 // Tabs that immediately redirect guests to auth (no landing screen shown)
@@ -25,11 +25,7 @@ const SPRING_CONFIG = {
   mass: 0.8,
 };
 
-export default function CustomTabBar({
-  state,
-  descriptors,
-  navigation,
-}: BottomTabBarProps) {
+export default function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const router = useRouter();
   const isAuthenticated = useIsAuthenticated();
   const insets = useSafeAreaInsets();
@@ -39,15 +35,10 @@ export default function CustomTabBar({
   const horizontalPadding = 8;
   const tabWidth = (screenWidth - horizontalPadding * 2) / tabCount;
 
-  const translateX = useSharedValue(
-    state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2,
-  );
+  const translateX = useSharedValue(state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2);
 
   useEffect(() => {
-    translateX.value = withSpring(
-      state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2,
-      SPRING_CONFIG,
-    );
+    translateX.value = withSpring(state.index * tabWidth + (tabWidth - INDICATOR_WIDTH) / 2, SPRING_CONFIG);
     return () => cancelAnimation(translateX);
   }, [state.index, tabWidth, translateX]);
 
@@ -62,18 +53,14 @@ export default function CustomTabBar({
       end={{ x: 1, y: 0.5 }}
       style={[styles.container, { paddingBottom: insets.bottom + 12 }]}
     >
-      <Animated.View
-        style={[styles.indicator, { left: horizontalPadding }, indicatorStyle]}
-      />
+      <Animated.View style={[styles.indicator, { left: horizontalPadding }, indicatorStyle]} />
 
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
-          typeof options.tabBarLabel === "string"
-            ? options.tabBarLabel
-            : (options.title ?? route.name);
+          typeof options.tabBarLabel === "string" ? options.tabBarLabel : (options.title ?? route.name);
         const isFocused = state.index === index;
-        const color = isFocused ? colors.primary : "#fff";
+        const color = isFocused ? colors.primary : colors.onPrimary;
         const isProtected = PROTECTED_TABS.includes(route.name);
 
         const onPress = () => {
@@ -82,12 +69,6 @@ export default function CustomTabBar({
             router.push("/(auth)");
             return;
           }
-
-          // Profile: push onto the root stack so back navigation returns to tabs
-          // if (route.name === "profile") {
-          //   navigation.getParent()?.dispatch(StackActions.push("(profile)"));
-          //   return;
-          // }
 
           const event = navigation.emit({
             type: "tabPress",
@@ -117,7 +98,7 @@ export default function CustomTabBar({
             accessibilityLabel={label}
             style={styles.tabItem}
           >
-            {options.tabBarIcon!({ focused: isFocused, color, size: 28 })}
+            {options.tabBarIcon?.({ focused: isFocused, color, size: 28 })}
             <Animated.Text style={[styles.label, { color }]} numberOfLines={1}>
               {label}
             </Animated.Text>
@@ -139,8 +120,8 @@ const styles = StyleSheet.create({
     top: 10,
     width: INDICATOR_WIDTH,
     height: INDICATOR_HEIGHT,
-    borderRadius: 10,
-    backgroundColor: "#fff",
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.surface,
   },
   tabItem: {
     flex: 1,
@@ -150,7 +131,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
   },
   label: {
-    fontSize: 10,
+    fontSize: fontSize.xs,
     fontWeight: "700",
     marginTop: 1,
   },

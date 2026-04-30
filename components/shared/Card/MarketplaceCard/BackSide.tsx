@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import type { Product } from "@/features/marketplace/types/Product";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { sellerTypeTranslate } from "@/utils/sellerTypeTranslate";
@@ -33,7 +33,7 @@ export default function CardBackSide({ product, onFlip, onShowImpact }: Props) {
     <View style={styles.card}>
       {/* Flip Button */}
       <Pressable onPress={onFlip} style={styles.flipButton}>
-        <RotateCcw size={12} color="#fff" strokeWidth={2.5} />
+        <RotateCcw size={12} color={colors.onPrimary} strokeWidth={2.5} />
       </Pressable>
 
       <ScrollView
@@ -117,7 +117,7 @@ export default function CardBackSide({ product, onFlip, onShowImpact }: Props) {
 
             {seller.profile && (
               <View style={styles.sellerRow}>
-                <UserRound size={10} color="#6b7280" strokeWidth={2} />
+                <UserRound size={10} color={colors.foregroundSecondary} strokeWidth={2} />
                 <Text style={styles.sellerDetail} numberOfLines={1}>
                   {displaySellerName(seller)}
                 </Text>
@@ -126,7 +126,7 @@ export default function CardBackSide({ product, onFlip, onShowImpact }: Props) {
 
             {seller.phone && (
               <View style={styles.sellerRow}>
-                <Phone size={10} color="#6b7280" strokeWidth={2} />
+                <Phone size={10} color={colors.foregroundSecondary} strokeWidth={2} />
                 <Text style={styles.sellerDetail} numberOfLines={1}>
                   {seller.phone}
                 </Text>
@@ -135,7 +135,7 @@ export default function CardBackSide({ product, onFlip, onShowImpact }: Props) {
 
             {seller.address && (
               <View style={styles.sellerRow}>
-                <MapPin size={10} color="#6b7280" strokeWidth={2} />
+                <MapPin size={10} color={colors.foregroundSecondary} strokeWidth={2} />
                 <Text style={styles.sellerDetail} numberOfLines={1}>
                   {seller.address}
                   {seller.county ? `, ${seller.county.county}` : ""}
@@ -153,16 +153,12 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#fff",
-    borderRadius: 12,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "#e5e5e5",
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
+    borderColor: colors.borderStrong,
+    ...shadows.sm,
   },
   flipButton: {
     position: "absolute",
@@ -171,15 +167,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     width: 28,
     height: 28,
-    borderRadius: 14,
+    borderRadius: borderRadius.full,
     alignItems: "center",
     justifyContent: "center",
     zIndex: 10,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    ...shadows.sm,
   },
   scroll: {
     flex: 1,
@@ -199,9 +191,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   sectionTitle: {
-    fontSize: 12,
-    fontFamily: "Cabin_700Bold",
-    color: "#111827",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.bold,
+    color: colors.foreground,
   },
   statsRow: {
     flexDirection: "row",
@@ -210,7 +202,7 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     padding: 8,
   },
   statHeader: {
@@ -220,21 +212,21 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   statLabel: {
-    fontSize: 9,
-    fontFamily: "Cabin_400Regular",
-    color: "#6b7280",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
   },
   statValue: {
-    fontSize: 12,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.bold,
   },
   materialsSection: {
     gap: 4,
   },
   materialsLabel: {
-    fontSize: 9,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#6b7280",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
+    color: colors.foregroundSecondary,
   },
   materialRow: {
     flexDirection: "row",
@@ -242,15 +234,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   materialType: {
-    fontSize: 10,
-    fontFamily: "Cabin_400Regular",
-    color: "#374151",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
     flex: 1,
   },
   materialPct: {
-    fontSize: 10,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#111827",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
+    color: colors.foreground,
     marginLeft: 4,
   },
   viewMoreButton: {
@@ -262,16 +254,16 @@ const styles = StyleSheet.create({
     backgroundColor: `${colors.primary}1A`,
     paddingVertical: 6,
     paddingHorizontal: 8,
-    borderRadius: 6,
+    borderRadius: borderRadius.sm,
   },
   viewMoreText: {
-    fontSize: 10,
-    fontFamily: "Cabin_600SemiBold",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
     color: colors.primary,
   },
   sellerSection: {
     borderTopWidth: 1,
-    borderTopColor: "#e5e5e5",
+    borderTopColor: colors.borderStrong,
     paddingTop: 8,
     gap: 6,
   },
@@ -287,8 +279,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   sellerBadgeText: {
-    fontSize: 9,
-    fontFamily: "Cabin_600SemiBold",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
     color: colors.primary,
   },
   sellerRow: {
@@ -297,9 +289,9 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   sellerDetail: {
-    fontSize: 9,
-    fontFamily: "Cabin_400Regular",
-    color: "#374151",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
     flex: 1,
   },
 });

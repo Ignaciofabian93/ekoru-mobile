@@ -1,13 +1,7 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { Droplets, Info, Leaf } from "lucide-react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Animated, {
-  cancelAnimation,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
 import Modal from "../shared/Modal/Modal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -51,20 +45,9 @@ function formatNumber(num: number): string {
 // ─── Progress bar sub-component ───────────────────────────────────────────────
 
 function ProgressBar({ percentage }: { percentage: number }) {
-  const width = useSharedValue(0);
-
-  useEffect(() => {
-    width.value = withTiming(percentage, { duration: 600 });
-    return () => cancelAnimation(width);
-  }, [percentage]);
-
-  const barStyle = useAnimatedStyle(() => ({
-    width: `${width.value}%`,
-  }));
-
   return (
     <View style={styles.progressTrack}>
-      <Animated.View style={[styles.progressFill, barStyle]} />
+      <View style={[styles.progressFill, { width: `${percentage}%` as any }]} />
     </View>
   );
 }
@@ -199,7 +182,7 @@ const styles = StyleSheet.create({
   },
   summaryCard: {
     flex: 1,
-    borderRadius: 10,
+    borderRadius: borderRadius.md,
     padding: 14,
     gap: 4,
   },
@@ -216,19 +199,19 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   summaryTitle: {
-    fontSize: 13,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
     color: colors.foregroundSecondary,
     flexShrink: 1,
   },
   summaryValue: {
-    fontSize: 22,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.xl,
+    fontFamily: fontFamily.bold,
     letterSpacing: -0.5,
   },
   summaryEquivalence: {
-    fontSize: 11,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
     lineHeight: 15,
   },
@@ -242,8 +225,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.bold,
     color: colors.foreground,
   },
   // Material cards
@@ -253,7 +236,7 @@ const styles = StyleSheet.create({
   materialCard: {
     borderWidth: 1,
     borderColor: colors.borderLight,
-    borderRadius: 10,
+    borderRadius: borderRadius.md,
     padding: 14,
     gap: 10,
   },
@@ -263,14 +246,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   materialName: {
-    fontSize: 14,
-    fontFamily: "Cabin_600SemiBold",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.semibold,
     color: colors.foreground,
     flex: 1,
   },
   materialPercentage: {
-    fontSize: 16,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.bold,
     color: colors.primary,
   },
   // Stat columns
@@ -283,26 +266,26 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   statLabel: {
-    fontSize: 11,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
   },
   statValue: {
-    fontSize: 13,
-    fontFamily: "Cabin_600SemiBold",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.semibold,
     color: colors.foreground,
   },
   // Progress bar
   progressTrack: {
     height: 6,
     backgroundColor: `${colors.primary}1A`,
-    borderRadius: 99,
+    borderRadius: borderRadius.full,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
     backgroundColor: colors.primary,
-    borderRadius: 99,
+    borderRadius: borderRadius.full,
   },
   // Info footer
   infoFooter: {
@@ -310,7 +293,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     gap: 8,
     backgroundColor: `${colors.primary}0D`,
-    borderRadius: 10,
+    borderRadius: borderRadius.md,
     padding: 14,
   },
   infoIcon: {
@@ -318,8 +301,8 @@ const styles = StyleSheet.create({
   },
   infoText: {
     flex: 1,
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
     lineHeight: 18,
   },

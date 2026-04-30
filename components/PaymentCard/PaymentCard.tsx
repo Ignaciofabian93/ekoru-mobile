@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { Lock } from "lucide-react-native";
 import React, { useRef, useState } from "react";
@@ -255,7 +255,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
           ]}
           onPress={() => onSave?.(card)}
         >
-          <Lock size={15} color="#fff" strokeWidth={2.5} />
+          <Lock size={15} color={colors.onPrimary} strokeWidth={2.5} />
           <Text style={styles.saveButtonText}>Save Card</Text>
         </Pressable>
       </View>
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   card: {
     width: "100%",
     height: CARD_HEIGHT,
-    borderRadius: 16,
+    borderRadius: borderRadius["2xl"],
     padding: 22,
     overflow: "hidden",
     justifyContent: "space-between",
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 220,
     height: 220,
-    borderRadius: 110,
+    borderRadius: borderRadius.full,
     backgroundColor: "rgba(255,255,255,0.05)",
     top: -60,
     right: -60,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 160,
     height: 160,
-    borderRadius: 80,
+    borderRadius: borderRadius.full,
     backgroundColor: "rgba(255,255,255,0.05)",
     bottom: -50,
     left: -30,
@@ -315,8 +315,8 @@ const styles = StyleSheet.create({
   chip: {
     width: 42,
     height: 32,
-    borderRadius: 6,
-    backgroundColor: "#d4a843",
+    borderRadius: borderRadius.sm,
+    backgroundColor: "#d4a843", // intentional gold chip color
     justifyContent: "center",
     alignItems: "center",
   },
@@ -330,10 +330,10 @@ const styles = StyleSheet.create({
 
   // Number
   cardNumber: {
-    fontFamily: "Cabin_500Medium",
-    fontSize: 19,
+    fontFamily: fontFamily.medium,
+    fontSize: fontSize.xl,
     letterSpacing: 3,
-    color: "#fff",
+    color: colors.onPrimary,
     marginTop: 14,
   },
 
@@ -344,16 +344,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   cardSmallLabel: {
-    fontSize: 9,
-    fontFamily: "Cabin_600SemiBold",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
     color: "rgba(255,255,255,0.6)",
     letterSpacing: 1.2,
     marginBottom: 3,
   },
   cardValue: {
-    fontSize: 13,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#fff",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.semibold,
+    color: colors.onPrimary,
     letterSpacing: 0.5,
   },
   networkCircles: {
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
   networkCircle: {
     width: 28,
     height: 28,
-    borderRadius: 14,
+    borderRadius: borderRadius.full,
     opacity: 0.85,
   },
 
@@ -390,26 +390,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   cvvValue: {
-    fontFamily: "Cabin_700Bold",
-    fontSize: 16,
-    color: "#1f2937",
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.base,
+    color: colors.foreground,
     letterSpacing: 3,
   },
   cvvLabelBox: {
     backgroundColor: "rgba(255,255,255,0.15)",
-    borderRadius: 6,
+    borderRadius: borderRadius.sm,
     paddingHorizontal: 10,
     paddingVertical: 6,
   },
   cvvLabel: {
-    fontFamily: "Cabin_700Bold",
-    fontSize: 12,
-    color: "#fff",
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.xs,
+    color: colors.onPrimary,
     letterSpacing: 1,
   },
   backNote: {
-    fontSize: 8,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: "rgba(255,255,255,0.4)",
     textAlign: "center",
     lineHeight: 12,
@@ -420,9 +420,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   inputLabel: {
-    fontSize: 12,
-    fontFamily: "Cabin_600SemiBold",
-    color: "#6b7280",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.semibold,
+    color: colors.foregroundSecondary,
     marginBottom: 6,
     marginTop: 12,
     textTransform: "uppercase",
@@ -432,10 +432,10 @@ const styles = StyleSheet.create({
     height: 48,
     borderWidth: 1.5,
     borderColor: colors.inputBorder,
-    borderRadius: 10,
+    borderRadius: borderRadius.md,
     paddingHorizontal: 14,
-    fontFamily: "Cabin_500Medium",
-    fontSize: 15,
+    fontFamily: fontFamily.medium,
+    fontSize: fontSize.base,
     color: colors.inputText,
     backgroundColor: colors.inputBg,
   },
@@ -453,15 +453,15 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 20,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     backgroundColor: colors.primary,
   },
   saveButtonPressed: {
     backgroundColor: colors.primaryActive,
   },
   saveButtonText: {
-    fontFamily: "Cabin_700Bold",
-    fontSize: 15,
-    color: "#fff",
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.base,
+    color: colors.onPrimary,
   },
 });

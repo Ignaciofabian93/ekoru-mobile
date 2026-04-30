@@ -2,21 +2,16 @@ import MainButton from "@/components/shared/Button/MainButton";
 import { Text } from "@/components/shared/Text/Text";
 import { colors } from "@/design/tokens";
 import { useRouter } from "expo-router";
-import {
-  Leaf,
-  ShieldCheck,
-  Star,
-  TreePine,
-  UserRound,
-  Zap,
-} from "lucide-react-native";
+import { ArrowLeftRight, BookOpen, Leaf, LogIn, Star, Store, UserRoundPlus } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
 
 export default function GuestScreen() {
   const router = useRouter();
   const { t } = useTranslation(NAMESPACE);
+
+  const EKORU_LOGO = require("@/assets/images/favicon.png");
 
   const PERKS = [
     {
@@ -32,19 +27,19 @@ export default function GuestScreen() {
       descKey: "perk_impact_desc",
     },
     {
-      icon: ShieldCheck,
+      icon: ArrowLeftRight,
       color: colors.secondary,
       titleKey: "perk_badge_title",
       descKey: "perk_badge_desc",
     },
     {
-      icon: Zap,
+      icon: Store,
       color: "#a855f7",
       titleKey: "perk_deals_title",
       descKey: "perk_deals_desc",
     },
     {
-      icon: TreePine,
+      icon: BookOpen,
       color: "#10b981",
       titleKey: "perk_trees_title",
       descKey: "perk_trees_desc",
@@ -60,17 +55,12 @@ export default function GuestScreen() {
       {/* Avatar placeholder */}
       <View style={styles.heroBox}>
         <View style={styles.avatarRing}>
-          <UserRound size={40} color={colors.primary} strokeWidth={1.25} />
+          <Image source={EKORU_LOGO} resizeMode="cover" style={styles.avatarImage} />
         </View>
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
           {t("joinCommunity")}
         </Text>
-        <Text
-          size="sm"
-          color="secondary"
-          align="center"
-          style={styles.heroSubtitle}
-        >
+        <Text size="sm" color="secondary" align="center" style={styles.heroSubtitle}>
           {t("guestSubtitle")}
         </Text>
       </View>
@@ -81,12 +71,7 @@ export default function GuestScreen() {
           const Icon = perk.icon;
           return (
             <View key={perk.titleKey} style={styles.perkItem}>
-              <View
-                style={[
-                  styles.perkIconBox,
-                  { backgroundColor: `${perk.color}18` },
-                ]}
-              >
+              <View style={[styles.perkIconBox, { backgroundColor: `${perk.color}18` }]}>
                 <Icon size={20} color={perk.color} strokeWidth={1.75} />
               </View>
               <View style={styles.perkText}>
@@ -107,11 +92,13 @@ export default function GuestScreen() {
         <MainButton
           text={t("createAccount")}
           onPress={() => router.push("/(auth)/register")}
+          rightIcon={UserRoundPlus}
         />
         <MainButton
           text={t("signIn")}
           variant="outline"
           onPress={() => router.push("/(auth)")}
+          rightIcon={LogIn}
         />
       </View>
     </ScrollView>
@@ -142,6 +129,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderWidth: 2,
     borderColor: colors.borderFocus,
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 44,
   },
   heroTitle: {
     marginBottom: 10,

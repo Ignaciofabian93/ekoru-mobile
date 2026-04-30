@@ -1,4 +1,4 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, shadows } from "@/design/tokens";
 import { useRouter, useSegments } from "expo-router";
 import {
   Newspaper,
@@ -120,13 +120,9 @@ export default function SubHeader() {
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.surface,
     paddingVertical: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
-    elevation: 6,
+    ...shadows.sm,
   },
   scrollContent: {
     paddingHorizontal: 12,
@@ -137,7 +133,7 @@ const styles = StyleSheet.create({
   item: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 20,
+    borderRadius: borderRadius["2xl"],
     marginRight: 6,
     backgroundColor: colors.backgroundSecondary,
   },

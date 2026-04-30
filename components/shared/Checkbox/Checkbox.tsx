@@ -1,6 +1,6 @@
-import { colors } from "@/design/tokens";
+import { colors, fontFamily, fontSize } from "@/design/tokens";
 import { Check } from "lucide-react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Pressable,
   StyleSheet,
@@ -8,14 +8,6 @@ import {
   View,
   type ViewProps,
 } from "react-native";
-import Animated, {
-  cancelAnimation,
-  FadeInDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -47,14 +39,12 @@ const SIZE_MAP: Record<Size, { box: number; icon: number; radius: number }> = {
 
 // Unchecked border / background per variant
 const VARIANT_IDLE: Record<Variant, { borderColor: string; bg: string }> = {
-  default: { borderColor: colors.inputBorder,      bg: "#fff" },
+  default: { borderColor: colors.inputBorder,      bg: colors.surface },
   filled:  { borderColor: "transparent",           bg: colors.backgroundSecondary },
   outline: { borderColor: colors.primary,          bg: "transparent" },
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const Checkbox = React.forwardRef<View, CheckboxProps>(
   (
@@ -75,41 +65,6 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
     const s = SIZE_MAP[size];
     const idle = VARIANT_IDLE[variant];
 
-    // ── Press scale ──────────────────────────────────────────────────────────
-    const pressScale = useSharedValue(1);
-    const pressStyle = useAnimatedStyle(() => ({
-      transform: [{ scale: pressScale.value }],
-    }));
-
-    const handlePressIn = () => {
-      if (!disabled) pressScale.value = withSpring(0.9, { stiffness: 400, damping: 17 });
-    };
-    const handlePressOut = () => {
-      pressScale.value = withSpring(1, { stiffness: 400, damping: 17 });
-    };
-
-    useEffect(() => {
-      return () => cancelAnimation(pressScale);
-    }, []);
-
-    // ── Check icon animation ─────────────────────────────────────────────────
-    const checkScale = useSharedValue(checked ? 1 : 0.5);
-    const checkOpacity = useSharedValue(checked ? 1 : 0);
-
-    useEffect(() => {
-      checkScale.value = withTiming(checked ? 1 : 0.5, { duration: 200 });
-      checkOpacity.value = withTiming(checked ? 1 : 0, { duration: 200 });
-      return () => {
-        cancelAnimation(checkScale);
-        cancelAnimation(checkOpacity);
-      };
-    }, [checked]);
-
-    const checkStyle = useAnimatedStyle(() => ({
-      opacity: checkOpacity.value,
-      transform: [{ scale: checkScale.value }],
-    }));
-
     // ── Handler ──────────────────────────────────────────────────────────────
     const handlePress = () => {
       if (disabled) return;
@@ -126,15 +81,17 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
 
     return (
       <View ref={ref} style={styles.wrapper} {...props}>
-        <AnimatedPressable
+        <Pressable
           onPress={handlePress}
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
           disabled={disabled}
-          style={[styles.row, disabled && styles.disabled]}
+          style={({ pressed }) => [
+            styles.row,
+            disabled && styles.disabled,
+            pressed && { opacity: 0.7 },
+          ]}
         >
           {/* Box */}
-          <Animated.View
+          <View
             style={[
               styles.box,
               {
@@ -144,13 +101,13 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
                 borderColor: checked ? colors.primary : idle.borderColor,
                 backgroundColor: checked ? colors.primary : idle.bg,
               },
-              pressStyle,
             ]}
           >
-            <Animated.View style={checkStyle}>
-              <Check size={s.icon} color="#fff" strokeWidth={3} />
-            </Animated.View>
-          </Animated.View>
+            {/* Check icon — hidden when unchecked */}
+            <View style={{ opacity: checked ? 1 : 0 }}>
+              <Check size={s.icon} color={colors.onPrimary} strokeWidth={3} />
+            </View>
+          </View>
 
           {/* Label + description */}
           {hasLabel && (
@@ -163,16 +120,13 @@ const Checkbox = React.forwardRef<View, CheckboxProps>(
               )}
             </View>
           )}
-        </AnimatedPressable>
+        </Pressable>
 
         {/* Error message */}
         {errorMessage && (
-          <Animated.View
-            entering={FadeInDown.duration(200)}
-            style={styles.errorRow}
-          >
+          <View style={styles.errorRow}>
             <Text style={styles.errorText}>{errorMessage}</Text>
-          </Animated.View>
+          </View>
         )}
       </View>
     );
@@ -207,12 +161,12 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   label: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
   },
   description: {
-    fontSize: 13,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
     lineHeight: 18,
   },
@@ -220,8 +174,8 @@ const styles = StyleSheet.create({
     paddingLeft: 34, // aligns under label (box width + gap)
   },
   errorText: {
-    fontSize: 12,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
     color: colors.danger,
   },
 });

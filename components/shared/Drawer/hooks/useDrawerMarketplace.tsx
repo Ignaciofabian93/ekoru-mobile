@@ -1,7 +1,7 @@
+import { GET_MARKETPLACE_CATALOG } from "@/graphql/marketplace/queries";
 import { useQuery } from "@apollo/client/react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { GET_MARKETPLACE_CATALOG } from "@/graphql/marketplace/queries";
 
 // Mirrors the MarketplaceCatalogItem GraphQL type from CATALOG_ITEM_FIELDS_FRAGMENT
 type CatalogProductCategory = {
@@ -55,25 +55,21 @@ export function useDrawerMarketplace(enabled: boolean) {
   const { i18n } = useTranslation();
   const language = (i18n.language?.toUpperCase() ?? "ES") as "ES" | "EN" | "FR";
 
-  const { data } = useQuery<{ getMarketplaceCatalog: CatalogItem[] }>(
-    GET_MARKETPLACE_CATALOG,
-    {
-      variables: { language },
-      fetchPolicy: "cache-first",
-      skip: !enabled,
-    },
-  );
+  const { data } = useQuery<{ getMarketplaceCatalog: CatalogItem[] }>(GET_MARKETPLACE_CATALOG, {
+    variables: { language },
+    fetchPolicy: "cache-first",
+    skip: !enabled,
+  });
+  console.log("DATA:: ", data);
 
   // Memoize the mapped result so the array reference is stable between renders.
   // mapCatalogToAccordion is only re-run when the raw API data actually changes.
   const items = useMemo<L1Item[]>(
-    () =>
-      data?.getMarketplaceCatalog
-        ? mapCatalogToAccordion(data.getMarketplaceCatalog)
-        : [],
-     
+    () => (data?.getMarketplaceCatalog ? mapCatalogToAccordion(data.getMarketplaceCatalog) : []),
+
     [data?.getMarketplaceCatalog],
   );
+  console.log("ITEMS:: ", items);
 
   return { items };
 }

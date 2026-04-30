@@ -1,6 +1,6 @@
 import { MainButton } from "@/components/shared/Button/MainButton";
 import Modal from "@/components/shared/Modal/Modal";
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
 import DateTimePicker, {
   type DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   label: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
     color: colors.foreground,
   },
   field: {
@@ -172,17 +172,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.inputBg,
     borderWidth: 2,
     borderColor: colors.inputBorder,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    gap: 8,
+    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing[3],
+    gap: spacing[2],
   },
   fieldActive: {
     borderColor: colors.inputBorderFocus,
   },
   value: {
     flex: 1,
-    fontSize: 16,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.regular,
     color: colors.inputText,
   },
   placeholder: {

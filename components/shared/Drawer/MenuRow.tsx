@@ -1,7 +1,7 @@
+import { borderRadius, colors, fontFamily, fontSize } from "@/design/tokens";
 import type { LucideIcon } from "lucide-react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Text } from "../Text/Text";
-import { colors } from "@/design/tokens";
 
 export default function MenuRow({
   icon: Icon,
@@ -37,19 +37,19 @@ const styles = StyleSheet.create({
   },
   menuItemBorder: {
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#e5e7eb",
+    borderBottomColor: colors.borderStrong,
   },
   iconWrap: {
     width: 32,
     height: 32,
-    borderRadius: 8,
+    borderRadius: borderRadius.sm,
     backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
   },
   menuLabel: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
-    color: "#1f2937",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
+    color: colors.foreground,
   },
 });

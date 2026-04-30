@@ -1,25 +1,13 @@
-import { colors } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
-  type LayoutChangeEvent,
   type StyleProp,
   type ViewStyle,
 } from "react-native";
-import Animated, {
-  cancelAnimation,
-  Easing,
-  FadeIn,
-  FadeInDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-  ZoomIn,
-} from "react-native-reanimated";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -32,6 +20,7 @@ export interface BannerProps {
   description: string;
   variant?: Variant;
   showDots?: boolean;
+  /** Kept for API compatibility — no longer triggers animation */
   animated?: boolean;
   style?: StyleProp<ViewStyle>;
 }
@@ -41,16 +30,16 @@ export interface BannerProps {
 const VARIANT_CONFIG = {
   primary: {
     gradient: [colors.primaryDark, colors.primary, colors.primaryDark] as const,
-    textColor: "#fff",
-    dotColor: "#fff",
+    textColor: colors.onPrimary,
+    dotColor: colors.onPrimary,
     borderWidth: 0,
     borderColor: "transparent",
     shadow: true,
   },
   secondary: {
     gradient: [colors.secondaryDark, colors.secondary, colors.secondaryDark] as const,
-    textColor: "#fff",
-    dotColor: "#fff",
+    textColor: colors.onPrimary,
+    dotColor: colors.onPrimary,
     borderWidth: 0,
     borderColor: "transparent",
     shadow: true,
@@ -73,53 +62,6 @@ const VARIANT_CONFIG = {
   },
 } as const;
 
-// ─── Dot sub-component ────────────────────────────────────────────────────────
-
-function Dot({ color, delay, animated }: { color: string; delay: number; animated: boolean }) {
-  const dot = <View style={[styles.dot, { backgroundColor: color }]} />;
-  if (!animated) return dot;
-  return (
-    <Animated.View entering={ZoomIn.delay(delay).duration(300)}>
-      {dot}
-    </Animated.View>
-  );
-}
-
-// ─── Shimmer sub-component ────────────────────────────────────────────────────
-
-function Shimmer({ width }: { width: number }) {
-  const translateX = useSharedValue(-width);
-
-  React.useEffect(() => {
-    if (width === 0) return;
-    translateX.value = -width;
-    translateX.value = withRepeat(
-      withTiming(width, {
-        duration: 15000,
-        easing: Easing.linear,
-      }),
-      -1,
-      false,
-    );
-    return () => cancelAnimation(translateX);
-  }, [width]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
-
-  return (
-    <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]} pointerEvents="none">
-      <LinearGradient
-        colors={["transparent", "rgba(255,255,255,0.1)", "transparent"]}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
-        style={StyleSheet.absoluteFill}
-      />
-    </Animated.View>
-  );
-}
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const Banner = React.forwardRef<View, BannerProps>(
@@ -129,56 +71,32 @@ const Banner = React.forwardRef<View, BannerProps>(
       description,
       variant = "primary",
       showDots = true,
-      animated = true,
+      animated: _animated,
       style,
     },
     ref,
   ) => {
     const config = VARIANT_CONFIG[variant];
-    const [bannerWidth, setBannerWidth] = useState(0);
-
-    const handleLayout = (e: LayoutChangeEvent) => {
-      const w = e.nativeEvent.layout.width;
-      if (w > 0 && w !== bannerWidth) setBannerWidth(w);
-    };
 
     const content = (
       <>
-        {/* Shimmer sweep — primary only */}
-        {animated && variant === "primary" && bannerWidth > 0 && (
-          <Shimmer width={bannerWidth} />
-        )}
-
         {/* Title row */}
         <View style={styles.titleRow}>
-          {showDots && <Dot color={config.dotColor} delay={200} animated={animated} />}
-
-          {animated ? (
-            <Animated.Text
-              entering={FadeIn.delay(300).duration(300)}
-              style={[styles.title, { color: config.textColor }]}
-            >
-              {title}
-            </Animated.Text>
-          ) : (
-            <Text style={[styles.title, { color: config.textColor }]}>{title}</Text>
+          {showDots && (
+            <View style={[styles.dot, { backgroundColor: config.dotColor }]} />
           )}
-
-          {showDots && <Dot color={config.dotColor} delay={400} animated={animated} />}
+          <Text style={[styles.title, { color: config.textColor }]}>
+            {title}
+          </Text>
+          {showDots && (
+            <View style={[styles.dot, { backgroundColor: config.dotColor }]} />
+          )}
         </View>
 
         {/* Description */}
-        {animated ? (
-          <Animated.View entering={FadeIn.delay(500).duration(300)}>
-            <Text style={[styles.description, { color: config.textColor }]}>
-              {description}
-            </Text>
-          </Animated.View>
-        ) : (
-          <Text style={[styles.description, { color: config.textColor }]}>
-            {description}
-          </Text>
-        )}
+        <Text style={[styles.description, { color: config.textColor }]}>
+          {description}
+        </Text>
       </>
     );
 
@@ -192,30 +110,25 @@ const Banner = React.forwardRef<View, BannerProps>(
       style,
     ];
 
-    const inner = config.gradient ? (
-      <LinearGradient
-        colors={[...config.gradient]}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
-        style={containerStyle}
-        onLayout={handleLayout}
-      >
-        {content}
-      </LinearGradient>
-    ) : (
-      <View style={containerStyle} onLayout={handleLayout}>
-        {content}
-      </View>
-    );
-
-    if (!animated) {
-      return <View ref={ref}>{inner}</View>;
+    if (config.gradient) {
+      return (
+        <View ref={ref}>
+          <LinearGradient
+            colors={[...config.gradient]}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 0.5 }}
+            style={containerStyle}
+          >
+            {content}
+          </LinearGradient>
+        </View>
+      );
     }
 
     return (
-      <Animated.View ref={ref} entering={FadeInDown.duration(600)}>
-        {inner}
-      </Animated.View>
+      <View ref={ref} style={containerStyle}>
+        {content}
+      </View>
     );
   },
 );
@@ -228,17 +141,13 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: borderRadius.lg,
     width: "100%",
     alignSelf: "center",
     overflow: "hidden",
   },
   shadow: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
+    ...shadows.lg,
   },
   titleRow: {
     flexDirection: "row",
@@ -248,22 +157,22 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   title: {
-    fontSize: 16,
-    fontFamily: "Cabin_700Bold",
+    fontSize: fontSize.base,
+    fontFamily: fontFamily.bold,
     textAlign: "center",
     letterSpacing: -0.3,
     flexShrink: 1,
   },
   description: {
-    fontSize: 14,
-    fontFamily: "Cabin_400Regular",
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
     textAlign: "center",
     lineHeight: 20,
   },
   dot: {
     width: 8,
     height: 8,
-    borderRadius: 6,
+    borderRadius: borderRadius.sm,
   },
 });
 

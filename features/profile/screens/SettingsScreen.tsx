@@ -1,11 +1,8 @@
-import MainButton from "@/components/shared/Button/MainButton";
 import type { SellerPreferences } from "@/types/user";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useSettings from "../hooks/useSettings";
-import { NAMESPACE } from "../i18n";
 import AboutSection from "../ui/AboutSection";
 import CurrencySection from "../ui/CurrencySection";
 import LanguagesSection from "../ui/LanguagesSection";
@@ -24,20 +21,11 @@ export interface SettingsSectionProps {
 
 export default function SettingsScreen() {
   const { bottom } = useSafeAreaInsets();
-  const { t } = useTranslation(NAMESPACE);
-  const {
-    sellerPreferences,
-    handleSellerPreferences,
-    submitSellerPreferences,
-    loadingPreferences,
-  } = useSettings();
+  const { sellerPreferences, handleSellerPreferences } = useSettings();
 
   return (
     <View style={[styles.outerContainer, { paddingBottom: bottom }]}>
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={[styles.container]}
-      >
+      <ScrollView style={styles.scroll} contentContainerStyle={[styles.container]}>
         {/* Notifications */}
         <NotificationsSection
           sellerPreferences={sellerPreferences}
@@ -45,24 +33,13 @@ export default function SettingsScreen() {
         />
 
         {/* Language */}
-        <LanguagesSection
-          sellerPreferences={sellerPreferences}
-          handleSellerPreferences={handleSellerPreferences}
-        />
+        <LanguagesSection />
 
         {/* Currency */}
-        <CurrencySection sellerPreferences={sellerPreferences} />
+        <CurrencySection />
 
         {/* About */}
         <AboutSection />
-
-        {/* Save Configs */}
-        <MainButton
-          text={t("saveSettings")}
-          onPress={submitSellerPreferences}
-          loading={loadingPreferences}
-          style={{ marginTop: 48 }}
-        />
       </ScrollView>
     </View>
   );

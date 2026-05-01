@@ -8,6 +8,7 @@ export type DetectedLocation = {
   isoCode: string; // "CL"
   city: string; // "Santiago"
   locale: string; // "es-CL"
+  currency: string; // "CLP"
   coords: {
     latitude: number;
     longitude: number;
@@ -80,5 +81,7 @@ export const useLocationCoords = () =>
   useLocationStore((s) => s.confirmed?.coords ?? null);
 export const useAppLocale = () =>
   useLocationStore((s) => s.confirmed?.locale ?? "en");
+export const useAppCurrency = () =>
+  useLocationStore((s) => s.confirmed?.currency ?? "USD");
 
 export default useLocationStore;

@@ -1,12 +1,12 @@
 import { getLocales } from "expo-localization";
 
-import { storageGet, storageSet } from "@/lib/storage";
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_STORAGE_KEY,
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
 } from "@/constants/locale";
+import { storageGet, storageSet } from "@/lib/storage";
 
 /**
  * Resolves the app language on startup:
@@ -23,9 +23,9 @@ import {
  */
 function resolveLanguage(): SupportedLanguage {
   // 1. Respect a previously stored preference (e.g. manual language switch)
-  const stored = storageGet<SupportedLanguage>(LANGUAGE_STORAGE_KEY);
-  if (stored && (SUPPORTED_LANGUAGES as readonly string[]).includes(stored)) {
-    return stored;
+  const storedLanguage = storageGet<SupportedLanguage>(LANGUAGE_STORAGE_KEY);
+  if (storedLanguage && (SUPPORTED_LANGUAGES as readonly string[]).includes(storedLanguage)) {
+    return storedLanguage;
   }
 
   // 2. Detect device locale — getLocales() is synchronous

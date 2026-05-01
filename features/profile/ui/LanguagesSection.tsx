@@ -1,19 +1,18 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import { LANGUAGES_SUPPORTED } from "@/config/languages";
+import { LANGUAGE_STORAGE_KEY } from "@/constants/locale";
 import { colors } from "@/design/tokens";
+import useStoredLanguage from "@/hooks/useStoredLanguage";
+import { storageSet } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
-import type { SettingsSectionProps } from "../screens/SettingsScreen";
 
-export default function LanguagesSection({
-  sellerPreferences,
-  handleSellerPreferences,
-}: SettingsSectionProps) {
+export default function LanguagesSection() {
   const { t, i18n } = useTranslation(NAMESPACE);
-  const { preferredLanguage } = sellerPreferences;
-  const currentLanguage = preferredLanguage || i18n.language;
+  const storedLanguage = useStoredLanguage();
+
   return (
     <View style={{ marginTop: 24 }}>
       <Title level="h6" style={{ color: "#2f2f2f" }}>
@@ -23,22 +22,14 @@ export default function LanguagesSection({
         {LANGUAGES_SUPPORTED.map((lang, index) => (
           <Pressable
             key={lang.code}
-            style={[
-              styles.row,
-              index < LANGUAGES_SUPPORTED.length - 1 && styles.rowBorder,
-            ]}
+            style={[styles.row, index < LANGUAGES_SUPPORTED.length - 1 && styles.rowBorder]}
             onPress={() => {
               i18n.changeLanguage(lang.code);
-              handleSellerPreferences?.({
-                preference: "preferredLanguage",
-                value: lang.code,
-              });
+              storageSet(LANGUAGE_STORAGE_KEY, lang.code);
             }}
           >
             <Text>{lang.label}</Text>
-            {currentLanguage === lang.code && (
-              <Text style={styles.check}>✓</Text>
-            )}
+            {storedLanguage === lang.code && <Text style={styles.check}>✓</Text>}
           </Pressable>
         ))}
       </View>

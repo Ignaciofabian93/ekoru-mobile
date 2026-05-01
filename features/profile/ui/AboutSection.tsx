@@ -3,8 +3,8 @@ import { Title } from "@/components/shared/Title/Title";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
-import { Pressable, StyleSheet, View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
 
 export default function AboutSection() {
@@ -24,16 +24,9 @@ export default function AboutSection() {
         </View>
         <Pressable
           style={[styles.row, styles.rowBorder]}
-          onPress={() => router.push("/(legal)/terms-of-service")}
+          onPress={() => router.push("/(legal)/terms-and-policies")}
         >
           <Text>{t("termsOfService")}</Text>
-          <ChevronRight size={16} color="#9ca3af" strokeWidth={2} />
-        </Pressable>
-        <Pressable
-          style={styles.row}
-          onPress={() => router.push("/(legal)/privacy-policy")}
-        >
-          <Text>{t("privacyPolicy")}</Text>
           <ChevronRight size={16} color="#9ca3af" strokeWidth={2} />
         </Pressable>
       </View>

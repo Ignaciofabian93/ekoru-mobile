@@ -1,6 +1,27 @@
 import useLocationStore from "@/store/useLocationStore";
-import * as ExpoLocation from "expo-location";
+import * as expoLocation from "expo-location";
 import { useEffect } from "react";
+
+// Maps ISO 3166-1 alpha-2 country codes to their ISO 4217 currency code
+const COUNTRY_CURRENCY_MAP: Record<string, string> = {
+  AR: "ARS",
+  BO: "BOB",
+  BR: "BRL",
+  CA: "CAD",
+  CL: "CLP",
+  CO: "COP",
+  DE: "EUR",
+  ES: "EUR",
+  FR: "EUR",
+  GB: "GBP",
+  IT: "EUR",
+  MX: "MXN",
+  PE: "PEN",
+  PY: "PYG",
+  UY: "UYU",
+  US: "USD",
+  VE: "VES",
+};
 
 // Maps ISO 3166-1 alpha-2 country codes to their default locale
 const COUNTRY_LOCALE_MAP: Record<string, string> = {
@@ -27,6 +48,10 @@ function getLocaleFromIsoCode(isoCode: string): string {
   return COUNTRY_LOCALE_MAP[isoCode.toUpperCase()] ?? "en-US";
 }
 
+function getCurrencyFromIsoCode(isoCode: string): string {
+  return COUNTRY_CURRENCY_MAP[isoCode.toUpperCase()] ?? "USD";
+}
+
 /**
  * useLocationDetection — runs once after location store is hydrated.
  * If the user has no confirmed location yet, it requests foreground
@@ -43,18 +68,19 @@ export default function useLocationDetection() {
     // Only run detection if the store is ready and no location confirmed yet
     if (!isHydrated || isConfirmed) return;
     detect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHydrated, isConfirmed]);
 
   const detect = async () => {
     try {
-      const { status } = await ExpoLocation.requestForegroundPermissionsAsync();
+      const { status } = await expoLocation.requestForegroundPermissionsAsync();
       if (status !== "granted") return;
 
-      const position = await ExpoLocation.getCurrentPositionAsync({
-        accuracy: ExpoLocation.Accuracy.Low,
+      const position = await expoLocation.getCurrentPositionAsync({
+        accuracy: expoLocation.Accuracy.Low,
       });
 
-      const [geocode] = await ExpoLocation.reverseGeocodeAsync({
+      const [geocode] = await expoLocation.reverseGeocodeAsync({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       });
@@ -63,12 +89,14 @@ export default function useLocationDetection() {
 
       const isoCode = geocode.isoCountryCode ?? "US";
       const locale = getLocaleFromIsoCode(isoCode);
+      const currency = getCurrencyFromIsoCode(isoCode);
 
       setDetected({
         country: geocode.country ?? isoCode,
         isoCode,
         city: geocode.city ?? geocode.subregion ?? geocode.region ?? "",
         locale,
+        currency,
         coords: {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,

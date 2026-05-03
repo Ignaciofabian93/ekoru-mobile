@@ -1,22 +1,22 @@
 import { Text } from "@/components/shared/Text/Text";
 import { Title } from "@/components/shared/Title/Title";
 import { LANGUAGES_SUPPORTED } from "@/config/languages";
-import { LANGUAGE_STORAGE_KEY } from "@/constants/locale";
+import { LANGUAGE_STORAGE_KEY } from "@/constants/settings";
 import { colors } from "@/design/tokens";
-import useStoredLanguage from "@/hooks/useStoredLanguage";
+import useUserSettings from "@/hooks/useUserSettings";
 import { storageSet } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
-import { NAMESPACE } from "../i18n";
+import { NAMESPACE } from "../../i18n";
 
 export default function LanguagesSection() {
   const { t, i18n } = useTranslation(NAMESPACE);
-  const storedLanguage = useStoredLanguage();
+  const { storedLanguage } = useUserSettings();
 
   return (
     <View style={{ marginTop: 24 }}>
       <Title level="h6" style={{ color: "#2f2f2f" }}>
-        {t("language")}
+        {t("settings.language")}
       </Title>
       <View style={styles.card}>
         {LANGUAGES_SUPPORTED.map((lang, index) => (

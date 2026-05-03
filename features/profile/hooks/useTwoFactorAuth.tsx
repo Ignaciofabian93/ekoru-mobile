@@ -26,8 +26,8 @@ export default function useTwoFactorAuth() {
     {
       onError: () => {
         showError({
-          title: t("settingsErrorTitle"),
-          message: t("twoFaError"),
+          title: t("settings.errorTitle"),
+          message: t("security.twoFaError"),
         });
       },
     },
@@ -43,7 +43,7 @@ export default function useTwoFactorAuth() {
 
     if (next) {
       // Ask user to authenticate before enabling
-      const success = await authenticate(t("twoFaEnableTitle"));
+      const success = await authenticate(t("security.twoFaEnableTitle"));
       if (!success) return;
     }
 
@@ -61,8 +61,8 @@ export default function useTwoFactorAuth() {
       setIsEnabled(next);
 
       showSuccess({
-        title: next ? t("twoFaActivated") : t("twoFaDeactivated"),
-        message: next ? t("twoFaActivatedMessage") : t("twoFaDeactivatedMessage"),
+        title: next ? t("security.twoFaActivated") : t("security.twoFaDeactivated"),
+        message: next ? t("security.twoFaActivatedMessage") : t("security.twoFaDeactivatedMessage"),
       });
     } catch {
       // error already handled by onError above

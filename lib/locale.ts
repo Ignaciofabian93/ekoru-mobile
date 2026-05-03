@@ -5,7 +5,7 @@ import {
   LANGUAGE_STORAGE_KEY,
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
-} from "@/constants/locale";
+} from "@/constants/settings";
 import { storageGet, storageSet } from "@/lib/storage";
 
 /**

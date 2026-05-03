@@ -77,17 +77,17 @@ export default function OrderHistoryScreen() {
       renderItem={({ item }) => (
         <OrderCard
           order={item}
-          statusLabel={t(`status_${item.status}`)}
-          totalLabel={t("total")}
-          itemLabel={t("item", { count: item.items })}
+          statusLabel={t(`orders.status_${item.status}`)}
+          totalLabel={t("orders.total")}
+          itemLabel={t("orders.item", { count: item.items })}
         />
       )}
       contentContainerStyle={styles.list}
       style={styles.scroll}
       ListEmptyComponent={
         <EmptyState
-          title={t("noOrders")}
-          subtitle={t("noOrdersSubtitle")}
+          title={t("orders.noOrders")}
+          subtitle={t("orders.noOrdersSubtitle")}
         />
       }
     />

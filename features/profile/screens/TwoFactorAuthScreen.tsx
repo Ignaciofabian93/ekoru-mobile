@@ -33,8 +33,8 @@ export default function TwoFactorAuthScreen() {
       </View>
 
       {/* ── Heading ──────────────────────────────────────────────────────────── */}
-      <Text style={styles.title}>{t("twoFaTitle")}</Text>
-      <Text style={styles.subtitle}>{t("twoFaSubtitle")}</Text>
+      <Text style={styles.title}>{t("security.twoFaTitle")}</Text>
+      <Text style={styles.subtitle}>{t("security.twoFaSubtitle")}</Text>
 
       {/* ── Status card ──────────────────────────────────────────────────────── */}
       <View
@@ -49,7 +49,7 @@ export default function TwoFactorAuthScreen() {
             isEnabled ? styles.statusTextEnabled : styles.statusTextDisabled,
           ]}
         >
-          {isEnabled ? t("twoFaEnabled") : t("twoFaDisabled")}
+          {isEnabled ? t("security.twoFaEnabled") : t("security.twoFaDisabled")}
         </Text>
       </View>
 
@@ -57,7 +57,7 @@ export default function TwoFactorAuthScreen() {
       {isAvailable ? (
         <View style={styles.infoCard}>
           <Fingerprint size={20} color={colors.primary} strokeWidth={1.5} />
-          <Text style={styles.infoText}>{t("twoFaUsesBiometric")}</Text>
+          <Text style={styles.infoText}>{t("security.twoFaUsesBiometric")}</Text>
           {(hasFace || hasFingerprint) && (
             <Text style={styles.infoSubText}>
               {[
@@ -71,7 +71,7 @@ export default function TwoFactorAuthScreen() {
         </View>
       ) : (
         <View style={styles.infoCard}>
-          <Text style={styles.infoTextMuted}>{t("twoFaNotAvailable")}</Text>
+          <Text style={styles.infoTextMuted}>{t("security.twoFaNotAvailable")}</Text>
         </View>
       )}
 
@@ -84,7 +84,7 @@ export default function TwoFactorAuthScreen() {
         />
       ) : (
         <MainButton
-          text={isEnabled ? t("twoFaDisable") : t("twoFaEnable")}
+          text={isEnabled ? t("security.twoFaDisable") : t("security.twoFaEnable")}
           onPress={toggle}
           variant={isEnabled ? "error" : "primary"}
           disabled={!isAvailable}

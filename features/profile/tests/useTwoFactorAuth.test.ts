@@ -91,7 +91,7 @@ describe("useTwoFactorAuth", () => {
   it("prompts biometrics when enabling 2FA", async () => {
     const { result } = renderHook(() => useTwoFactorAuth());
     await act(async () => { await result.current.toggle(); });
-    expect(mockAuthenticate).toHaveBeenCalledWith("twoFaEnableTitle");
+    expect(mockAuthenticate).toHaveBeenCalledWith("security.twoFaEnableTitle");
   });
 
   it("calls mutation with twoFactorAuth: true when enabling succeeds", async () => {
@@ -120,8 +120,8 @@ describe("useTwoFactorAuth", () => {
     const { result } = renderHook(() => useTwoFactorAuth());
     await act(async () => { await result.current.toggle(); });
     expect(mockShowSuccess).toHaveBeenCalledWith({
-      title: "twoFaActivated",
-      message: "twoFaActivatedMessage",
+      title: "security.twoFaActivated",
+      message: "security.twoFaActivatedMessage",
     });
   });
 
@@ -160,8 +160,8 @@ describe("useTwoFactorAuth", () => {
     const { result } = renderHook(() => useTwoFactorAuth());
     await act(async () => { await result.current.toggle(); });
     expect(mockShowSuccess).toHaveBeenCalledWith({
-      title: "twoFaDeactivated",
-      message: "twoFaDeactivatedMessage",
+      title: "security.twoFaDeactivated",
+      message: "security.twoFaDeactivatedMessage",
     });
   });
 });

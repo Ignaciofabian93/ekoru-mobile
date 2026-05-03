@@ -1,9 +1,5 @@
 import { colors } from "@/design/tokens";
 import { StyleSheet, View } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  withTiming,
-} from "react-native-reanimated";
 
 interface Props {
   total: number;
@@ -21,15 +17,17 @@ export default function StepIndicator({ total, current }: Props) {
 }
 
 function StepDot({ active, done }: { active: boolean; done: boolean }) {
-  const animatedStyle = useAnimatedStyle(() => ({
-    width: withTiming(active ? 24 : 8, { duration: 250 }),
-    backgroundColor: withTiming(
-      active || done ? colors.primary : colors.borderLight,
-      { duration: 250 },
-    ),
-  }));
-
-  return <Animated.View style={[styles.dot, animatedStyle]} />;
+  return (
+    <View
+      style={[
+        styles.dot,
+        {
+          width: active ? 24 : 8,
+          backgroundColor: active || done ? colors.primary : colors.borderLight,
+        },
+      ]}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

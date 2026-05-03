@@ -16,13 +16,13 @@ export default function FavouritesScreen() {
         <View style={styles.iconWrap}>
           <Heart size={48} color={colors.primary} strokeWidth={1.5} />
         </View>
-        <Text style={styles.title}>{t("noFavorites")}</Text>
-        <Text style={styles.subtitle}>{t("noFavoritesSubtitle")}</Text>
+        <Text style={styles.title}>{t("favorites.noFavorites")}</Text>
+        <Text style={styles.subtitle}>{t("favorites.noFavoritesSubtitle")}</Text>
         <Pressable
           style={styles.button}
           onPress={() => router.push("/(marketplace)")}
         >
-          <Text style={styles.buttonText}>{t("browseMarketplace")}</Text>
+          <Text style={styles.buttonText}>{t("favorites.browseMarketplace")}</Text>
         </Pressable>
       </View>
     </View>

@@ -1,18 +1,18 @@
 import { REGISTER_BUSINESS, REGISTER_PERSON } from "@/graphql/auth/register";
+import useAppRouter from "@/hooks/useAppRouter";
+import useUserSettings from "@/hooks/useUserSettings";
 import { showError, showSuccess } from "@/lib/toast";
-import type { SellerType, BusinessType } from "@/types/enums";
+import type { BusinessType, SellerType } from "@/types/enums";
+import { sanitizeEmail, sanitizeInput, sanitizeOnSubmit } from "@/utils/inputSanitize";
 import { useMutation } from "@apollo/client/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n";
-import useAppRouter from "@/hooks/useAppRouter";
-import useStoredLanguage from "@/hooks/useStoredLanguage";
-import { sanitizeEmail, sanitizeInput, sanitizeOnSubmit } from "@/utils/inputSanitize";
 
 export default function useRegister() {
   const { navigate } = useAppRouter();
   const { t } = useTranslation("auth");
-  const storedLanguage = useStoredLanguage();
+  const { storedLanguage } = useUserSettings();
 
   const [sellerType, setSellerType] = useState<SellerType>("PERSON");
   const [businessType, setBusinessType] = useState<BusinessType>("RETAIL");

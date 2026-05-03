@@ -11,7 +11,6 @@ import {
 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Animated, { FadeInDown } from "react-native-reanimated";
 
 // ─── Count-up hook ────────────────────────────────────────────────────────────
 
@@ -173,7 +172,7 @@ export default function GlobalSavingsSection() {
   const wasteDisplay = (wasteRaw / 10).toFixed(1);
 
   return (
-    <Animated.View entering={FadeInDown.duration(500)} style={styles.container}>
+    <View style={styles.container}>
       {/* Header */}
       <Title level="h4" align="center">
         Our Global Impact
@@ -214,7 +213,7 @@ export default function GlobalSavingsSection() {
 
       {/* Community strip */}
       <CommunityStrip />
-    </Animated.View>
+    </View>
   );
 }
 

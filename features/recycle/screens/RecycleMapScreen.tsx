@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import {
   ActivityIndicator,
+  InteractionManager,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -295,31 +296,46 @@ export default function RecycleMapScreen() {
   const init = useCallback(async () => {
     if (!isMounted.current) return;
     setStatus("loading");
-    const { status: perm } = await Location.requestForegroundPermissionsAsync();
-    if (!isMounted.current) return;
-    if (perm !== "granted") {
-      setStatus("permission_denied");
-      return;
+    try {
+      const { status: perm } = await Location.requestForegroundPermissionsAsync();
+      if (!isMounted.current) return;
+      if (perm !== "granted") {
+        setStatus("permission_denied");
+        return;
+      }
+      const loc = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+      });
+      if (!isMounted.current) return;
+      const { latitude, longitude } = loc.coords;
+      setUserLocation({ latitude, longitude });
+      const r: Region = {
+        latitude,
+        longitude,
+        latitudeDelta: 0.03,
+        longitudeDelta: 0.03,
+      };
+      setRegion(r);
+      setStatus("ready");
+      loadPoints(latitude, longitude);
+    } catch (err) {
+      console.error("[RecycleMap] Init failed:", err);
+      if (!isMounted.current) return;
+      setStatus("error");
     }
-    const loc = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
-    });
-    if (!isMounted.current) return;
-    const { latitude, longitude } = loc.coords;
-    setUserLocation({ latitude, longitude });
-    const r: Region = {
-      latitude,
-      longitude,
-      latitudeDelta: 0.03,
-      longitudeDelta: 0.03,
-    };
-    setRegion(r);
-    setStatus("ready");
-    loadPoints(latitude, longitude);
   }, [loadPoints]);
 
   useEffect(() => {
-    init();
+    // Defer init() until the tab-switch navigation transition has fully
+    // committed in Fabric. Firing location permission requests and chained
+    // setState calls (setUserLocation, setRegion, setStatus) while the
+    // navigation animation is still running causes the same double-parent
+    // IllegalStateException seen in the login flow. runAfterInteractions
+    // waits for all pending interactions to drain before executing.
+    const task = InteractionManager.runAfterInteractions(() => {
+      init();
+    });
+    return () => task.cancel();
   }, [init]);
 
   const centerOnUser = () => {

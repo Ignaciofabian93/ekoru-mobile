@@ -12,11 +12,6 @@ import {
 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import Animated, {
-  Easing,
-  FadeIn,
-  LinearTransition,
-} from "react-native-reanimated";
 
 type CategoryId = "marketplace" | "stores" | "services";
 
@@ -101,29 +96,24 @@ export default function CategoriesSection() {
       </AppText>
 
       <View style={styles.grid}>
-        {/* Featured card — re-mounts on active change, animates in */}
-        <Animated.View key={active} entering={FadeIn.duration(250)}>
+        {/* Featured card */}
+        <View key={active}>
           <LargeCard
             category={featured}
             onNavigate={() => router.push(featured.route as any)}
           />
-        </Animated.View>
+        </View>
 
-        {/* Small cards — animate position when order changes */}
+        {/* Small cards */}
         <View style={styles.row}>
           {small.map((cat) => (
-            <Animated.View
-              key={cat.id}
-              layout={LinearTransition.duration(350).easing(Easing.inOut(Easing.ease))}
-              entering={FadeIn.duration(300)}
-              style={styles.half}
-            >
+            <View key={cat.id} style={styles.half}>
               <SmallCard
                 category={cat}
                 onExpand={() => setActive(cat.id)}
                 onNavigate={() => router.push(cat.route as any)}
               />
-            </Animated.View>
+            </View>
           ))}
         </View>
       </View>

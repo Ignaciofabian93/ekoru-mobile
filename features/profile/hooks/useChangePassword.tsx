@@ -17,8 +17,8 @@ export default function useChangePassword() {
   const [updatePassword, { loading }] = useMutation(UPDATE_PASSWORD, {
     onCompleted: () => {
       showSuccess({
-        title: t("settingsSavedTitle"),
-        message: t("changePasswordSuccess"),
+        title: t("settings.savedTitle"),
+        message: t("password.successMessage"),
       });
       setCurrentPassword("");
       setNewPassword("");
@@ -27,19 +27,19 @@ export default function useChangePassword() {
     },
     onError: () => {
       showError({
-        title: t("settingsErrorTitle"),
-        message: t("changePasswordError"),
+        title: t("settings.errorTitle"),
+        message: t("password.errorMessage"),
       });
     },
   });
 
   const handleSubmit = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      showError({ title: "Error", message: t("error_fillFields") });
+      showError({ title: "Error", message: t("password.error_fillFields") });
       return;
     }
     if (newPassword !== confirmPassword) {
-      showError({ title: "Error", message: t("error_passwordMismatch") });
+      showError({ title: "Error", message: t("password.error_passwordMismatch") });
       return;
     }
 

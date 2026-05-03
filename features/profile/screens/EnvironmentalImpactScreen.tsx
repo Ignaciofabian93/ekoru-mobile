@@ -38,7 +38,7 @@ const STATS: StatConfig[] = [
     iconBg: `${colors.success}20`,
     value: CO2_KG.toFixed(1),
     unit: "kg",
-    labelKey: "co2Saved",
+    labelKey: "impact.co2Saved",
   },
   {
     icon: Recycle,
@@ -46,7 +46,7 @@ const STATS: StatConfig[] = [
     iconBg: `${colors.info}20`,
     value: "8",
     unit: "items",
-    labelKey: "itemsRecycled",
+    labelKey: "impact.itemsRecycled",
   },
   {
     icon: Droplets,
@@ -54,7 +54,7 @@ const STATS: StatConfig[] = [
     iconBg: `${colors.secondary}20`,
     value: WATER_LT.toString(),
     unit: "L",
-    labelKey: "waterSaved",
+    labelKey: "impact.waterSaved",
   },
   {
     icon: TreePine,
@@ -62,7 +62,7 @@ const STATS: StatConfig[] = [
     iconBg: `${colors.primaryDark}20`,
     value: "0.5",
     unit: "trees",
-    labelKey: "equivalentTrees",
+    labelKey: "impact.equivalentTrees",
   },
 ];
 
@@ -130,7 +130,7 @@ export default function EnvironmentalImpactScreen() {
     ? seller.profile.__typename === "PersonProfile"
       ? seller.profile.firstName
       : seller.profile.businessName
-    : t("account");
+    : t("account.title");
 
   const co2KmEquiv = (CO2_KG * 4.5).toFixed(1);
   const waterShowersEquiv = (WATER_LT / 8).toFixed(0);
@@ -156,9 +156,9 @@ export default function EnvironmentalImpactScreen() {
           <View style={styles.heroIconWrap}>
             <Leaf size={30} color={colors.onPrimary} strokeWidth={1.5} />
           </View>
-          <Text style={styles.heroTitle}>{t("yourGreenImpact")}</Text>
+          <Text style={styles.heroTitle}>{t("impact.yourGreenImpact")}</Text>
           <Text style={styles.heroSubtitle}>
-            {t("greenImpactSubtitle_other", { name: displayName })}
+            {t("impact.subtitle_other", { name: displayName })}
           </Text>
         </View>
       </LinearGradient>
@@ -173,25 +173,25 @@ export default function EnvironmentalImpactScreen() {
       {/* ── Real-world equivalences ─────────────────────────────────── */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{t("realWorldEquivalences")}</Text>
+          <Text style={styles.sectionTitle}>{t("impact.realWorldEquivalences")}</Text>
         </View>
 
         <EquivalenceCard
           icon={Car}
           accentColor={colors.success}
-          title={t("co2EquivalenceLabel")}
+          title={t("impact.co2EquivalenceLabel")}
           value={`${CO2_KG.toFixed(1)} kg CO₂`}
           unit=""
-          equivalence={t("co2EquivalenceText", { km: co2KmEquiv })}
+          equivalence={t("impact.co2EquivalenceText", { km: co2KmEquiv })}
         />
 
         <EquivalenceCard
           icon={Droplets}
           accentColor={colors.info}
-          title={t("waterEquivalenceLabel")}
+          title={t("impact.waterEquivalenceLabel")}
           value={`${WATER_LT} L`}
           unit=""
-          equivalence={t("waterEquivalenceText", { showers: waterShowersEquiv })}
+          equivalence={t("impact.waterEquivalenceText", { showers: waterShowersEquiv })}
         />
       </View>
 
@@ -199,9 +199,9 @@ export default function EnvironmentalImpactScreen() {
       <View style={styles.infoCard}>
         <View style={styles.infoHeader}>
           <Info size={16} color={colors.primary} strokeWidth={2} />
-          <Text style={styles.infoTitle}>{t("howCalculated")}</Text>
+          <Text style={styles.infoTitle}>{t("impact.howCalculated")}</Text>
         </View>
-        <Text style={styles.infoBody}>{t("calculationExplanation")}</Text>
+        <Text style={styles.infoBody}>{t("impact.calculationExplanation")}</Text>
       </View>
     </ScrollView>
   );

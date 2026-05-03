@@ -55,10 +55,10 @@ jest.mock("@apollo/client/react", () => ({
   },
 }));
 
-// Mock useStoredLanguage
-jest.mock("@/hooks/useStoredLanguage", () => ({
+// Mock useUserSettings (provides storedLanguage used by useRegister)
+jest.mock("@/hooks/useUserSettings", () => ({
   __esModule: true,
-  default: () => "es",
+  default: () => ({ storedLanguage: "es" }),
 }));
 
 import { act, renderHook } from "@testing-library/react-native";

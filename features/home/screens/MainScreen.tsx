@@ -33,6 +33,7 @@ export default function HomeScreen() {
           <Banner
             title="Join us as allied store"
             description="Be part of the sustainable network"
+            animated={false}
           />
         </View>
 
@@ -45,6 +46,7 @@ export default function HomeScreen() {
           <AdBanner
             title="Special Offer"
             description="Get 20% off on all eco-friendly products"
+            animated={false}
             cta={
               <MainButton
                 text="Shop Now"
@@ -69,6 +71,7 @@ export default function HomeScreen() {
             title="Got items to sell?"
             description="List in minutes, reach thousands of eco-conscious buyers"
             variant="outlined"
+            animated={false}
             cta={
               <MainButton
                 text="List Now"
@@ -89,6 +92,7 @@ export default function HomeScreen() {
             title="Join 8,200+ members"
             description="Together we're building a more sustainable world"
             variant="secondary"
+            animated={false}
           />
         </View>
       </Container>

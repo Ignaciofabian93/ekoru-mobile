@@ -1,4 +1,4 @@
-import * as LocalAuthentication from "expo-local-authentication";
+import * as localAuthentication from "expo-local-authentication";
 import { useEffect, useState } from "react";
 
 export type BiometricType = "fingerprint" | "face" | "iris";
@@ -15,17 +15,17 @@ export default function useBiometricAuth(): UseBiometricAuthReturn {
 
   useEffect(() => {
     async function check() {
-      const hasHardware = await LocalAuthentication.hasHardwareAsync();
-      const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+      const hasHardware = await localAuthentication.hasHardwareAsync();
+      const isEnrolled = await localAuthentication.isEnrolledAsync();
       if (hasHardware && isEnrolled) {
         setIsAvailable(true);
-        const types = await LocalAuthentication.supportedAuthenticationTypesAsync();
+        const types = await localAuthentication.supportedAuthenticationTypesAsync();
         setSupportedTypes(
           types.map((t) => {
-            if (t === LocalAuthentication.AuthenticationType.FINGERPRINT) return "fingerprint";
-            if (t === LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION) return "face";
+            if (t === localAuthentication.AuthenticationType.FINGERPRINT) return "fingerprint";
+            if (t === localAuthentication.AuthenticationType.FACIAL_RECOGNITION) return "face";
             return "iris";
-          })
+          }),
         );
       }
     }
@@ -34,7 +34,7 @@ export default function useBiometricAuth(): UseBiometricAuthReturn {
 
   const authenticate = async (promptMessage = "Authenticate to continue"): Promise<boolean> => {
     if (!isAvailable) return false;
-    const result = await LocalAuthentication.authenticateAsync({
+    const result = await localAuthentication.authenticateAsync({
       promptMessage,
       fallbackLabel: "Use Passcode",
       cancelLabel: "Cancel",

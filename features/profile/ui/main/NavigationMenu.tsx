@@ -1,12 +1,12 @@
 import { Text } from "@/components/shared/Text/Text";
+import { Title } from "@/components/shared/Title/Title";
+import { colors } from "@/design/tokens";
+import { type Href, useRouter } from "expo-router";
+import { ChevronRight } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import { useMenuRows } from "../../constants/menuRows";
-import { ChevronRight } from "lucide-react-native";
-import { colors } from "@/design/tokens";
-import { useTranslation } from "react-i18next";
 import { NAMESPACE } from "./i18n";
-import { useRouter } from "expo-router";
-import { Title } from "@/components/shared/Title/Title";
 
 export default function NavigationMenu() {
   const router = useRouter();
@@ -24,11 +24,8 @@ export default function NavigationMenu() {
           return (
             <Pressable
               key={row.route}
-              style={[
-                styles.menuRow,
-                index < menuRows.length - 1 && styles.menuRowBorder,
-              ]}
-              onPress={() => router.push(row.route as any)}
+              style={[styles.menuRow, index < menuRows.length - 1 && styles.menuRowBorder]}
+              onPress={() => router.push(row.route as Href)}
             >
               <View style={styles.menuRowLeft}>
                 <View style={styles.iconWrap}>

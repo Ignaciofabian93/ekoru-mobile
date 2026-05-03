@@ -25,34 +25,34 @@ export default function ChangePasswordScreen() {
       <View style={styles.iconWrap}>
         <KeyRound size={40} color="#6b7280" strokeWidth={1.5} />
       </View>
-      <Text style={styles.hint}>{t("passwordHint")}</Text>
+      <Text style={styles.hint}>{t("password.hint")}</Text>
 
       <View style={styles.card}>
         <Input
-          label={t("currentPassword")}
+          label={t("password.current")}
           value={currentPassword}
           onChangeText={setCurrentPassword}
-          placeholder={t("enterCurrentPassword")}
+          placeholder={t("password.currentPlaceholder")}
           type="password"
         />
         <Input
-          label={t("newPassword")}
+          label={t("password.new")}
           value={newPassword}
           onChangeText={setNewPassword}
-          placeholder={t("enterNewPassword")}
+          placeholder={t("password.newPlaceholder")}
           type="password"
         />
         <Input
-          label={t("confirmNewPassword")}
+          label={t("password.confirm")}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
-          placeholder={t("confirmNewPasswordPlaceholder")}
+          placeholder={t("password.confirmPlaceholder")}
           type="password"
         />
       </View>
 
       <MainButton
-        text={t("updatePassword")}
+        text={t("password.update")}
         onPress={handleSubmit}
         loading={loading}
         style={styles.button}

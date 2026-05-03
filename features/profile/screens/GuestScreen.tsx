@@ -17,32 +17,32 @@ export default function GuestScreen() {
     {
       icon: Star,
       color: colors.accent,
-      titleKey: "perk_points_title",
-      descKey: "perk_points_desc",
+      titleKey: "community.perk_points_title",
+      descKey: "community.perk_points_desc",
     },
     {
       icon: Leaf,
       color: colors.primary,
-      titleKey: "perk_impact_title",
-      descKey: "perk_impact_desc",
+      titleKey: "community.perk_impact_title",
+      descKey: "community.perk_impact_desc",
     },
     {
       icon: ArrowLeftRight,
       color: colors.secondary,
-      titleKey: "perk_badge_title",
-      descKey: "perk_badge_desc",
+      titleKey: "community.perk_badge_title",
+      descKey: "community.perk_badge_desc",
     },
     {
       icon: Store,
       color: "#a855f7",
-      titleKey: "perk_deals_title",
-      descKey: "perk_deals_desc",
+      titleKey: "community.perk_deals_title",
+      descKey: "community.perk_deals_desc",
     },
     {
       icon: BookOpen,
       color: "#10b981",
-      titleKey: "perk_trees_title",
-      descKey: "perk_trees_desc",
+      titleKey: "community.perk_trees_title",
+      descKey: "community.perk_trees_desc",
     },
   ];
 
@@ -58,10 +58,10 @@ export default function GuestScreen() {
           <Image source={EKORU_LOGO} resizeMode="cover" style={styles.avatarImage} />
         </View>
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
-          {t("joinCommunity")}
+          {t("community.joinCommunity")}
         </Text>
         <Text size="sm" color="secondary" align="center" style={styles.heroSubtitle}>
-          {t("guestSubtitle")}
+          {t("community.subtitle")}
         </Text>
       </View>
 
@@ -90,12 +90,12 @@ export default function GuestScreen() {
       {/* CTAs */}
       <View style={styles.actions}>
         <MainButton
-          text={t("createAccount")}
+          text={t("community.createAccount")}
           onPress={() => router.push("/(auth)/register")}
           rightIcon={UserRoundPlus}
         />
         <MainButton
-          text={t("signIn")}
+          text={t("community.signIn")}
           variant="outline"
           onPress={() => router.push("/(auth)")}
           rightIcon={LogIn}

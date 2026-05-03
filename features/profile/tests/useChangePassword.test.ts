@@ -83,7 +83,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "error_fillFields",
+      message: "password.error_fillFields",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });
@@ -97,7 +97,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "error_fillFields",
+      message: "password.error_fillFields",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });
@@ -111,7 +111,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "error_fillFields",
+      message: "password.error_fillFields",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });
@@ -128,7 +128,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "error_passwordMismatch",
+      message: "password.error_passwordMismatch",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });

@@ -9,19 +9,7 @@ import {
   TrendingUp,
   UsersRound,
 } from "lucide-react-native";
-import { useEffect, useState } from "react";
-import { PixelRatio, StyleSheet, View } from "react-native";
-import Animated, {
-  cancelAnimation,
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from "react-native-reanimated";
-
-// px/ms — adjust to taste
-const SPEED = 0.038;
+import { ScrollView, StyleSheet, View } from "react-native";
 
 const STATS = [
   { label: "Active Users", value: "1,234", Icon: UsersRound },
@@ -32,29 +20,6 @@ const STATS = [
 ];
 
 export default function StatsSection() {
-  const translateX = useSharedValue(0);
-  const [setWidth, setSetWidth] = useState(0);
-
-  useEffect(() => {
-    if (setWidth === 0) return;
-    cancelAnimation(translateX);
-    // Animate from 0 → -setWidth so withRepeat always resets to 0,
-    // which is visually identical to -setWidth (copy 2 takes copy 1's place).
-    translateX.value = withRepeat(
-      withTiming(-setWidth, {
-        duration: setWidth / SPEED,
-        easing: Easing.linear,
-      }),
-      -1,
-      false,
-    );
-    return () => cancelAnimation(translateX);
-  }, [setWidth]);
-
-  const animStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: translateX.value }],
-  }));
-
   return (
     <View style={styles.container}>
       <Title level="h4" align="center">This is already happening</Title>
@@ -63,38 +28,21 @@ export default function StatsSection() {
       </Text>
 
       <View style={styles.track}>
-        <Animated.View style={[styles.ticker, animStyle]}>
-          {/* First copy — wrapped so onLayout measures exactly one set's width */}
-          <View
-            style={styles.copy}
-            onLayout={(e) => {
-              if (setWidth !== 0) return;
-              setSetWidth(
-                PixelRatio.roundToNearestPixel(e.nativeEvent.layout.width),
-              );
-            }}
-          >
-            {STATS.map((stat, i) => (
-              <StatItem
-                key={`a${i}`}
-                label={stat.label}
-                value={stat.value}
-                Icon={stat.Icon}
-              />
-            ))}
-          </View>
-          {/* Second copy — seamless continuation */}
-          <View style={styles.copy}>
-            {STATS.map((stat, i) => (
-              <StatItem
-                key={`b${i}`}
-                label={stat.label}
-                value={stat.value}
-                Icon={stat.Icon}
-              />
-            ))}
-          </View>
-        </Animated.View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={false}
+          contentContainerStyle={styles.ticker}
+        >
+          {STATS.map((stat, i) => (
+            <StatItem
+              key={i}
+              label={stat.label}
+              value={stat.value}
+              Icon={stat.Icon}
+            />
+          ))}
+        </ScrollView>
 
         <LinearGradient
           colors={["#ffffff", "transparent"]}
@@ -151,10 +99,6 @@ const styles = StyleSheet.create({
     borderColor: colors.borderStrong,
   },
   ticker: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  copy: {
     flexDirection: "row",
     alignItems: "center",
   },

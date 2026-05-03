@@ -103,7 +103,7 @@ export default function ProfileScreen() {
         <MainButton
           variant="error"
           style={{ marginHorizontal: 20, marginBottom: 20, marginTop: 40 }}
-          text={t("logOut")}
+          text={t("settings.logOut")}
           onPress={async () => {
             await logout();
             router.replace("/(tabs)");

@@ -34,9 +34,10 @@ export function ScrollContainer({ children }: { children: React.ReactNode }) {
       style={[styles.flex]}
       // On iOS, automaticallyAdjustKeyboardInsets handles both the inset and
       // auto-scrolling to the focused input, so no KAV behavior is needed.
-      // On Android, "padding" shrinks the KAV and lets the ScrollView scroll
-      // freely to the focused element ("height" does not auto-scroll).
-      behavior={Platform.OS === "android" ? "padding" : undefined}
+      // softwareKeyboardLayoutMode is "pan" in app.json — Android pans the
+      // window at the OS level, so KAV must be a no-op on Android to avoid
+      // double-adjusting the layout and leaving a gray gap when keyboard closes.
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         style={styles.scroll}

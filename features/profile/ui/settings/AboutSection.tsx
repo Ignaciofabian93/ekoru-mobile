@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
-import { NAMESPACE } from "../i18n";
+import { NAMESPACE } from "../../i18n";
 
 export default function AboutSection() {
   const { t } = useTranslation(NAMESPACE);
@@ -15,18 +15,18 @@ export default function AboutSection() {
   return (
     <View style={{ marginTop: 24 }}>
       <Title level="h6" style={{ color: "#2f2f2f" }}>
-        {t("about")}
+        {t("settings.about")}
       </Title>
       <View style={styles.card}>
         <View style={[styles.row, styles.rowBorder]}>
-          <Text>{t("version")}</Text>
+          <Text>{t("settings.version")}</Text>
           <Text style={styles.muted}>{version}</Text>
         </View>
         <Pressable
           style={[styles.row, styles.rowBorder]}
           onPress={() => router.push("/(legal)/terms-and-policies")}
         >
-          <Text>{t("termsOfService")}</Text>
+          <Text>{t("settings.termsOfService")}</Text>
           <ChevronRight size={16} color="#9ca3af" strokeWidth={2} />
         </Pressable>
       </View>

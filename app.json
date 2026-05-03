@@ -22,7 +22,11 @@
       },
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan",
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ],
       "package": "com.ignaciofabian93.EKORU"
     },
     "web": {
@@ -34,6 +38,13 @@
       "expo-router",
       "expo-localization",
       "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow EKORU to use your location to find nearby recycling points.",
+          "locationAlwaysAndWhenInUsePermission": "Allow EKORU to use your location to find nearby recycling points."
+        }
+      ],
       [
         "expo-image-picker",
         {

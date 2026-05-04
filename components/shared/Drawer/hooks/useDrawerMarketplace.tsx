@@ -60,8 +60,6 @@ export function useDrawerMarketplace(enabled: boolean) {
     fetchPolicy: "cache-first",
     skip: !enabled,
   });
-  console.log("DATA:: ", data);
-
   // Memoize the mapped result so the array reference is stable between renders.
   // mapCatalogToAccordion is only re-run when the raw API data actually changes.
   const items = useMemo<L1Item[]>(
@@ -69,7 +67,6 @@ export function useDrawerMarketplace(enabled: boolean) {
 
     [data?.getMarketplaceCatalog],
   );
-  console.log("ITEMS:: ", items);
 
   return { items };
 }

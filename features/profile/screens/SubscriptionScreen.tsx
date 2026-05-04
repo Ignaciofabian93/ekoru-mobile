@@ -1,181 +1,34 @@
-import PaymentCard, {
-  type CardData,
-} from "@/components/PaymentCard/PaymentCard";
+import PaymentCard, { type CardData } from "@/components/PaymentCard/PaymentCard";
 import { colors } from "@/design/tokens";
 import { useSeller } from "@/store/useAuthStore";
+import { type BusinessProfile, type PersonProfile } from "@/types/user";
 import { BadgeCheck, ChevronDown, ChevronUp, CreditCard } from "lucide-react-native";
 import React, { useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-
-// ── Plan definitions ────────────────────────────────────────────────────────
-
-interface Plan {
-  key: string;
-  label: string;
-  price: string;
-  period: string;
-  features: string[];
-  highlighted?: boolean;
-}
-
-const PLANS: Plan[] = [
-  {
-    key: "FREEMIUM",
-    label: "Freemium",
-    price: "Free",
-    period: "",
-    features: ["Up to 5 listings", "Basic analytics", "Community support"],
-  },
-  {
-    key: "BASIC",
-    label: "Basic",
-    price: "$9.99",
-    period: "/mo",
-    features: [
-      "Up to 20 listings",
-      "Standard analytics",
-      "Email support",
-      "Badge on profile",
-    ],
-  },
-  {
-    key: "ADVANCED",
-    label: "Advanced",
-    price: "$29.99",
-    period: "/mo",
-    highlighted: true,
-    features: [
-      "Unlimited listings",
-      "Advanced analytics",
-      "Priority support",
-      "Featured placement",
-      "Custom storefront",
-    ],
-  },
-  {
-    key: "STARTUP",
-    label: "Startup",
-    price: "$49.99",
-    period: "/mo",
-    features: [
-      "Everything in Advanced",
-      "Team accounts (up to 5)",
-      "API access",
-      "Dedicated account manager",
-    ],
-  },
-  {
-    key: "EXPERT",
-    label: "Expert",
-    price: "$99.99",
-    period: "/mo",
-    features: [
-      "Everything in Startup",
-      "Unlimited team members",
-      "White-label options",
-      "SLA guarantee",
-      "24/7 phone support",
-    ],
-  },
-];
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useKeyboardPadding from "@/hooks/useKeyboardPadding";
+import { PLANS } from "../constants/subscriptions";
+import PlanCard from "../ui/subscription/PlanCard";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
-function getCurrentPlan(sellerProfile: any): string {
+function getCurrentPlan(sellerProfile: PersonProfile | BusinessProfile | null): string {
   return (
-    sellerProfile?.personSubscriptionPlan ??
-    sellerProfile?.businessSubscriptionPlan ??
+    (sellerProfile as PersonProfile)?.personSubscriptionPlan ??
+    (sellerProfile as BusinessProfile)?.businessSubscriptionPlan ??
     "FREEMIUM"
-  );
-}
-
-// ── Sub-components ───────────────────────────────────────────────────────────
-
-function PlanCard({
-  plan,
-  isCurrent,
-  onSelect,
-}: {
-  plan: Plan;
-  isCurrent: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <View
-      style={[
-        styles.planCard,
-        plan.highlighted && styles.planCardHighlighted,
-        isCurrent && styles.planCardCurrent,
-      ]}
-    >
-      {plan.highlighted && !isCurrent && (
-        <View style={styles.popularBadge}>
-          <Text style={styles.popularBadgeText}>Most Popular</Text>
-        </View>
-      )}
-      {isCurrent && (
-        <View style={[styles.popularBadge, styles.currentBadge]}>
-          <BadgeCheck size={11} color={colors.primaryDark} strokeWidth={2.5} />
-          <Text style={[styles.popularBadgeText, styles.currentBadgeText]}>
-            Current Plan
-          </Text>
-        </View>
-      )}
-
-      <View style={styles.planHeader}>
-        <Text style={styles.planLabel}>{plan.label}</Text>
-        <View style={styles.priceRow}>
-          <Text style={styles.planPrice}>{plan.price}</Text>
-          {plan.period ? (
-            <Text style={styles.planPeriod}>{plan.period}</Text>
-          ) : null}
-        </View>
-      </View>
-
-      <View style={styles.featureList}>
-        {plan.features.map((f) => (
-          <View key={f} style={styles.featureRow}>
-            <View style={styles.featureDot} />
-            <Text style={styles.featureText}>{f}</Text>
-          </View>
-        ))}
-      </View>
-
-      {!isCurrent && (
-        <Pressable
-          style={({ pressed }) => [
-            styles.selectButton,
-            plan.highlighted && styles.selectButtonHighlighted,
-            pressed && styles.selectButtonPressed,
-          ]}
-          onPress={onSelect}
-        >
-          <Text
-            style={[
-              styles.selectButtonText,
-              plan.highlighted && styles.selectButtonTextHighlighted,
-            ]}
-          >
-            {plan.key === "FREEMIUM" ? "Downgrade" : "Upgrade"}
-          </Text>
-        </Pressable>
-      )}
-    </View>
   );
 }
 
 // ── Main screen ──────────────────────────────────────────────────────────────
 
 export default function SubscriptionScreen() {
+  const { bottom } = useSafeAreaInsets();
+  const keyboardPadding = useKeyboardPadding();
+
   const seller = useSeller();
-  const profile = seller?.profile as any;
-  const currentPlanKey = getCurrentPlan(profile);
+  const profile = seller && seller.profile;
+  const currentPlanKey = getCurrentPlan(profile || null);
 
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [savedCard, setSavedCard] = useState<CardData | null>(null);
@@ -185,112 +38,105 @@ export default function SubscriptionScreen() {
     setShowPaymentForm(false);
   };
 
-  const maskedCardNumber = savedCard
-    ? `•••• •••• •••• ${savedCard.number.slice(-4)}`
-    : null;
+  const maskedCardNumber = savedCard ? `•••• •••• •••• ${savedCard.number.slice(-4)}` : null;
 
   return (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.container}
-      keyboardShouldPersistTaps="handled"
+    <KeyboardAvoidingView
+      style={styles.outerContainer}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      {/* ── Current plan summary ─────────────────────────────────── */}
-      <Text style={styles.sectionTitle}>Current Plan</Text>
-      {(() => {
-        const current = PLANS.find((p) => p.key === currentPlanKey) ?? PLANS[0];
-        return (
-          <View style={styles.currentSummaryCard}>
-            <View style={styles.currentSummaryLeft}>
-              <Text style={styles.currentPlanName}>{current.label}</Text>
-              <Text style={styles.currentPlanPrice}>
-                {current.price}
-                {current.period}
-              </Text>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={[styles.container, { paddingBottom: bottom + 40 + keyboardPadding }]}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* ── Current plan summary ─────────────────────────────────── */}
+        <Text style={styles.sectionTitle}>Current Plan</Text>
+        {(() => {
+          const current = PLANS.find((p) => p.key === currentPlanKey) ?? PLANS[0];
+          return (
+            <View style={styles.currentSummaryCard}>
+              <View style={styles.currentSummaryLeft}>
+                <Text style={styles.currentPlanName}>{current.label}</Text>
+                <Text style={styles.currentPlanPrice}>
+                  {current.price}
+                  {current.period}
+                </Text>
+              </View>
+              <View style={styles.currentPlanBadge}>
+                <BadgeCheck size={20} color={colors.primary} strokeWidth={2} />
+                <Text style={styles.currentPlanBadgeText}>Active</Text>
+              </View>
             </View>
-            <View style={styles.currentPlanBadge}>
-              <BadgeCheck size={20} color={colors.primary} strokeWidth={2} />
-              <Text style={styles.currentPlanBadgeText}>Active</Text>
-            </View>
-          </View>
-        );
-      })()}
+          );
+        })()}
 
-      {/* ── Available plans ──────────────────────────────────────── */}
-      <Text style={styles.sectionTitle}>Available Plans</Text>
-      <View style={styles.plansContainer}>
-        {PLANS.map((plan) => (
-          <PlanCard
-            key={plan.key}
-            plan={plan}
-            isCurrent={plan.key === currentPlanKey}
-            onSelect={() => setShowPaymentForm(true)}
-          />
-        ))}
-      </View>
+        {/* ── Available plans ──────────────────────────────────────── */}
+        <Text style={styles.sectionTitle}>Available Plans</Text>
+        <View style={styles.plansContainer}>
+          {PLANS.map((plan) => (
+            <PlanCard
+              key={plan.key}
+              plan={plan}
+              isCurrent={plan.key === currentPlanKey}
+              onSelect={() => setShowPaymentForm(true)}
+            />
+          ))}
+        </View>
 
-      {/* ── Payment method ───────────────────────────────────────── */}
-      <Text style={styles.sectionTitle}>Payment Method</Text>
-      <View style={styles.paymentSection}>
-        {savedCard && !showPaymentForm ? (
-          <View style={styles.savedCardRow}>
-            <View style={styles.savedCardIcon}>
-              <CreditCard size={20} color={colors.primary} strokeWidth={1.8} />
+        {/* ── Payment method ───────────────────────────────────────── */}
+        <Text style={styles.sectionTitle}>Payment Method</Text>
+        <View style={styles.paymentSection}>
+          {savedCard && !showPaymentForm ? (
+            <View style={styles.savedCardRow}>
+              <View style={styles.savedCardIcon}>
+                <CreditCard size={20} color={colors.primary} strokeWidth={1.8} />
+              </View>
+              <View style={styles.savedCardInfo}>
+                <Text style={styles.savedCardNumber}>{maskedCardNumber}</Text>
+                <Text style={styles.savedCardExpiry}>Expires {savedCard.expiry}</Text>
+              </View>
+              <Pressable style={styles.editCardButton} onPress={() => setShowPaymentForm(true)}>
+                <Text style={styles.editCardText}>Edit</Text>
+              </Pressable>
             </View>
-            <View style={styles.savedCardInfo}>
-              <Text style={styles.savedCardNumber}>{maskedCardNumber}</Text>
-              <Text style={styles.savedCardExpiry}>
-                Expires {savedCard.expiry}
-              </Text>
-            </View>
-            <Pressable
-              style={styles.editCardButton}
-              onPress={() => setShowPaymentForm(true)}
-            >
-              <Text style={styles.editCardText}>Edit</Text>
-            </Pressable>
-          </View>
-        ) : null}
+          ) : null}
 
-        <Pressable
-          style={styles.toggleFormButton}
-          onPress={() => setShowPaymentForm((v) => !v)}
-        >
-          {showPaymentForm ? (
-            <ChevronUp size={16} color={colors.primaryDark} strokeWidth={2} />
-          ) : (
-            <ChevronDown size={16} color={colors.primaryDark} strokeWidth={2} />
+          <Pressable style={styles.toggleFormButton} onPress={() => setShowPaymentForm((v) => !v)}>
+            {showPaymentForm ? (
+              <ChevronUp size={16} color={colors.primaryDark} strokeWidth={2} />
+            ) : (
+              <ChevronDown size={16} color={colors.primaryDark} strokeWidth={2} />
+            )}
+            <Text style={styles.toggleFormText}>
+              {showPaymentForm ? "Hide form" : savedCard ? "Update card details" : "Add payment card"}
+            </Text>
+          </Pressable>
+
+          {showPaymentForm && (
+            <View style={styles.cardFormWrapper}>
+              <PaymentCard initialData={savedCard ?? undefined} onSave={handleSaveCard} />
+            </View>
           )}
-          <Text style={styles.toggleFormText}>
-            {showPaymentForm
-              ? "Hide form"
-              : savedCard
-                ? "Update card details"
-                : "Add payment card"}
-          </Text>
-        </Pressable>
-
-        {showPaymentForm && (
-          <View style={styles.cardFormWrapper}>
-            <PaymentCard initialData={savedCard ?? undefined} onSave={handleSaveCard} />
-          </View>
-        )}
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 // ── Styles ───────────────────────────────────────────────────────────────────
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
   scroll: {
     flex: 1,
-    backgroundColor: colors.backgroundSecondary,
+    backgroundColor: "#fff",
   },
   container: {
     padding: 20,
-    paddingBottom: 48,
-    gap: 8,
   },
 
   // Section title

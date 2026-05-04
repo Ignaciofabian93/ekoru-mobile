@@ -1,10 +1,5 @@
 import MainButton from "@/components/shared/Button/MainButton";
-import useAuthStore, {
-  useCoverImage,
-  useInitials,
-  useProfileImage,
-  useSeller,
-} from "@/store/useAuthStore";
+import useAuthStore, { useCoverImage, useInitials, useProfileImage, useSeller } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,9 +27,7 @@ export default function ProfileScreen() {
   // ── Photo upload state ──────────────────────────────────────────────────────
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [pickerSheetVisible, setPickerSheetVisible] = useState(false);
-  const [pickerTarget, setPickerTarget] = useState<"profile" | "cover">(
-    "profile",
-  );
+  const [pickerTarget, setPickerTarget] = useState<"profile" | "cover">("profile");
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
   const modalAnim = useRef(new Animated.Value(0)).current;
@@ -71,9 +64,7 @@ export default function ProfileScreen() {
     <OuterContainer>
       <ScrollContainer>
         {/* ── Cover + overlapping avatar ─────────────────────────────────── */}
-        <View
-          style={{ height: COVER_HEIGHT, marginBottom: AVATAR_PROTRUDE + 16 }}
-        >
+        <View style={{ height: COVER_HEIGHT, marginBottom: AVATAR_PROTRUDE + 16 }}>
           {/* Cover — tap anywhere to change */}
           <CoverImage
             coverImage={coverImage}

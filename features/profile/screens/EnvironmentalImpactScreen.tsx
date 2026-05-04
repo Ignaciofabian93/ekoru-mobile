@@ -1,120 +1,268 @@
-import { borderRadius, colors, fontFamily, fontSize, shadows, spacing } from "@/design/tokens";
+import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
 import { useSeller } from "@/store/useAuthStore";
 import { LinearGradient } from "expo-linear-gradient";
 import {
-  Car,
+  CloudOff,
   Droplets,
+  Globe,
   Info,
+  Layers,
   Leaf,
   Recycle,
-  TreePine,
+  Repeat,
+  ShoppingCart,
+  Star,
+  Tag,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { NAMESPACE } from "../i18n";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Palette extras (not in tokens) ───────────────────────────────────────────
 
-interface StatConfig {
-  icon: LucideIcon;
-  iconColor: string;
-  iconBg: string;
-  value: string;
-  unit: string;
-  labelKey: string;
-}
+const VIOLET = "#7c3aed";
+const VIOLET_BG = "#f5f3ff";
 
 // ─── Placeholder data — replace with real API data ────────────────────────────
 
-const CO2_KG = 12.4;
-const WATER_LT = 340;
+const TOTALS = { co2: 148.4, water: 3820, waste: 24.6 };
+const ECO_ACTIONS = 37;
+const ECO_LEVEL = 4;
 
-const STATS: StatConfig[] = [
+const ACTIVITIES = [
   {
-    icon: Leaf,
-    iconColor: colors.success,
-    iconBg: `${colors.success}20`,
-    value: CO2_KG.toFixed(1),
-    unit: "kg",
-    labelKey: "impact.co2Saved",
+    id: "purchases",
+    icon: ShoppingCart as LucideIcon,
+    color: colors.primary,
+    bg: `${colors.primary}15`,
+    co2: 62.1,
+    water: 1540,
+    waste: 9.2,
+    count: 18,
   },
   {
-    icon: Recycle,
-    iconColor: colors.info,
-    iconBg: `${colors.info}20`,
-    value: "8",
-    unit: "items",
-    labelKey: "impact.itemsRecycled",
+    id: "selling",
+    icon: Tag as LucideIcon,
+    color: colors.secondaryDark,
+    bg: `${colors.secondaryDark}15`,
+    co2: 54.8,
+    water: 1620,
+    waste: 11.3,
+    count: 12,
   },
   {
-    icon: Droplets,
-    iconColor: colors.secondary,
-    iconBg: `${colors.secondary}20`,
-    value: WATER_LT.toString(),
-    unit: "L",
-    labelKey: "impact.waterSaved",
-  },
-  {
-    icon: TreePine,
-    iconColor: colors.primaryDark,
-    iconBg: `${colors.primaryDark}20`,
-    value: "0.5",
-    unit: "trees",
-    labelKey: "impact.equivalentTrees",
+    id: "exchanges",
+    icon: Repeat as LucideIcon,
+    color: VIOLET,
+    bg: VIOLET_BG,
+    co2: 31.5,
+    water: 660,
+    waste: 4.1,
+    count: 7,
   },
 ];
 
-// ─── StatCard ─────────────────────────────────────────────────────────────────
+const MONTHS = [
+  { m: "Nov", co2: 14 },
+  { m: "Dec", co2: 22 },
+  { m: "Jan", co2: 18 },
+  { m: "Feb", co2: 28 },
+  { m: "Mar", co2: 35 },
+  { m: "Apr", co2: 31 },
+];
 
-function StatCard({ stat, label }: { stat: StatConfig; label: string }) {
-  const Icon = stat.icon;
+const MATERIALS = [
+  { name: "Recycled wool", pct: 34, color: colors.primary },
+  { name: "Organic cotton", pct: 28, color: colors.secondaryDark },
+  { name: "Recycled steel", pct: 19, color: VIOLET },
+  { name: "Natural clay", pct: 12, color: "#f59e0b" },
+  { name: "Other", pct: 7, color: colors.foregroundTertiary },
+];
+
+type Metric = "co2" | "water" | "waste";
+
+// ─── MetricTile ───────────────────────────────────────────────────────────────
+
+interface MetricTileProps {
+  icon: LucideIcon;
+  color: string;
+  bg: string;
+  value: string;
+  unit: string;
+  label: string;
+  sub: string;
+}
+
+function MetricTile({ icon: Icon, color, bg, value, unit, label, sub }: MetricTileProps) {
   return (
-    <View style={styles.statCard}>
-      <View style={[styles.statIconWrap, { backgroundColor: stat.iconBg }]}>
-        <Icon size={24} color={stat.iconColor} strokeWidth={1.8} />
+    <View style={[styles.metricTile, { backgroundColor: bg, borderColor: `${color}22` }]}>
+      {/* decorative circle */}
+      <View style={[styles.metricCircle, { backgroundColor: `${color}0d` }]} />
+      <View style={[styles.metricIconWrap, { backgroundColor: `${color}22` }]}>
+        <Icon size={15} color={color} strokeWidth={2} />
       </View>
-      <View style={styles.statValueRow}>
-        <Text style={styles.statValue}>{stat.value}</Text>
-        <Text style={styles.statUnit}> {stat.unit}</Text>
-      </View>
-      <Text style={styles.statLabel} numberOfLines={2}>{label}</Text>
+      <Text style={[styles.metricValue, { color: colors.foreground }]}>{value}</Text>
+      <Text style={[styles.metricUnit, { color }]}>{unit}</Text>
+      <Text style={styles.metricLabel}>{label}</Text>
+      <Text style={styles.metricSub}>{sub}</Text>
     </View>
   );
 }
 
-// ─── EquivalenceCard ──────────────────────────────────────────────────────────
+// ─── SectionHead ─────────────────────────────────────────────────────────────
 
-interface EquivalenceCardProps {
-  icon: LucideIcon;
-  accentColor: string;
-  title: string;
-  value: string;
-  unit: string;
-  equivalence: string;
+function SectionHead({ icon: Icon, title, sub }: { icon: LucideIcon; title: string; sub?: string }) {
+  return (
+    <View style={styles.sectionHead}>
+      <View style={styles.sectionHeadIconWrap}>
+        <Icon size={14} color={colors.primary} strokeWidth={2} />
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.sectionHeadTitle}>{title}</Text>
+        {sub ? <Text style={styles.sectionHeadSub}>{sub}</Text> : null}
+      </View>
+    </View>
+  );
 }
 
-function EquivalenceCard({
-  icon: Icon,
-  accentColor,
-  title,
-  value,
-  unit,
-  equivalence,
-}: EquivalenceCardProps) {
+// ─── MetricToggle ─────────────────────────────────────────────────────────────
+
+function MetricToggle({
+  active,
+  onChange,
+  labels,
+}: {
+  active: Metric;
+  onChange: (m: Metric) => void;
+  labels: Record<Metric, string>;
+}) {
+  const opts: Metric[] = ["co2", "water", "waste"];
   return (
-    <View style={[styles.equivCard, { borderLeftColor: accentColor }]}>
-      <View style={[styles.equivIconWrap, { backgroundColor: `${accentColor}18` }]}>
-        <Icon size={20} color={accentColor} strokeWidth={1.8} />
+    <View style={styles.toggle}>
+      {opts.map((o) => (
+        <Pressable
+          key={o}
+          style={[styles.toggleBtn, active === o && styles.toggleBtnActive]}
+          onPress={() => onChange(o)}
+        >
+          <Text style={[styles.toggleBtnText, active === o && styles.toggleBtnTextActive]}>{labels[o]}</Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}
+
+// ─── ActivityRow ──────────────────────────────────────────────────────────────
+
+function ActivityRow({
+  item,
+  metric,
+  label,
+  transactionLabel,
+}: {
+  item: (typeof ACTIVITIES)[number];
+  metric: Metric;
+  label: string;
+  transactionLabel: string;
+}) {
+  const maxVal = Math.max(...ACTIVITIES.map((a) => a[metric]));
+  const pct = (item[metric] / maxVal) * 100;
+  const fmt =
+    metric === "co2"
+      ? `${item.co2} kg`
+      : metric === "water"
+        ? `${item.water.toLocaleString()} L`
+        : `${item.waste} kg`;
+  const Icon = item.icon;
+
+  return (
+    <View style={styles.activityRow}>
+      <View style={[styles.activityIconWrap, { backgroundColor: item.bg }]}>
+        <Icon size={15} color={item.color} strokeWidth={2} />
       </View>
-      <View style={styles.equivBody}>
-        <Text style={styles.equivTitle}>{title}</Text>
-        <View style={styles.equivValueRow}>
-          <Text style={[styles.equivValue, { color: accentColor }]}>{value}</Text>
-          <Text style={styles.equivUnit}> {unit}</Text>
+      <View style={{ flex: 1, gap: 4 }}>
+        <View style={styles.activityLabelRow}>
+          <Text style={styles.activityLabel}>{label}</Text>
+          <Text style={[styles.activityValue, { color: item.color }]}>{fmt}</Text>
         </View>
-        <Text style={styles.equivSub}>{equivalence}</Text>
+        <View style={styles.activityBarTrack}>
+          <View
+            style={[
+              styles.activityBarFill,
+              { width: `${pct}%` as `${number}%`, backgroundColor: item.color },
+            ]}
+          />
+        </View>
+        <Text style={styles.activityCount}>{transactionLabel}</Text>
+      </View>
+    </View>
+  );
+}
+
+// ─── BarChart ─────────────────────────────────────────────────────────────────
+
+function BarChart() {
+  const maxVal = Math.max(...MONTHS.map((m) => m.co2));
+  return (
+    <View style={styles.barChart}>
+      {MONTHS.map((m, i) => {
+        const isLast = i === MONTHS.length - 1;
+        const heightPct = (m.co2 / maxVal) * 56;
+        return (
+          <View key={m.m} style={styles.barCol}>
+            <Text
+              style={[styles.barTopLabel, isLast && { color: colors.primary, fontFamily: fontFamily.bold }]}
+            >
+              {m.co2}
+            </Text>
+            <View style={styles.barTrack}>
+              <View
+                style={[
+                  styles.barFill,
+                  {
+                    height: heightPct,
+                    backgroundColor: isLast ? colors.primary : `${colors.primary}44`,
+                  },
+                ]}
+              />
+            </View>
+            <Text
+              style={[
+                styles.barBottomLabel,
+                isLast && { color: colors.primary, fontFamily: fontFamily.bold },
+              ]}
+            >
+              {m.m}
+            </Text>
+          </View>
+        );
+      })}
+    </View>
+  );
+}
+
+// ─── MaterialsBar ─────────────────────────────────────────────────────────────
+
+function MaterialsBar() {
+  return (
+    <View style={{ gap: 10 }}>
+      <View style={styles.materialsTrack}>
+        {MATERIALS.map((m) => (
+          <View key={m.name} style={{ flex: m.pct, backgroundColor: m.color }} />
+        ))}
+      </View>
+      <View style={styles.materialsLegend}>
+        {MATERIALS.map((m) => (
+          <View key={m.name} style={styles.materialsLegendItem}>
+            <View style={[styles.materialsDot, { backgroundColor: m.color }]} />
+            <Text style={styles.materialsLegendText}>
+              {m.name} <Text style={{ color: colors.foregroundTertiary }}>{m.pct}%</Text>
+            </Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -125,6 +273,7 @@ function EquivalenceCard({
 export default function EnvironmentalImpactScreen() {
   const seller = useSeller();
   const { t } = useTranslation(NAMESPACE);
+  const [metric, setMetric] = useState<Metric>("co2");
 
   const displayName = seller?.profile
     ? seller.profile.__typename === "PersonProfile"
@@ -132,8 +281,17 @@ export default function EnvironmentalImpactScreen() {
       : seller.profile.businessName
     : t("account.title");
 
-  const co2KmEquiv = (CO2_KG * 4.5).toFixed(1);
-  const waterShowersEquiv = (WATER_LT / 8).toFixed(0);
+  const metricLabels: Record<Metric, string> = {
+    co2: t("impact.metricCO2"),
+    water: t("impact.metricWater"),
+    waste: t("impact.metricWaste"),
+  };
+
+  const activityLabels: Record<string, string> = {
+    purchases: t("impact.activity_purchases"),
+    selling: t("impact.activity_selling"),
+    exchanges: t("impact.activity_exchanges"),
+  };
 
   return (
     <ScrollView
@@ -143,60 +301,149 @@ export default function EnvironmentalImpactScreen() {
     >
       {/* ── Hero banner ─────────────────────────────────────────────── */}
       <LinearGradient
-        colors={[colors.primaryDark, colors.primary]}
+        colors={[colors.primaryDark, "#2d6a0f", colors.primary]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.hero}
       >
-        {/* Decorative circles */}
-        <View style={[styles.circle, styles.circleTR]} />
-        <View style={[styles.circle, styles.circleBL]} />
+        <View style={[styles.heroBubble, styles.heroBubbleTR]} />
+        <View style={[styles.heroBubble, styles.heroBubbleBL]} />
 
-        <View style={styles.heroContent}>
+        <View style={styles.heroRow}>
           <View style={styles.heroIconWrap}>
-            <Leaf size={30} color={colors.onPrimary} strokeWidth={1.5} />
+            <Leaf size={18} color="#fff" strokeWidth={1.5} />
           </View>
-          <Text style={styles.heroTitle}>{t("impact.yourGreenImpact")}</Text>
-          <Text style={styles.heroSubtitle}>
-            {t("impact.subtitle_other", { name: displayName })}
-          </Text>
+          <View>
+            <Text style={styles.heroEyebrow}>{t("impact.title")}</Text>
+            <Text style={styles.heroSince}>{displayName}</Text>
+          </View>
+        </View>
+
+        <Text style={styles.heroHeadline}>{t("impact.yourGreenImpact")}</Text>
+        <Text style={styles.heroBody}>
+          {t("impact.ecoActions", { count: ECO_ACTIONS })} · {t("impact.co2Total", { value: TOTALS.co2 })}
+        </Text>
+
+        <View style={styles.heroBadge}>
+          <Star size={13} color="#fbbf24" strokeWidth={0} fill="#fbbf24" />
+          <Text style={styles.heroBadgeText}>{t("impact.ecoLevel", { level: ECO_LEVEL })}</Text>
         </View>
       </LinearGradient>
 
-      {/* ── Stats 2 × 2 grid ────────────────────────────────────────── */}
-      <View style={styles.grid}>
-        {STATS.map((stat) => (
-          <StatCard key={stat.labelKey} stat={stat} label={t(stat.labelKey)} />
-        ))}
-      </View>
-
-      {/* ── Real-world equivalences ─────────────────────────────────── */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>{t("impact.realWorldEquivalences")}</Text>
+      {/* ── Pull-up metric cards ─────────────────────────────────────── */}
+      <View style={styles.pullUp}>
+        <Text style={styles.pullUpEyebrow}>{t("impact.yourTotalImpact")}</Text>
+        <View style={styles.metricRow}>
+          <MetricTile
+            icon={CloudOff as LucideIcon}
+            color={colors.primary}
+            bg={`${colors.primary}12`}
+            value={TOTALS.co2.toString()}
+            unit={t("impact.co2Unit")}
+            label={t("impact.carbonSaved")}
+            sub={t("impact.co2Sub", { trees: 14 })}
+          />
+          <MetricTile
+            icon={Droplets as LucideIcon}
+            color={colors.secondaryDark}
+            bg={`${colors.secondaryDark}12`}
+            value={TOTALS.water.toLocaleString()}
+            unit={t("impact.waterUnit")}
+            label={t("impact.waterSaved")}
+            sub={t("impact.waterSub", { days: "2,547" })}
+          />
+          <MetricTile
+            icon={Recycle as LucideIcon}
+            color={VIOLET}
+            bg={VIOLET_BG}
+            value={TOTALS.waste.toString()}
+            unit={t("impact.wasteUnit")}
+            label={t("impact.wasteDiverted")}
+            sub={t("impact.wasteSub")}
+          />
         </View>
-
-        <EquivalenceCard
-          icon={Car}
-          accentColor={colors.success}
-          title={t("impact.co2EquivalenceLabel")}
-          value={`${CO2_KG.toFixed(1)} kg CO₂`}
-          unit=""
-          equivalence={t("impact.co2EquivalenceText", { km: co2KmEquiv })}
-        />
-
-        <EquivalenceCard
-          icon={Droplets}
-          accentColor={colors.info}
-          title={t("impact.waterEquivalenceLabel")}
-          value={`${WATER_LT} L`}
-          unit=""
-          equivalence={t("impact.waterEquivalenceText", { showers: waterShowersEquiv })}
-        />
       </View>
+
+      {/* ── Activity breakdown ───────────────────────────────────────── */}
+      <View style={[styles.card, { marginHorizontal: spacing[4] }]}>
+        <SectionHead
+          icon={Layers as LucideIcon}
+          title={t("impact.impactByActivity")}
+          sub={t("impact.tapToCompare")}
+        />
+        <MetricToggle active={metric} onChange={setMetric} labels={metricLabels} />
+        <View style={{ marginTop: 14, gap: 12 }}>
+          {ACTIVITIES.map((item) => (
+            <ActivityRow
+              key={item.id}
+              item={item}
+              metric={metric}
+              label={activityLabels[item.id]}
+              transactionLabel={t("impact.transactions_other", { count: item.count })}
+            />
+          ))}
+        </View>
+      </View>
+
+      {/* ── Monthly CO₂ trend ────────────────────────────────────────── */}
+      <View style={[styles.card, { marginHorizontal: spacing[4] }]}>
+        <SectionHead
+          icon={TrendingUp as LucideIcon}
+          title={t("impact.co2Trend")}
+          sub={t("impact.kgSavedPerMonth")}
+        />
+        <BarChart />
+        <View style={styles.trendFooter}>
+          <Text style={styles.trendFooterLabel}>{t("impact.lastSixMonths")}</Text>
+          <View style={styles.trendPill}>
+            <TrendingUp size={11} color={colors.primaryActive} strokeWidth={2.5} />
+            <Text style={styles.trendPillText}>{t("impact.trendVsLastMonth", { pct: 11 })}</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* ── Sustainable materials ────────────────────────────────────── */}
+      <View style={[styles.card, { marginHorizontal: spacing[4] }]}>
+        <SectionHead
+          icon={Layers as LucideIcon}
+          title={t("impact.sustainableMaterials")}
+          sub={t("impact.acrossYourProducts")}
+        />
+        <MaterialsBar />
+      </View>
+
+      {/* ── Real-world equivalents ───────────────────────────────────── */}
+      <LinearGradient
+        colors={[colors.primaryDark, "#2d6a0f", colors.primary]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.equivCard, { marginHorizontal: spacing[4], marginBottom: spacing[10] }]}
+      >
+        <View style={[styles.heroBubble, { width: 150, height: 150, top: -40, right: -40 }]} />
+        <View style={styles.equivHeader}>
+          <Globe size={16} color="rgba(255,255,255,0.85)" strokeWidth={1.5} />
+          <Text style={styles.equivTitle}>{t("impact.realWorldEquivalents")}</Text>
+        </View>
+        <View style={styles.equivRow}>
+          {[
+            { icon: Leaf as LucideIcon, value: "14", label: t("impact.equivTrees") },
+            { icon: Droplets as LucideIcon, value: "2,547", label: t("impact.equivWaterDays") },
+            { icon: Recycle as LucideIcon, value: "24.6", label: t("impact.equivWasteKg") },
+          ].map((e) => {
+            const EIcon = e.icon;
+            return (
+              <View key={e.label} style={styles.equivItem}>
+                <EIcon size={20} color="#fff" strokeWidth={1.5} />
+                <Text style={styles.equivValue}>{e.value}</Text>
+                <Text style={styles.equivLabel}>{e.label}</Text>
+              </View>
+            );
+          })}
+        </View>
+      </LinearGradient>
 
       {/* ── How it's calculated ─────────────────────────────────────── */}
-      <View style={styles.infoCard}>
+      <View style={[styles.infoCard, { marginHorizontal: spacing[4], marginBottom: spacing[4] }]}>
         <View style={styles.infoHeader}>
           <Info size={16} color={colors.primary} strokeWidth={2} />
           <Text style={styles.infoTitle}>{t("impact.howCalculated")}</Text>
@@ -215,186 +462,421 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundSecondary,
   },
   container: {
-    gap: spacing[4],
-    paddingBottom: spacing[10],
+    gap: spacing[3],
+    paddingBottom: spacing[4],
   },
 
   // ── Hero ────────────────────────────────────────────────────────────
   hero: {
-    paddingTop: spacing[8],
-    paddingBottom: spacing[10],
+    paddingTop: spacing[6],
+    paddingBottom: 44,
     paddingHorizontal: spacing[5],
     overflow: "hidden",
+    gap: spacing[2],
   },
-  circle: {
+  heroBubble: {
     position: "absolute",
     borderRadius: borderRadius.full,
-    backgroundColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "rgba(255,255,255,0.07)",
   },
-  circleTR: {
+  heroBubbleTR: {
     width: 220,
     height: 220,
-    top: -70,
-    right: -60,
+    top: -60,
+    right: -50,
   },
-  circleBL: {
-    width: 150,
-    height: 150,
-    bottom: -55,
-    left: -40,
+  heroBubbleBL: {
+    width: 120,
+    height: 120,
+    bottom: -30,
+    left: -30,
   },
-  heroContent: {
+  heroRow: {
+    flexDirection: "row",
     alignItems: "center",
-    gap: spacing[3],
+    gap: spacing[2],
+    marginBottom: spacing[1],
   },
   heroIconWrap: {
-    width: 60,
-    height: 60,
-    borderRadius: borderRadius.full,
+    width: 36,
+    height: 36,
+    borderRadius: borderRadius.md,
+    backgroundColor: "rgba(255,255,255,0.18)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heroEyebrow: {
+    fontSize: 11,
+    fontFamily: fontFamily.semibold,
+    color: "rgba(255,255,255,0.75)",
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
+  },
+  heroSince: {
+    fontSize: 11,
+    fontFamily: fontFamily.regular,
+    color: "rgba(255,255,255,0.55)",
+  },
+  heroHeadline: {
+    fontSize: fontSize["2xl"],
+    fontFamily: fontFamily.bold,
+    color: "#fff",
+    letterSpacing: -0.5,
+    lineHeight: 32,
+  },
+  heroBody: {
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
+    color: "rgba(255,255,255,0.8)",
+    lineHeight: 20,
+  },
+  heroBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    alignSelf: "flex-start",
+    marginTop: spacing[1],
     backgroundColor: "rgba(255,255,255,0.18)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.3)",
-    alignItems: "center",
-    justifyContent: "center",
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    borderRadius: borderRadius.full,
   },
-  heroTitle: {
-    fontSize: fontSize["2xl"],
-    fontFamily: fontFamily.bold,
-    color: colors.onPrimary,
-    textAlign: "center",
-    letterSpacing: -0.3,
-  },
-  heroSubtitle: {
+  heroBadgeText: {
     fontSize: fontSize.sm,
-    fontFamily: fontFamily.regular,
-    color: "rgba(255,255,255,0.85)",
-    textAlign: "center",
-    lineHeight: 20,
-    maxWidth: 280,
+    fontFamily: fontFamily.bold,
+    color: "#fff",
   },
 
-  // ── Stats grid ──────────────────────────────────────────────────────
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: spacing[3],
-    paddingHorizontal: spacing[4],
-  },
-  statCard: {
+  // ── Pull-up card ────────────────────────────────────────────────────
+  pullUp: {
+    marginTop: -20,
+    marginHorizontal: spacing[4],
     backgroundColor: colors.surface,
-    borderRadius: borderRadius.lg,
-    padding: spacing[4],
-    width: "47%",
-    gap: spacing[2],
-    ...shadows.sm,
+    borderRadius: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    zIndex: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  statIconWrap: {
-    width: 44,
-    height: 44,
-    borderRadius: borderRadius.sm,
+  pullUpEyebrow: {
+    fontSize: 11,
+    fontFamily: fontFamily.bold,
+    color: colors.foregroundTertiary,
+    letterSpacing: 0.8,
+    textTransform: "uppercase",
+    marginBottom: 12,
+  },
+  metricRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  // ── Metric tile ─────────────────────────────────────────────────────
+  metricTile: {
+    flex: 1,
+    borderRadius: 16,
+    paddingTop: 16,
+    paddingHorizontal: 12,
+    paddingBottom: 14,
+    borderWidth: 1,
+    overflow: "hidden",
+    gap: 0,
+  },
+  metricCircle: {
+    position: "absolute",
+    width: 100,
+    height: 100,
+    borderRadius: borderRadius.full,
+    top: -28,
+    right: -28,
+  },
+  metricIconWrap: {
+    width: 34,
+    height: 34,
+    borderRadius: 11,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 12,
   },
-  statValueRow: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    marginTop: spacing[1],
-  },
-  statValue: {
-    fontSize: fontSize["3xl"],
+  metricValue: {
+    fontSize: 20,
     fontFamily: fontFamily.bold,
-    color: colors.foreground,
+    lineHeight: 24,
     letterSpacing: -0.5,
   },
-  statUnit: {
-    fontSize: fontSize.sm,
-    fontFamily: fontFamily.medium,
-    color: colors.foregroundSecondary,
+  metricUnit: {
+    fontSize: 9,
+    fontFamily: fontFamily.bold,
+    letterSpacing: 0.5,
+    textTransform: "uppercase",
+    marginTop: 3,
   },
-  statLabel: {
-    fontSize: fontSize.xs,
+  metricLabel: {
+    fontSize: 11,
     fontFamily: fontFamily.regular,
     color: colors.foregroundSecondary,
-    lineHeight: 16,
+    marginTop: 6,
+    lineHeight: 15,
+  },
+  metricSub: {
+    fontSize: 10,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundTertiary,
+    marginTop: 2,
+    lineHeight: 14,
   },
 
-  // ── Section ─────────────────────────────────────────────────────────
-  section: {
-    paddingHorizontal: spacing[4],
-    gap: spacing[3],
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  sectionTitle: {
-    fontSize: fontSize.sm,
-    fontFamily: fontFamily.semibold,
-    color: colors.foregroundSecondary,
-    textTransform: "uppercase",
-    letterSpacing: 0.6,
-  },
-
-  // ── Equivalence cards ───────────────────────────────────────────────
-  equivCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: spacing[3],
+  // ── Card ────────────────────────────────────────────────────────────
+  card: {
     backgroundColor: colors.surface,
-    borderRadius: borderRadius.lg,
-    padding: spacing[4],
-    borderLeftWidth: 4,
-    ...shadows.sm,
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
-  equivIconWrap: {
-    width: 40,
-    height: 40,
-    borderRadius: borderRadius.sm,
+
+  // ── Section head ────────────────────────────────────────────────────
+  sectionHead: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 14,
+  },
+  sectionHeadIconWrap: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    backgroundColor: `${colors.primary}18`,
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
   },
-  equivBody: {
-    flex: 1,
-    gap: 2,
-  },
-  equivTitle: {
-    fontSize: fontSize.xs,
-    fontFamily: fontFamily.semibold,
-    color: colors.foregroundSecondary,
-    textTransform: "uppercase",
-    letterSpacing: 0.4,
-  },
-  equivValueRow: {
-    flexDirection: "row",
-    alignItems: "baseline",
-  },
-  equivValue: {
-    fontSize: fontSize.lg,
+  sectionHeadTitle: {
+    fontSize: fontSize.base,
     fontFamily: fontFamily.bold,
-    letterSpacing: -0.3,
+    color: colors.foreground,
   },
-  equivUnit: {
-    fontSize: fontSize.sm,
-    fontFamily: fontFamily.medium,
-    color: colors.foregroundSecondary,
-  },
-  equivSub: {
-    fontSize: fontSize.xs,
+  sectionHeadSub: {
+    fontSize: 11,
     fontFamily: fontFamily.regular,
     color: colors.foregroundTertiary,
     marginTop: 1,
   },
 
-  // ── Info card ───────────────────────────────────────────────────────
+  // ── Metric toggle ───────────────────────────────────────────────────
+  toggle: {
+    flexDirection: "row",
+    backgroundColor: colors.backgroundTertiary,
+    borderRadius: 10,
+    padding: 3,
+    gap: 4,
+  },
+  toggleBtn: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  toggleBtnActive: {
+    backgroundColor: colors.primary,
+  },
+  toggleBtnText: {
+    fontSize: 12,
+    fontFamily: fontFamily.bold,
+    color: colors.foregroundTertiary,
+  },
+  toggleBtnTextActive: {
+    color: "#fff",
+  },
+
+  // ── Activity row ────────────────────────────────────────────────────
+  activityRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  activityIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 9,
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+  activityLabelRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  activityLabel: {
+    fontSize: 13,
+    fontFamily: fontFamily.semibold,
+    color: colors.foreground,
+  },
+  activityValue: {
+    fontSize: 13,
+    fontFamily: fontFamily.bold,
+  },
+  activityBarTrack: {
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.backgroundTertiary,
+    overflow: "hidden",
+  },
+  activityBarFill: {
+    height: 6,
+    borderRadius: 3,
+  },
+  activityCount: {
+    fontSize: 10,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundTertiary,
+  },
+
+  // ── Bar chart ───────────────────────────────────────────────────────
+  barChart: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    gap: 6,
+    height: 96,
+    paddingHorizontal: 4,
+  },
+  barCol: {
+    flex: 1,
+    alignItems: "center",
+    gap: 4,
+  },
+  barTopLabel: {
+    fontSize: 9,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundTertiary,
+  },
+  barTrack: {
+    width: "100%",
+    height: 60,
+    justifyContent: "flex-end",
+  },
+  barFill: {
+    width: "100%",
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+  },
+  barBottomLabel: {
+    fontSize: 9,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundTertiary,
+  },
+  trendFooter: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  trendFooterLabel: {
+    fontSize: 11,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundTertiary,
+  },
+  trendPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: colors.primaryLightBg,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: borderRadius.full,
+    borderWidth: 1,
+    borderColor: colors.primaryHover,
+  },
+  trendPillText: {
+    fontSize: 11,
+    fontFamily: fontFamily.bold,
+    color: colors.primaryActive,
+  },
+  materialsTrack: {
+    flexDirection: "row",
+    height: 10,
+    borderRadius: 5,
+    overflow: "hidden",
+  },
+  materialsLegend: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    rowGap: 4,
+  },
+  materialsLegendItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+  materialsDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 2,
+    flexShrink: 0,
+  },
+  materialsLegendText: {
+    fontSize: 11,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
+  },
+  equivCard: {
+    borderRadius: 16,
+    padding: 16,
+    overflow: "hidden",
+  },
+  equivHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 14,
+  },
+  equivTitle: {
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.bold,
+    color: "#fff",
+  },
+  equivRow: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  equivItem: {
+    flex: 1,
+    backgroundColor: "rgba(255,255,255,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.2)",
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    alignItems: "center",
+    gap: 6,
+  },
+  equivValue: {
+    fontSize: 18,
+    fontFamily: fontFamily.bold,
+    color: "#fff",
+    lineHeight: 20,
+  },
+  equivLabel: {
+    fontSize: 9,
+    fontFamily: fontFamily.regular,
+    color: "rgba(255,255,255,0.75)",
+    textAlign: "center",
+    lineHeight: 13,
+  },
   infoCard: {
-    marginHorizontal: spacing[4],
-    backgroundColor: `${colors.primary}0D`,
+    backgroundColor: colors.primaryLightBg,
     borderRadius: borderRadius.lg,
     padding: spacing[4],
     gap: spacing[2],
     borderWidth: 1,
-    borderColor: `${colors.primary}22`,
+    borderColor: colors.primaryHover,
   },
   infoHeader: {
     flexDirection: "row",

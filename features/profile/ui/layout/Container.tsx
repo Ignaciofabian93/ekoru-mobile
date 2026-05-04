@@ -1,10 +1,4 @@
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function OuterContainer({
@@ -17,18 +11,17 @@ export function OuterContainer({
   const { bottom } = useSafeAreaInsets();
 
   return (
-    <View
-      style={[
-        styles.outerContainer,
-        enableBottomInset && { paddingBottom: bottom },
-      ]}
-    >
-      {children}
-    </View>
+    <View style={[styles.outerContainer, enableBottomInset && { paddingBottom: bottom }]}>{children}</View>
   );
 }
 
-export function ScrollContainer({ children }: { children: React.ReactNode }) {
+export function ScrollContainer({
+  children,
+  enableContentContainerStyle = false,
+}: {
+  children: React.ReactNode;
+  enableContentContainerStyle?: boolean;
+}) {
   return (
     <KeyboardAvoidingView
       style={styles.flex}
@@ -46,6 +39,10 @@ export function ScrollContainer({ children }: { children: React.ReactNode }) {
         // Automatically adjusts the scroll view's bottom inset when the
         // software keyboard appears and scrolls the focused input into view.
         automaticallyAdjustKeyboardInsets
+        contentContainerStyle={{
+          paddingHorizontal: enableContentContainerStyle ? 20 : 0,
+          paddingBottom: enableContentContainerStyle ? 40 : 0,
+        }}
       >
         {children}
       </ScrollView>

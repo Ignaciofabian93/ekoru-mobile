@@ -1,4 +1,5 @@
 import { UPDATE_PASSWORD } from "@/graphql/auth/profile";
+import useUserSettings from "@/hooks/useUserSettings";
 import { showError, showSuccess } from "@/lib/toast";
 import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
@@ -9,6 +10,7 @@ import { NAMESPACE } from "../i18n";
 export default function useChangePassword() {
   const router = useRouter();
   const { t } = useTranslation(NAMESPACE);
+  const { storedLanguage } = useUserSettings();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -25,7 +27,8 @@ export default function useChangePassword() {
       setConfirmPassword("");
       router.back();
     },
-    onError: () => {
+    onError: (e) => {
+      console.error("[Error while updating password]: ", e);
       showError({
         title: t("settings.errorTitle"),
         message: t("password.errorMessage"),
@@ -44,7 +47,7 @@ export default function useChangePassword() {
     }
 
     await updatePassword({
-      variables: { currentPassword, newPassword },
+      variables: { currentPassword, newPassword, language: storedLanguage?.toUpperCase() ?? "ES" },
     });
   };
 

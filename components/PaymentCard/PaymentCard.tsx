@@ -23,22 +23,163 @@ interface PaymentCardProps {
   onSave?: (data: CardData) => void;
 }
 
+// ── Card type detection ────────────────────────────────────────────────────────
+
+type CardType = "visa" | "mastercard" | "amex" | "discover" | "unknown";
+
+function detectCardType(number: string): CardType {
+  const n = number.replace(/\D/g, "");
+  if (/^4/.test(n)) return "visa";
+  if (/^(5[1-5]|2[2-7])/.test(n)) return "mastercard";
+  if (/^3[47]/.test(n)) return "amex";
+  if (/^(6011|65|64[4-9]|622)/.test(n)) return "discover";
+  return "unknown";
+}
+
+// ── Themes ────────────────────────────────────────────────────────────────────
+
+type GradientTuple = [string, string, string];
+
+const CARD_THEMES: Record<CardType, { front: GradientTuple; back: GradientTuple }> = {
+  visa: {
+    front: ["#1a1f71", "#1565c0", "#1976d2"],
+    back:  ["#0d1245", "#0d3d7a", "#0f4a8c"],
+  },
+  mastercard: {
+    front: ["#1a1a2e", "#16213e", "#0f3460"],
+    back:  ["#0d0d1a", "#0a1225", "#08203e"],
+  },
+  amex: {
+    front: ["#006747", "#007a55", "#00a878"],
+    back:  ["#004a33", "#005a3d", "#006747"],
+  },
+  discover: {
+    front: ["#7c3a00", "#b05400", "#d97706"],
+    back:  ["#4a2200", "#6b3300", "#8b4500"],
+  },
+  unknown: {
+    front: ["#0c4a6e", "#0369a1", "#06b6d4"],
+    back:  ["#1e3a5f", "#0c4a6e", "#075985"],
+  },
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 function formatExpiry(raw: string): string {
   const digits = raw.replace(/\D/g, "").slice(0, 4);
   if (digits.length >= 3) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
   return digits;
 }
 
-function buildMaskedDisplay(raw: string): string {
-  const digits = raw.replace(/\D/g, "").slice(0, 16);
-  const displayed = digits.padEnd(16, "•");
-  // mask all but last 4
-  const masked = displayed
-    .split("")
-    .map((ch, i) => (i < 12 ? (ch === "•" ? "•" : "•") : ch))
-    .join("");
+function buildMaskedDisplay(raw: string, type: CardType): string {
+  const isAmex = type === "amex";
+  const maxLen = isAmex ? 15 : 16;
+  const digits = raw.replace(/\D/g, "").slice(0, maxLen);
+  const padded = digits.padEnd(maxLen, "•");
+  const masked = padded.split("").map((ch, i) => (i < maxLen - 4 ? "•" : ch)).join("");
+  if (isAmex) {
+    return `${masked.slice(0, 4)}  ${masked.slice(4, 10)}  ${masked.slice(10)}`;
+  }
   return masked.match(/.{1,4}/g)?.join("  ") ?? "••••  ••••  ••••  ••••";
 }
+
+function formatCardNumberInput(digits: string, type: CardType): string {
+  if (type === "amex") {
+    const d = digits.slice(0, 15);
+    if (d.length <= 4) return d;
+    if (d.length <= 10) return `${d.slice(0, 4)} ${d.slice(4)}`;
+    return `${d.slice(0, 4)} ${d.slice(4, 10)} ${d.slice(10)}`;
+  }
+  return digits.slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+}
+
+// ── Network badge ─────────────────────────────────────────────────────────────
+
+function NetworkBadge({ type }: { type: CardType }) {
+  if (type === "visa") {
+    return (
+      <View>
+        <Text style={badgeStyles.visaText}>VISA</Text>
+      </View>
+    );
+  }
+  if (type === "mastercard") {
+    return (
+      <View style={badgeStyles.circles}>
+        <View style={[badgeStyles.circle, { backgroundColor: "#eb001b" }]} />
+        <View style={[badgeStyles.circle, { backgroundColor: "#f79e1b", marginLeft: -10 }]} />
+      </View>
+    );
+  }
+  if (type === "amex") {
+    return (
+      <View style={badgeStyles.amexBox}>
+        <Text style={badgeStyles.amexText}>AMEX</Text>
+      </View>
+    );
+  }
+  if (type === "discover") {
+    return (
+      <View style={badgeStyles.discoverBox}>
+        <Text style={badgeStyles.discoverText}>DISC</Text>
+        <View style={badgeStyles.discoverDot} />
+        <Text style={badgeStyles.discoverText}>VER</Text>
+      </View>
+    );
+  }
+  return null;
+}
+
+const badgeStyles = StyleSheet.create({
+  visaText: {
+    fontFamily: fontFamily.bold,
+    fontSize: 22,
+    color: "#fff",
+    fontStyle: "italic",
+    letterSpacing: 1,
+  },
+  circles: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  circle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    opacity: 0.9,
+  },
+  amexBox: {
+    backgroundColor: "rgba(255,255,255,0.2)",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+  },
+  amexText: {
+    fontFamily: fontFamily.bold,
+    fontSize: 12,
+    color: "#fff",
+    letterSpacing: 2,
+  },
+  discoverBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+  discoverText: {
+    fontFamily: fontFamily.bold,
+    fontSize: 11,
+    color: "#fbbf24",
+    letterSpacing: 0.5,
+  },
+  discoverDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#f59e0b",
+  },
+});
+
+// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
   const [card, setCard] = useState<CardData>({
@@ -49,6 +190,12 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
   });
   const [isFlipped, setIsFlipped] = useState(false);
   const flipAnim = useRef(new Animated.Value(0)).current;
+
+  const cardType = detectCardType(card.number);
+  const theme = CARD_THEMES[cardType];
+  const isAmex = cardType === "amex";
+  const numberMaxLen = isAmex ? 17 : 19; // includes spaces
+  const cvvMaxLen = isAmex ? 4 : 3;
 
   const animateTo = (toBack: boolean) => {
     if (toBack === isFlipped) return;
@@ -80,7 +227,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
     extrapolate: "clamp",
   });
 
-  const maskedNumber = buildMaskedDisplay(card.number);
+  const maskedNumber = buildMaskedDisplay(card.number, cardType);
   const displayExpiry = card.expiry || "MM/YY";
   const displayHolder = card.holder || "FULL NAME";
 
@@ -99,24 +246,20 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
           ]}
         >
           <LinearGradient
-            colors={["#0c4a6e", "#0369a1", "#06b6d4"]}
+            colors={theme.front}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={StyleSheet.absoluteFill}
           />
-          {/* Decorative circles */}
           <View style={styles.decorCircle1} />
           <View style={styles.decorCircle2} />
 
-          {/* Chip */}
           <View style={styles.chip}>
             <View style={styles.chipInner} />
           </View>
 
-          {/* Number */}
           <Text style={styles.cardNumber}>{maskedNumber}</Text>
 
-          {/* Bottom row */}
           <View style={styles.cardBottom}>
             <View>
               <Text style={styles.cardSmallLabel}>CARD HOLDER</Text>
@@ -126,11 +269,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
               <Text style={styles.cardSmallLabel}>EXPIRES</Text>
               <Text style={styles.cardValue}>{displayExpiry}</Text>
             </View>
-            {/* Network placeholder */}
-            <View style={styles.networkCircles}>
-              <View style={[styles.networkCircle, { backgroundColor: "#ef4444" }]} />
-              <View style={[styles.networkCircle, { backgroundColor: "#f97316", marginLeft: -10 }]} />
-            </View>
+            <NetworkBadge type={cardType} />
           </View>
         </Animated.View>
 
@@ -146,7 +285,7 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
           ]}
         >
           <LinearGradient
-            colors={["#1e3a5f", "#0c4a6e", "#075985"]}
+            colors={theme.back}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={StyleSheet.absoluteFill}
@@ -154,10 +293,8 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
           <View style={styles.decorCircle1} />
           <View style={styles.decorCircle2} />
 
-          {/* Magnetic stripe */}
           <View style={styles.magStripe} />
 
-          {/* CVV strip */}
           <View style={styles.cvvRow}>
             <View style={styles.signatureStrip}>
               <Text style={styles.cvvValue}>
@@ -183,14 +320,10 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
           placeholder="1234 5678 9012 3456"
           placeholderTextColor={colors.inputPlaceholder}
           keyboardType="numeric"
-          maxLength={19}
+          maxLength={numberMaxLen}
           value={
             card.number
-              ? card.number
-                  .replace(/\D/g, "")
-                  .slice(0, 16)
-                  .replace(/(.{4})/g, "$1 ")
-                  .trim()
+              ? formatCardNumberInput(card.number.replace(/\D/g, ""), cardType)
               : ""
           }
           onChangeText={(v) =>
@@ -233,10 +366,10 @@ export default function PaymentCard({ initialData, onSave }: PaymentCardProps) {
             <Text style={styles.inputLabel}>CVV</Text>
             <TextInput
               style={styles.input}
-              placeholder="•••"
+              placeholder={isAmex ? "••••" : "•••"}
               placeholderTextColor={colors.inputPlaceholder}
               keyboardType="numeric"
-              maxLength={4}
+              maxLength={cvvMaxLen}
               secureTextEntry
               value={card.cvv}
               onChangeText={(v) =>
@@ -291,7 +424,6 @@ const styles = StyleSheet.create({
     right: 0,
   },
 
-  // Decorative circles
   decorCircle1: {
     position: "absolute",
     width: 220,
@@ -311,12 +443,11 @@ const styles = StyleSheet.create({
     left: -30,
   },
 
-  // Chip
   chip: {
     width: 42,
     height: 32,
     borderRadius: borderRadius.sm,
-    backgroundColor: "#d4a843", // intentional gold chip color
+    backgroundColor: "#d4a843",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -328,7 +459,6 @@ const styles = StyleSheet.create({
     borderColor: "#b8922d",
   },
 
-  // Number
   cardNumber: {
     fontFamily: fontFamily.medium,
     fontSize: fontSize.xl,
@@ -337,7 +467,6 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
 
-  // Bottom
   cardBottom: {
     flexDirection: "row",
     alignItems: "flex-end",
@@ -355,16 +484,6 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.semibold,
     color: colors.onPrimary,
     letterSpacing: 0.5,
-  },
-  networkCircles: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  networkCircle: {
-    width: 28,
-    height: 28,
-    borderRadius: borderRadius.full,
-    opacity: 0.85,
   },
 
   // Back face

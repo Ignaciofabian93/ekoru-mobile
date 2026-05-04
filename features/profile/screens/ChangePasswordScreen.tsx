@@ -1,79 +1,53 @@
-import MainButton from "@/components/shared/Button/MainButton";
-import Input from "@/components/shared/Input/Input";
-import { KeyRound } from "lucide-react-native";
+import useKeyboardPadding from "@/hooks/useKeyboardPadding";
+import { Lock } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import useChangePassword from "../hooks/useChangePassword";
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { NAMESPACE } from "../i18n";
+import ChangePasswordForm from "../ui/changePassword/Form";
 
 export default function ChangePasswordScreen() {
   const { t } = useTranslation(NAMESPACE);
-  const {
-    currentPassword,
-    setCurrentPassword,
-    newPassword,
-    setNewPassword,
-    confirmPassword,
-    setConfirmPassword,
-    loading,
-    handleSubmit,
-  } = useChangePassword();
+  const { top, bottom } = useSafeAreaInsets();
+  const keyboardPadding = useKeyboardPadding();
 
   return (
-    <ScrollView style={styles.scroll} contentContainerStyle={styles.container}>
-      <View style={styles.iconWrap}>
-        <KeyRound size={40} color="#6b7280" strokeWidth={1.5} />
-      </View>
-      <Text style={styles.hint}>{t("password.hint")}</Text>
-
-      <View style={styles.card}>
-        <Input
-          label={t("password.current")}
-          value={currentPassword}
-          onChangeText={setCurrentPassword}
-          placeholder={t("password.currentPlaceholder")}
-          type="password"
-        />
-        <Input
-          label={t("password.new")}
-          value={newPassword}
-          onChangeText={setNewPassword}
-          placeholder={t("password.newPlaceholder")}
-          type="password"
-        />
-        <Input
-          label={t("password.confirm")}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          placeholder={t("password.confirmPlaceholder")}
-          type="password"
-        />
-      </View>
-
-      <MainButton
-        text={t("password.update")}
-        onPress={handleSubmit}
-        loading={loading}
-        style={styles.button}
-      />
-    </ScrollView>
+    <KeyboardAvoidingView
+      style={[styles.container, { paddingTop: top }]}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={[styles.scroll, { paddingBottom: bottom + 40 + keyboardPadding }]}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.iconWrap}>
+          <Lock size={40} color="#6b7280" strokeWidth={1.5} />
+        </View>
+        <Text style={styles.hint}>{t("password.hint")}</Text>
+        <ChangePasswordForm />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll: {
+  container: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  container: {
-    padding: 20,
-    paddingBottom: 40,
-    alignItems: "center",
+  scrollView: {
+    backgroundColor: "#fff",
+  },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: "center",
+    paddingHorizontal: 20,
   },
   iconWrap: {
-    marginTop: 16,
     marginBottom: 12,
+    alignItems: "center",
   },
   hint: {
     fontSize: 14,
@@ -82,16 +56,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 24,
     paddingHorizontal: 16,
-  },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 16,
-    gap: 16,
-    width: "100%",
-  },
-  button: {
-    marginTop: 20,
-    width: "100%",
   },
 });

@@ -7,7 +7,7 @@ import { storageSet } from "@/lib/storage";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Switch, View } from "react-native";
-import { NAMESPACE } from "../../i18n";
+import { NAMESPACE } from "./i18n";
 
 export default function NotificationsSection() {
   const { t } = useTranslation(NAMESPACE);

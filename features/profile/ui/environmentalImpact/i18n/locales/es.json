@@ -1,0 +1,16 @@
+{
+  "header": {
+    "title": "Impacto ambiental",
+    "subtitle": "Tu impacto ambiental basado en tus compras"
+  },
+  "yourTotalImpact": "Tu impacto total",
+  "carbonSaved": "Carbono ahorrado",
+  "co2Unit": "kg CO₂",
+  "co2Sub": "= {{trees}} árboles/año",
+  "waterSaved": "Agua ahorrada",
+  "waterUnit": "litros",
+  "waterSub": "= {{days}} días de agua potable",
+  "wasteDiverted": "Residuos evitados",
+  "wasteUnit": "kg",
+  "wasteSub": "del vertedero"
+}

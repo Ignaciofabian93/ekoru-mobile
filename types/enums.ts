@@ -134,7 +134,7 @@ export type PaymentStatus =
   | "PARTIALLY_REFUNDED"
   | "EXPIRED";
 
-export type PaymentType = "ORDER" | "QUOTATION";
+export type PaymentType = "ORDER" | "QUOTATION" | "MEMBERSHIP";
 
 export type RefundStatus =
   | "PENDING"

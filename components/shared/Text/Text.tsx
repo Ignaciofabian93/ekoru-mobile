@@ -1,6 +1,6 @@
 import { borderRadius, colors } from "@/design/tokens";
 import React from "react";
-import { Platform, StyleSheet, Text as RNText, View, type TextStyle } from "react-native";
+import { Platform, Text as RNText, StyleSheet, View, type TextStyle } from "react-native";
 
 // ─── Variant types (mirrors the web API) ─────────────────────────────────────
 
@@ -10,6 +10,7 @@ type Weight = "normal" | "medium" | "semibold" | "bold";
 type TextColor =
   | "default"
   | "primary"
+  | "primaryDark"
   | "secondary"
   | "tertiary"
   | "error"
@@ -55,6 +56,7 @@ const WEIGHT_MAP: Record<Weight, string> = {
 const COLOR_MAP: Record<TextColor, string> = {
   default: colors.foreground,
   primary: colors.primary,
+  primaryDark: colors.primaryDark,
   secondary: colors.foregroundSecondary,
   tertiary: colors.foregroundTertiary,
   muted: colors.foregroundMuted,
@@ -73,19 +75,7 @@ const VARIANT_DEFAULTS: Partial<Record<Variant, { size?: Size; weight?: Weight }
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const Text = React.forwardRef<React.ComponentRef<typeof RNText>, TextProps>(
-  (
-    {
-      variant = "p",
-      size,
-      weight,
-      color = "default",
-      align = "left",
-      style,
-      children,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ variant = "p", size, weight, color = "default", align = "left", style, children, ...props }, ref) => {
     const defaults = VARIANT_DEFAULTS[variant] ?? {};
     const resolvedSize = size ?? defaults.size ?? "base";
     const resolvedWeight = weight ?? defaults.weight ?? "normal";

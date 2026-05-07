@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client/react";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { NAMESPACE } from "../i18n";
+import { NAMESPACE } from "../ui/changePassword/i18n";
 
 export default function useChangePassword() {
   const router = useRouter();
@@ -19,8 +19,8 @@ export default function useChangePassword() {
   const [updatePassword, { loading }] = useMutation(UPDATE_PASSWORD, {
     onCompleted: () => {
       showSuccess({
-        title: t("settings.savedTitle"),
-        message: t("password.successMessage"),
+        title: t("savedTitle"),
+        message: t("successMessage"),
       });
       setCurrentPassword("");
       setNewPassword("");
@@ -30,19 +30,19 @@ export default function useChangePassword() {
     onError: (e) => {
       console.error("[Error while updating password]: ", e);
       showError({
-        title: t("settings.errorTitle"),
-        message: t("password.errorMessage"),
+        title: t("errorTitle"),
+        message: t("errorMessage"),
       });
     },
   });
 
   const handleSubmit = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      showError({ title: "Error", message: t("password.error_fillFields") });
+      showError({ title: "Error", message: t("error_fillFields") });
       return;
     }
     if (newPassword !== confirmPassword) {
-      showError({ title: "Error", message: t("password.error_passwordMismatch") });
+      showError({ title: "Error", message: t("error_passwordMismatch") });
       return;
     }
 

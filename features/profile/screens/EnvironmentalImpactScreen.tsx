@@ -1,8 +1,6 @@
 import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
-import { useSeller } from "@/store/useAuthStore";
 import { LinearGradient } from "expo-linear-gradient";
 import {
-  CloudOff,
   Droplets,
   Globe,
   Info,
@@ -11,7 +9,6 @@ import {
   Recycle,
   Repeat,
   ShoppingCart,
-  Star,
   Tag,
   TrendingUp,
   type LucideIcon,
@@ -20,6 +17,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { NAMESPACE } from "../i18n";
+import Header from "../ui/environmentalImpact/Header";
+import MetricsSummary from "../ui/environmentalImpact/MetricsSummary";
 
 // ─── Palette extras (not in tokens) ───────────────────────────────────────────
 
@@ -27,10 +26,6 @@ const VIOLET = "#7c3aed";
 const VIOLET_BG = "#f5f3ff";
 
 // ─── Placeholder data — replace with real API data ────────────────────────────
-
-const TOTALS = { co2: 148.4, water: 3820, waste: 24.6 };
-const ECO_ACTIONS = 37;
-const ECO_LEVEL = 4;
 
 const ACTIVITIES = [
   {
@@ -85,32 +80,6 @@ const MATERIALS = [
 type Metric = "co2" | "water" | "waste";
 
 // ─── MetricTile ───────────────────────────────────────────────────────────────
-
-interface MetricTileProps {
-  icon: LucideIcon;
-  color: string;
-  bg: string;
-  value: string;
-  unit: string;
-  label: string;
-  sub: string;
-}
-
-function MetricTile({ icon: Icon, color, bg, value, unit, label, sub }: MetricTileProps) {
-  return (
-    <View style={[styles.metricTile, { backgroundColor: bg, borderColor: `${color}22` }]}>
-      {/* decorative circle */}
-      <View style={[styles.metricCircle, { backgroundColor: `${color}0d` }]} />
-      <View style={[styles.metricIconWrap, { backgroundColor: `${color}22` }]}>
-        <Icon size={15} color={color} strokeWidth={2} />
-      </View>
-      <Text style={[styles.metricValue, { color: colors.foreground }]}>{value}</Text>
-      <Text style={[styles.metricUnit, { color }]}>{unit}</Text>
-      <Text style={styles.metricLabel}>{label}</Text>
-      <Text style={styles.metricSub}>{sub}</Text>
-    </View>
-  );
-}
 
 // ─── SectionHead ─────────────────────────────────────────────────────────────
 
@@ -271,15 +240,8 @@ function MaterialsBar() {
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export default function EnvironmentalImpactScreen() {
-  const seller = useSeller();
   const { t } = useTranslation(NAMESPACE);
   const [metric, setMetric] = useState<Metric>("co2");
-
-  const displayName = seller?.profile
-    ? seller.profile.__typename === "PersonProfile"
-      ? seller.profile.firstName
-      : seller.profile.businessName
-    : t("account.title");
 
   const metricLabels: Record<Metric, string> = {
     co2: t("impact.metricCO2"),
@@ -300,69 +262,10 @@ export default function EnvironmentalImpactScreen() {
       showsVerticalScrollIndicator={false}
     >
       {/* ── Hero banner ─────────────────────────────────────────────── */}
-      <LinearGradient
-        colors={[colors.primaryDark, "#2d6a0f", colors.primary]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.hero}
-      >
-        <View style={[styles.heroBubble, styles.heroBubbleTR]} />
-        <View style={[styles.heroBubble, styles.heroBubbleBL]} />
-
-        <View style={styles.heroRow}>
-          <View style={styles.heroIconWrap}>
-            <Leaf size={18} color="#fff" strokeWidth={1.5} />
-          </View>
-          <View>
-            <Text style={styles.heroEyebrow}>{t("impact.title")}</Text>
-            <Text style={styles.heroSince}>{displayName}</Text>
-          </View>
-        </View>
-
-        <Text style={styles.heroHeadline}>{t("impact.yourGreenImpact")}</Text>
-        <Text style={styles.heroBody}>
-          {t("impact.ecoActions", { count: ECO_ACTIONS })} · {t("impact.co2Total", { value: TOTALS.co2 })}
-        </Text>
-
-        <View style={styles.heroBadge}>
-          <Star size={13} color="#fbbf24" strokeWidth={0} fill="#fbbf24" />
-          <Text style={styles.heroBadgeText}>{t("impact.ecoLevel", { level: ECO_LEVEL })}</Text>
-        </View>
-      </LinearGradient>
+      <Header />
 
       {/* ── Pull-up metric cards ─────────────────────────────────────── */}
-      <View style={styles.pullUp}>
-        <Text style={styles.pullUpEyebrow}>{t("impact.yourTotalImpact")}</Text>
-        <View style={styles.metricRow}>
-          <MetricTile
-            icon={CloudOff as LucideIcon}
-            color={colors.primary}
-            bg={`${colors.primary}12`}
-            value={TOTALS.co2.toString()}
-            unit={t("impact.co2Unit")}
-            label={t("impact.carbonSaved")}
-            sub={t("impact.co2Sub", { trees: 14 })}
-          />
-          <MetricTile
-            icon={Droplets as LucideIcon}
-            color={colors.secondaryDark}
-            bg={`${colors.secondaryDark}12`}
-            value={TOTALS.water.toLocaleString()}
-            unit={t("impact.waterUnit")}
-            label={t("impact.waterSaved")}
-            sub={t("impact.waterSub", { days: "2,547" })}
-          />
-          <MetricTile
-            icon={Recycle as LucideIcon}
-            color={VIOLET}
-            bg={VIOLET_BG}
-            value={TOTALS.waste.toString()}
-            unit={t("impact.wasteUnit")}
-            label={t("impact.wasteDiverted")}
-            sub={t("impact.wasteSub")}
-          />
-        </View>
-      </View>
+      <MetricsSummary />
 
       {/* ── Activity breakdown ───────────────────────────────────────── */}
       <View style={[styles.card, { marginHorizontal: spacing[4] }]}>

@@ -87,3 +87,105 @@ export const UPDATE_SELLER_CATEGORY = gql`
     }
   }
 `;
+
+export const GET_PERSON_MEMBERSHIPS = gql`
+  query PersonMemberships($language: Language, $countryId: Int) {
+    personMemberships(language: $language, countryId: $countryId) {
+      id
+      membershipType
+      durationMonths
+      isActive
+      pricing {
+        id
+        personMembershipId
+        countryId
+        currency
+        price
+        isActive
+      }
+      translation {
+        id
+        personMembershipId
+        language
+        name
+        description
+      }
+    }
+  }
+`;
+
+export const GET_BUSINESS_MEMBERSHIPS = gql`
+  query BusinessMemberships($language: Language, $countryId: Int) {
+    businessMemberships(language: $language, countryId: $countryId) {
+      id
+      membershipType
+      durationMonths
+      isActive
+      pricing {
+        id
+        businessMembershipId
+        countryId
+        currency
+        price
+        isActive
+      }
+      translation {
+        id
+        businessMembershipId
+        language
+        name
+        description
+      }
+    }
+  }
+`;
+
+export const ASSIGN_PERSON_MEMBERSHIP = gql`
+  mutation AssignPersonMembership($input: CreatePersonMembershipSubscriptionInput, $language: Language) {
+    assignPersonMembership(input: $input, language: $language) {
+      id
+      sellerId
+      personMembershipId
+      startDate
+      endDate
+      isActive
+      autoRenew
+      paymentId
+      createdAt
+      updatedAt
+      personMembership {
+        id
+        membershipType
+        durationMonths
+        isActive
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const ASSIGN_BUSINESS_MEMBERSHIP = gql`
+  mutation AssignBusinessMembership($input: CreateBusinessMembershipSubscriptionInput, $language: Language) {
+    assignBusinessMembership(input: $input, language: $language) {
+      id
+      sellerId
+      businessMembershipId
+      startDate
+      endDate
+      isActive
+      autoRenew
+      paymentId
+      createdAt
+      updatedAt
+      businessMembership {
+        id
+        membershipType
+        durationMonths
+        isActive
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;

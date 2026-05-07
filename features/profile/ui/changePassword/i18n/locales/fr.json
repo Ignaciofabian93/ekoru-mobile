@@ -1,0 +1,17 @@
+{
+  "hint": "Choisissez un mot de passe fort que vous n'avez pas utilisé auparavant.",
+  "current": "Mot de passe actuel",
+  "new": "Nouveau mot de passe",
+  "confirm": "Confirmer le nouveau mot de passe",
+  "currentPlaceholder": "Entrez votre mot de passe actuel",
+  "newPlaceholder": "Entrez le nouveau mot de passe",
+  "confirmPlaceholder": "Confirmez le nouveau mot de passe",
+  "update": "Mettre à jour le mot de passe",
+  "confirmPasswordError": "Les mots de passe ne correspondent pas",
+  "savedTitle": "Paramètres enregistrés",
+  "successMessage": "Mot de passe mis à jour avec succès.",
+  "errorTitle": "Impossible d'enregistrer les paramètres",
+  "errorMessage": "Impossible de mettre à jour le mot de passe. Vérifiez votre mot de passe actuel et réessayez.",
+  "error_fillFields": "Veuillez remplir tous les champs",
+  "error_passwordMismatch": "Les nouveaux mots de passe ne correspondent pas"
+}

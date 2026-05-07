@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NAMESPACE } from "../i18n";
+import { NAMESPACE } from "../ui/changePassword/i18n";
 import ChangePasswordForm from "../ui/changePassword/Form";
 
 export default function ChangePasswordScreen() {
@@ -25,7 +25,7 @@ export default function ChangePasswordScreen() {
         <View style={styles.iconWrap}>
           <Lock size={40} color="#6b7280" strokeWidth={1.5} />
         </View>
-        <Text style={styles.hint}>{t("password.hint")}</Text>
+        <Text style={styles.hint}>{t("hint")}</Text>
         <ChangePasswordForm />
       </ScrollView>
     </KeyboardAvoidingView>

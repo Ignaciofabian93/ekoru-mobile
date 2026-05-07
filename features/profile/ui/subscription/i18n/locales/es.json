@@ -1,0 +1,38 @@
+{
+  "header": {
+    "title": "Suscripción",
+    "subtitle": "Elige el plan que mejor se adapte a ti y haz un impacto positivo en el planeta."
+  },
+  "currentPlan": {
+    "title": "Plan actual",
+    "status": "Activo"
+  },
+  "availablePlans": {
+    "title": "Planes disponibles",
+    "monthly": "Mensual",
+    "yearly": "Anual"
+  },
+  "loadingPlans": "Cargando planes...",
+  "noPlansAvailable": "Lo sentimos, no hay planes disponibles en este momento.",
+  "selectPlan": "Seleccionar plan",
+  "confirmModal": {
+    "title": "Confirmar suscripción",
+    "upgradingTo": "Cambiando a",
+    "billedMonthly": "Facturado mensualmente",
+    "billedYearly": "Facturado anualmente",
+    "paymentMethod": "Método de pago",
+    "expires": "Vence",
+    "editCard": "Editar",
+    "addCard": "Agregar tarjeta",
+    "updateCard": "Actualizar tarjeta",
+    "hideForm": "Ocultar formulario",
+    "subscribe": "Suscribirse a {{plan}}",
+    "cancel": "Cancelar"
+  },
+  "downgradeConfirm": {
+    "title": "Confirmar cambio de plan",
+    "message": "¿Estás seguro de que deseas cambiar a {{plan}}? Perderás acceso a las siguientes funciones:",
+    "confirmButton": "Sí, cambiar a {{plan}}",
+    "cancelButton": "No, mantener mi plan actual"
+  }
+}

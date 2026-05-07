@@ -1,0 +1,32 @@
+{
+  "header": {
+    "title": "Abonnement",
+    "subtitle": "Choisissez le plan qui vous convient le mieux et faites un impact positif sur la planète."
+  },
+  "currentPlan": {
+    "title": "Plan actuel",
+    "status": "Actif"
+  },
+  "availablePlans": {
+    "title": "Plans disponibles",
+    "monthly": "Mensuel",
+    "yearly": "Annuel"
+  },
+  "loadingPlans": "Chargement des plans...",
+  "noPlansAvailable": "Désolé, aucun plan n'est disponible pour le moment.",
+  "selectPlan": "Choisir un plan",
+  "confirmModal": {
+    "title": "Confirmer l'abonnement",
+    "upgradingTo": "Passage à",
+    "billedMonthly": "Facturé mensuellement",
+    "billedYearly": "Facturé annuellement",
+    "paymentMethod": "Moyen de paiement",
+    "expires": "Expire",
+    "editCard": "Modifier",
+    "addCard": "Ajouter une carte",
+    "updateCard": "Mettre à jour",
+    "hideForm": "Masquer",
+    "subscribe": "S'abonner à {{plan}}",
+    "cancel": "Annuler"
+  }
+}

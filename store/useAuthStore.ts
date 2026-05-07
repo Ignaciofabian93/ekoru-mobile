@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 import { formatInitials } from "@/features/profile/utils/formatters";
 import { resolveImageUrl } from "@/features/profile/utils/resolveImage";
-import type { SellerType } from "@/types/enums";
+import type { PersonSubscriptionPlan, BusinessSubscriptionPlan, SellerType } from "@/types/enums";
 import type { Seller } from "@/types/user";
 
 interface AuthState {
@@ -20,6 +20,7 @@ interface AuthState {
   refreshSeller: (seller: Seller) => Promise<void>;
   updateProfileImage: (imageUrl: string) => Promise<void>;
   updateCoverImage: (imageUrl: string) => Promise<void>;
+  updateSubscriptionPlan: (plan: string) => Promise<void>;
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
   setBiometricEnabled: (enabled: boolean) => Promise<void>;
@@ -74,6 +75,18 @@ const useAuthStore = create<AuthState>()((set) => ({
     const seller = useAuthStore.getState().seller;
     if (!seller?.profile) return;
     const updatedProfile = { ...seller.profile, coverImage: imageUrl };
+    const updatedSeller = { ...seller, profile: updatedProfile };
+    set({ seller: updatedSeller });
+    await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(updatedSeller));
+  },
+
+  updateSubscriptionPlan: async (plan: string) => {
+    const seller = useAuthStore.getState().seller;
+    if (!seller?.profile) return;
+    const updatedProfile =
+      seller.profile.__typename === "PersonProfile"
+        ? { ...seller.profile, personSubscriptionPlan: plan as PersonSubscriptionPlan }
+        : { ...seller.profile, businessSubscriptionPlan: plan as BusinessSubscriptionPlan };
     const updatedSeller = { ...seller, profile: updatedProfile };
     set({ seller: updatedSeller });
     await SecureStore.setItemAsync(SELLER_KEY, JSON.stringify(updatedSeller));

@@ -7,7 +7,7 @@ import useUserSettings from "@/hooks/useUserSettings";
 import { storageSet } from "@/lib/storage";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
-import { NAMESPACE } from "../../i18n";
+import { NAMESPACE } from "./i18n";
 
 export default function LanguagesSection() {
   const { t, i18n } = useTranslation(NAMESPACE);
@@ -16,7 +16,7 @@ export default function LanguagesSection() {
   return (
     <View style={{ marginTop: 24 }}>
       <Title level="h6" style={{ color: "#2f2f2f" }}>
-        {t("settings.language")}
+        {t("language")}
       </Title>
       <View style={styles.card}>
         {LANGUAGES_SUPPORTED.map((lang, index) => (

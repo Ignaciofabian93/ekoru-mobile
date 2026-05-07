@@ -8,7 +8,7 @@ import { useAppCurrency } from "@/store/useLocationStore";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
-import { NAMESPACE } from "../../i18n";
+import { NAMESPACE } from "./i18n";
 
 export default function CurrencySection() {
   const { t } = useTranslation(NAMESPACE);
@@ -24,7 +24,7 @@ export default function CurrencySection() {
   return (
     <View style={styles.container}>
       <Title level="h6" style={{ color: "#2f2f2f" }}>
-        {t("settings.currency")}
+        {t("currency")}
       </Title>
       <Select
         value={selected}

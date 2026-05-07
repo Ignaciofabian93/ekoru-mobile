@@ -186,6 +186,68 @@ export type SellerLevel = {
   updatedAt: string;
 };
 
+export type MembershipPricing = {
+  id: string;
+  personMembershipId?: string;
+  businessMembershipId?: string;
+  countryId: number;
+  currency: string;
+  price: number;
+  isActive: boolean;
+};
+
+export type MembershipTranslation = {
+  id: string;
+  personMembershipId?: string;
+  businessMembershipId?: string;
+  language: string;
+  name: string;
+  description: string[];
+};
+
+export type PersonMembership = {
+  id: string;
+  membershipType: import("./enums").PersonSubscriptionPlan;
+  durationMonths: number;
+  isActive: boolean;
+  pricing: MembershipPricing | null;
+  translation: MembershipTranslation;
+};
+
+export type BusinessMembership = {
+  id: string;
+  membershipType: import("./enums").BusinessSubscriptionPlan;
+  durationMonths: number;
+  isActive: boolean;
+  pricing: MembershipPricing | null;
+  translation: MembershipTranslation;
+};
+
+type MembershipRef = {
+  id: string;
+  membershipType: string;
+  durationMonths: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SellerMembershipSubscription = {
+  id: string;
+  sellerId: string;
+  personMembershipId?: string;
+  businessMembershipId?: string;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  autoRenew: boolean;
+  paymentId?: string;
+  createdAt: string;
+  updatedAt: string;
+  personMembership?: MembershipRef;
+  businessMembership?: MembershipRef;
+};
+
 export type Session = {
   id: string;
   token: string;

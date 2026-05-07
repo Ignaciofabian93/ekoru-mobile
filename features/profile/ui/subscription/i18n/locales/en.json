@@ -1,0 +1,32 @@
+{
+  "header": {
+    "title": "Subscription",
+    "subtitle": "Choose the plan that best fits you and make a positive impact on the planet."
+  },
+  "currentPlan": {
+    "title": "Current Plan",
+    "status": "Active"
+  },
+  "availablePlans": {
+    "title": "Available Plans",
+    "monthly": "Monthly",
+    "yearly": "Yearly"
+  },
+  "loadingPlans": "Loading plans...",
+  "noPlansAvailable": "Sorry, no plans are available at this time.",
+  "selectPlan": "Select Plan",
+  "confirmModal": {
+    "title": "Confirm Subscription",
+    "upgradingTo": "Upgrading to",
+    "billedMonthly": "Billed monthly",
+    "billedYearly": "Billed yearly",
+    "paymentMethod": "Payment Method",
+    "expires": "Expires",
+    "editCard": "Edit",
+    "addCard": "Add payment card",
+    "updateCard": "Update card",
+    "hideForm": "Hide form",
+    "subscribe": "Subscribe to {{plan}}",
+    "cancel": "Cancel"
+  }
+}

@@ -40,7 +40,7 @@ export function ScrollContainer({
         // software keyboard appears and scrolls the focused input into view.
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={{
-          paddingHorizontal: enableContentContainerStyle ? 20 : 0,
+          // paddingHorizontal: enableContentContainerStyle ? 20 : 0,
           paddingBottom: enableContentContainerStyle ? 40 : 0,
         }}
       >
@@ -50,8 +50,16 @@ export function ScrollContainer({
   );
 }
 
+export function Content({ children }: { children: React.ReactNode }) {
+  return <View style={styles.content}>{children}</View>;
+}
+
 const styles = StyleSheet.create({
   outerContainer: { flex: 1, backgroundColor: "#fff" },
   flex: { flex: 1 },
   scroll: { flex: 1 },
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
 });

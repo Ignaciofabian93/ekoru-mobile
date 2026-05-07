@@ -1,0 +1,22 @@
+{
+  "header": {
+    "title": "Configuración",
+    "subtitle": "Personaliza tu experiencia y gestiona tus preferencias."
+  },
+  "about": {
+    "title": "Acerca de",
+    "version": "Versión",
+    "termsOfService": "Términos y Políticas"
+  },
+  "currency": "Moneda",
+  "language": "Idioma",
+  "notifications": {
+    "title": "Notificaciones",
+    "push": "Notificaciones push"
+  },
+  "security": {
+    "title": "Seguridad",
+    "twoFactorAuth": "Autenticación en dos pasos",
+    "twoFaNotAvailable": "La autenticación biométrica no está disponible en este dispositivo."
+  }
+}

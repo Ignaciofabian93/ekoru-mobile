@@ -1,0 +1,17 @@
+{
+  "hint": "Choose a strong password that you haven't used before.",
+  "current": "Current Password",
+  "new": "New Password",
+  "confirm": "Confirm New Password",
+  "currentPlaceholder": "Enter current password",
+  "newPlaceholder": "Enter new password",
+  "confirmPlaceholder": "Confirm new password",
+  "update": "Update Password",
+  "confirmPasswordError": "Passwords do not match",
+  "savedTitle": "Settings Saved",
+  "successMessage": "Password updated successfully.",
+  "errorTitle": "Could not save settings",
+  "errorMessage": "Could not update password. Please check your current password and try again.",
+  "error_fillFields": "Please fill in all fields",
+  "error_passwordMismatch": "New passwords do not match"
+}

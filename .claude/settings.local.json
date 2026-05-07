@@ -20,7 +20,8 @@
       "Bash(tar xf *)",
       "Bash(python -c \"from PIL import Image; print\\('Pillow available'\\)\")",
       "Bash(pip install *)",
-      "Bash(python -)"
+      "Bash(python -)",
+      "Bash(npm test *)"
     ]
   }
 }

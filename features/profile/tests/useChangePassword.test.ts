@@ -32,6 +32,17 @@ jest.mock("@apollo/client/react", () => ({
   useMutation: () => [mockUpdatePassword, { loading: false }],
 }));
 
+// Mock useUserSettings to avoid react-native-mmkv native module dependency
+jest.mock("@/hooks/useUserSettings", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    storedLanguage: null,
+    storedCurrency: null,
+    storedPushNotifications: null,
+    storedTwoFactorAuth: null,
+  })),
+}));
+
 import { act, renderHook } from "@testing-library/react-native";
 import useChangePassword from "../hooks/useChangePassword";
 
@@ -83,7 +94,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "password.error_fillFields",
+      message: "error_fillFields",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });
@@ -97,7 +108,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "password.error_fillFields",
+      message: "error_fillFields",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });
@@ -111,7 +122,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "password.error_fillFields",
+      message: "error_fillFields",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });
@@ -128,7 +139,7 @@ describe("useChangePassword", () => {
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockShowError).toHaveBeenCalledWith({
       title: "Error",
-      message: "password.error_passwordMismatch",
+      message: "error_passwordMismatch",
     });
     expect(mockUpdatePassword).not.toHaveBeenCalled();
   });
@@ -144,7 +155,7 @@ describe("useChangePassword", () => {
     });
     await act(async () => { await result.current.handleSubmit(); });
     expect(mockUpdatePassword).toHaveBeenCalledWith({
-      variables: { currentPassword: "old123", newPassword: "new456" },
+      variables: { currentPassword: "old123", newPassword: "new456", language: "ES" },
     });
     expect(mockShowError).not.toHaveBeenCalled();
   });

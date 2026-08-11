@@ -1,6 +1,6 @@
-import { Select, type Option } from "@/components/shared/Select/Select";
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Select, type Option } from "@/components/Primitives/Select/Select";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import useDepartments from "@/features/marketplace/hooks/useDepartments";
 import type { DepartmentCategory } from "@/features/marketplace/types/Department";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
@@ -9,10 +9,7 @@ import type { PublishFormValues } from "../../types/PublishForm";
 interface Props {
   values: PublishFormValues;
   errors: Partial<Record<keyof PublishFormValues, string>>;
-  set: <K extends keyof PublishFormValues>(
-    key: K,
-    value: PublishFormValues[K],
-  ) => void;
+  set: <K extends keyof PublishFormValues>(key: K, value: PublishFormValues[K]) => void;
 }
 
 export default function CategoryStep({ values, errors, set }: Props) {

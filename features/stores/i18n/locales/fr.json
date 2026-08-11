@@ -29,5 +29,15 @@
   "rows": "Lignes",
   "showingResults": "Affichage de {{shown}} sur {{total}} résultats",
   "noStoresFound": "Aucune boutique trouvée",
-  "noStoresMatchFilters": "Aucune boutique ne correspond aux filtres"
+  "noStoresMatchFilters": "Aucune boutique ne correspond aux filtres",
+  "browseCategories": "Explorer les catégories",
+  "available": "disponibles",
+  "subcategories": "Sous-catégories",
+  "searchLabel": "Rechercher",
+  "priceRange": "Fourchette de prix",
+  "min": "Min",
+  "max": "Max",
+  "onOfferOnly": "En promotion seulement",
+  "onOfferSubtitle": "Afficher uniquement les produits en promotion",
+  "noProductsFound": "Aucun produit trouvé"
 }

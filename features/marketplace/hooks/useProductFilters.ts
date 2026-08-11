@@ -1,105 +1,103 @@
-import { useMemo, useState } from "react";
-import { DUMMY_PRODUCTS } from "../data/dummyProducts";
-import type { Product, ProductCondition } from "../types/Product";
+import { useCallback, useMemo, useState } from "react";
 
-export interface ProductFilters {
-  brand: string;
-  minPrice: string;
-  maxPrice: string;
-  conditions: ProductCondition[];
-  isExchangeable: boolean | null;
-}
+import type { ProductCondition } from "@/types/enums";
 
-export const DEFAULT_FILTERS: ProductFilters = {
-  brand: "",
-  minPrice: "",
-  maxPrice: "",
-  conditions: [],
-  isExchangeable: null,
+import {
+  DEFAULT_PAGE_SIZE,
+  EMPTY_FILTERS,
+  type ProductFilters,
+  type ProductSortValue,
+  type SortInput,
+} from "../types";
+
+// Values match the marketplace service's ProductSortInput: prisma field name
+// plus lowercase order.
+const SORT_MAP: Record<ProductSortValue, SortInput> = {
+  newest: { field: "createdAt", order: "desc" },
+  oldest: { field: "createdAt", order: "asc" },
+  priceAsc: { field: "price", order: "asc" },
+  priceDesc: { field: "price", order: "desc" },
 };
 
-export const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50] as const;
-
-export default function useProductFilters(
-  products: Product[] = DUMMY_PRODUCTS,
-) {
-  const [filters, setFilters] = useState<ProductFilters>(DEFAULT_FILTERS);
+/**
+ * Server-side filter/sort/pagination state for marketplace product queries.
+ * Produces `filterInput`/`sortInput` to feed a GraphQL query — the gateway
+ * does the filtering, not the client. `applyFilters` supports the filter
+ * sheet's batch draft-then-apply UX.
+ */
+export default function useProductFilters() {
+  const [filters, setFilters] = useState<ProductFilters>(EMPTY_FILTERS);
+  const [sort, setSort] = useState<ProductSortValue>("newest");
   const [page, setPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(
-    ITEMS_PER_PAGE_OPTIONS[0],
+  const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
+
+  const setField = useCallback(
+    <K extends keyof ProductFilters>(key: K, value: ProductFilters[K]) => {
+      setFilters((prev) => ({ ...prev, [key]: value }));
+      setPage(1);
+    },
+    [],
   );
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      if (
-        filters.brand.trim() &&
-        !p.brand?.toLowerCase().includes(filters.brand.trim().toLowerCase())
-      )
-        return false;
+  // Batch-apply a full draft from the filter sheet.
+  const applyFilters = useCallback((next: ProductFilters) => {
+    setFilters(next);
+    setPage(1);
+  }, []);
 
-      const min = parseFloat(filters.minPrice);
-      const max = parseFloat(filters.maxPrice);
-      if (!isNaN(min) && p.price < min) return false;
-      if (!isNaN(max) && p.price > max) return false;
+  const reset = useCallback(() => {
+    setFilters(EMPTY_FILTERS);
+    setSort("newest");
+    setPage(1);
+  }, []);
 
-      if (
-        filters.conditions.length > 0 &&
-        !filters.conditions.includes(p.condition)
-      )
-        return false;
+  const setSortValue = useCallback((value: ProductSortValue) => {
+    setSort(value);
+    setPage(1);
+  }, []);
 
-      if (filters.isExchangeable !== null) {
-        const sellerAllows =
-          (p.seller?.profile as any)?.allowExchanges === true;
-        if (filters.isExchangeable !== sellerAllows) return false;
-      }
+  const setPageSizeValue = useCallback((size: number) => {
+    setPageSize(size);
+    setPage(1);
+  }, []);
 
-      return true;
-    });
-  }, [products, filters]);
+  // Build the GraphQL filter input. Empty fields are dropped so the gateway
+  // does not receive nulls that would short-circuit the SQL where-clause.
+  const filterInput = useMemo(() => {
+    const input: Record<string, unknown> = {};
+    if (filters.search.trim()) input.name = filters.search.trim();
+    if (filters.minPrice) input.minPrice = Number(filters.minPrice);
+    if (filters.maxPrice) input.maxPrice = Number(filters.maxPrice);
+    if (filters.condition) input.condition = filters.condition as ProductCondition;
+    if (filters.isExchangeable) input.isExchangeable = true;
+    return Object.keys(input).length ? input : undefined;
+  }, [filters]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
-  const safePage = Math.min(Math.max(page, 1), totalPages);
-  const paginated = filtered.slice(
-    (safePage - 1) * itemsPerPage,
-    safePage * itemsPerPage,
+  const sortInput = useMemo(() => SORT_MAP[sort], [sort]);
+
+  const hasActiveFilters = useMemo(
+    () =>
+      filters.search.trim() !== "" ||
+      filters.minPrice !== "" ||
+      filters.maxPrice !== "" ||
+      filters.condition !== "" ||
+      filters.isExchangeable,
+    [filters],
   );
-
-  const applyFilters = (newFilters: ProductFilters) => {
-    setFilters(newFilters);
-    setPage(1);
-  };
-
-  const resetFilters = () => {
-    setFilters(DEFAULT_FILTERS);
-    setPage(1);
-  };
-
-  const goToPage = (p: number) => setPage(Math.max(1, Math.min(p, totalPages)));
-
-  const changeItemsPerPage = (n: number) => {
-    setItemsPerPage(n);
-    setPage(1);
-  };
-
-  const hasActiveFilters =
-    filters.brand.trim() !== "" ||
-    filters.minPrice !== "" ||
-    filters.maxPrice !== "" ||
-    filters.conditions.length > 0 ||
-    filters.isExchangeable !== null;
 
   return {
     filters,
+    sort,
+    page,
+    pageSize,
+    setField,
     applyFilters,
-    resetFilters,
+    reset,
+    setSort: setSortValue,
+    setPage,
+    setPageSize: setPageSizeValue,
+    filterInput,
+    sortInput,
     hasActiveFilters,
-    filteredCount: filtered.length,
-    paginated,
-    page: safePage,
-    totalPages,
-    itemsPerPage,
-    changeItemsPerPage,
-    goToPage,
   };
 }

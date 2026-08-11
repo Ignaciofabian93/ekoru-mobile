@@ -12,5 +12,28 @@
   "waterSub": "= {{days}} jours d'eau potable",
   "wasteDiverted": "Déchets évités",
   "wasteUnit": "kg",
-  "wasteSub": "de la décharge"
+  "wasteSub": "de la décharge",
+  "impact": {
+    "metricCO2": "CO₂",
+    "metricWater": "Eau",
+    "metricWaste": "Déchets",
+    "impactByActivity": "Impact par activité",
+    "tapToCompare": "Appuyez pour comparer les métriques",
+    "activity_purchases": "Achats",
+    "activity_selling": "Ventes",
+    "activity_exchanges": "Échanges",
+    "transactions_other": "{{count}} transactions",
+    "co2Trend": "Tendance CO₂ économisé",
+    "kgSavedPerMonth": "kg économisés / mois",
+    "lastSixMonths": "6 derniers mois",
+    "trendVsLastMonth": "+{{pct}}% vs le mois dernier",
+    "sustainableMaterials": "Matériaux durables",
+    "acrossYourProducts": "Sur vos produits",
+    "realWorldEquivalents": "Équivalents concrets",
+    "equivTrees": "arbres plantés",
+    "equivWaterDays": "jours d'eau potable",
+    "equivWasteKg": "kg de déchets évités",
+    "howCalculated": "Comment est-ce calculé ?",
+    "calculationExplanation": "Votre impact est estimé à partir de données d'analyse du cycle de vie pour chaque catégorie de produit. Les valeurs représentent la différence entre l'achat neuf et l'achat d'occasion ou recyclé."
+  }
 }

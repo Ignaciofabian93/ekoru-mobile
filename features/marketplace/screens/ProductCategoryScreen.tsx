@@ -1,20 +1,17 @@
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
-import Breadcrumb from "../../../components/shared/BreadCrumbs/Breadcrumb";
+import Breadcrumb from "../../../components/Patterns/BreadCrumbs/Breadcrumb";
+import useProductsByProductCategory from "../hooks/useProductsByProductCategory";
 import CategoryProductsSection from "../ui/CategoryProductsSection";
 import Header from "../ui/header/Header";
-import {
-  ContentContainer,
-  OuterContainer,
-  ScrollContainer,
-} from "../ui/layout/Container";
+import { ContentContainer, OuterContainer, ScrollContainer } from "../ui/layout/Container";
 
 const wallpaperImage = require("@/assets/images/wallpaper-4.jpg");
 
 export default function ProductCategoryScreen() {
-  const { t } = useTranslation(NAMESPACE);
-  const { slug: _slug, name, deptCatSlug, deptCatName, deptSlug, deptName } =
+  const { t, i18n } = useTranslation(NAMESPACE);
+  const { slug, name, deptCatSlug, deptCatName, deptSlug, deptName } =
     useLocalSearchParams<{
       slug: string;
       name: string;
@@ -23,6 +20,17 @@ export default function ProductCategoryScreen() {
       deptSlug: string;
       deptName: string;
     }>();
+
+  const {
+    products,
+    pageInfo,
+    filters,
+    hasActiveFilters,
+    applyFilters,
+    pageSize,
+    setPage,
+    setPageSize,
+  } = useProductsByProductCategory({ slug: slug ?? "", language: i18n.language });
 
   const categoryName = name ?? t("products");
 
@@ -37,7 +45,7 @@ export default function ProductCategoryScreen() {
             label: deptName,
             onPress: () =>
               router.push({
-                pathname: "/(marketplace)/department",
+                pathname: "/(marketplace)/department" as const,
                 params: { slug: deptSlug, name: deptName },
               }),
           },
@@ -49,7 +57,7 @@ export default function ProductCategoryScreen() {
             label: deptCatName,
             onPress: () =>
               router.push({
-                pathname: "/(marketplace)/department-category",
+                pathname: "/(marketplace)/department-category" as const,
                 params: {
                   slug: deptCatSlug,
                   name: deptCatName,
@@ -75,8 +83,18 @@ export default function ProductCategoryScreen() {
           {/* ── Breadcrumb ─────────────────────────────────────────── */}
           <Breadcrumb items={breadcrumbItems} />
 
-          {/* ── Products (mocked) ──────────────────────────────────── */}
-          <CategoryProductsSection categoryName={categoryName} />
+          {/* ── Products (live) ───────────────────────────────────── */}
+          <CategoryProductsSection
+            categoryName={categoryName}
+            products={products}
+            pageInfo={pageInfo}
+            filters={filters}
+            hasActiveFilters={hasActiveFilters}
+            onApplyFilters={applyFilters}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+          />
         </ContentContainer>
       </ScrollContainer>
     </OuterContainer>

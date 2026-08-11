@@ -28,6 +28,7 @@
   "noProductsMatchFilters": "No products match your filters",
   "rows": "Rows",
   "filters": "Filters",
+  "searchLabel": "Search",
   "brand": "Brand",
   "brandPlaceholder": "e.g. Nike, Apple...",
   "priceRange": "Price Range",

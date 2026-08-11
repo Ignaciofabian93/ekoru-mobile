@@ -1,4 +1,4 @@
-import ErrorScreen from "@/components/shared/ErrorScreen/ErrorScreen";
+import ErrorScreen from "@/components/Feedback/ErrorScreen/ErrorScreen";
 import { Stack } from "expo-router";
 
 export default function NotFoundScreen() {

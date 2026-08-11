@@ -1,9 +1,9 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
-import type { Product } from "../types/Product";
+import type { Product } from "../types";
 import ProductGrid from "./ProductGrid";
 
 interface Props {

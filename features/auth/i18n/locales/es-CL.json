@@ -45,5 +45,18 @@
   "registerSuccess": "Cuenta creada correctamente. Por favor, inicia sesión.",
   "termsAcceptLabel": "He leído y acepto los",
   "termsAcceptLink": "Términos y Políticas",
-  "termsRequired": "Debes aceptar los Términos y Políticas para continuar"
+  "termsRequired": "Debes aceptar los Términos y Políticas para continuar",
+  "passwordError": "La contraseña debe tener al menos 8 caracteres",
+  "continue": "Continuar",
+  "back": "Atrás",
+  "step": "Paso {{current}} de {{total}}",
+  "accountTypeTitle": "¿Qué tipo de cuenta quieres crear?",
+  "accountTypeSubtitle": "Elige la opción que mejor te describe",
+  "detailsTitle": "Tus datos",
+  "detailsSubtitle": "Ingresa tu información de contacto",
+  "securityTitle": "Crea tu contraseña",
+  "securitySubtitle": "Protege tu cuenta con una contraseña segura",
+  "personDesc": "Una cuenta personal",
+  "startupDesc": "Para emprendimientos en crecimiento",
+  "companyDesc": "Para empresas establecidas"
 }

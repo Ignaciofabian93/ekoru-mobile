@@ -1,7 +1,7 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
 import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
-import { BadgeCheck } from "lucide-react-native";
+import { Sprout } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { NAMESPACE } from "./i18n";
@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <LinearGradient
-      colors={[colors.primary, colors.primaryDark, colors.primary]}
+      colors={[colors.natureCoralDark, colors.natureCoralDark, colors.natureCoralLight]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.hero}
@@ -21,7 +21,7 @@ export default function Header() {
 
       <View style={styles.heroRow}>
         <View style={styles.heroIconWrap}>
-          <BadgeCheck size={18} color="#fff" strokeWidth={1.5} />
+          <Sprout size={18} color="#fff" strokeWidth={1.5} />
         </View>
         <View>
           <Text variant="label" weight="semibold" size="base" style={styles.heroEyebrow}>

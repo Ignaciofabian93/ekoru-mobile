@@ -1,6 +1,6 @@
-import MainButton from "@/components/shared/Button/MainButton";
-import Input from "@/components/shared/Input/Input";
-import TextArea from "@/components/shared/TextArea/TextArea";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import Input from "@/components/Primitives/Input/Input";
+import TextArea from "@/components/Primitives/TextArea/TextArea";
 import { borderRadius, colors, fontFamily, fontSize, shadows, spacing } from "@/design/tokens";
 import { isEmailValid } from "@/utils/regexValidations";
 import { Mail, MessageSquare, Send, User } from "lucide-react-native";
@@ -43,11 +43,7 @@ export default function ContactForm() {
           type="email"
           leftIcon={Mail}
           isInvalid={form.email.length > 0 && !isEmailValid(form.email)}
-          errorMessage={
-            form.email.length > 0 && !isEmailValid(form.email)
-              ? t("form.emailError")
-              : undefined
-          }
+          errorMessage={form.email.length > 0 && !isEmailValid(form.email) ? t("form.emailError") : undefined}
         />
 
         <Input

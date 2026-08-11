@@ -1,20 +1,13 @@
-import MainButton from "@/components/shared/Button/MainButton";
-import { Text as AppText } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import { Text as AppText } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import type { ProductCondition } from "@/types/enums";
 import type { Product } from "@/types/product";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { LinearGradient } from "expo-linear-gradient";
 import { ArrowLeftRight, MapPin } from "lucide-react-native";
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import useExchangeableProducts from "../hooks/useExchangeableProducts";
 
 // ─── Condition display maps ───────────────────────────────────────────────────
@@ -41,23 +34,13 @@ const CONDITION_COLOR: Record<ProductCondition, string> = {
 
 // ─── Exchange card ────────────────────────────────────────────────────────────
 
-function ExchangeCard({
-  product,
-  onPress,
-}: {
-  product: Product;
-  onPress: () => void;
-}) {
+function ExchangeCard({ product, onPress }: { product: Product; onPress: () => void }) {
   const categoryName = product.productCategory?.productCategoryName ?? "Item";
-  const location =
-    product.seller?.city?.city ?? product.seller?.region?.region ?? null;
+  const location = product.seller?.city?.city ?? product.seller?.region?.region ?? null;
   const ownerName = product.seller ? displaySellerName(product.seller) : null;
 
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [styles.card, { opacity: pressed ? 0.92 : 1 }]}
-    >
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.card, { opacity: pressed ? 0.92 : 1 }]}>
       {/* Gradient header */}
       <LinearGradient
         colors={[colors.accentHover, colors.accent]}
@@ -80,18 +63,8 @@ function ExchangeCard({
         </Text>
 
         {/* Condition badge */}
-        <View
-          style={[
-            styles.conditionBadge,
-            { borderColor: CONDITION_COLOR[product.condition] },
-          ]}
-        >
-          <Text
-            style={[
-              styles.conditionText,
-              { color: CONDITION_COLOR[product.condition] },
-            ]}
-          >
+        <View style={[styles.conditionBadge, { borderColor: CONDITION_COLOR[product.condition] }]}>
+          <Text style={[styles.conditionText, { color: CONDITION_COLOR[product.condition] }]}>
             {CONDITION_LABEL[product.condition]}
           </Text>
         </View>
@@ -111,20 +84,14 @@ function ExchangeCard({
           <View style={styles.cardFooter}>
             {location ? (
               <>
-                <MapPin
-                  size={11}
-                  color={colors.foregroundTertiary}
-                  strokeWidth={1.5}
-                />
+                <MapPin size={11} color={colors.foregroundTertiary} strokeWidth={1.5} />
                 <Text style={styles.locationText} numberOfLines={1}>
                   {location}
                 </Text>
               </>
             ) : null}
             {ownerName ? (
-              <Text style={styles.ownerText}>
-                {location ? `· ${ownerName}` : ownerName}
-              </Text>
+              <Text style={styles.ownerText}>{location ? `· ${ownerName}` : ownerName}</Text>
             ) : null}
           </View>
         ) : null}
@@ -146,12 +113,7 @@ export default function ExchangeSection() {
       <Title level="h4" align="center">
         Exchange & Swap
       </Title>
-      <AppText
-        size="sm"
-        color="secondary"
-        align="center"
-        style={{ marginTop: 4 }}
-      >
+      <AppText size="sm" color="secondary" align="center" style={{ marginTop: 4 }}>
         Trade what you have for what you need
       </AppText>
 
@@ -160,29 +122,15 @@ export default function ExchangeSection() {
           <ActivityIndicator color={colors.primary} />
         </View>
       ) : (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scroll}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scroll}>
           {products.map((product) => (
-            <ExchangeCard
-              key={product.id}
-              product={product}
-              onPress={() => {}}
-            />
+            <ExchangeCard key={product.id} product={product} onPress={() => {}} />
           ))}
         </ScrollView>
       )}
 
       <View style={styles.cta}>
-        <MainButton
-          text="Propose an Exchange"
-          onPress={() => {}}
-          variant="primary"
-          size="md"
-          fullWidth
-        />
+        <MainButton text="Propose an Exchange" onPress={() => {}} variant="primary" size="md" fullWidth />
       </View>
     </View>
   );

@@ -1,8 +1,8 @@
-import Input from "@/components/shared/Input/Input";
-import Select, { type Option } from "@/components/shared/Select/Select";
-import { Title } from "@/components/shared/Title/Title";
-import { colors } from "@/design/tokens";
+import Input from "@/components/Primitives/Input/Input";
+import Select, { type Option } from "@/components/Primitives/Select/Select";
+import { Title } from "@/components/Primitives/Title/Title";
 import { PHONE_PREFIXES, isoToFlag } from "@/constants/phonePrefixes";
+import { colors } from "@/design/tokens";
 import type { ContactMethod } from "@/types/enums";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";

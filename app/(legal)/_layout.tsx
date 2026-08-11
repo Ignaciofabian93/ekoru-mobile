@@ -1,4 +1,4 @@
-import SectionHeader from "@/components/shared/Header/SectionHeader";
+import SectionHeader from "@/components/Navigation/Header/SectionHeader";
 import { Stack } from "expo-router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -11,10 +11,7 @@ export default function LegalLayout() {
         header: (props) => <SectionHeader {...props} />,
       }}
     >
-      <Stack.Screen
-        name="terms-and-policies"
-        options={{ title: t("screens.legal.termsAndPolicies") }}
-      />
+      <Stack.Screen name="terms-and-policies" options={{ title: t("screens.legal.termsAndPolicies") }} />
     </Stack>
   );
 }

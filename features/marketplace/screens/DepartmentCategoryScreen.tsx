@@ -1,25 +1,21 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import { router, useLocalSearchParams } from "expo-router";
 import { LayoutGrid } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
-import Breadcrumb from "../../../components/shared/BreadCrumbs/Breadcrumb";
-import useDepartmentCategoryBySlug from "../hooks/useDepartmentCategoryBySlug";
+import Breadcrumb from "../../../components/Patterns/BreadCrumbs/Breadcrumb";
+import useProductsByDepartmentCategory from "../hooks/useProductsByDepartmentCategory";
 import CategoryProductsSection from "../ui/CategoryProductsSection";
 import Header from "../ui/header/Header";
-import {
-  ContentContainer,
-  OuterContainer,
-  ScrollContainer,
-} from "../ui/layout/Container";
+import { ContentContainer, OuterContainer, ScrollContainer } from "../ui/layout/Container";
 
 const wallpaperImage = require("@/assets/images/wallpaper-3.jpg");
 
 export default function DepartmentCategoryScreen() {
-  const { t } = useTranslation(NAMESPACE);
+  const { t, i18n } = useTranslation(NAMESPACE);
   const { slug, name, deptSlug, deptName } = useLocalSearchParams<{
     slug: string;
     name: string;
@@ -27,11 +23,21 @@ export default function DepartmentCategoryScreen() {
     deptName: string;
   }>();
 
-  const { departmentCategory, loading, error } = useDepartmentCategoryBySlug(
-    slug ?? "",
-  );
+  const {
+    departmentCategory,
+    loading,
+    error,
+    products,
+    pageInfo,
+    filters,
+    hasActiveFilters,
+    applyFilters,
+    pageSize,
+    setPage,
+    setPageSize,
+  } = useProductsByDepartmentCategory({ slug: slug ?? "", language: i18n.language });
 
-  if (loading) {
+  if (loading && !departmentCategory) {
     return (
       <OuterContainer>
         <View style={styles.centered}>
@@ -46,11 +52,7 @@ export default function DepartmentCategoryScreen() {
       <OuterContainer>
         <View style={styles.centered}>
           <View style={styles.emptyIcon}>
-            <LayoutGrid
-              size={40}
-              color={colors.foregroundTertiary}
-              strokeWidth={1.5}
-            />
+            <LayoutGrid size={40} color={colors.foregroundTertiary} strokeWidth={1.5} />
           </View>
           <Title level="h5" weight="semibold" align="center" color="tertiary">
             {t("categoryNotFound")}
@@ -66,11 +68,7 @@ export default function DepartmentCategoryScreen() {
   return (
     <OuterContainer enableBottomInset>
       <ScrollContainer>
-        <Header
-          wallpaperImage={wallpaperImage}
-          title={catName}
-          subtitle={t("departmentCategorySubtitle")}
-        />
+        <Header wallpaperImage={wallpaperImage} title={catName} subtitle={t("departmentCategorySubtitle")} />
         <ContentContainer>
           {/* ── Breadcrumb ─────────────────────────────────────────── */}
           <Breadcrumb
@@ -94,22 +92,14 @@ export default function DepartmentCategoryScreen() {
           {/* ── Sub-category chips ────────────────────────────────── */}
           {productCats.length > 0 && (
             <View style={styles.catsSection}>
-              <Text
-                size="xs"
-                weight="semibold"
-                color="tertiary"
-                style={styles.catsLabel}
-              >
+              <Text size="xs" weight="semibold" color="tertiary" style={styles.catsLabel}>
                 {t("subcategories")}
               </Text>
               <View style={styles.chips}>
                 {productCats.map((pc) => (
                   <Pressable
                     key={pc.id}
-                    style={({ pressed }) => [
-                      styles.chip,
-                      pressed && styles.chipPressed,
-                    ]}
+                    style={({ pressed }) => [styles.chip, pressed && styles.chipPressed]}
                     onPress={() =>
                       router.push({
                         pathname: "/(marketplace)/product-category",
@@ -133,8 +123,18 @@ export default function DepartmentCategoryScreen() {
             </View>
           )}
 
-          {/* ── Products (mocked) ──────────────────────────────────── */}
-          <CategoryProductsSection categoryName={catName} />
+          {/* ── Products (live) ───────────────────────────────────── */}
+          <CategoryProductsSection
+            categoryName={catName}
+            products={products}
+            pageInfo={pageInfo}
+            filters={filters}
+            hasActiveFilters={hasActiveFilters}
+            onApplyFilters={applyFilters}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+          />
         </ContentContainer>
       </ScrollContainer>
     </OuterContainer>

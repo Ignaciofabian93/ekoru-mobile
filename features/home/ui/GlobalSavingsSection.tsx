@@ -1,14 +1,8 @@
-import { Text as AppText } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text as AppText } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  ArrowUpRight,
-  Droplets,
-  Leaf,
-  Recycle,
-  Users2,
-} from "lucide-react-native";
+import { ArrowUpRight, Droplets, Leaf, Recycle, Users2 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -73,11 +67,7 @@ function Co2Card() {
             <Leaf size={20} color={colors.primaryDark} strokeWidth={2} />
           </View>
           <Text style={styles.heroLabel}>CO₂ Saved</Text>
-          <ArrowUpRight
-            size={16}
-            color="rgba(255,255,255,0.6)"
-            strokeWidth={2}
-          />
+          <ArrowUpRight size={16} color="rgba(255,255,255,0.6)" strokeWidth={2} />
         </View>
 
         <Text style={styles.heroValue}>
@@ -88,8 +78,7 @@ function Co2Card() {
         <View style={styles.heroDivider} />
 
         <Text style={styles.heroEquivalence}>
-          ≈ {Math.round(PLATFORM.co2Tons * 4500).toLocaleString()} km not driven
-          by car
+          ≈ {Math.round(PLATFORM.co2Tons * 4500).toLocaleString()} km not driven by car
         </Text>
       </View>
     </LinearGradient>
@@ -116,12 +105,7 @@ function MetricCard({
 }) {
   return (
     <View style={[styles.metricCard, { backgroundColor: bgColor }]}>
-      <View
-        style={[
-          styles.metricIconBadge,
-          { backgroundColor: `${accentColor}20` },
-        ]}
-      >
+      <View style={[styles.metricIconBadge, { backgroundColor: `${accentColor}20` }]}>
         <Icon size={16} color={accentColor} strokeWidth={2} />
       </View>
       <Text style={[styles.metricLabel, { color: accentColor }]}>{label}</Text>
@@ -147,12 +131,7 @@ function CommunityStrip() {
       </View>
       <View style={styles.stripDivider} />
       <View style={styles.stripItem}>
-        <Users2
-          size={16}
-          color={colors.primary}
-          strokeWidth={2}
-          style={styles.stripIcon}
-        />
+        <Users2 size={16} color={colors.primary} strokeWidth={2} style={styles.stripIcon} />
         <Text style={styles.stripValue}>{members.toLocaleString()}+</Text>
         <Text style={styles.stripLabel}>Community members</Text>
       </View>
@@ -177,12 +156,7 @@ export default function GlobalSavingsSection() {
       <Title level="h4" align="center">
         Our Global Impact
       </Title>
-      <AppText
-        size="sm"
-        color="secondary"
-        align="center"
-        style={{ marginTop: 4 }}
-      >
+      <AppText size="sm" color="secondary" align="center" style={{ marginTop: 4 }}>
         Together we're making a measurable difference
       </AppText>
 

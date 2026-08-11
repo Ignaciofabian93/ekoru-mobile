@@ -45,5 +45,18 @@
   "registerSuccess": "Account created successfully. Please sign in.",
   "termsAcceptLabel": "I have read and accept the",
   "termsAcceptLink": "Terms and Policies",
-  "termsRequired": "You must accept the Terms and Policies to continue"
+  "termsRequired": "You must accept the Terms and Policies to continue",
+  "passwordError": "Password must be at least 8 characters",
+  "continue": "Continue",
+  "back": "Back",
+  "step": "Step {{current}} of {{total}}",
+  "accountTypeTitle": "What type of account do you want to create?",
+  "accountTypeSubtitle": "Choose the option that best describes you",
+  "detailsTitle": "Your details",
+  "detailsSubtitle": "Enter your contact information",
+  "securityTitle": "Create your password",
+  "securitySubtitle": "Protect your account with a secure password",
+  "personDesc": "A personal account",
+  "startupDesc": "For growing ventures",
+  "companyDesc": "For established businesses"
 }

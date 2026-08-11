@@ -10,25 +10,21 @@ import { useTranslation } from "react-i18next";
 export default function useSettings() {
   const router = useRouter();
   const { t } = useTranslation("profile");
-  const { seller } = useAuthStore();
   const setBiometricEnabled = useAuthStore((s) => s.setBiometricEnabled);
   const [sellerPreferences, setSellerPreferences] = useState<
     Partial<SellerPreferences>
   >({
-    preferredLanguage: "es",
-    currency: "CLP",
-    emailNotifications: true,
-    pushNotifications: true,
-    orderUpdates: true,
-    communityUpdates: true,
-    securityAlerts: true,
-    weeklySummary: true,
-    twoFactorAuth: false,
+    enableEmailNotifications: true,
+    enablePushNotifications: true,
+    enableLoginAlerts: true,
+    enableTwoFactorAuth: false,
+    showMySocials: false,
+    showMyAddress: false,
   });
 
   // Keep a ref so onCompleted (captured in closure) always sees the latest value
-  const twoFactorAuthRef = useRef(sellerPreferences.twoFactorAuth);
-  twoFactorAuthRef.current = sellerPreferences.twoFactorAuth;
+  const twoFactorAuthRef = useRef(sellerPreferences.enableTwoFactorAuth);
+  twoFactorAuthRef.current = sellerPreferences.enableTwoFactorAuth;
 
   const onCompleted = async () => {
     // Persist the biometric preference locally so the gate activates on next app open
@@ -66,18 +62,17 @@ export default function useSettings() {
 
   const submitSellerPreferences = async () => {
     await updateSellerPreferences({
+      // Only the fields `UpdateSellerPreferencesInput` declares. The seller is
+      // taken from the session server-side, so `sellerId` is not sent — passing
+      // it made the whole mutation fail validation.
       variables: {
         input: {
-          sellerId: seller?.id || "",
-          preferredLanguage: sellerPreferences.preferredLanguage,
-          currency: sellerPreferences.currency,
-          emailNotifications: sellerPreferences.emailNotifications,
-          pushNotifications: sellerPreferences.pushNotifications,
-          orderUpdates: sellerPreferences.orderUpdates,
-          communityUpdates: sellerPreferences.communityUpdates,
-          securityAlerts: sellerPreferences.securityAlerts,
-          weeklySummary: sellerPreferences.weeklySummary,
-          twoFactorAuth: sellerPreferences.twoFactorAuth,
+          enableEmailNotifications: sellerPreferences.enableEmailNotifications,
+          enablePushNotifications: sellerPreferences.enablePushNotifications,
+          enableLoginAlerts: sellerPreferences.enableLoginAlerts,
+          enableTwoFactorAuth: sellerPreferences.enableTwoFactorAuth,
+          showMySocials: sellerPreferences.showMySocials,
+          showMyAddress: sellerPreferences.showMyAddress,
         },
       },
     });

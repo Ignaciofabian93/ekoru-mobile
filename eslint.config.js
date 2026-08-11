@@ -307,6 +307,14 @@ module.exports = [
     rules: {
       "@typescript-eslint/naming-convention": [
         "error",
+        // Imports keep the base rule's allowance. This block replaces the base
+        // naming-convention wholesale, so without restating it a hook importing
+        // `Constants` or `* as Notifications` falls through to the camelCase
+        // default and errors — which is not the intent.
+        {
+          selector: "import",
+          format: ["camelCase", "PascalCase"],
+        },
         // Default export function must start with 'use'
         {
           selector: "function",

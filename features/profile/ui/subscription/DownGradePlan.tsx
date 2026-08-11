@@ -1,4 +1,4 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
 import { AlertTriangle } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";

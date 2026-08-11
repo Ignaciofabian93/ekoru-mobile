@@ -1,31 +1,12 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  View,
-} from "react-native";
-import { DEFAULT_FILTERS, type StoreFilters } from "../hooks/useStoreFilters";
+import { Modal, Pressable, ScrollView, StyleSheet, Switch, TextInput, View } from "react-native";
+import { EMPTY_FILTERS, type StoreFilters } from "../types";
 import { NAMESPACE } from "../i18n";
-
-const RATING_OPTIONS = [3, 3.5, 4, 4.5, 5];
-const ALL_TAGS = [
-  "Organic",
-  "Zero Waste",
-  "Fair Trade",
-  "Clothing",
-  "Tech",
-  "Plants",
-  "Home",
-  "Energy",
-];
 
 interface Props {
   visible: boolean;
@@ -34,27 +15,13 @@ interface Props {
   onClose: () => void;
 }
 
-export default function StoreFiltersSheet({
-  visible,
-  initialFilters,
-  onApply,
-  onClose,
-}: Props) {
+export default function StoreFiltersSheet({ visible, initialFilters, onApply, onClose }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const [draft, setDraft] = useState<StoreFilters>(initialFilters);
 
   useEffect(() => {
     if (visible) setDraft(initialFilters);
-  }, [visible]);
-
-  const toggleTag = (tag: string) => {
-    setDraft((prev) => ({
-      ...prev,
-      tags: prev.tags.includes(tag)
-        ? prev.tags.filter((t) => t !== tag)
-        : [...prev.tags, tag],
-    }));
-  };
+  }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleApply = () => {
     onApply(draft);
@@ -62,21 +29,14 @@ export default function StoreFiltersSheet({
   };
 
   const handleReset = () => {
-    onApply(DEFAULT_FILTERS);
+    onApply(EMPTY_FILTERS);
     onClose();
   };
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      statusBarTranslucent
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} animationType="slide" transparent statusBarTranslucent onRequestClose={onClose}>
       <Pressable style={styles.backdrop} onPress={onClose} />
       <View style={styles.sheet}>
-        {/* Header */}
         <View style={styles.sheetHeader}>
           <Title level="h5" weight="semibold">
             {t("filters")}
@@ -86,94 +46,70 @@ export default function StoreFiltersSheet({
           </Pressable>
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.content}
-        >
-          {/* Verified */}
-          <View style={[styles.section, styles.toggleRow]}>
-            <View style={{ flex: 1 }}>
-              <Text size="sm" weight="semibold">
-                {t("filterVerified")}
-              </Text>
-              <Text size="xs" color="tertiary" style={{ marginTop: 2 }}>
-                {t("filterVerifiedSubtitle")}
-              </Text>
-            </View>
-            <Switch
-              value={draft.verified === true}
-              onValueChange={(v) =>
-                setDraft((prev) => ({ ...prev, verified: v ? true : null }))
-              }
-              trackColor={{
-                false: colors.backgroundTertiary,
-                true: colors.primary,
-              }}
-              thumbColor={colors.surface}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+          {/* Search */}
+          <View style={styles.section}>
+            <Text size="sm" weight="semibold" style={styles.sectionLabel}>
+              {t("searchLabel")}
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder={t("searchStores")}
+              placeholderTextColor={colors.foregroundTertiary}
+              value={draft.search}
+              onChangeText={(value) => setDraft((prev) => ({ ...prev, search: value }))}
             />
           </View>
 
-          {/* Minimum rating */}
+          {/* Price range */}
           <View style={styles.section}>
             <Text size="sm" weight="semibold" style={styles.sectionLabel}>
-              {t("filterMinRating")}
+              {t("priceRange")}
             </Text>
-            <View style={styles.chips}>
-              {RATING_OPTIONS.map((r) => {
-                const active = draft.minRating === r;
-                return (
-                  <Pressable
-                    key={r}
-                    onPress={() =>
-                      setDraft((prev) => ({
-                        ...prev,
-                        minRating: active ? null : r,
-                      }))
-                    }
-                    style={[styles.chip, active && styles.chipActive]}
-                  >
-                    <Text
-                      size="xs"
-                      weight={active ? "semibold" : "normal"}
-                      style={active ? styles.chipTextActive : styles.chipText}
-                    >
-                      ★ {r}+
-                    </Text>
-                  </Pressable>
-                );
-              })}
+            <View style={styles.priceRow}>
+              <TextInput
+                style={[styles.input, styles.priceInput]}
+                placeholder={t("min")}
+                placeholderTextColor={colors.foregroundTertiary}
+                keyboardType="numeric"
+                value={draft.minPrice}
+                onChangeText={(value) => setDraft((prev) => ({ ...prev, minPrice: value }))}
+              />
+              <Text size="sm" color="tertiary">
+                –
+              </Text>
+              <TextInput
+                style={[styles.input, styles.priceInput]}
+                placeholder={t("max")}
+                placeholderTextColor={colors.foregroundTertiary}
+                keyboardType="numeric"
+                value={draft.maxPrice}
+                onChangeText={(value) => setDraft((prev) => ({ ...prev, maxPrice: value }))}
+              />
             </View>
           </View>
 
-          {/* Tags */}
+          {/* On offer */}
           <View style={[styles.section, styles.sectionLast]}>
-            <Text size="sm" weight="semibold" style={styles.sectionLabel}>
-              {t("filterTags")}
-            </Text>
-            <View style={styles.chips}>
-              {ALL_TAGS.map((tag) => {
-                const active = draft.tags.includes(tag);
-                return (
-                  <Pressable
-                    key={tag}
-                    onPress={() => toggleTag(tag)}
-                    style={[styles.chip, active && styles.chipActive]}
-                  >
-                    <Text
-                      size="xs"
-                      weight={active ? "semibold" : "normal"}
-                      style={active ? styles.chipTextActive : styles.chipText}
-                    >
-                      {tag}
-                    </Text>
-                  </Pressable>
-                );
-              })}
+            <View style={styles.toggleRow}>
+              <View style={{ flex: 1 }}>
+                <Text size="sm" weight="semibold">
+                  {t("onOfferOnly")}
+                </Text>
+                <Text size="xs" color="tertiary" style={{ marginTop: 2 }}>
+                  {t("onOfferSubtitle")}
+                </Text>
+              </View>
+              <Switch
+                value={draft.onOfferOnly}
+                onValueChange={(v) => setDraft((prev) => ({ ...prev, onOfferOnly: v }))}
+                trackColor={{ false: colors.backgroundTertiary, true: colors.primary }}
+                thumbColor={colors.surface}
+              />
             </View>
           </View>
         </ScrollView>
 
-        {/* Footer */}
         <View style={styles.footer}>
           <Pressable style={styles.resetBtn} onPress={handleReset}>
             <Text size="sm" weight="semibold" color="secondary">
@@ -227,33 +163,28 @@ const styles = StyleSheet.create({
   sectionLabel: {
     marginBottom: 12,
   },
+  input: {
+    height: 42,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    paddingHorizontal: 12,
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.foreground,
+    fontSize: 14,
+  },
+  priceRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  priceInput: {
+    flex: 1,
+  },
   toggleRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-  },
-  chips: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  chip: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: colors.backgroundSecondary,
-    borderWidth: 1,
-    borderColor: colors.borderLight,
-  },
-  chipActive: {
-    backgroundColor: colors.primary,
-    borderColor: "transparent",
-  },
-  chipText: {
-    color: colors.foregroundSecondary,
-  },
-  chipTextActive: {
-    color: "#fff",
   },
   footer: {
     flexDirection: "row",

@@ -1,23 +1,30 @@
-import MarketplaceCard from "@/components/shared/Card/MarketplaceCard/MarketplaceCard";
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
-import { DUMMY_PRODUCTS } from "@/features/marketplace/data/dummyProducts";
+import MarketplaceCard from "@/components/Cards/MarketplaceCard/MarketplaceCard";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
+import useProducts from "@/features/marketplace/hooks/useProducts";
 import { router } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 export default function ProductsHighlight() {
+  // Most-viewed live products as the "outstanding" rail.
+  const { products } = useProducts({
+    page: 1,
+    pageSize: 10,
+    sort: { field: "viewCount", order: "desc" },
+  });
+
+  if (products.length === 0) return null;
+
   return (
     <View style={styles.container}>
-      <Title level="h4" align="center">Outstanding Products</Title>
+      <Title level="h4" align="center">
+        Outstanding Products
+      </Title>
       <Text size="sm" color="secondary" align="center" style={{ marginTop: 4 }}>
         Most popular in the community
       </Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scroll}
-      >
-        {DUMMY_PRODUCTS.map((product) => (
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+        {products.map((product) => (
           <MarketplaceCard
             key={product.id}
             product={product}

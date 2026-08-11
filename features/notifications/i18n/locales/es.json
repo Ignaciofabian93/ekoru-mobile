@@ -1,0 +1,34 @@
+{
+  "title": "Notificaciones",
+  "subtitle": "Todo lo que necesita tu atención, en un solo lugar.",
+  "empty": {
+    "title": "No tienes notificaciones",
+    "description": "Te avisaremos aquí cuando alguien proponga un trato o cambie el estado de una compra."
+  },
+  "emptyUnread": {
+    "title": "Estás al día",
+    "description": "No tienes notificaciones sin leer."
+  },
+  "loading": "Cargando…",
+  "markAllRead": "Marcar todas como leídas",
+  "markRead": "Marcar como leída",
+  "filters": {
+    "all": "Todas",
+    "unread": "Sin leer"
+  },
+  "loadMore": "Cargar más",
+  "time": {
+    "now": "Recién",
+    "minutes": "hace {{count}} min",
+    "hours": "hace {{count}} h",
+    "days": "hace {{count}} d",
+    "weeks": "hace {{count}} sem"
+  },
+  "push": {
+    "title": "Notificaciones push",
+    "enable": "Activar notificaciones push",
+    "denied": "Permiso denegado. Actívalo desde los ajustes del sistema.",
+    "failed": "No pudimos activar las notificaciones. Inténtalo de nuevo."
+  },
+  "markReadAction": "Marcar leída"
+}

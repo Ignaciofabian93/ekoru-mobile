@@ -1,33 +1,44 @@
-import Breadcrumb from "@/components/shared/BreadCrumbs/Breadcrumb";
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import Breadcrumb from "@/components/Patterns/BreadCrumbs/Breadcrumb";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
-import CategoryProductsSection from "@/features/marketplace/ui/CategoryProductsSection";
 import Header from "@/features/marketplace/ui/header/Header";
 import {
   ContentContainer,
   OuterContainer,
   ScrollContainer,
 } from "@/features/marketplace/ui/layout/Container";
-import useStore from "@/features/stores/hooks/useStore";
+import useProductsByStoreCategory from "@/features/stores/hooks/useProductsByStoreCategory";
 import { NAMESPACE } from "@/features/stores/i18n";
+import StoreFiltersSheet from "@/features/stores/ui/StoreFiltersSheet";
+import StoreProductGrid from "@/features/stores/ui/StoreProductGrid";
 import { router, useLocalSearchParams } from "expo-router";
-import { Store } from "lucide-react-native";
+import { SlidersHorizontal } from "lucide-react-native";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 
 const wallpaperImage = require("@/assets/images/wallpaper-3.jpg");
 
 export default function StoreCategoryScreen() {
-  const { t } = useTranslation(NAMESPACE);
-  const { storeId, storeName } = useLocalSearchParams<{
-    storeId: string;
-    storeName: string;
-  }>();
+  const { t, i18n } = useTranslation(NAMESPACE);
+  const { slug, name } = useLocalSearchParams<{ slug: string; name: string }>();
+  const [filtersVisible, setFiltersVisible] = useState(false);
 
-  const { store, loading, error } = useStore(storeId ?? "");
+  const {
+    storeCategory,
+    loading,
+    products,
+    pageInfo,
+    filters,
+    hasActiveFilters,
+    applyFilters,
+    pageSize,
+    setPage,
+    setPageSize,
+  } = useProductsByStoreCategory({ slug: slug ?? "", language: i18n.language });
 
-  if (loading) {
+  if (loading && products.length === 0 && !storeCategory) {
     return (
       <OuterContainer>
         <View style={styles.centered}>
@@ -37,91 +48,84 @@ export default function StoreCategoryScreen() {
     );
   }
 
-  if (error || !store) {
-    return (
-      <OuterContainer>
-        <View style={styles.centered}>
-          <View style={styles.emptyIcon}>
-            <Store
-              size={40}
-              color={colors.foregroundTertiary}
-              strokeWidth={1.5}
-            />
-          </View>
-          <Title level="h5" weight="semibold" align="center" color="tertiary">
-            {t("storeNotFound")}
-          </Title>
-        </View>
-      </OuterContainer>
-    );
-  }
-
-  const displayName = storeName ?? store.storeName;
+  const subcats = storeCategory?.storeSubCategory ?? [];
+  const catName = name ?? storeCategory?.translation?.name ?? t("products");
 
   return (
     <OuterContainer enableBottomInset>
       <ScrollContainer>
-        <Header
-          wallpaperImage={wallpaperImage}
-          title={displayName}
-          subtitle={t("storeCategorySubtitle")}
-        />
+        <Header wallpaperImage={wallpaperImage} title={catName} subtitle={t("storeCategorySubtitle")} />
         <ContentContainer>
-          {/* ── Breadcrumb ─────────────────────────────────────────── */}
           <Breadcrumb
             items={[
-              {
-                label: t("stores"),
-                onPress: () => router.push("/(stores)"),
-              },
-              { label: displayName },
+              { label: t("stores"), onPress: () => router.push("/(stores)") },
+              { label: catName },
             ]}
           />
 
-          {/* ── Category chips ────────────────────────────────────── */}
-          {store.storeCategories.length > 0 && (
+          {/* ── Subcategory chips ─────────────────────────────────── */}
+          {subcats.length > 0 && (
             <View style={styles.catsSection}>
-              <Text
-                size="xs"
-                weight="semibold"
-                color="tertiary"
-                style={styles.catsLabel}
-              >
-                {t("categories")}
+              <Text size="xs" weight="semibold" color="tertiary" style={styles.catsLabel}>
+                {t("subcategories")}
               </Text>
               <View style={styles.chips}>
-                {store.storeCategories.map((cat) => (
-                  <Pressable
-                    key={cat.id}
-                    style={({ pressed }) => [
-                      styles.chip,
-                      pressed && styles.chipPressed,
-                    ]}
-                    onPress={() =>
-                      router.push({
-                        pathname: "/(stores)/store-subcategory",
-                        params: {
-                          storeId: store.id,
-                          storeName: displayName,
-                          categoryId: cat.id,
-                          categoryName: cat.name,
-                        },
-                      })
-                    }
-                  >
-                    <Text size="sm" weight="medium" style={styles.chipText}>
-                      {cat.name}
-                    </Text>
-                  </Pressable>
-                ))}
+                {subcats.map((sc) => {
+                  const tr = sc.translation;
+                  if (!tr) return null;
+                  return (
+                    <Pressable
+                      key={sc.id}
+                      style={({ pressed }) => [styles.chip, pressed && styles.chipPressed]}
+                      onPress={() =>
+                        router.push({
+                          pathname: "/(stores)/store-subcategory",
+                          params: { slug: tr.slug, name: tr.name, catSlug: slug, catName },
+                        })
+                      }
+                    >
+                      <Text size="sm" weight="medium" style={styles.chipText}>
+                        {tr.name}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
               </View>
             </View>
           )}
 
-          {/* ── Products ──────────────────────────────────────────── */}
-          <CategoryProductsSection categoryName={displayName} />
+          {/* ── Products (live) ───────────────────────────────────── */}
+          <View style={styles.productsHeader}>
+            <Title level="h5" weight="semibold">
+              {t("products")}
+            </Title>
+            <Pressable
+              onPress={() => setFiltersVisible(true)}
+              style={[styles.filterBtn, hasActiveFilters && styles.filterBtnActive]}
+            >
+              <SlidersHorizontal size={16} color={hasActiveFilters ? "#fff" : colors.primary} strokeWidth={2} />
+            </Pressable>
+          </View>
+
+          <StoreProductGrid
+            products={products}
+            page={pageInfo?.currentPage ?? 1}
+            totalPages={pageInfo?.totalPages ?? 1}
+            itemsPerPage={pageSize}
+            filteredCount={pageInfo?.totalCount ?? products.length}
+            onGoToPage={setPage}
+            onChangeItemsPerPage={setPageSize}
+            emptyMessage={t("noProductsYet")}
+          />
         </ContentContainer>
       </ScrollContainer>
+
+      <StoreFiltersSheet
+        visible={filtersVisible}
+        initialFilters={filters}
+        onApply={applyFilters}
+        onClose={() => setFiltersVisible(false)}
+      />
     </OuterContainer>
   );
 }
@@ -134,17 +138,8 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingHorizontal: 40,
   },
-  emptyIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: colors.backgroundTertiary,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 8,
-  },
   catsSection: {
-    marginBottom: 28,
+    marginBottom: 24,
   },
   catsLabel: {
     letterSpacing: 0.6,
@@ -164,9 +159,30 @@ const styles = StyleSheet.create({
     borderColor: colors.borderLight,
   },
   chipPressed: {
-    opacity: 0.75,
+    backgroundColor: colors.background,
+    borderColor: colors.borderFocus,
   },
   chipText: {
     color: colors.foreground,
+  },
+  productsHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  filterBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    backgroundColor: colors.background,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: colors.borderFocus,
+  },
+  filterBtnActive: {
+    backgroundColor: colors.primaryDark,
+    borderColor: colors.primaryDark,
   },
 });

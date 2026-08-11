@@ -1,4 +1,4 @@
-import type { Product } from "@/features/marketplace/types/Product";
+import type { Product } from "@/features/marketplace/types";
 import { create } from "zustand";
 
 export interface CartItem {

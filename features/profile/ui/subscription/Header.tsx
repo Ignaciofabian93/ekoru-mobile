@@ -1,4 +1,4 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
 import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { BadgeCheck } from "lucide-react-native";
@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <LinearGradient
-      colors={[colors.primary, colors.primaryDark, colors.primary]}
+      colors={[colors.natureOceanDark, colors.natureOceanDark, colors.natureOceanLight]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.hero}

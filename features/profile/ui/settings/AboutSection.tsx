@@ -1,5 +1,5 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { ChevronRight } from "lucide-react-native";

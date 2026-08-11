@@ -1,0 +1,18 @@
+{
+  "services": "Services",
+  "headerSubtitle": "Trouvez des services durables près de chez vous.",
+  "searchServices": "Rechercher des services...",
+  "browseCategories": "Explorer les catégories",
+  "available": "disponibles",
+  "subcategories": "Sous-catégories",
+  "featuredServices": "Services en vedette",
+  "provider": "Prestataire",
+  "quotation": "Devis",
+  "noServices": "Aucun service pour l'instant",
+  "offerService": "Proposez votre service écologique",
+  "serviceCategorySubtitle": "Explorez les services de cette catégorie.",
+  "serviceSubcategorySubtitle": "Services disponibles dans cette sous-catégorie.",
+  "products": "Services",
+  "results": "résultats",
+  "rows": "Lignes"
+}

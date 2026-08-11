@@ -1,4 +1,5 @@
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native";
+import { useEffect, useState } from "react";
+import { Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function OuterContainer({
@@ -22,26 +23,35 @@ export function ScrollContainer({
   children: React.ReactNode;
   enableContentContainerStyle?: boolean;
 }) {
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const show = Keyboard.addListener("keyboardDidShow", () => setKeyboardOpen(true));
+    const hide = Keyboard.addListener("keyboardDidHide", () => setKeyboardOpen(false));
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+
   return (
     <KeyboardAvoidingView
       style={styles.flex}
-      // On iOS, automaticallyAdjustKeyboardInsets handles both the inset and
-      // auto-scrolling to the focused input, so no KAV behavior is needed.
-      // softwareKeyboardLayoutMode is "pan" in app.json — Android pans the
-      // window at the OS level, so KAV must be a no-op on Android to avoid
-      // double-adjusting the layout and leaving a gray gap when keyboard closes.
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      // automaticallyAdjustKeyboardInsets handles inset + scroll-to-focus on iOS.
+      // softwareKeyboardLayoutMode="pan" in app.json handles Android at OS level.
+      // KAV behavior must be undefined on both to avoid double-adjusting the layout.
+      behavior={undefined}
     >
       <ScrollView
         style={styles.scroll}
         keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
+        keyboardDismissMode="none"
         // Automatically adjusts the scroll view's bottom inset when the
         // software keyboard appears and scrolls the focused input into view.
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={{
-          // paddingHorizontal: enableContentContainerStyle ? 20 : 0,
-          paddingBottom: enableContentContainerStyle ? 40 : 0,
+          flexGrow: 1,
+          paddingBottom: enableContentContainerStyle ? (keyboardOpen ? 120 : 40) : 0,
         }}
       >
         {children}
@@ -59,7 +69,7 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   scroll: { flex: 1 },
   content: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: 20,
   },
 });

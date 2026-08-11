@@ -29,5 +29,15 @@
   "rows": "Filas",
   "showingResults": "Mostrando {{shown}} de {{total}} resultados",
   "noStoresFound": "No se encontraron tiendas",
-  "noStoresMatchFilters": "Ninguna tienda coincide con los filtros"
+  "noStoresMatchFilters": "Ninguna tienda coincide con los filtros",
+  "browseCategories": "Explorar categorías",
+  "available": "disponibles",
+  "subcategories": "Subcategorías",
+  "searchLabel": "Buscar",
+  "priceRange": "Rango de precio",
+  "min": "Mín",
+  "max": "Máx",
+  "onOfferOnly": "Solo ofertas",
+  "onOfferSubtitle": "Mostrar solo productos en oferta",
+  "noProductsFound": "Sin productos"
 }

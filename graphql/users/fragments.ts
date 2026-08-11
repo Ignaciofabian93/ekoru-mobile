@@ -24,15 +24,12 @@ export const SELLER_PREFERENCES_FIELDS_FRAGMENT = gql`
   fragment SellerPreferencesFields on SellerPreferences {
     id
     sellerId
-    preferredLanguage
-    currency
-    emailNotifications
-    pushNotifications
-    orderUpdates
-    communityUpdates
-    securityAlerts
-    weeklySummary
-    twoFactorAuth
+    enableEmailNotifications
+    enablePushNotifications
+    enableLoginAlerts
+    enableTwoFactorAuth
+    showMySocials
+    showMyAddress
   }
 `;
 

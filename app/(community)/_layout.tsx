@@ -1,4 +1,4 @@
-import SectionHeader from "@/components/shared/Header/SectionHeader";
+import SectionHeader from "@/components/Navigation/Header/SectionHeader";
 import { Stack } from "expo-router";
 import React from "react";
 
@@ -10,6 +10,8 @@ export default function CommunityLayout() {
       }}
     >
       <Stack.Screen name="index" options={{ title: "Community" }} />
+      <Stack.Screen name="community-category" options={{ title: "Category" }} />
+      <Stack.Screen name="community-subcategory" options={{ title: "Topic" }} />
     </Stack>
   );
 }

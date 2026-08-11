@@ -1,10 +1,10 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
+import { colors } from "@/design/tokens";
 import { useDisplayName, useSeller } from "@/store/useAuthStore";
+import { Star } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { NAMESPACE } from "./i18n";
-import { colors } from "@/design/tokens";
-import { Star } from "lucide-react-native";
 
 export default function Identity() {
   const { t } = useTranslation(NAMESPACE);
@@ -24,22 +24,16 @@ export default function Identity() {
       <Text style={styles.email}>{seller.email}</Text>
       <View style={styles.badgeRow}>
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>
-            {SELLER_TYPE_LABEL[seller.sellerType]}
-          </Text>
+          <Text style={styles.badgeText}>{SELLER_TYPE_LABEL[seller.sellerType]}</Text>
         </View>
         {seller.sellerLevel && (
           <View style={[styles.badge, styles.badgeLevel]}>
             <Star size={11} color="#a16207" strokeWidth={2} />
-            <Text style={[styles.badgeText, styles.badgeLevelText]}>
-              {seller.sellerLevel.levelName}
-            </Text>
+            <Text style={[styles.badgeText, styles.badgeLevelText]}>{seller.sellerLevel.levelName}</Text>
           </View>
         )}
       </View>
-      {seller.points > 0 && (
-        <Text style={styles.points}>{seller.points} pts</Text>
-      )}
+      {seller.points > 0 && <Text style={styles.points}>{seller.points} pts</Text>}
     </View>
   );
 }

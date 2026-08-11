@@ -45,5 +45,18 @@
   "registerSuccess": "Compte créé avec succès. Veuillez vous connecter.",
   "termsAcceptLabel": "J'ai lu et j'accepte les",
   "termsAcceptLink": "Termes et Politiques",
-  "termsRequired": "Vous devez accepter les Termes et Politiques pour continuer"
+  "termsRequired": "Vous devez accepter les Termes et Politiques pour continuer",
+  "passwordError": "Le mot de passe doit contenir au moins 8 caractères",
+  "continue": "Continuer",
+  "back": "Retour",
+  "step": "Étape {{current}} sur {{total}}",
+  "accountTypeTitle": "Quel type de compte voulez-vous créer?",
+  "accountTypeSubtitle": "Choisissez l'option qui vous décrit le mieux",
+  "detailsTitle": "Vos informations",
+  "detailsSubtitle": "Entrez vos coordonnées",
+  "securityTitle": "Créez votre mot de passe",
+  "securitySubtitle": "Protégez votre compte avec un mot de passe sécurisé",
+  "personDesc": "Un compte personnel",
+  "startupDesc": "Pour les entreprises en croissance",
+  "companyDesc": "Pour les entreprises établies"
 }

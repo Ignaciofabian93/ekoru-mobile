@@ -1,12 +1,12 @@
-import Input from "@/components/shared/Input/Input";
-import { Text } from "@/components/shared/Text/Text";
+import DatePicker from "@/components/Primitives/DatePicker/DatePicker";
+import Input from "@/components/Primitives/Input/Input";
+import { Text } from "@/components/Primitives/Text/Text";
+import TextArea from "@/components/Primitives/TextArea/TextArea";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Switch, View } from "react-native";
 import { NAMESPACE } from "./i18n";
-import { Title } from "@/components/shared/Title/Title";
-import TextArea from "@/components/shared/TextArea/TextArea";
-import DatePicker from "@/components/shared/DatePicker/DatePicker";
 
 export type PersonFormValues = {
   firstName: string;
@@ -19,16 +19,10 @@ export type PersonFormValues = {
 
 interface PersonInfoFormProps {
   values: PersonFormValues;
-  onChange: <K extends keyof PersonFormValues>(
-    key: K,
-    value: PersonFormValues[K],
-  ) => void;
+  onChange: <K extends keyof PersonFormValues>(key: K, value: PersonFormValues[K]) => void;
 }
 
-export default function PersonInfoForm({
-  values,
-  onChange,
-}: PersonInfoFormProps) {
+export default function PersonInfoForm({ values, onChange }: PersonInfoFormProps) {
   const { t } = useTranslation(NAMESPACE);
 
   return (

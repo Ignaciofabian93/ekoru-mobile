@@ -1,5 +1,5 @@
-import PaymentCard, { type CardData } from "@/components/PaymentCard/PaymentCard";
-import { Text } from "@/components/shared/Text/Text";
+import PaymentCard, { type CardData } from "@/components/Patterns/PaymentCard/PaymentCard";
+import { Text } from "@/components/Primitives/Text/Text";
 import { borderRadius, colors, fontFamily, fontSize, shadows } from "@/design/tokens";
 import { ChevronDown, ChevronUp, CreditCard, X } from "lucide-react-native";
 import type { Dispatch, SetStateAction } from "react";

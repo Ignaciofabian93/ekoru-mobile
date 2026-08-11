@@ -1,14 +1,8 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Camera } from "lucide-react-native";
-import {
-  ActivityIndicator,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-} from "react-native";
-import { AVATAR_PROTRUDE, AVATAR_SIZE } from "../../constants/imageSize";
+import { Text } from "@/components/Primitives/Text/Text";
 import { colors } from "@/design/tokens";
+import { Camera } from "lucide-react-native";
+import { ActivityIndicator, Image, Pressable, StyleSheet, View } from "react-native";
+import { AVATAR_PROTRUDE, AVATAR_SIZE } from "../../constants/imageSize";
 
 export interface ProfileImageProps {
   profileImage: string | undefined;
@@ -36,13 +30,7 @@ export default function ProfileImage({
           <Image
             source={{ uri: profileImage }}
             style={styles.avatarImage}
-            onError={(e) =>
-              console.error(
-                "[Avatar] load error:",
-                profileImage,
-                e.nativeEvent.error,
-              )
-            }
+            onError={(e) => console.error("[Avatar] load error:", profileImage, e.nativeEvent.error)}
           />
         ) : (
           <View style={styles.avatarFallback}>
@@ -50,10 +38,7 @@ export default function ProfileImage({
           </View>
         )}
       </Pressable>
-      <Pressable
-        style={styles.avatarCameraButton}
-        onPress={() => openPickerSheet("profile")}
-      >
+      <Pressable style={styles.avatarCameraButton} onPress={() => openPickerSheet("profile")}>
         <Camera size={12} color="#fff" strokeWidth={2.5} />
       </Pressable>
     </View>

@@ -1,6 +1,6 @@
 import { colors } from "@/design/tokens";
-import { getProductById } from "@/features/marketplace/data/dummyProducts";
-import type { Product } from "@/features/marketplace/types/Product";
+import useProduct from "@/features/marketplace/hooks/useProduct";
+import type { Product } from "@/features/marketplace/types";
 import useCartStore from "@/store/useCartStore";
 import { conditionTranslate } from "@/utils/conditionTranslate";
 import { displaySellerName } from "@/utils/displaySellerName";
@@ -19,6 +19,7 @@ import {
 } from "lucide-react-native";
 import { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Pressable,
   ScrollView,
@@ -30,7 +31,18 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProductScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const product = getProductById(id);
+  const { product, loading } = useProduct(id ?? "");
+
+  if (loading && !product) {
+    return (
+      <>
+        <Stack.Screen options={{ title: "Producto" }} />
+        <View style={styles.notFound}>
+          <ActivityIndicator color={colors.primary} size="large" />
+        </View>
+      </>
+    );
+  }
 
   if (!product) {
     return <ProductNotFound />;
@@ -152,12 +164,16 @@ function ProductDetail({ product }: { product: Product }) {
                 {product.environmentalImpact.materialBreakdown.length > 0 && (
                   <View style={styles.materialsContainer}>
                     <Text style={styles.materialsLabel}>Materiales</Text>
-                    {product.environmentalImpact.materialBreakdown.map((m) => (
-                      <View key={m.materialType} style={styles.materialRow}>
+                    {product.environmentalImpact.materialBreakdown.map((m, i) => (
+                      <View key={`${m.materialType}-${i}`} style={styles.materialRow}>
                         <Text style={styles.materialName}>
-                          {m.materialType}
+                          {m.materialTypeLabel ?? m.materialType}
                         </Text>
-                        <Text style={styles.materialPct}>{m.percentage}%</Text>
+                        {typeof m.quantity === "number" && m.unit ? (
+                          <Text style={styles.materialPct}>
+                            {m.quantity} {m.unit}
+                          </Text>
+                        ) : null}
                       </View>
                     ))}
                   </View>
@@ -232,7 +248,7 @@ function ProductDetail({ product }: { product: Product }) {
             </Pressable>
             <Pressable
               style={styles.viewCartBtn}
-              onPress={() => router.push("/(cart)" as any)}
+              onPress={() => router.push("/(cart)")}
             >
               <ShoppingCart size={20} color={colors.primary} strokeWidth={2} />
             </Pressable>

@@ -1,0 +1,19 @@
+{
+  "header": {
+    "title": "Historial de pedidos",
+    "subtitle": "Consulta y sigue el estado de tus compras"
+  },
+  "total": "Total",
+  "item_one": "{{count}} artículo",
+  "item_other": "{{count}} artículos",
+  "status": {
+    "Delivered": "Entregado",
+    "Shipped": "Enviado",
+    "Processing": "En proceso",
+    "Cancelled": "Cancelado"
+  },
+  "empty": {
+    "title": "Sin pedidos aún",
+    "subtitle": "Tu historial de compras aparecerá aquí."
+  }
+}

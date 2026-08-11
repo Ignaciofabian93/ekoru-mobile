@@ -1,5 +1,13 @@
 {
-  "hint": "Choose a strong password that you haven't used before.",
+  "header": {
+    "title": "Change Password",
+    "subtitle": "Keep your account secure by updating your password regularly."
+  },
+  "hint": "Grow a strong password — mix letters, numbers, and symbols to reach full strength.",
+  "strength_seed": "Tiny seed",
+  "strength_sprout": "Young sprout",
+  "strength_sapling": "Growing sapling",
+  "strength_tree": "Mighty tree!",
   "current": "Current Password",
   "new": "New Password",
   "confirm": "Confirm New Password",

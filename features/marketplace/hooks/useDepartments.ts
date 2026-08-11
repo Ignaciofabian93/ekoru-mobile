@@ -1,7 +1,7 @@
 import { GET_DEPARTMENTS } from "@/graphql/marketplace/queries";
 import i18n from "@/i18n";
 import { useQuery } from "@apollo/client/react";
-import type { Department } from "../types/Department";
+import type { Department } from "../types";
 
 // Map i18n locale code to the GraphQL Language enum value
 function toGqlLanguage(lang: string): string {

@@ -12,7 +12,11 @@
   "language": "Langue",
   "notifications": {
     "title": "Notifications",
-    "push": "Notifications push"
+    "push": "Notifications push",
+    "email": "Notifications par e-mail",
+    "permissionDenied": "Permission refusée. Activez-la dans les réglages du système.",
+    "saveFailed": "Impossible d'enregistrer. Réessayez.",
+    "hint": "Elles contrôlent ce qu'Ekoru vous envoie. Les notifications dans l'app apparaissent toujours."
   },
   "security": {
     "title": "Sécurité",

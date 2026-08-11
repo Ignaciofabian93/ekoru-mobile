@@ -1,5 +1,5 @@
-import Select from "@/components/shared/Select/Select";
-import { Title } from "@/components/shared/Title/Title";
+import Select from "@/components/Primitives/Select/Select";
+import { Title } from "@/components/Primitives/Title/Title";
 import { CURRENCIES_SUPPORTED } from "@/config/currencies";
 import { CURRENCY_STORAGE_KEY } from "@/constants/settings";
 import useUserSettings from "@/hooks/useUserSettings";

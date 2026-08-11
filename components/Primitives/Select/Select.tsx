@@ -1,0 +1,460 @@
+import { borderRadius, colors, fontFamily, fontSize, input as inputSizes, shadows, spacing } from "@/design/tokens";
+import { Check, ChevronDown, Circle, type LucideIcon } from "lucide-react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, Dimensions, FlatList, Modal, Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Text } from "@/components/Primitives/Text/Text";
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+export type Option = {
+  label: string;
+  value: string | number;
+  iconColor?: string;
+};
+
+type Variant = "default" | "filled" | "outline";
+type Size = "sm" | "md" | "lg";
+type Width = "sm" | "md" | "lg" | "full";
+
+// ─── Props ────────────────────────────────────────────────────────────────────
+
+export interface SelectProps {
+  options?: Option[];
+  value?: string | number;
+  name?: string;
+  label?: string;
+  placeholder?: string;
+  onChange: (value: string | number) => void;
+  variant?: Variant;
+  /** Controls trigger height */
+  size?: Size;
+  /** Controls container width */
+  width?: Width;
+  disabled?: boolean;
+  readOnly?: boolean;
+  leftIcon?: LucideIcon;
+  errorMessage?: string;
+  showColorIcon?: boolean;
+  renderOption?: (option: Option, selected: boolean) => React.ReactNode;
+  searchEnabled?: boolean;
+  dropdownDirection?: "up" | "down";
+  noResultsText?: string;
+}
+
+// ─── Maps ─────────────────────────────────────────────────────────────────────
+
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+
+const SIZE_MAP: Record<Size, { height: number; fontSize: number; px: number; iconSize: number }> = {
+  sm: { height: inputSizes.sm.height, fontSize: inputSizes.sm.fontSize, px: inputSizes.sm.paddingHorizontal, iconSize: inputSizes.sm.iconSize },
+  md: { height: inputSizes.md.height, fontSize: inputSizes.md.fontSize, px: inputSizes.md.paddingHorizontal, iconSize: inputSizes.md.iconSize },
+  lg: { height: inputSizes.lg.height, fontSize: inputSizes.lg.fontSize, px: inputSizes.lg.paddingHorizontal, iconSize: inputSizes.lg.iconSize },
+};
+
+const WIDTH_MAP: Record<Width, `${number}%` | "100%"> = {
+  sm: "33%",
+  md: "50%",
+  lg: "66%",
+  full: "100%",
+};
+
+interface VariantStyle {
+  bg: string;
+  borderColor: string;
+  borderWidth: number;
+  focusedBorderColor: string;
+  errorBorderColor: string;
+}
+
+const VARIANT_MAP: Record<Variant, VariantStyle> = {
+  default: {
+    bg: colors.inputBg,
+    borderColor: colors.inputBorder,
+    borderWidth: 2,
+    focusedBorderColor: colors.inputBorderFocus,
+    errorBorderColor: colors.danger,
+  },
+  filled: {
+    bg: colors.backgroundSecondary,
+    borderColor: "transparent",
+    borderWidth: 2,
+    focusedBorderColor: colors.inputBorderFocus,
+    errorBorderColor: colors.danger,
+  },
+  outline: {
+    bg: "transparent",
+    borderColor: colors.primary,
+    borderWidth: 2,
+    focusedBorderColor: colors.primaryActive,
+    errorBorderColor: colors.danger,
+  },
+};
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+const Select = React.forwardRef<View, SelectProps>(
+  (
+    {
+      options = [],
+      value,
+      name: _name,
+      label,
+      placeholder = "Select...",
+      onChange,
+      variant = "default",
+      size = "md",
+      width = "full",
+      disabled = false,
+      readOnly = false,
+      leftIcon: LeftIcon,
+      errorMessage,
+      showColorIcon = false,
+      renderOption,
+      searchEnabled = true,
+      dropdownDirection = "down",
+      noResultsText = "No results found",
+    },
+    ref,
+  ) => {
+    const s = SIZE_MAP[size];
+    const v = VARIANT_MAP[variant];
+    const hasError = !!errorMessage;
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [search, setSearch] = useState("");
+    const triggerRef = useRef<View>(null);
+    const [dropdownPos, setDropdownPos] = useState({
+      x: 0,
+      y: 0,
+      width: 0,
+      triggerY: 0,
+    });
+
+    const selectedOption = options.find((o) => o.value === value);
+    const filteredOptions = options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase()));
+
+    // ── Chevron rotation (RN Animated — no Reanimated in main view tree) ────
+    const chevronRot = useRef(new Animated.Value(0)).current;
+    const chevronStyle = {
+      transform: [
+        {
+          rotate: chevronRot.interpolate({
+            inputRange: [0, 1],
+            outputRange: ["0deg", "180deg"],
+          }),
+        },
+      ],
+    };
+
+    useEffect(() => {
+      Animated.timing(chevronRot, {
+        toValue: isOpen ? 1 : 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen]);
+
+    // ── Open / close ────────────────────────────────────────────────────────
+    const handleOpen = () => {
+      if (disabled || readOnly) return;
+      (triggerRef.current as View | null)?.measureInWindow((x, y, width, height) => {
+        setDropdownPos({
+          x,
+          width,
+          y: y + height + 8, // bottom of trigger + gap (for "down")
+          triggerY: y - 8, // top of trigger - gap (for "up")
+        });
+        setIsOpen(true);
+      });
+    };
+
+    const handleClose = () => {
+      setIsOpen(false);
+      setSearch("");
+    };
+
+    const handleSelect = (optionValue: string | number) => {
+      onChange(optionValue);
+      handleClose();
+    };
+
+    // ── Dropdown position ───────────────────────────────────────────────────
+    const dropdownStyle =
+      dropdownDirection === "up"
+        ? {
+            bottom: SCREEN_HEIGHT - dropdownPos.triggerY,
+            left: dropdownPos.x,
+            width: dropdownPos.width,
+          }
+        : {
+            top: dropdownPos.y + 20,
+            left: dropdownPos.x,
+            width: dropdownPos.width,
+          };
+
+    // ── Trigger border ──────────────────────────────────────────────────────
+    const borderColor = hasError ? v.errorBorderColor : isOpen ? v.focusedBorderColor : v.borderColor;
+
+    // ── Color circle helper ─────────────────────────────────────────────────
+    const renderColorCircle = (option?: Option) => {
+      if (!showColorIcon || !option?.iconColor) return null;
+      return (
+        <Circle
+          size={16}
+          color={option.iconColor}
+          fill={option.iconColor}
+          strokeWidth={option.iconColor === "#FFFFFF" ? 1 : 0}
+          stroke={option.iconColor === "#FFFFFF" ? "#888" : option.iconColor}
+        />
+      );
+    };
+
+    return (
+      <View ref={ref} style={[styles.container, { width: WIDTH_MAP[width] as any }]}>
+        {/* Label */}
+        {label && <Text style={styles.label}>{label}</Text>}
+
+        {/* Trigger */}
+        <Pressable
+          ref={triggerRef}
+          onPress={handleOpen}
+          disabled={disabled || readOnly}
+          style={[
+            styles.trigger,
+            {
+              height: s.height,
+              paddingHorizontal: s.px,
+              backgroundColor: v.bg,
+              borderWidth: v.borderWidth,
+              borderColor,
+            },
+            (disabled || readOnly) && styles.disabled,
+          ]}
+        >
+          {LeftIcon && (
+            <View style={styles.leftIconWrap}>
+              <LeftIcon
+                size={s.iconSize}
+                color={isOpen ? colors.primary : colors.foregroundTertiary}
+                strokeWidth={2}
+              />
+            </View>
+          )}
+
+          <View style={[styles.triggerContent, LeftIcon && { paddingLeft: s.iconSize + 8 }]}>
+            {renderColorCircle(selectedOption)}
+            <Text
+              style={[
+                styles.triggerText,
+                { fontSize: s.fontSize },
+                !selectedOption ? { ...styles.placeholder } : {},
+              ]}
+              numberOfLines={1}
+            >
+              {selectedOption?.label ?? placeholder}
+            </Text>
+          </View>
+
+          <Animated.View style={[chevronStyle]}>
+            <ChevronDown
+              size={s.iconSize}
+              color={hasError ? colors.danger : isOpen ? colors.primary : colors.foregroundTertiary}
+              strokeWidth={2}
+            />
+          </Animated.View>
+        </Pressable>
+
+        {/* Error message */}
+        {errorMessage && (
+          <View>
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          </View>
+        )}
+
+        {/* Dropdown modal */}
+        <Modal
+          visible={isOpen}
+          transparent
+          animationType="none"
+          statusBarTranslucent
+          onRequestClose={handleClose}
+        >
+          {/* Backdrop */}
+          <Pressable style={styles.backdrop} onPress={handleClose}>
+            {/* Dropdown sheet */}
+            <View style={[styles.dropdown, dropdownStyle]}>
+              <Pressable onPress={(e) => e.stopPropagation()}>
+                {searchEnabled && (
+                  <TextInput
+                    placeholder="Search..."
+                    placeholderTextColor={colors.inputPlaceholder}
+                    value={search}
+                    onChangeText={setSearch}
+                    style={styles.searchInput}
+                    autoFocus
+                  />
+                )}
+                <FlatList
+                  data={filteredOptions}
+                  keyExtractor={(item) => String(item.value)}
+                  style={styles.list}
+                  ItemSeparatorComponent={() => <View style={styles.separator} />}
+                  keyboardShouldPersistTaps="handled"
+                  ListEmptyComponent={<Text style={styles.emptyText}>{noResultsText}</Text>}
+                  renderItem={({ item }) => {
+                    const isSelected = item.value === value;
+                    return (
+                      <Pressable
+                        onPress={() => handleSelect(item.value)}
+                        style={({ pressed }) => [
+                          styles.option,
+                          isSelected && styles.optionSelected,
+                          pressed && styles.optionPressed,
+                        ]}
+                      >
+                        {renderOption ? (
+                          renderOption(item, isSelected)
+                        ) : (
+                          <View style={styles.optionContent}>
+                            {renderColorCircle(item)}
+                            <Text
+                              style={[
+                                styles.optionText,
+                                { fontSize: s.fontSize },
+                                isSelected ? styles.optionTextSelected : {},
+                              ]}
+                            >
+                              {item.label}
+                            </Text>
+                            {isSelected && <Check size={16} color={colors.primary} strokeWidth={2.5} />}
+                          </View>
+                        )}
+                      </Pressable>
+                    );
+                  }}
+                />
+              </Pressable>
+            </View>
+          </Pressable>
+        </Modal>
+      </View>
+    );
+  },
+);
+
+Select.displayName = "Select";
+
+// ─── Styles ───────────────────────────────────────────────────────────────────
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 1,
+  },
+  label: {
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
+    color: colors.foreground,
+  },
+  trigger: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: borderRadius.md,
+    gap: spacing[2],
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+  leftIconWrap: {
+    position: "absolute",
+    left: spacing[3],
+    zIndex: 1,
+  },
+  triggerContent: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing[2],
+  },
+  triggerText: {
+    fontFamily: fontFamily.regular,
+    color: colors.inputText,
+    flex: 1,
+  },
+  placeholder: {
+    color: colors.inputPlaceholder,
+  },
+  errorText: {
+    fontSize: fontSize.xs,
+    fontFamily: fontFamily.regular,
+    color: colors.danger,
+  },
+  // Dropdown
+  backdrop: {
+    flex: 1,
+  },
+  dropdown: {
+    position: "absolute",
+    backgroundColor: colors.surface,
+    borderWidth: 1.5,
+    borderColor: colors.borderLight,
+    borderRadius: borderRadius.lg,
+    overflow: "hidden",
+    maxHeight: 320,
+    ...shadows.md,
+  },
+  searchInput: {
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.base,
+    paddingHorizontal: spacing[4],
+    paddingVertical: spacing[2],
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderLight,
+    color: colors.inputText,
+  },
+  list: {
+    maxHeight: 268,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: colors.borderLight,
+  },
+  option: {
+    overflow: "hidden",
+  },
+  optionSelected: {
+    backgroundColor: `${colors.primary}1A`,
+  },
+  optionPressed: {
+    backgroundColor: `${colors.primary}0D`,
+  },
+  optionContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    gap: 10,
+  },
+  optionText: {
+    fontFamily: fontFamily.regular,
+    color: colors.foreground,
+    fontSize: fontSize.base,
+    lineHeight: 20,
+    flex: 1,
+  },
+  optionTextSelected: {
+    fontFamily: fontFamily.semibold,
+    color: colors.primary,
+  },
+  emptyText: {
+    paddingHorizontal: spacing[4],
+    paddingVertical: spacing[3],
+    fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
+    color: colors.foregroundSecondary,
+    fontStyle: "italic",
+  },
+});
+
+export default Select;
+export { Select };

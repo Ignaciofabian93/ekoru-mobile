@@ -1,5 +1,5 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import type { Badge } from "@/types/enums";
 import { Check } from "lucide-react-native";
@@ -25,10 +25,7 @@ const ECO_BADGES: { value: Badge; label: string; emoji: string }[] = [
 
 interface Props {
   values: PublishFormValues;
-  set: <K extends keyof PublishFormValues>(
-    key: K,
-    value: PublishFormValues[K],
-  ) => void;
+  set: <K extends keyof PublishFormValues>(key: K, value: PublishFormValues[K]) => void;
 }
 
 export default function BadgesStep({ values, set }: Props) {
@@ -53,10 +50,7 @@ export default function BadgesStep({ values, set }: Props) {
         Optional — help buyers discover your listing.
       </Text>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.grid}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.grid}>
         {ECO_BADGES.map((b) => {
           const selected = values.badges.includes(b.value);
           return (
@@ -74,9 +68,7 @@ export default function BadgesStep({ values, set }: Props) {
               >
                 {b.label}
               </Text>
-              {selected && (
-                <Check size={14} color={colors.primary} strokeWidth={2.5} />
-              )}
+              {selected && <Check size={14} color={colors.primary} strokeWidth={2.5} />}
             </Pressable>
           );
         })}
@@ -84,8 +76,7 @@ export default function BadgesStep({ values, set }: Props) {
 
       {values.badges.length > 0 && (
         <Text size="xs" color="secondary" align="center">
-          {values.badges.length} tag{values.badges.length > 1 ? "s" : ""}{" "}
-          selected
+          {values.badges.length} tag{values.badges.length > 1 ? "s" : ""} selected
         </Text>
       )}
     </View>

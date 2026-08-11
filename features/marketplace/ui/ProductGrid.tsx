@@ -1,14 +1,14 @@
-import MarketplaceCard from "@/components/shared/Card/MarketplaceCard/MarketplaceCard";
-import { Pagination } from "@/components/shared/Pagination/Pagination";
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import MarketplaceCard from "@/components/Cards/MarketplaceCard/MarketplaceCard";
+import { Pagination } from "@/components/Patterns/Pagination/Pagination";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { router } from "expo-router";
 import { Leaf } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
-import type { Product } from "../types/Product";
+import type { Product } from "../types";
 
 const GAP = 10;
 const H_PADDING = 32;

@@ -1,0 +1,10 @@
+{
+  "search": "Search",
+  "placeholder": "Search products, stores, services...",
+  "startTyping": "Start typing to search",
+  "noResults": "No results for \"{{query}}\"",
+  "results": "results",
+  "typePRODUCT": "Product",
+  "typeSTORE_PRODUCT": "Store",
+  "typeSERVICE": "Service"
+}

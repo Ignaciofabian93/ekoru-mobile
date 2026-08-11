@@ -1,4 +1,4 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
 import { colors } from "@/design/tokens";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";

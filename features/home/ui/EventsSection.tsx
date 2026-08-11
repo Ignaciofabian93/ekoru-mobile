@@ -1,19 +1,10 @@
-import MainButton from "@/components/shared/Button/MainButton";
-import { Text as AppText } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import { Text as AppText } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import type { CommunityEvent, CommunityEventType } from "@/types/community";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  BookOpen,
-  Calendar,
-  MapPin,
-  Mic2,
-  ShoppingBag,
-  Users,
-  Wifi,
-  Wrench,
-} from "lucide-react-native";
+import { BookOpen, Calendar, MapPin, Mic2, ShoppingBag, Users, Wifi, Wrench } from "lucide-react-native";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 // ─── Event type config ────────────────────────────────────────────────────────
@@ -22,10 +13,10 @@ const TYPE_CONFIG: Record<
   CommunityEventType,
   { label: string; icon: typeof Mic2; gradient: [string, string] }
 > = {
-  talk:     { label: "Talk",     icon: Mic2,        gradient: [colors.secondaryDark, colors.secondary] },
-  workshop: { label: "Workshop", icon: Wrench,      gradient: [colors.primaryDark,   colors.primary]   },
-  tutorial: { label: "Tutorial", icon: BookOpen,    gradient: [colors.accentHover,   colors.accent]    },
-  fair:     { label: "Fair",     icon: ShoppingBag, gradient: ["#2563eb",            colors.info]      },
+  talk: { label: "Talk", icon: Mic2, gradient: [colors.secondaryDark, colors.secondary] },
+  workshop: { label: "Workshop", icon: Wrench, gradient: [colors.primaryDark, colors.primary] },
+  tutorial: { label: "Tutorial", icon: BookOpen, gradient: [colors.accentHover, colors.accent] },
+  fair: { label: "Fair", icon: ShoppingBag, gradient: ["#2563eb", colors.info] },
 };
 
 // ─── Dummy data ───────────────────────────────────────────────────────────────
@@ -104,10 +95,7 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
   const almostFull = fillPct >= 85;
 
   return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [styles.card, { opacity: pressed ? 0.93 : 1 }]}
-    >
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.card, { opacity: pressed ? 0.93 : 1 }]}>
       {/* Gradient header */}
       <LinearGradient
         colors={cfg.gradient}
@@ -117,9 +105,7 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
       >
         <View style={styles.typeBadge}>
           <TypeIcon size={12} color={cfg.gradient[1]} strokeWidth={2.5} />
-          <Text style={[styles.typeBadgeText, { color: cfg.gradient[1] }]}>
-            {cfg.label}
-          </Text>
+          <Text style={[styles.typeBadgeText, { color: cfg.gradient[1] }]}>{cfg.label}</Text>
         </View>
 
         <View style={styles.priceBadge}>
@@ -131,7 +117,9 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
 
       {/* Body */}
       <View style={styles.cardBody}>
-        <Text style={styles.title} numberOfLines={2}>{event.title}</Text>
+        <Text style={styles.title} numberOfLines={2}>
+          {event.title}
+        </Text>
 
         {/* Date */}
         <View style={styles.infoRow}>
@@ -143,11 +131,14 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
 
         {/* Location */}
         <View style={styles.infoRow}>
-          {event.isOnline
-            ? <Wifi size={13} color={colors.foregroundSecondary} strokeWidth={1.75} />
-            : <MapPin size={13} color={colors.foregroundSecondary} strokeWidth={1.75} />
-          }
-          <Text style={styles.infoText} numberOfLines={1}>{event.location}</Text>
+          {event.isOnline ? (
+            <Wifi size={13} color={colors.foregroundSecondary} strokeWidth={1.75} />
+          ) : (
+            <MapPin size={13} color={colors.foregroundSecondary} strokeWidth={1.75} />
+          )}
+          <Text style={styles.infoText} numberOfLines={1}>
+            {event.location}
+          </Text>
         </View>
 
         <Text style={styles.organizer}>by {event.organizer}</Text>
@@ -193,29 +184,21 @@ function EventCard({ event, onPress }: { event: CommunityEvent; onPress: () => v
 export default function EventsSection() {
   return (
     <View style={styles.container}>
-      <Title level="h4" align="center">Community Events</Title>
+      <Title level="h4" align="center">
+        Community Events
+      </Title>
       <AppText size="sm" color="secondary" align="center" style={{ marginTop: 4 }}>
         Talks, workshops & tutorials — join the conversation
       </AppText>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scroll}
-      >
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scroll}>
         {EVENTS.map((event) => (
           <EventCard key={event.id} event={event} onPress={() => {}} />
         ))}
       </ScrollView>
 
       <View style={styles.cta}>
-        <MainButton
-          text="See all events"
-          onPress={() => {}}
-          variant="secondary"
-          size="md"
-          fullWidth
-        />
+        <MainButton text="See all events" onPress={() => {}} variant="secondary" size="md" fullWidth />
       </View>
     </View>
   );

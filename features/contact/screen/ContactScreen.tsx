@@ -12,8 +12,8 @@ import {
   View,
 } from "react-native";
 // Side-effect import so i18n bundles are registered before useTranslation runs.
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import "../i18n";
 import ContactForm from "../ui/ContactForm";
 

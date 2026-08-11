@@ -1,5 +1,5 @@
-import MainButton from "@/components/shared/Button/MainButton";
-import { Text } from "@/components/shared/Text/Text";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import { Text } from "@/components/Primitives/Text/Text";
 import { colors } from "@/design/tokens";
 import { useRouter } from "expo-router";
 import { ArrowLeftRight, BookOpen, Leaf, LogIn, Star, Store, UserRoundPlus } from "lucide-react-native";

@@ -16,9 +16,9 @@ import "../global.css";
 
 import { ApolloProvider } from "@apollo/client/react";
 
-import Drawer from "@/components/shared/Drawer/Drawer";
-import ErrorScreen from "@/components/shared/ErrorScreen/ErrorScreen";
-import toastConfig from "@/components/shared/Toast/toastConfig";
+import Drawer from "@/components/Drawer/Drawer";
+import ErrorScreen from "@/components/Feedback/ErrorScreen/ErrorScreen";
+import toastConfig from "@/components/Feedback/Toast/toastConfig";
 import { DrawerProvider } from "@/context/DrawerContext";
 import client from "@/lib/apollo";
 import { logger } from "@/lib/logger";
@@ -114,6 +114,8 @@ function RootLayoutNav() {
           <Stack.Screen name="(legal)" options={{ headerShown: false }} />
           <Stack.Screen name="(contact)" options={{ headerShown: false }} />
           <Stack.Screen name="(publish)" options={{ headerShown: false }} />
+          <Stack.Screen name="(deals)" options={{ headerShown: false }} />
+          <Stack.Screen name="(search)" options={{ headerShown: false }} />
           <Stack.Screen name="product" options={{ headerShown: false }} />
         </Stack>
         <Drawer />

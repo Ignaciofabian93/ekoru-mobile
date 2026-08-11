@@ -30,25 +30,25 @@ requiresBiometric — true when the app requires biometric verification before p
 
 ### Actions
 
-| Action | Description |
-|---|---|
-| `login(email, password)` | Authenticates the user and sets the session. Currently uses a mock response; will be wired to the GraphQL mutation. |
-| `setSession(token, seller)` | Persists the token and seller to Secure Store and updates in-memory state. |
-| `logout()` | Clears all session data from memory and Secure Store. Resets biometric requirement. |
-| `hydrate()` | Called on app startup. Reads persisted token and seller from Secure Store and restores state. |
-| `setBiometricEnabled(enabled)` | Saves the user's biometric preference and immediately sets `requiresBiometric` to match. |
-| `unlockWithBiometric()` | Clears the `requiresBiometric` flag after a successful biometric verification. |
+| Action                         | Description                                                                                                         |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `login(email, password)`       | Authenticates the user and sets the session. Currently uses a mock response; will be wired to the GraphQL mutation. |
+| `setSession(token, seller)`    | Persists the token and seller to Secure Store and updates in-memory state.                                          |
+| `logout()`                     | Clears all session data from memory and Secure Store. Resets biometric requirement.                                 |
+| `hydrate()`                    | Called on app startup. Reads persisted token and seller from Secure Store and restores state.                       |
+| `setBiometricEnabled(enabled)` | Saves the user's biometric preference and immediately sets `requiresBiometric` to match.                            |
+| `unlockWithBiometric()`        | Clears the `requiresBiometric` flag after a successful biometric verification.                                      |
 
 ### Selectors
 
 These are standalone hooks that subscribe to specific store slices:
 
-| Selector | Returns |
-|---|---|
-| `useIsAuthenticated()` | `boolean` — true if `seller` is not null |
-| `useSeller()` | `Seller \| null` |
-| `useSellerType()` | `"PERSON" \| "STARTUP" \| "COMPANY" \| undefined` |
-| `useIsSellerType(type)` | `boolean` |
+| Selector                     | Returns                                                   |
+| ---------------------------- | --------------------------------------------------------- |
+| `useIsAuthenticated()`       | `boolean` — true if `seller` is not null                  |
+| `useSeller()`                | `Seller \| null`                                          |
+| `useSellerType()`            | `"PERSON" \| "STARTUP" \| "COMPANY" \| undefined`         |
+| `useIsSellerType(type)`      | `boolean`                                                 |
 | `useHasSellerType(...types)` | `boolean` — true if seller matches any of the given types |
 
 ---
@@ -79,15 +79,18 @@ The hook auto-initializes on mount and supports automatic fallback to device pas
 
 ### BiometricGate
 
-**File:** `components/shared/BiometricGate/BiometricGateScreen.tsx`
+**File:** `components/BiometricGate/BiometricGateScreen.tsx`
 
 A full-screen modal overlay rendered in `_layout.tsx` when `requiresBiometric` is `true`:
 
 ```tsx
-{requiresBiometric && <BiometricGateScreen />}
+{
+  requiresBiometric && <BiometricGateScreen />;
+}
 ```
 
 Behavior:
+
 - Displays the seller's name as a greeting
 - Automatically triggers the biometric prompt on mount
 - Shows the appropriate icon (Face ID or Fingerprint) based on `supportedTypes`
@@ -99,6 +102,7 @@ Behavior:
 The user toggles biometrics from the Settings screen. The `useSettings` hook (in `features/profile/hooks/useSettings.tsx`) calls `setBiometricEnabled(true|false)` on the auth store after saving the preference via the `UPDATE_SELLER_PREFERENCES` GraphQL mutation.
 
 The biometric gate appears:
+
 - On app foreground after it was backgrounded (when biometric is enabled)
 - Any time `requiresBiometric` is set to `true`
 
@@ -138,17 +142,17 @@ mutation RegisterBusiness($input: RegisterBusinessInput!) {
 
 **File:** `graphql/auth/profile.ts`
 
-| Mutation | Purpose |
-|---|---|
-| `UPDATE_SELLER` | Updates basic seller fields (address, phone, etc.) |
-| `UPDATE_PERSON_PROFILE` | Updates personal profile (name, bio, birthday) |
-| `UPDATE_BUSINESS_PROFILE` | Updates business profile (name, tax ID, description) |
+| Mutation                    | Purpose                                                  |
+| --------------------------- | -------------------------------------------------------- |
+| `UPDATE_SELLER`             | Updates basic seller fields (address, phone, etc.)       |
+| `UPDATE_PERSON_PROFILE`     | Updates personal profile (name, bio, birthday)           |
+| `UPDATE_BUSINESS_PROFILE`   | Updates business profile (name, tax ID, description)     |
 | `UPDATE_SELLER_PREFERENCES` | Updates notification, language, and currency preferences |
-| `UPDATE_PASSWORD` | Changes the account password |
-| `REQUEST_PASSWORD_RESET` | Initiates a password reset flow |
-| `DEACTIVATE_ACCOUNT` | Soft-deletes the seller account |
-| `REACTIVATE_ACCOUNT` | Re-enables a previously deactivated account |
-| `UPDATE_SELLER_CATEGORY` | Updates the seller's level or category |
+| `UPDATE_PASSWORD`           | Changes the account password                             |
+| `REQUEST_PASSWORD_RESET`    | Initiates a password reset flow                          |
+| `DEACTIVATE_ACCOUNT`        | Soft-deletes the seller account                          |
+| `REACTIVATE_ACCOUNT`        | Re-enables a previously deactivated account              |
+| `UPDATE_SELLER_CATEGORY`    | Updates the seller's level or category                   |
 
 ### Me Query
 
@@ -161,8 +165,12 @@ query Me {
   me {
     ...SellerFields
     profile {
-      ... on BusinessProfile { ...BusinessProfileFields }
-      ... on PersonProfile   { ...PersonProfileFields }
+      ... on BusinessProfile {
+        ...BusinessProfileFields
+      }
+      ... on PersonProfile {
+        ...PersonProfileFields
+      }
     }
   }
 }

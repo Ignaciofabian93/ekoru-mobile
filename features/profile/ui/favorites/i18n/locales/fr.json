@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Favoris",
+    "subtitle": "Articles et boutiques que vous avez sauvegardés pour plus tard"
+  },
+  "empty": {
+    "title": "Aucun favori pour l'instant",
+    "subtitle": "Sauvegardez les produits et boutiques que vous aimez et ils apparaîtront ici.",
+    "browse": "Parcourir la marketplace"
+  }
+}

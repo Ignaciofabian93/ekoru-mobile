@@ -12,5 +12,28 @@
   "waterSub": "= {{days}} days drinking water",
   "wasteDiverted": "Waste diverted",
   "wasteUnit": "kg",
-  "wasteSub": "from landfill"
+  "wasteSub": "from landfill",
+  "impact": {
+    "metricCO2": "CO₂",
+    "metricWater": "Water",
+    "metricWaste": "Waste",
+    "impactByActivity": "Impact by activity",
+    "tapToCompare": "Tap to compare metrics",
+    "activity_purchases": "Purchases",
+    "activity_selling": "Selling",
+    "activity_exchanges": "Exchanges",
+    "transactions_other": "{{count}} transactions",
+    "co2Trend": "CO₂ saved trend",
+    "kgSavedPerMonth": "kg saved / month",
+    "lastSixMonths": "Last 6 months",
+    "trendVsLastMonth": "+{{pct}}% vs last month",
+    "sustainableMaterials": "Sustainable materials",
+    "acrossYourProducts": "Across your products",
+    "realWorldEquivalents": "Real-world equivalents",
+    "equivTrees": "trees planted",
+    "equivWaterDays": "days of drinking water",
+    "equivWasteKg": "kg waste diverted",
+    "howCalculated": "How is this calculated?",
+    "calculationExplanation": "Your impact is estimated using lifecycle assessment data for each product category. Values represent the difference between buying new vs. secondhand or recycled goods."
+  }
 }

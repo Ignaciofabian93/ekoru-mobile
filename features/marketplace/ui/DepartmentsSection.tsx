@@ -1,5 +1,5 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
@@ -7,7 +7,7 @@ import { ChevronRight, SlidersHorizontal } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
-import type { Department } from "../types/Department";
+import type { Department } from "../types";
 import DepartmentsSectionSkeleton from "./skeletons/DepartmentsSectionSkeleton";
 
 // Gradient palettes cycling for department cards
@@ -29,11 +29,7 @@ interface Props {
   setFiltersVisible?: (v: boolean) => void;
 }
 
-export default function DepartmentsSection({
-  departments,
-  loading,
-  setFiltersVisible,
-}: Props) {
+export default function DepartmentsSection({ departments, loading, setFiltersVisible }: Props) {
   const { t } = useTranslation(NAMESPACE);
   if (loading) return <DepartmentsSectionSkeleton />;
 
@@ -50,20 +46,13 @@ export default function DepartmentsSection({
             {departments.length} {t("available")}
           </Text>
         </View>
-        <Pressable
-          style={[styles.filterBtn]}
-          onPress={() => setFiltersVisible?.(true)}
-        >
+        <Pressable style={[styles.filterBtn]} onPress={() => setFiltersVisible?.(true)}>
           <SlidersHorizontal size={18} color={colors.primary} strokeWidth={2} />
         </Pressable>
       </View>
 
       {/* ── Horizontal scroll row ──────────────────────────────────── */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scroll}
-      >
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scroll}>
         {departments.map((dept, idx) => {
           const gradient = GRADIENTS[idx % GRADIENTS.length];
           const categoryCount = dept.departmentCategory?.length ?? 0;
@@ -80,10 +69,7 @@ export default function DepartmentsSection({
                   },
                 })
               }
-              style={({ pressed }) => [
-                styles.card,
-                pressed && styles.cardPressed,
-              ]}
+              style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
             >
               <LinearGradient
                 colors={gradient}
@@ -93,12 +79,7 @@ export default function DepartmentsSection({
               >
                 {/* Name */}
                 <View style={{ flex: 1, justifyContent: "flex-end" }}>
-                  <Text
-                    size="sm"
-                    weight="semibold"
-                    numberOfLines={2}
-                    style={styles.deptName}
-                  >
+                  <Text size="sm" weight="semibold" numberOfLines={2} style={styles.deptName}>
                     {dept.translation.name}
                   </Text>
                 </View>
@@ -108,11 +89,7 @@ export default function DepartmentsSection({
                   <Text size="xs" style={styles.countLabel}>
                     {categoryCount} {t("category", { count: categoryCount })}
                   </Text>
-                  <ChevronRight
-                    size={12}
-                    color="rgba(255,255,255,0.7)"
-                    strokeWidth={2}
-                  />
+                  <ChevronRight size={12} color="rgba(255,255,255,0.7)" strokeWidth={2} />
                 </View>
               </LinearGradient>
             </Pressable>

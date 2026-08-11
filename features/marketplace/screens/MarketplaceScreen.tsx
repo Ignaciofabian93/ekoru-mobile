@@ -1,7 +1,8 @@
-import { DUMMY_PRODUCTS } from "@/features/marketplace/data/dummyProducts";
-import { lazy, useState } from "react";
+import { useState } from "react";
+
 import useDepartments from "../hooks/useDepartments";
 import useProductFilters from "../hooks/useProductFilters";
+import useProducts from "../hooks/useProducts";
 import DepartmentsSection from "../ui/DepartmentsSection";
 import FeaturedProductsSection from "../ui/FeaturedProductsSection";
 import Header from "../ui/header/Header";
@@ -10,23 +11,18 @@ import {
   OuterContainer,
   ScrollContainer,
 } from "../ui/layout/Container";
-
-const ProductFiltersSheet = lazy(() => import("../ui/ProductFiltersSheet"));
+import ProductFiltersSheet from "../ui/ProductFiltersSheet";
 
 export default function MarketplaceScreen() {
-  const { departments, loading } = useDepartments();
+  const { departments, loading: departmentsLoading } = useDepartments();
+  const fp = useProductFilters();
+  const { products, pageInfo } = useProducts({
+    page: fp.page,
+    pageSize: fp.pageSize,
+    filter: fp.filterInput,
+    sort: fp.sortInput,
+  });
   const [filtersVisible, setFiltersVisible] = useState(false);
-  const {
-    filters,
-    applyFilters,
-    filteredCount,
-    paginated,
-    page,
-    totalPages,
-    itemsPerPage,
-    changeItemsPerPage,
-    goToPage,
-  } = useProductFilters(DUMMY_PRODUCTS);
 
   const wallpaperImage = require("@/assets/images/wallpaper-1.jpg");
 
@@ -35,30 +31,30 @@ export default function MarketplaceScreen() {
       <ScrollContainer>
         <Header wallpaperImage={wallpaperImage} />
         <ContentContainer>
-          {/* ── Departments from DB ────────────────────────────────────── */}
+          {/* ── Departments from DB ────────────────────────────────── */}
           <DepartmentsSection
             departments={departments}
-            loading={loading}
+            loading={departmentsLoading}
             setFiltersVisible={setFiltersVisible}
           />
 
-          {/* ── Featured products ──────────────────────────────────── */}
+          {/* ── Featured products (live) ───────────────────────────── */}
           <FeaturedProductsSection
-            products={paginated}
-            filteredCount={filteredCount}
-            page={page}
-            totalPages={totalPages}
-            itemsPerPage={itemsPerPage}
-            onGoToPage={goToPage}
-            onChangeItemsPerPage={changeItemsPerPage}
+            products={products}
+            filteredCount={pageInfo?.totalCount ?? products.length}
+            page={pageInfo?.currentPage ?? 1}
+            totalPages={pageInfo?.totalPages ?? 1}
+            itemsPerPage={fp.pageSize}
+            onGoToPage={fp.setPage}
+            onChangeItemsPerPage={fp.setPageSize}
           />
         </ContentContainer>
       </ScrollContainer>
 
       <ProductFiltersSheet
         visible={filtersVisible}
-        initialFilters={filters}
-        onApply={applyFilters}
+        initialFilters={fp.filters}
+        onApply={fp.applyFilters}
         onClose={() => setFiltersVisible(false)}
       />
     </OuterContainer>

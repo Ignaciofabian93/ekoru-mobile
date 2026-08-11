@@ -39,6 +39,25 @@ const raw = {
   gray400:   "#9ca3af",
   gray600:   "#4b5563",
   gray800:   "#1f2937",
+
+  // Nature palette — light/dark pairs for header gradients
+  violet200:   "#ddd6fe",
+  violet700:   "#6d28d9",
+
+  teal200:     "#99f6e4",
+  teal600:     "#0d9488",
+
+  emerald200:  "#bbf7d0",
+  emerald700:  "#15803d",
+
+  orange200:   "#fed7aa",
+  orange700:   "#c2410c",
+
+  blue200:     "#bfdbfe",
+  blue700:     "#1d4ed8",
+
+  rose200:     "#fecdd3",
+  rose700:     "#be123c",
 } as const;
 
 // ─── Color tokens (semantic) ──────────────────────────────────────
@@ -92,6 +111,25 @@ export const colors = {
   borderLight:          raw.gray100,
   borderStrong:         raw.gray300,
   borderFocus:          raw.lime500,
+
+  // Nature — header gradient pairs (use as [light, dark, light])
+  naturePurpleLight:    raw.violet200,
+  naturePurpleDark:     raw.violet700,
+
+  natureTealLight:      raw.teal200,
+  natureTealDark:       raw.teal600,
+
+  natureSageLight:      raw.emerald200,
+  natureSageDark:       raw.emerald700,
+
+  natureCoralLight:     raw.orange200,
+  natureCoralDark:      raw.orange700,
+
+  natureOceanLight:     raw.blue200,
+  natureOceanDark:      raw.blue700,
+
+  natureRoseLight:      raw.rose200,
+  natureRoseDark:       raw.rose700,
 
   // Inputs
   inputBg:              "#ffffff",

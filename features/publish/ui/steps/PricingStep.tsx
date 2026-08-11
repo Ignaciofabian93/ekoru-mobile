@@ -1,6 +1,6 @@
-import Input from "@/components/shared/Input/Input";
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import Input from "@/components/Primitives/Input/Input";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { ArrowLeftRight, DollarSign } from "lucide-react-native";
 import { StyleSheet, Switch, View } from "react-native";
@@ -9,10 +9,7 @@ import type { PublishFormValues } from "../../types/PublishForm";
 interface Props {
   values: PublishFormValues;
   errors: Partial<Record<keyof PublishFormValues, string>>;
-  set: <K extends keyof PublishFormValues>(
-    key: K,
-    value: PublishFormValues[K],
-  ) => void;
+  set: <K extends keyof PublishFormValues>(key: K, value: PublishFormValues[K]) => void;
 }
 
 export default function PricingStep({ values, errors, set }: Props) {
@@ -37,11 +34,7 @@ export default function PricingStep({ values, errors, set }: Props) {
       <View style={styles.toggleCard}>
         <View style={styles.toggleLeft}>
           <View style={styles.toggleIcon}>
-            <ArrowLeftRight
-              size={18}
-              color={colors.primary}
-              strokeWidth={1.75}
-            />
+            <ArrowLeftRight size={18} color={colors.primary} strokeWidth={1.75} />
           </View>
           <View style={styles.toggleText}>
             <Text size="sm" weight="semibold">

@@ -1,15 +1,9 @@
-import { Text as AppText } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text as AppText } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import {
-  ArrowUpRight,
-  Package2,
-  ScanBarcode,
-  Star,
-  Store,
-} from "lucide-react-native";
+import { ArrowUpRight, Package2, ScanBarcode, Star, Store } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -90,7 +84,9 @@ export default function CategoriesSection() {
 
   return (
     <View style={styles.container}>
-      <Title level="h4" align="center">Explore our categories</Title>
+      <Title level="h4" align="center">
+        Explore our categories
+      </Title>
       <AppText size="sm" color="secondary" align="center" style={{ marginTop: 4, marginBottom: 16 }}>
         Find what moves you forward.
       </AppText>
@@ -98,10 +94,7 @@ export default function CategoriesSection() {
       <View style={styles.grid}>
         {/* Featured card */}
         <View key={active}>
-          <LargeCard
-            category={featured}
-            onNavigate={() => router.push(featured.route as any)}
-          />
+          <LargeCard category={featured} onNavigate={() => router.push(featured.route as any)} />
         </View>
 
         {/* Small cards */}
@@ -121,13 +114,7 @@ export default function CategoriesSection() {
   );
 }
 
-function LargeCard({
-  category,
-  onNavigate,
-}: {
-  category: Category;
-  onNavigate: () => void;
-}) {
+function LargeCard({ category, onNavigate }: { category: Category; onNavigate: () => void }) {
   const { Icon, gradient, title, description, tags, topItems } = category;
 
   return (
@@ -172,13 +159,7 @@ function LargeCard({
           <Text style={styles.topPicksLabel}>Top picks</Text>
         </View>
         {topItems.map((item, i) => (
-          <View
-            key={item.name}
-            style={[
-              styles.topItem,
-              i < topItems.length - 1 && styles.topItemBorder,
-            ]}
-          >
+          <View key={item.name} style={[styles.topItem, i < topItems.length - 1 && styles.topItemBorder]}>
             <Text style={styles.topItemName} numberOfLines={1}>
               {item.name}
             </Text>
@@ -202,10 +183,7 @@ function SmallCard({
   const { Icon, gradient, title, meta } = category;
 
   return (
-    <Pressable
-      onPress={onExpand}
-      style={({ pressed }) => [styles.shadow, { opacity: pressed ? 0.88 : 1 }]}
-    >
+    <Pressable onPress={onExpand} style={({ pressed }) => [styles.shadow, { opacity: pressed ? 0.88 : 1 }]}>
       <LinearGradient
         colors={gradient as any}
         start={{ x: 0, y: 0 }}

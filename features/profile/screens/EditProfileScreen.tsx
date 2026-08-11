@@ -1,20 +1,20 @@
-import MainButton from "@/components/shared/Button/MainButton";
+import MainButton from "@/components/Primitives/Button/MainButton";
 import { Save } from "lucide-react-native";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, View } from "react-native";
-import { NAMESPACE } from "../i18n";
 import { AVATAR_PROTRUDE, COVER_HEIGHT } from "../constants/imageSize";
+import useProfileData from "../hooks/useProfileData";
+import { NAMESPACE } from "../i18n";
+import BusinessInfoForm from "../ui/editProfile/BusinessInfoForm";
+import ContactForm from "../ui/editProfile/ContactForm";
+import LocationForm from "../ui/editProfile/LocationForm";
+import PersonInfoForm from "../ui/editProfile/PersonInfoForm";
 import { OuterContainer, ScrollContainer } from "../ui/layout/Container";
 import CoverImage from "../ui/main/CoverImage";
 import PhotoPicker from "../ui/main/PhotoPicker";
 import ProfileImage from "../ui/main/ProfileImage";
 import ProfileImageModal from "../ui/main/ProfileImageModal";
-import BusinessInfoForm from "../ui/editProfile/BusinessInfoForm";
-import ContactForm from "../ui/editProfile/ContactForm";
-import LocationForm from "../ui/editProfile/LocationForm";
-import PersonInfoForm from "../ui/editProfile/PersonInfoForm";
-import useProfileData from "../hooks/useProfileData";
 
 export default function EditProfileScreen() {
   const {
@@ -40,9 +40,7 @@ export default function EditProfileScreen() {
   // ── Photo upload state ──────────────────────────────────────────────────────
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const [pickerSheetVisible, setPickerSheetVisible] = useState(false);
-  const [pickerTarget, setPickerTarget] = useState<"profile" | "cover">(
-    "profile",
-  );
+  const [pickerTarget, setPickerTarget] = useState<"profile" | "cover">("profile");
   const [uploadingProfile, setUploadingProfile] = useState(false);
   const [uploadingCover, setUploadingCover] = useState(false);
   const modalAnim = useRef(new Animated.Value(0)).current;
@@ -77,9 +75,7 @@ export default function EditProfileScreen() {
     <OuterContainer enableBottomInset>
       <ScrollContainer>
         {/* ── Cover + overlapping avatar ─────────────────────────────────── */}
-        <View
-          style={{ height: COVER_HEIGHT, marginBottom: AVATAR_PROTRUDE + 16 }}
-        >
+        <View style={{ height: COVER_HEIGHT, marginBottom: AVATAR_PROTRUDE + 16 }}>
           <CoverImage
             coverImage={coverImage}
             uploadingCover={uploadingCover}
@@ -98,9 +94,7 @@ export default function EditProfileScreen() {
         {personProfile && (
           <PersonInfoForm
             values={personValues}
-            onChange={(key, value) =>
-              setPersonValues((prev) => ({ ...prev, [key]: value }))
-            }
+            onChange={(key, value) => setPersonValues((prev) => ({ ...prev, [key]: value }))}
           />
         )}
 
@@ -108,9 +102,7 @@ export default function EditProfileScreen() {
         {bizProfile && (
           <BusinessInfoForm
             values={bizValues}
-            onChange={(key, value) =>
-              setBizValues((prev) => ({ ...prev, [key]: value }))
-            }
+            onChange={(key, value) => setBizValues((prev) => ({ ...prev, [key]: value }))}
           />
         )}
 
@@ -129,9 +121,7 @@ export default function EditProfileScreen() {
         {/* ── Contact ─────────────────────────────────────────────────────── */}
         <ContactForm
           values={contactValues}
-          onChange={(key, value) =>
-            setContactValues((prev) => ({ ...prev, [key]: value }))
-          }
+          onChange={(key, value) => setContactValues((prev) => ({ ...prev, [key]: value }))}
         />
 
         <MainButton

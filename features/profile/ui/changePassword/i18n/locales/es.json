@@ -1,5 +1,13 @@
 {
-  "hint": "Elige una contraseña segura que no hayas usado antes.",
+  "header": {
+    "title": "Cambiar contraseña",
+    "subtitle": "Mantén tu cuenta segura actualizando tu contraseña regularmente."
+  },
+  "hint": "Cultiva una contraseña fuerte — mezcla letras, números y símbolos para máxima seguridad.",
+  "strength_seed": "Semilla pequeña",
+  "strength_sprout": "Brote joven",
+  "strength_sapling": "Árbol pequeño",
+  "strength_tree": "¡Árbol majestuoso!",
   "current": "Contraseña actual",
   "new": "Nueva contraseña",
   "confirm": "Confirmar nueva contraseña",

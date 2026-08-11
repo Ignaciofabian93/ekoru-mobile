@@ -1,21 +1,15 @@
-import { Text } from "@/components/shared/Text/Text";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useTranslation } from "react-i18next";
-import { NAMESPACE } from "./i18n";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as ImagePicker from "expo-image-picker";
-import { showError } from "@/lib/toast";
 import { uploadCoverImage, uploadProfileImage } from "@/api/profile/images";
-import useAuthStore from "@/store/useAuthStore";
+import { Text } from "@/components/Primitives/Text/Text";
 import { GET_ME } from "@/graphql/auth/login";
-import { useApolloClient } from "@apollo/client/react";
+import { showError } from "@/lib/toast";
+import useAuthStore from "@/store/useAuthStore";
 import type { Seller } from "@/types/user";
+import { useApolloClient } from "@apollo/client/react";
+import * as ImagePicker from "expo-image-picker";
+import { useTranslation } from "react-i18next";
+import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { NAMESPACE } from "./i18n";
 
 export interface PhotoPickerProps {
   pickerTarget: "profile" | "cover";
@@ -121,16 +115,10 @@ export default function PhotoPicker({
       statusBarTranslucent
       animationType="slide"
     >
-      <Pressable
-        style={styles.sheetBackdrop}
-        onPress={() => setPickerSheetVisible(false)}
-      >
+      <Pressable style={styles.sheetBackdrop} onPress={() => setPickerSheetVisible(false)}>
         <View style={[styles.sheet, { paddingBottom: bottom + 8 }]}>
           <View style={styles.sheetHandle} />
-          <TouchableOpacity
-            style={styles.sheetOption}
-            onPress={pickFromGallery}
-          >
+          <TouchableOpacity style={styles.sheetOption} onPress={pickFromGallery}>
             <Text style={styles.sheetOptionText}>{t("chooseFromLibrary")}</Text>
           </TouchableOpacity>
           <View style={styles.sheetDivider} />
@@ -138,13 +126,8 @@ export default function PhotoPicker({
             <Text style={styles.sheetOptionText}>{t("takePhoto")}</Text>
           </TouchableOpacity>
           <View style={styles.sheetDividerWide} />
-          <TouchableOpacity
-            style={styles.sheetOption}
-            onPress={() => setPickerSheetVisible(false)}
-          >
-            <Text style={[styles.sheetOptionText, styles.sheetCancel]}>
-              {t("cancel")}
-            </Text>
+          <TouchableOpacity style={styles.sheetOption} onPress={() => setPickerSheetVisible(false)}>
+            <Text style={[styles.sheetOptionText, styles.sheetCancel]}>{t("cancel")}</Text>
           </TouchableOpacity>
         </View>
       </Pressable>

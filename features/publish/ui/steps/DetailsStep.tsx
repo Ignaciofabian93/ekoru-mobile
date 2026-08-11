@@ -1,7 +1,7 @@
-import Input from "@/components/shared/Input/Input";
-import { Select, type Option } from "@/components/shared/Select/Select";
-import { Title } from "@/components/shared/Title/Title";
-import TextArea from "@/components/shared/TextArea/TextArea";
+import Input from "@/components/Primitives/Input/Input";
+import { Select, type Option } from "@/components/Primitives/Select/Select";
+import TextArea from "@/components/Primitives/TextArea/TextArea";
+import { Title } from "@/components/Primitives/Title/Title";
 import type { ProductCondition } from "@/types/enums";
 import { StyleSheet, View } from "react-native";
 import type { PublishFormValues } from "../../types/PublishForm";
@@ -19,10 +19,7 @@ const CONDITION_OPTIONS: Option[] = [
 interface Props {
   values: PublishFormValues;
   errors: Partial<Record<keyof PublishFormValues, string>>;
-  set: <K extends keyof PublishFormValues>(
-    key: K,
-    value: PublishFormValues[K],
-  ) => void;
+  set: <K extends keyof PublishFormValues>(key: K, value: PublishFormValues[K]) => void;
 }
 
 export default function DetailsStep({ values, errors, set }: Props) {

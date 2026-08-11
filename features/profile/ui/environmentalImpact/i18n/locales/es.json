@@ -12,5 +12,28 @@
   "waterSub": "= {{days}} días de agua potable",
   "wasteDiverted": "Residuos evitados",
   "wasteUnit": "kg",
-  "wasteSub": "del vertedero"
+  "wasteSub": "del vertedero",
+  "impact": {
+    "metricCO2": "CO₂",
+    "metricWater": "Agua",
+    "metricWaste": "Residuos",
+    "impactByActivity": "Impacto por actividad",
+    "tapToCompare": "Toca para comparar métricas",
+    "activity_purchases": "Compras",
+    "activity_selling": "Ventas",
+    "activity_exchanges": "Intercambios",
+    "transactions_other": "{{count}} transacciones",
+    "co2Trend": "Tendencia de CO₂ ahorrado",
+    "kgSavedPerMonth": "kg ahorrados / mes",
+    "lastSixMonths": "Últimos 6 meses",
+    "trendVsLastMonth": "+{{pct}}% vs el mes pasado",
+    "sustainableMaterials": "Materiales sostenibles",
+    "acrossYourProducts": "En tus productos",
+    "realWorldEquivalents": "Equivalentes del mundo real",
+    "equivTrees": "árboles plantados",
+    "equivWaterDays": "días de agua potable",
+    "equivWasteKg": "kg de residuos evitados",
+    "howCalculated": "¿Cómo se calcula esto?",
+    "calculationExplanation": "Tu impacto se estima usando datos de análisis de ciclo de vida para cada categoría de producto. Los valores representan la diferencia entre comprar nuevo vs. de segunda mano o reciclado."
+  }
 }

@@ -1,6 +1,6 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
-import UploadImageCard from "@/components/shared/UploadImageCard/UploadImageCard";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
+import UploadImageCard from "@/components/Patterns/UploadImageCard/UploadImageCard";
 import { colors } from "@/design/tokens";
 import * as ImagePicker from "expo-image-picker";
 import { Camera, Image as ImageIcon, X } from "lucide-react-native";
@@ -83,11 +83,7 @@ export default function PhotosStep({ images, error, onChange }: Props) {
 
       {/* ── Thumbnail strip ─────────────────────────────────── */}
       {images.length > 0 && (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.strip}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.strip}>
           {images.map((uri, i) => (
             <View key={uri} style={styles.thumb}>
               <Image source={{ uri }} style={styles.thumbImg} />
@@ -98,11 +94,7 @@ export default function PhotosStep({ images, error, onChange }: Props) {
                   </Text>
                 </View>
               )}
-              <Pressable
-                style={styles.removeBtn}
-                onPress={() => removeImage(i)}
-                hitSlop={6}
-              >
+              <Pressable style={styles.removeBtn} onPress={() => removeImage(i)} hitSlop={6}>
                 <X size={12} color="#fff" strokeWidth={2.5} />
               </Pressable>
             </View>

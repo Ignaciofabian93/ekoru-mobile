@@ -1,12 +1,12 @@
-import Input from "@/components/shared/Input/Input";
-import { Text } from "@/components/shared/Text/Text";
+import DatePicker from "@/components/Primitives/DatePicker/DatePicker";
+import Input from "@/components/Primitives/Input/Input";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import type { BusinessType } from "@/types/enums";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "./i18n";
-import { Title } from "@/components/shared/Title/Title";
-import DatePicker from "@/components/shared/DatePicker/DatePicker";
 
 export type BusinessFormValues = {
   businessName: string;
@@ -26,24 +26,16 @@ export type BusinessFormValues = {
 
 interface BusinessInfoFormProps {
   values: BusinessFormValues;
-  onChange: <K extends keyof BusinessFormValues>(
-    key: K,
-    value: BusinessFormValues[K],
-  ) => void;
+  onChange: <K extends keyof BusinessFormValues>(key: K, value: BusinessFormValues[K]) => void;
 }
 
 const BUSINESS_TYPES: BusinessType[] = ["RETAIL", "SERVICES", "MIXED"];
 
-export default function BusinessInfoForm({
-  values,
-  onChange,
-}: BusinessInfoFormProps) {
+export default function BusinessInfoForm({ values, onChange }: BusinessInfoFormProps) {
   const { t } = useTranslation(NAMESPACE);
 
-  const isRetailOrMixed =
-    values.businessType === "RETAIL" || values.businessType === "MIXED";
-  const isServicesOrMixed =
-    values.businessType === "SERVICES" || values.businessType === "MIXED";
+  const isRetailOrMixed = values.businessType === "RETAIL" || values.businessType === "MIXED";
+  const isServicesOrMixed = values.businessType === "SERVICES" || values.businessType === "MIXED";
 
   return (
     <>
@@ -74,18 +66,13 @@ export default function BusinessInfoForm({
             {BUSINESS_TYPES.map((type) => (
               <Pressable
                 key={type}
-                style={[
-                  styles.typeChip,
-                  values.businessType === type && styles.typeChipActive,
-                ]}
+                style={[styles.typeChip, values.businessType === type && styles.typeChipActive]}
                 onPress={() => onChange("businessType", type)}
               >
                 <Text
                   style={[
                     styles.typeChipText,
-                    ...(values.businessType === type
-                      ? [styles.typeChipTextActive]
-                      : []),
+                    ...(values.businessType === type ? [styles.typeChipTextActive] : []),
                   ]}
                 >
                   {t(`businessType_${type}`)}

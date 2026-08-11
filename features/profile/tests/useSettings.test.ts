@@ -61,13 +61,12 @@ describe("useSettings", () => {
     const { result } = renderHook(() => useSettings());
     const prefs = result.current.sellerPreferences;
 
-    expect(prefs.emailNotifications).toBe(true);
-    expect(prefs.pushNotifications).toBe(true);
-    expect(prefs.orderUpdates).toBe(true);
-    expect(prefs.communityUpdates).toBe(true);
-    expect(prefs.securityAlerts).toBe(true);
-    expect(prefs.weeklySummary).toBe(true);
-    expect(prefs.twoFactorAuth).toBe(false);
+    expect(prefs.enableEmailNotifications).toBe(true);
+    expect(prefs.enablePushNotifications).toBe(true);
+    expect(prefs.enableLoginAlerts).toBe(true);
+    expect(prefs.enableTwoFactorAuth).toBe(false);
+    expect(prefs.showMySocials).toBe(false);
+    expect(prefs.showMyAddress).toBe(false);
   });
 
   it("exposes loadingPreferences as false initially", () => {
@@ -78,10 +77,10 @@ describe("useSettings", () => {
   // ── handleSellerPreferences ────────────────────────────────────────────────
 
   it.each([
-    ["emailNotifications", false],
-    ["pushNotifications", false],
-    ["orderUpdates", false],
-    ["twoFactorAuth", true],
+    ["enableEmailNotifications", false],
+    ["enablePushNotifications", false],
+    ["enableLoginAlerts", false],
+    ["enableTwoFactorAuth", true],
   ] as const)(
     "updates '%s' via handleSellerPreferences",
     (preference, value) => {
@@ -93,35 +92,40 @@ describe("useSettings", () => {
     },
   );
 
-  it("updates preferredLanguage", () => {
+  it("updates a privacy switch", () => {
     const { result } = renderHook(() => useSettings());
     act(() => {
       result.current.handleSellerPreferences({
-        preference: "preferredLanguage",
-        value: "en",
+        preference: "showMyAddress",
+        value: true,
       });
     });
-    expect(result.current.sellerPreferences.preferredLanguage).toBe("en");
+    expect(result.current.sellerPreferences.showMyAddress).toBe(true);
   });
 
   // ── submitSellerPreferences ────────────────────────────────────────────────
 
-  it("calls the mutation with seller id and current preferences", async () => {
+  it("sends only the fields UpdateSellerPreferencesInput declares", async () => {
     const { result } = renderHook(() => useSettings());
 
     await act(async () => {
       await result.current.submitSellerPreferences();
     });
 
-    expect(mockUpdateSellerPreferences).toHaveBeenCalledWith({
-      variables: {
-        input: expect.objectContaining({
-          sellerId: "seller-1",
-          twoFactorAuth: false,
-          emailNotifications: true,
-        }),
-      },
+    const input = mockUpdateSellerPreferences.mock.calls[0][0].variables
+      .input as Record<string, unknown>;
+
+    expect(input).toEqual({
+      enableEmailNotifications: true,
+      enablePushNotifications: true,
+      enableLoginAlerts: true,
+      enableTwoFactorAuth: false,
+      showMySocials: false,
+      showMyAddress: false,
     });
+    // The seller comes from the session server-side; sending it made the whole
+    // mutation fail validation.
+    expect(input).not.toHaveProperty("sellerId");
   });
 
   it("does not show error toast on successful mutation", async () => {

@@ -27,7 +27,7 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION"
       ],
-      "package": "com.ignaciofabian93.EKORU"
+      "package": "cl.ekoru.app"
     },
     "web": {
       "bundler": "metro",

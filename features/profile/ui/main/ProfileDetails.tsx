@@ -1,3 +1,7 @@
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
+import { colors } from "@/design/tokens";
+import { useIsPersonProfile, useSeller, useSellerProfile } from "@/store/useAuthStore";
 import {
   BadgeCheck,
   Flag,
@@ -8,17 +12,9 @@ import {
   Pin,
   type LucideIcon,
 } from "lucide-react-native";
-import { NAMESPACE } from "./i18n";
 import { useTranslation } from "react-i18next";
-import {
-  useIsPersonProfile,
-  useSeller,
-  useSellerProfile,
-} from "@/store/useAuthStore";
-import { Text } from "@/components/shared/Text/Text";
 import { StyleSheet, View } from "react-native";
-import { colors } from "@/design/tokens";
-import { Title } from "@/components/shared/Title/Title";
+import { NAMESPACE } from "./i18n";
 
 function DetailRow({
   icon: Icon,

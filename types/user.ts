@@ -99,6 +99,8 @@ export type Seller = {
   sellerLevel?: SellerLevel;
   sellerCategoryId?: number;
   sellerCategory?: SellerCategory;
+  /** Notification/privacy switches; absent until the seller saves once. */
+  preferences?: SellerPreferences;
 };
 
 export type PersonProfile = {
@@ -161,18 +163,20 @@ export type SellerCategory = {
   level: number;
 };
 
+/**
+ * Mirrors `SellerPreferences` in the users subgraph. The older per-topic flags
+ * (orderUpdates, weeklySummary, currency, preferredLanguage…) were dropped from
+ * the schema in the August 2026 seller migration; these six are what exists.
+ */
 export type SellerPreferences = {
   id: number;
   sellerId: string;
-  preferredLanguage?: string;
-  currency?: string;
-  emailNotifications: boolean;
-  pushNotifications: boolean;
-  orderUpdates: boolean;
-  communityUpdates: boolean;
-  securityAlerts: boolean;
-  weeklySummary: boolean;
-  twoFactorAuth: boolean;
+  enableEmailNotifications: boolean;
+  enablePushNotifications: boolean;
+  enableLoginAlerts: boolean;
+  enableTwoFactorAuth: boolean;
+  showMySocials: boolean;
+  showMyAddress: boolean;
 };
 
 export type SellerLevel = {
@@ -207,7 +211,7 @@ export type MembershipTranslation = {
 
 export type PersonMembership = {
   id: string;
-  membershipType: import("./enums").PersonSubscriptionPlan;
+  membershipType: PersonSubscriptionPlan;
   durationMonths: number;
   isActive: boolean;
   pricing: MembershipPricing | null;
@@ -216,7 +220,7 @@ export type PersonMembership = {
 
 export type BusinessMembership = {
   id: string;
-  membershipType: import("./enums").BusinessSubscriptionPlan;
+  membershipType: BusinessSubscriptionPlan;
   durationMonths: number;
   isActive: boolean;
   pricing: MembershipPricing | null;

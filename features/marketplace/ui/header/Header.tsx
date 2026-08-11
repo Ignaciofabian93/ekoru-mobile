@@ -1,14 +1,9 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
-import {
-  ImageBackground,
-  type ImageSourcePropType,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ImageBackground, type ImageSourcePropType, StyleSheet, View } from "react-native";
 
 interface HeaderProps {
   wallpaperImage: ImageSourcePropType;
@@ -16,23 +11,12 @@ interface HeaderProps {
   subtitle?: string;
 }
 
-export default function Header({
-  wallpaperImage,
-  title,
-  subtitle,
-}: HeaderProps) {
+export default function Header({ wallpaperImage, title, subtitle }: HeaderProps) {
   const { t } = useTranslation(NAMESPACE);
 
   return (
-    <ImageBackground
-      source={wallpaperImage}
-      style={styles.container}
-      resizeMode="cover"
-    >
-      <LinearGradient
-        colors={["rgba(0,0,0,0.05)", "rgba(0,0,0,0.65)"]}
-        style={StyleSheet.absoluteFill}
-      />
+    <ImageBackground source={wallpaperImage} style={styles.container} resizeMode="cover">
+      <LinearGradient colors={["rgba(0,0,0,0.05)", "rgba(0,0,0,0.65)"]} style={StyleSheet.absoluteFill} />
       <View style={styles.content}>
         <Title level="h2" style={styles.title}>
           {title ?? t("marketplace")}

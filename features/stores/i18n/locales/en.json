@@ -29,5 +29,15 @@
   "rows": "Rows",
   "showingResults": "Showing {{shown}} of {{total}} results",
   "noStoresFound": "No stores found",
-  "noStoresMatchFilters": "No stores match your filters"
+  "noStoresMatchFilters": "No stores match your filters",
+  "browseCategories": "Browse categories",
+  "available": "available",
+  "subcategories": "Subcategories",
+  "searchLabel": "Search",
+  "priceRange": "Price range",
+  "min": "Min",
+  "max": "Max",
+  "onOfferOnly": "On offer only",
+  "onOfferSubtitle": "Show only products on offer",
+  "noProductsFound": "No products found"
 }

@@ -12,7 +12,11 @@
   "language": "Language",
   "notifications": {
     "title": "Notifications",
-    "push": "Push Notifications"
+    "push": "Push Notifications",
+    "email": "Email notifications",
+    "permissionDenied": "Permission denied. Turn notifications on in your system settings.",
+    "saveFailed": "We couldn't save that. Please try again.",
+    "hint": "These control what Ekoru sends you. In-app notifications always appear."
   },
   "security": {
     "title": "Security",

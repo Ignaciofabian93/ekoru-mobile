@@ -1,0 +1,10 @@
+{
+  "search": "Buscar",
+  "placeholder": "Buscar productos, tiendas, servicios...",
+  "startTyping": "Empieza a escribir para buscar",
+  "noResults": "Sin resultados para \"{{query}}\"",
+  "results": "resultados",
+  "typePRODUCT": "Producto",
+  "typeSTORE_PRODUCT": "Tienda",
+  "typeSERVICE": "Servicio"
+}

@@ -1,0 +1,19 @@
+{
+  "header": {
+    "title": "Order history",
+    "subtitle": "Track and review your past purchases"
+  },
+  "total": "Total",
+  "item_one": "{{count}} item",
+  "item_other": "{{count}} items",
+  "status": {
+    "Delivered": "Delivered",
+    "Shipped": "Shipped",
+    "Processing": "Processing",
+    "Cancelled": "Cancelled"
+  },
+  "empty": {
+    "title": "No orders yet",
+    "subtitle": "Your purchase history will appear here."
+  }
+}

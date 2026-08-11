@@ -1,0 +1,34 @@
+{
+  "title": "Notifications",
+  "subtitle": "Tout ce qui demande votre attention, au même endroit.",
+  "empty": {
+    "title": "Aucune notification",
+    "description": "Nous vous préviendrons ici lorsqu'une proposition arrive ou qu'un achat change d'état."
+  },
+  "emptyUnread": {
+    "title": "Vous êtes à jour",
+    "description": "Vous n'avez aucune notification non lue."
+  },
+  "loading": "Chargement…",
+  "markAllRead": "Tout marquer comme lu",
+  "markRead": "Marquer comme lu",
+  "filters": {
+    "all": "Toutes",
+    "unread": "Non lues"
+  },
+  "loadMore": "Charger plus",
+  "time": {
+    "now": "À l'instant",
+    "minutes": "il y a {{count}} min",
+    "hours": "il y a {{count}} h",
+    "days": "il y a {{count}} j",
+    "weeks": "il y a {{count}} sem"
+  },
+  "push": {
+    "title": "Notifications push",
+    "enable": "Activer les notifications push",
+    "denied": "Permission refusée. Activez-la dans les réglages du système.",
+    "failed": "Impossible d'activer les notifications. Réessayez."
+  },
+  "markReadAction": "Marquer comme lu"
+}

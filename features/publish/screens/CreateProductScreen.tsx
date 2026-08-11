@@ -1,5 +1,5 @@
-import { MainButton } from "@/components/shared/Button/MainButton";
-import { Text } from "@/components/shared/Text/Text";
+import { MainButton } from "@/components/Primitives/Button/MainButton";
+import { Text } from "@/components/Primitives/Text/Text";
 import { colors } from "@/design/tokens";
 import { ArrowLeft, PackagePlus } from "lucide-react-native";
 import React from "react";
@@ -25,24 +25,12 @@ const STEP_LABELS = ["Photos", "Details", "Category", "Pricing", "Tags"];
 
 export default function CreateProductScreen() {
   const insets = useSafeAreaInsets();
-  const {
-    step,
-    values,
-    errors,
-    loading,
-    set,
-    handleNext,
-    handleBack,
-    handleSubmit,
-  } = usePublishProduct();
+  const { step, values, errors, loading, set, handleNext, handleBack, handleSubmit } = usePublishProduct();
 
   const isLastStep = step === TOTAL_STEPS - 1;
 
   return (
-    <KeyboardAvoidingView
-      style={styles.flex}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
+    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       {/* ── Top bar ─────────────────────────────────────────────────── */}
       <View style={[styles.topBar, { paddingTop: 12 }]}>
         {step > 0 ? (
@@ -68,21 +56,11 @@ export default function CreateProductScreen() {
         showsVerticalScrollIndicator={false}
       >
         {step === 0 && (
-          <PhotosStep
-            images={values.images}
-            error={errors.images}
-            onChange={(imgs) => set("images", imgs)}
-          />
+          <PhotosStep images={values.images} error={errors.images} onChange={(imgs) => set("images", imgs)} />
         )}
-        {step === 1 && (
-          <DetailsStep values={values} errors={errors} set={set} />
-        )}
-        {step === 2 && (
-          <CategoryStep values={values} errors={errors} set={set} />
-        )}
-        {step === 3 && (
-          <PricingStep values={values} errors={errors} set={set} />
-        )}
+        {step === 1 && <DetailsStep values={values} errors={errors} set={set} />}
+        {step === 2 && <CategoryStep values={values} errors={errors} set={set} />}
+        {step === 3 && <PricingStep values={values} errors={errors} set={set} />}
         {step === 4 && <BadgesStep values={values} set={set} />}
       </ScrollView>
 

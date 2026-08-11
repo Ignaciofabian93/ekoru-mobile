@@ -1,35 +1,47 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
-import { DUMMY_PRODUCTS } from "@/features/marketplace/data/dummyProducts";
 import { SlidersHorizontal } from "lucide-react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, View } from "react-native";
-import useProductFilters from "../hooks/useProductFilters";
+import type { MarketplaceProduct, PageInfo, ProductFilters } from "../types";
 import { NAMESPACE } from "../i18n";
 import ProductFiltersSheet from "./ProductFiltersSheet";
 import ProductGrid from "./ProductGrid";
 
 interface Props {
   categoryName: string;
+  products: MarketplaceProduct[];
+  pageInfo?: PageInfo;
+  filters: ProductFilters;
+  hasActiveFilters: boolean;
+  onApplyFilters: (filters: ProductFilters) => void;
+  pageSize: number;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
 }
 
-export default function CategoryProductsSection({ categoryName }: Props) {
+/**
+ * Controlled products section for the department / category screens: the live
+ * data + filter state are owned by the screen's `useProductsBy*` hook and
+ * flow in through props. Server does the filtering and pagination.
+ */
+export default function CategoryProductsSection({
+  categoryName,
+  products,
+  pageInfo,
+  filters,
+  hasActiveFilters,
+  onApplyFilters,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+}: Props) {
   const { t } = useTranslation(NAMESPACE);
   const [filtersVisible, setFiltersVisible] = useState(false);
-  const {
-    filters,
-    applyFilters,
-    hasActiveFilters,
-    filteredCount,
-    paginated,
-    page,
-    totalPages,
-    itemsPerPage,
-    changeItemsPerPage,
-    goToPage,
-  } = useProductFilters(DUMMY_PRODUCTS);
+
+  const total = pageInfo?.totalCount ?? products.length;
 
   return (
     <View style={styles.container}>
@@ -40,37 +52,33 @@ export default function CategoryProductsSection({ categoryName }: Props) {
             {t("products")}
           </Title>
           <Text size="sm" color="tertiary" style={{ marginTop: 2 }}>
-            {filteredCount} {t("results")}
+            {total} {t("results")}
           </Text>
         </View>
         <Pressable
           onPress={() => setFiltersVisible(true)}
           style={[styles.filterBtn, hasActiveFilters && styles.filterBtnActive]}
         >
-          <SlidersHorizontal
-            size={16}
-            color={hasActiveFilters ? "#fff" : colors.primary}
-            strokeWidth={2}
-          />
+          <SlidersHorizontal size={16} color={hasActiveFilters ? "#fff" : colors.primary} strokeWidth={2} />
           {hasActiveFilters && <View style={styles.activeDot} />}
         </Pressable>
       </View>
 
       <ProductGrid
-        products={paginated}
-        page={page}
-        totalPages={totalPages}
-        itemsPerPage={itemsPerPage}
-        filteredCount={filteredCount}
-        onGoToPage={goToPage}
-        onChangeItemsPerPage={changeItemsPerPage}
+        products={products}
+        page={pageInfo?.currentPage ?? 1}
+        totalPages={pageInfo?.totalPages ?? 1}
+        itemsPerPage={pageSize}
+        filteredCount={total}
+        onGoToPage={onPageChange}
+        onChangeItemsPerPage={onPageSizeChange}
         emptyMessage={t("noProductsSubtitle", { categoryName })}
       />
 
       <ProductFiltersSheet
         visible={filtersVisible}
         initialFilters={filters}
-        onApply={applyFilters}
+        onApply={onApplyFilters}
         onClose={() => setFiltersVisible(false)}
       />
     </View>

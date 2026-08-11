@@ -29,7 +29,7 @@ export const GET_SELLER = gql`
 export const GET_SELLERS = gql`
   ${SELLER_FIELDS_FRAGMENT}
   query GetSellers(
-    $sellerType: String
+    $sellerType: SellerType
     $isActive: Boolean
     $isVerified: Boolean
     $limit: Int

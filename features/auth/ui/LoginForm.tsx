@@ -1,10 +1,10 @@
-import MainButton from "@/components/shared/Button/MainButton";
-import Input from "@/components/shared/Input/Input";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import Input from "@/components/Primitives/Input/Input";
+import { isEmailValid } from "@/utils/regexValidations";
 import { ArrowRight, Lock, Mail } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import useLogin from "../hooks/useLogin";
-import { isEmailValid } from "@/utils/regexValidations";
 
 export default function LoginForm() {
   const { handleFieldChange, handleLogin, email, password, loading } = useLogin();

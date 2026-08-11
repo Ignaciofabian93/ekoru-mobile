@@ -1,0 +1,34 @@
+{
+  "title": "Notifications",
+  "subtitle": "Everything that needs your attention, in one place.",
+  "empty": {
+    "title": "No notifications yet",
+    "description": "We'll let you know here when someone proposes a deal or a purchase changes status."
+  },
+  "emptyUnread": {
+    "title": "You're all caught up",
+    "description": "You have no unread notifications."
+  },
+  "loading": "Loading…",
+  "markAllRead": "Mark all as read",
+  "markRead": "Mark as read",
+  "filters": {
+    "all": "All",
+    "unread": "Unread"
+  },
+  "loadMore": "Load more",
+  "time": {
+    "now": "Just now",
+    "minutes": "{{count}}m ago",
+    "hours": "{{count}}h ago",
+    "days": "{{count}}d ago",
+    "weeks": "{{count}}w ago"
+  },
+  "push": {
+    "title": "Push notifications",
+    "enable": "Enable push notifications",
+    "denied": "Permission denied. Turn it on in your system settings.",
+    "failed": "We couldn't enable notifications. Please try again."
+  },
+  "markReadAction": "Mark read"
+}

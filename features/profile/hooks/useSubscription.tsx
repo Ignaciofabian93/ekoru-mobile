@@ -1,4 +1,4 @@
-import type { CardData } from "@/components/PaymentCard/PaymentCard";
+import type { CardData } from "@/components/Patterns/PaymentCard/PaymentCard";
 import {
   ASSIGN_BUSINESS_MEMBERSHIP,
   ASSIGN_PERSON_MEMBERSHIP,

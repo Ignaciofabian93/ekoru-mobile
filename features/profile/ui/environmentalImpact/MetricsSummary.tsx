@@ -1,4 +1,4 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
 import { borderRadius, colors, fontFamily, spacing } from "@/design/tokens";
 import { CloudOff, Droplets, Recycle, type LucideIcon } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -43,8 +43,10 @@ export default function MetricsSummary() {
   const VIOLET = "#7c3aed";
 
   return (
-    <View style={styles.card}>
-      <Text style={styles.eyebrow}>{t("yourTotalImpact")}</Text>
+    <View style={styles.container}>
+      <Text variant="label" weight="semibold" size="base" style={styles.eyebrow}>
+        {t("yourTotalImpact")}
+      </Text>
 
       <View style={styles.list}>
         <MetricRow
@@ -81,26 +83,13 @@ export default function MetricsSummary() {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: spacing[4],
-    backgroundColor: colors.surface,
-    borderRadius: 20,
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-    zIndex: 2,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+  container: {
+    paddingVertical: spacing[5],
+    paddingHorizontal: spacing[1],
   },
   eyebrow: {
-    fontSize: 11,
-    fontFamily: fontFamily.bold,
     color: colors.foregroundTertiary,
-    letterSpacing: 0.8,
-    textTransform: "uppercase",
-    marginBottom: 16,
+    marginBottom: spacing[4],
   },
   list: {
     gap: 0,

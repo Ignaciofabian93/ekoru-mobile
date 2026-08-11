@@ -1,4 +1,4 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
 import { colors } from "@/design/tokens";
 import { router } from "expo-router";
 import { Camera, FileText, Leaf, PackagePlus, Tag } from "lucide-react-native";
@@ -31,24 +31,14 @@ export default function PublishScreen() {
         <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
           List a product
         </Text>
-        <Text
-          size="sm"
-          color="secondary"
-          align="center"
-          style={styles.heroSubtitle}
-        >
+        <Text size="sm" color="secondary" align="center" style={styles.heroSubtitle}>
           Turn unused items into impact. Every listing helps reduce waste.
         </Text>
       </View>
 
       {/* Steps */}
       <View style={styles.stepsCard}>
-        <Text
-          size="sm"
-          weight="semibold"
-          color="secondary"
-          style={styles.stepsLabel}
-        >
+        <Text size="sm" weight="semibold" color="secondary" style={styles.stepsLabel}>
           How it works
         </Text>
         {STEPS.map((step, i) => {
@@ -56,11 +46,7 @@ export default function PublishScreen() {
           return (
             <View key={step.label} style={styles.step}>
               <View style={styles.stepNumber}>
-                <Text
-                  size="xs"
-                  weight="bold"
-                  style={{ color: colors.primaryDark }}
-                >
+                <Text size="xs" weight="bold" style={{ color: colors.primaryDark }}>
                   {i + 1}
                 </Text>
               </View>
@@ -82,10 +68,7 @@ export default function PublishScreen() {
 
       {/* CTA */}
       <View style={styles.actions}>
-        <Pressable
-          style={styles.primaryBtn}
-          onPress={() => router.push("/(publish)/create")}
-        >
+        <Pressable style={styles.primaryBtn} onPress={() => router.push("/(publish)/create")}>
           <PackagePlus size={18} color="#fff" strokeWidth={2} />
           <Text weight="bold" style={styles.primaryBtnLabel}>
             Start listing

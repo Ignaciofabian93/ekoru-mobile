@@ -1,0 +1,18 @@
+{
+  "services": "Services",
+  "headerSubtitle": "Find sustainable services near you.",
+  "searchServices": "Search services...",
+  "browseCategories": "Browse categories",
+  "available": "available",
+  "subcategories": "Subcategories",
+  "featuredServices": "Featured Services",
+  "provider": "Provider",
+  "quotation": "Quotation",
+  "noServices": "No services yet",
+  "offerService": "Offer your eco service",
+  "serviceCategorySubtitle": "Explore services in this category.",
+  "serviceSubcategorySubtitle": "Services available in this subcategory.",
+  "products": "Services",
+  "results": "results",
+  "rows": "Rows"
+}

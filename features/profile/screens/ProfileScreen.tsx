@@ -1,4 +1,4 @@
-import MainButton from "@/components/shared/Button/MainButton";
+import MainButton from "@/components/Primitives/Button/MainButton";
 import useAuthStore, { useCoverImage, useInitials, useProfileImage, useSeller } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";

@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Favoritos",
+    "subtitle": "Artículos y tiendas que has guardado para más tarde"
+  },
+  "empty": {
+    "title": "Sin favoritos aún",
+    "subtitle": "Guarda los productos y tiendas que te gusten y aparecerán aquí.",
+    "browse": "Explorar el mercado"
+  }
+}

@@ -1,14 +1,8 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  Package2,
-  ScanBarcode,
-  Store,
-  TrendingUp,
-  UsersRound,
-} from "lucide-react-native";
+import { Package2, ScanBarcode, Store, TrendingUp, UsersRound } from "lucide-react-native";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const STATS = [
@@ -22,7 +16,9 @@ const STATS = [
 export default function StatsSection() {
   return (
     <View style={styles.container}>
-      <Title level="h4" align="center">This is already happening</Title>
+      <Title level="h4" align="center">
+        This is already happening
+      </Title>
       <Text size="sm" color="secondary" align="center" style={{ marginTop: 6 }}>
         An active community changing the way we consume.
       </Text>
@@ -35,12 +31,7 @@ export default function StatsSection() {
           contentContainerStyle={styles.ticker}
         >
           {STATS.map((stat, i) => (
-            <StatItem
-              key={i}
-              label={stat.label}
-              value={stat.value}
-              Icon={stat.Icon}
-            />
+            <StatItem key={i} label={stat.label} value={stat.value} Icon={stat.Icon} />
           ))}
         </ScrollView>
 
@@ -67,20 +58,16 @@ export default function StatsSection() {
   );
 }
 
-function StatItem({
-  label,
-  value,
-  Icon,
-}: {
-  label: string;
-  value: string;
-  Icon: any;
-}) {
+function StatItem({ label, value, Icon }: { label: string; value: string; Icon: any }) {
   return (
     <View style={styles.item}>
       <Icon size={14} color={colors.primary} strokeWidth={2} />
-      <Text size="lg" weight="bold">{value}</Text>
-      <Text size="sm" color="secondary">{label}</Text>
+      <Text size="lg" weight="bold">
+        {value}
+      </Text>
+      <Text size="sm" color="secondary">
+        {label}
+      </Text>
       <View style={styles.dot} />
     </View>
   );

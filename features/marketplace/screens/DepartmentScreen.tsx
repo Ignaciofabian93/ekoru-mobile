@@ -1,29 +1,37 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
 import { NAMESPACE } from "@/features/marketplace/i18n";
 import { router, useLocalSearchParams } from "expo-router";
 import { LayoutGrid } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
-import Breadcrumb from "../../../components/shared/BreadCrumbs/Breadcrumb";
-import useDepartmentBySlug from "../hooks/useDepartmentBySlug";
+import Breadcrumb from "../../../components/Patterns/BreadCrumbs/Breadcrumb";
+import useProductsByDepartment from "../hooks/useProductsByDepartment";
 import CategoryProductsSection from "../ui/CategoryProductsSection";
 import Header from "../ui/header/Header";
-import {
-  ContentContainer,
-  OuterContainer,
-  ScrollContainer,
-} from "../ui/layout/Container";
+import { ContentContainer, OuterContainer, ScrollContainer } from "../ui/layout/Container";
 
 const wallpaperImage = require("@/assets/images/wallpaper-2.jpg");
 
 export default function DepartmentScreen() {
-  const { t } = useTranslation(NAMESPACE);
+  const { t, i18n } = useTranslation(NAMESPACE);
   const { slug, name } = useLocalSearchParams<{ slug: string; name: string }>();
-  const { department, loading, error } = useDepartmentBySlug(slug ?? "");
+  const {
+    department,
+    loading,
+    error,
+    products,
+    pageInfo,
+    filters,
+    hasActiveFilters,
+    applyFilters,
+    pageSize,
+    setPage,
+    setPageSize,
+  } = useProductsByDepartment({ slug: slug ?? "", language: i18n.language });
 
-  if (loading) {
+  if (loading && !department) {
     return (
       <OuterContainer>
         <View style={styles.centered}>
@@ -38,11 +46,7 @@ export default function DepartmentScreen() {
       <OuterContainer>
         <View style={styles.centered}>
           <View style={styles.emptyIcon}>
-            <LayoutGrid
-              size={40}
-              color={colors.foregroundTertiary}
-              strokeWidth={1.5}
-            />
+            <LayoutGrid size={40} color={colors.foregroundTertiary} strokeWidth={1.5} />
           </View>
           <Title level="h5" weight="semibold" align="center" color="tertiary">
             {t("departmentNotFound")}
@@ -58,11 +62,7 @@ export default function DepartmentScreen() {
   return (
     <OuterContainer enableBottomInset>
       <ScrollContainer>
-        <Header
-          wallpaperImage={wallpaperImage}
-          title={deptName}
-          subtitle={t("departmentSubtitle")}
-        />
+        <Header wallpaperImage={wallpaperImage} title={deptName} subtitle={t("departmentSubtitle")} />
         <ContentContainer>
           {/* ── Breadcrumb ─────────────────────────────────────────── */}
           <Breadcrumb
@@ -78,22 +78,14 @@ export default function DepartmentScreen() {
           {/* ── Category chips ────────────────────────────────────── */}
           {categories.length > 0 && (
             <View style={styles.catsSection}>
-              <Text
-                size="xs"
-                weight="semibold"
-                color="tertiary"
-                style={styles.catsLabel}
-              >
+              <Text size="xs" weight="semibold" color="tertiary" style={styles.catsLabel}>
                 {t("categories")}
               </Text>
               <View style={styles.chips}>
                 {categories.map((cat) => (
                   <Pressable
                     key={cat.id}
-                    style={({ pressed }) => [
-                      styles.chip,
-                      pressed && styles.chipPressed,
-                    ]}
+                    style={({ pressed }) => [styles.chip, pressed && styles.chipPressed]}
                     onPress={() =>
                       router.push({
                         pathname: "/(marketplace)/department-category",
@@ -115,8 +107,18 @@ export default function DepartmentScreen() {
             </View>
           )}
 
-          {/* ── Products (mocked) ──────────────────────────────────── */}
-          <CategoryProductsSection categoryName={deptName} />
+          {/* ── Products (live) ───────────────────────────────────── */}
+          <CategoryProductsSection
+            categoryName={deptName}
+            products={products}
+            pageInfo={pageInfo}
+            filters={filters}
+            hasActiveFilters={hasActiveFilters}
+            onApplyFilters={applyFilters}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
+          />
         </ContentContainer>
       </ScrollContainer>
     </OuterContainer>

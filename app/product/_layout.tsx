@@ -1,4 +1,4 @@
-import SectionHeader from "@/components/shared/Header/SectionHeader";
+import SectionHeader from "@/components/Navigation/Header/SectionHeader";
 import { Stack } from "expo-router";
 
 export default function ProductLayout() {

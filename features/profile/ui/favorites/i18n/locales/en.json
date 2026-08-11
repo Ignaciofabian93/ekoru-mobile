@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Favourites",
+    "subtitle": "Items and stores you've saved for later"
+  },
+  "empty": {
+    "title": "No favourites yet",
+    "subtitle": "Save products and stores you love and they will appear here.",
+    "browse": "Browse Marketplace"
+  }
+}

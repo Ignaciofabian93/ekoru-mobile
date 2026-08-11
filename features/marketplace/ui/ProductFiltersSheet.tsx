@@ -1,21 +1,13 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
+import type { ProductCondition } from "@/types/enums";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  TextInput,
-  View,
-} from "react-native";
-import { DEFAULT_FILTERS, type ProductFilters } from "../hooks/useProductFilters";
+import { Modal, Pressable, ScrollView, StyleSheet, Switch, TextInput, View } from "react-native";
+import { EMPTY_FILTERS, type ProductFilters } from "../types";
 import { NAMESPACE } from "../i18n";
-import type { ProductCondition } from "../types/Product";
 
 const CONDITIONS: ProductCondition[] = [
   "NEW",
@@ -44,26 +36,17 @@ interface Props {
   onClose: () => void;
 }
 
-export default function ProductFiltersSheet({
-  visible,
-  initialFilters,
-  onApply,
-  onClose,
-}: Props) {
+export default function ProductFiltersSheet({ visible, initialFilters, onApply, onClose }: Props) {
   const { t } = useTranslation(NAMESPACE);
   const [draft, setDraft] = useState<ProductFilters>(initialFilters);
 
   useEffect(() => {
     if (visible) setDraft(initialFilters);
-  }, [visible]);
+  }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Single-select condition: tapping the active chip clears it.
   const toggleCondition = (c: ProductCondition) => {
-    setDraft((prev) => ({
-      ...prev,
-      conditions: prev.conditions.includes(c)
-        ? prev.conditions.filter((x) => x !== c)
-        : [...prev.conditions, c],
-    }));
+    setDraft((prev) => ({ ...prev, condition: prev.condition === c ? "" : c }));
   };
 
   const handleApply = () => {
@@ -72,18 +55,12 @@ export default function ProductFiltersSheet({
   };
 
   const handleReset = () => {
-    onApply(DEFAULT_FILTERS);
+    onApply(EMPTY_FILTERS);
     onClose();
   };
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      statusBarTranslucent
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} animationType="slide" transparent statusBarTranslucent onRequestClose={onClose}>
       <Pressable style={styles.backdrop} onPress={onClose} />
       <View style={styles.sheet}>
         {/* Header */}
@@ -96,21 +73,18 @@ export default function ProductFiltersSheet({
           </Pressable>
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.content}
-        >
-          {/* Brand */}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+          {/* Search */}
           <View style={styles.section}>
             <Text size="sm" weight="semibold" style={styles.sectionLabel}>
-              {t("brand")}
+              {t("searchLabel")}
             </Text>
             <TextInput
               style={styles.input}
-              placeholder={t("brandPlaceholder")}
+              placeholder={t("searchPlaceholder")}
               placeholderTextColor={colors.foregroundTertiary}
-              value={draft.brand}
-              onChangeText={(t) => setDraft((prev) => ({ ...prev, brand: t }))}
+              value={draft.search}
+              onChangeText={(value) => setDraft((prev) => ({ ...prev, search: value }))}
             />
           </View>
 
@@ -126,9 +100,7 @@ export default function ProductFiltersSheet({
                 placeholderTextColor={colors.foregroundTertiary}
                 keyboardType="numeric"
                 value={draft.minPrice}
-                onChangeText={(t) =>
-                  setDraft((prev) => ({ ...prev, minPrice: t }))
-                }
+                onChangeText={(value) => setDraft((prev) => ({ ...prev, minPrice: value }))}
               />
               <Text size="sm" color="tertiary">
                 –
@@ -139,9 +111,7 @@ export default function ProductFiltersSheet({
                 placeholderTextColor={colors.foregroundTertiary}
                 keyboardType="numeric"
                 value={draft.maxPrice}
-                onChangeText={(t) =>
-                  setDraft((prev) => ({ ...prev, maxPrice: t }))
-                }
+                onChangeText={(value) => setDraft((prev) => ({ ...prev, maxPrice: value }))}
               />
             </View>
           </View>
@@ -153,7 +123,7 @@ export default function ProductFiltersSheet({
             </Text>
             <View style={styles.chips}>
               {CONDITIONS.map((c) => {
-                const active = draft.conditions.includes(c);
+                const active = draft.condition === c;
                 return (
                   <Pressable
                     key={c}
@@ -185,13 +155,8 @@ export default function ProductFiltersSheet({
                 </Text>
               </View>
               <Switch
-                value={draft.isExchangeable === true}
-                onValueChange={(v) =>
-                  setDraft((prev) => ({
-                    ...prev,
-                    isExchangeable: v ? true : null,
-                  }))
-                }
+                value={draft.isExchangeable}
+                onValueChange={(v) => setDraft((prev) => ({ ...prev, isExchangeable: v }))}
                 trackColor={{
                   false: colors.backgroundTertiary,
                   true: colors.primary,
@@ -205,11 +170,7 @@ export default function ProductFiltersSheet({
         {/* Footer */}
         <View style={styles.footer}>
           <Pressable style={styles.resetBtn} onPress={handleReset}>
-            <Text
-              size="sm"
-              weight="medium"
-              style={{ color: colors.foregroundSecondary }}
-            >
+            <Text size="sm" weight="medium" style={{ color: colors.foregroundSecondary }}>
               {t("reset")}
             </Text>
           </Pressable>

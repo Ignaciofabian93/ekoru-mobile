@@ -1,4 +1,4 @@
-import { Text } from "@/components/shared/Text/Text";
+import { Text } from "@/components/Primitives/Text/Text";
 import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import { Settings } from "lucide-react-native";
@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <LinearGradient
-      colors={[colors.secondary, colors.secondaryDark, colors.secondary]}
+      colors={[colors.natureTealDark, colors.natureTealDark, colors.natureTealLight]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.hero}

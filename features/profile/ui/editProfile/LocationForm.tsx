@@ -1,6 +1,6 @@
-import Input from "@/components/shared/Input/Input";
-import Select, { type Option } from "@/components/shared/Select/Select";
-import { Title } from "@/components/shared/Title/Title";
+import Input from "@/components/Primitives/Input/Input";
+import Select, { type Option } from "@/components/Primitives/Select/Select";
+import { Title } from "@/components/Primitives/Title/Title";
 import type { City, Country, County, Region } from "@/types/location";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
@@ -24,28 +24,18 @@ export type SellerLocationFallback = {
 
 interface LocationFormProps {
   values: LocationFormValues;
-  onChange: <K extends keyof LocationFormValues>(
-    key: K,
-    value: number | string | null,
-  ) => void;
+  onChange: <K extends keyof LocationFormValues>(key: K, value: number | string | null) => void;
   /** Seller's current location objects — shown immediately while Apollo loads */
   fallback?: SellerLocationFallback;
 }
 
-function withFallback(
-  apollo: Option[],
-  fallbackOption: Option | null,
-): Option[] {
+function withFallback(apollo: Option[], fallbackOption: Option | null): Option[] {
   if (apollo.length > 0) return apollo;
   if (fallbackOption) return [fallbackOption];
   return [];
 }
 
-export default function LocationForm({
-  values,
-  onChange,
-  fallback,
-}: LocationFormProps) {
+export default function LocationForm({ values, onChange, fallback }: LocationFormProps) {
   const { t } = useTranslation(NAMESPACE);
   const { countries, regions, cities, counties } = useLocation({
     countryId: values.countryId,
@@ -55,30 +45,22 @@ export default function LocationForm({
 
   const countryOptions = withFallback(
     countries.map((c) => ({ label: c.country, value: c.id })),
-    fallback?.country
-      ? { label: fallback.country.country, value: fallback.country.id }
-      : null,
+    fallback?.country ? { label: fallback.country.country, value: fallback.country.id } : null,
   );
 
   const regionOptions = withFallback(
     regions.map((r) => ({ label: r.region, value: r.id })),
-    fallback?.region
-      ? { label: fallback.region.region, value: fallback.region.id }
-      : null,
+    fallback?.region ? { label: fallback.region.region, value: fallback.region.id } : null,
   );
 
   const cityOptions = withFallback(
     cities.map((c) => ({ label: c.city, value: c.id })),
-    fallback?.city
-      ? { label: fallback.city.city, value: fallback.city.id }
-      : null,
+    fallback?.city ? { label: fallback.city.city, value: fallback.city.id } : null,
   );
 
   const countyOptions = withFallback(
     counties.map((c) => ({ label: c.county, value: c.id })),
-    fallback?.county
-      ? { label: fallback.county.county, value: fallback.county.id }
-      : null,
+    fallback?.county ? { label: fallback.county.county, value: fallback.county.id } : null,
   );
 
   return (

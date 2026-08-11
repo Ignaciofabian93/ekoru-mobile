@@ -1,11 +1,13 @@
-import MainButton from "@/components/shared/Button/MainButton";
-import Input from "@/components/shared/Input/Input";
-import { Save } from "lucide-react-native";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import Input from "@/components/Primitives/Input/Input";
+import { borderRadius, colors, spacing } from "@/design/tokens";
+import { Sprout } from "lucide-react-native";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import useChangePassword from "../../hooks/useChangePassword";
 import { NAMESPACE } from "./i18n";
+import PasswordStrengthMeter from "./PasswordStrengthMeter";
 
 export default function ChangePasswordForm() {
   const { t } = useTranslation(NAMESPACE);
@@ -29,13 +31,16 @@ export default function ChangePasswordForm() {
           placeholder={t("currentPlaceholder")}
           type="password"
         />
-        <Input
-          label={t("new")}
-          value={newPassword}
-          onChangeText={setNewPassword}
-          placeholder={t("newPlaceholder")}
-          type="password"
-        />
+        <View style={styles.newPasswordGroup}>
+          <Input
+            label={t("new")}
+            value={newPassword}
+            onChangeText={setNewPassword}
+            placeholder={t("newPlaceholder")}
+            type="password"
+          />
+          <PasswordStrengthMeter password={newPassword} />
+        </View>
         <Input
           label={t("confirm")}
           value={confirmPassword}
@@ -56,7 +61,7 @@ export default function ChangePasswordForm() {
         onPress={handleSubmit}
         loading={loading}
         style={styles.button}
-        rightIcon={Save}
+        rightIcon={Sprout}
       />
     </Fragment>
   );
@@ -64,14 +69,18 @@ export default function ChangePasswordForm() {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 16,
-    gap: 16,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.lg,
+    paddingVertical: spacing[8],
+    gap: spacing[3],
     width: "100%",
+    marginTop: spacing[2],
+    marginBottom: spacing[4],
+  },
+  newPasswordGroup: {
+    gap: spacing[2],
   },
   button: {
-    marginTop: 20,
     width: "100%",
   },
 });

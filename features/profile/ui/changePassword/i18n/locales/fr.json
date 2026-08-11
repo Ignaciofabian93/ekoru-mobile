@@ -1,5 +1,13 @@
 {
-  "hint": "Choisissez un mot de passe fort que vous n'avez pas utilisé auparavant.",
+  "header": {
+    "title": "Changer le mot de passe",
+    "subtitle": "Gardez votre compte sécurisé en mettant à jour votre mot de passe régulièrement."
+  },
+  "hint": "Faites pousser un mot de passe fort — mélangez lettres, chiffres et symboles pour une sécurité maximale.",
+  "strength_seed": "Petite graine",
+  "strength_sprout": "Jeune pousse",
+  "strength_sapling": "Jeune plant",
+  "strength_tree": "Arbre puissant !",
   "current": "Mot de passe actuel",
   "new": "Nouveau mot de passe",
   "confirm": "Confirmer le nouveau mot de passe",

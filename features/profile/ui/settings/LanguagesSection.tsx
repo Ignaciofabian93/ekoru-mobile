@@ -1,5 +1,5 @@
-import { Text } from "@/components/shared/Text/Text";
-import { Title } from "@/components/shared/Title/Title";
+import { Text } from "@/components/Primitives/Text/Text";
+import { Title } from "@/components/Primitives/Title/Title";
 import { LANGUAGES_SUPPORTED } from "@/config/languages";
 import { LANGUAGE_STORAGE_KEY } from "@/constants/settings";
 import { colors } from "@/design/tokens";

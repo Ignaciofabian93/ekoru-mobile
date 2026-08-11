@@ -1,9 +1,9 @@
-import HeroCarousel from "@/components/HeroCarousel/HeroCarousel";
-import AdBanner from "@/components/shared/AdBanner/AdBanner";
-import Banner from "@/components/shared/Banner/Banner";
-import MainButton from "@/components/shared/Button/MainButton";
+import AdBanner from "@/components/Patterns/AdBanner/AdBanner";
+import Banner from "@/components/Patterns/Banner/Banner";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import HeroCarousel from "@/components/Patterns/HeroCarousel/HeroCarousel";
 import { colors } from "@/design/tokens";
-import Container from "@/ui/Layout/Container";
+import Container from "@/components/Layout/Container";
 import { Tag } from "lucide-react-native";
 import { ScrollView, StyleSheet, View } from "react-native";
 import CategoriesSection from "../ui/CategoriesSection";
@@ -47,14 +47,7 @@ export default function HomeScreen() {
             title="Special Offer"
             description="Get 20% off on all eco-friendly products"
             animated={false}
-            cta={
-              <MainButton
-                text="Shop Now"
-                onPress={() => {}}
-                variant="success"
-                size="sm"
-              />
-            }
+            cta={<MainButton text="Shop Now" onPress={() => {}} variant="success" size="sm" />}
           />
         </View>
 
@@ -72,14 +65,7 @@ export default function HomeScreen() {
             description="List in minutes, reach thousands of eco-conscious buyers"
             variant="outlined"
             animated={false}
-            cta={
-              <MainButton
-                text="List Now"
-                onPress={() => {}}
-                variant="primary"
-                size="sm"
-              />
-            }
+            cta={<MainButton text="List Now" onPress={() => {}} variant="primary" size="sm" />}
           />
         </View>
 

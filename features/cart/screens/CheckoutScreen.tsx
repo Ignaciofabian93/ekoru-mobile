@@ -1,46 +1,38 @@
 import { colors } from "@/design/tokens";
-import useCartStore from "@/store/useCartStore";
 import { formatPrice } from "@/utils/formatPrice";
-import { useRouter } from "expo-router";
 import {
-  CreditCard,
+  AlertTriangle,
   MapPin,
   Package,
   Truck,
   Wallet,
 } from "lucide-react-native";
-import React, { useState } from "react";
+import React from "react";
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type PaymentMethod = "card" | "cash";
+import { shippingMethodById } from "../constants/shippingMethods";
+import useCheckout, { type CheckoutStep } from "../hooks/useCheckout";
+import PaymentMethodPicker from "../ui/PaymentMethodPicker";
+import ShippingAddressForm from "../ui/ShippingAddressForm";
+import ShippingMethodPicker from "../ui/ShippingMethodPicker";
 
-interface DeliveryForm {
-  fullName: string;
-  address: string;
-  city: string;
-  phone: string;
-  notes: string;
-}
+const STEPS: { key: CheckoutStep; label: string }[] = [
+  { key: "shipping", label: "Entrega" },
+  { key: "payment", label: "Pago" },
+  { key: "review", label: "Revisión" },
+];
 
-const SHIPPING_COST = 2990;
-
-function SectionTitle({
-  icon,
-  title,
-}: {
-  icon: React.ReactNode;
-  title: string;
-}) {
+function SectionTitle({ icon, title }: { icon: React.ReactNode; title: string }) {
   return (
     <View style={styles.sectionHeader}>
       {icon}
@@ -49,69 +41,61 @@ function SectionTitle({
   );
 }
 
-function Field({
-  label,
-  value,
-  onChangeText,
-  placeholder,
-  keyboardType = "default",
-  multiline = false,
-}: {
-  label: string;
-  value: string;
-  onChangeText: (v: string) => void;
-  placeholder?: string;
-  keyboardType?: "default" | "phone-pad" | "email-address";
-  multiline?: boolean;
-}) {
+function StepBar({ current }: { current: CheckoutStep }) {
+  const currentIndex = STEPS.findIndex((s) => s.key === current);
   return (
-    <View style={styles.field}>
-      <Text style={styles.fieldLabel}>{label}</Text>
-      <TextInput
-        style={[styles.input, multiline && styles.inputMultiline]}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor={colors.inputPlaceholder}
-        keyboardType={keyboardType}
-        multiline={multiline}
-        numberOfLines={multiline ? 3 : 1}
-        textAlignVertical={multiline ? "top" : "center"}
-      />
+    <View style={styles.stepBar}>
+      {STEPS.map((step, index) => {
+        const done = index < currentIndex;
+        const active = index === currentIndex;
+        return (
+          <View key={step.key} style={styles.step}>
+            <View
+              style={[
+                styles.stepDot,
+                (active || done) && styles.stepDotActive,
+                done && styles.stepDotDone,
+              ]}
+            >
+              <Text style={[styles.stepNumber, (active || done) && styles.stepNumberActive]}>
+                {index + 1}
+              </Text>
+            </View>
+            <Text style={[styles.stepLabel, active && styles.stepLabelActive]}>
+              {step.label}
+            </Text>
+          </View>
+        );
+      })}
     </View>
   );
 }
 
 export default function CheckoutScreen() {
-  const { items, subtotal, clearCart } = useCartStore();
-  const router = useRouter();
   const insets = useSafeAreaInsets();
+  const {
+    step,
+    goNext,
+    goBack,
+    items,
+    subtotal,
+    shippingCost,
+    total,
+    shippingMethod,
+    setShippingMethod,
+    address,
+    updateAddressField,
+    provider,
+    setProvider,
+    hasMultipleSellers,
+    loading,
+    pay,
+  } = useCheckout();
 
-  const [form, setForm] = useState<DeliveryForm>({
-    fullName: "",
-    address: "",
-    city: "",
-    phone: "",
-    notes: "",
-  });
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
-  const [isPlacing, setIsPlacing] = useState(false);
-
-  const total = subtotal() + SHIPPING_COST;
-
-  const updateField = (key: keyof DeliveryForm) => (value: string) =>
-    setForm((prev) => ({ ...prev, [key]: value }));
-
-  const handlePlaceOrder = async () => {
-    if (!form.fullName || !form.address || !form.city || !form.phone) {
-      return; // TODO: show validation errors
-    }
-    setIsPlacing(true);
-    // TODO: call real order API
-    await new Promise((res) => setTimeout(res, 800));
-    clearCart();
-    router.replace("/(cart)/confirmation" as any);
-  };
+  const requiresAddress = shippingMethod
+    ? shippingMethodById(shippingMethod).requiresAddress
+    : false;
+  const isReview = step === "review";
 
   return (
     <KeyboardAvoidingView
@@ -123,108 +107,55 @@ export default function CheckoutScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        {/* Delivery */}
-        <View style={styles.section}>
-          <SectionTitle
-            icon={<MapPin size={18} color={colors.primary} strokeWidth={2} />}
-            title="Datos de entrega"
-          />
-          <Field
-            label="Nombre completo"
-            value={form.fullName}
-            onChangeText={updateField("fullName")}
-            placeholder="Ej. Juan Pérez"
-          />
-          <Field
-            label="Dirección"
-            value={form.address}
-            onChangeText={updateField("address")}
-            placeholder="Ej. Av. Providencia 1234, Dpto 5"
-          />
-          <Field
-            label="Ciudad / Comuna"
-            value={form.city}
-            onChangeText={updateField("city")}
-            placeholder="Ej. Santiago"
-          />
-          <Field
-            label="Teléfono"
-            value={form.phone}
-            onChangeText={updateField("phone")}
-            placeholder="+56 9 1234 5678"
-            keyboardType="phone-pad"
-          />
-          <Field
-            label="Notas (opcional)"
-            value={form.notes}
-            onChangeText={updateField("notes")}
-            placeholder="Instrucciones para el repartidor..."
-            multiline
-          />
-        </View>
+        <StepBar current={step} />
 
-        {/* Payment method */}
-        <View style={styles.section}>
-          <SectionTitle
-            icon={<Wallet size={18} color={colors.primary} strokeWidth={2} />}
-            title="Método de pago"
-          />
-          <View style={styles.paymentOptions}>
-            <Pressable
-              style={[
-                styles.paymentOption,
-                paymentMethod === "card" && styles.paymentOptionActive,
-              ]}
-              onPress={() => setPaymentMethod("card")}
-            >
-              <CreditCard
-                size={20}
-                color={
-                  paymentMethod === "card"
-                    ? colors.primary
-                    : colors.foregroundTertiary
-                }
-                strokeWidth={1.8}
-              />
-              <Text
-                style={[
-                  styles.paymentOptionText,
-                  paymentMethod === "card" && styles.paymentOptionTextActive,
-                ]}
-              >
-                Tarjeta
-              </Text>
-            </Pressable>
-
-            <Pressable
-              style={[
-                styles.paymentOption,
-                paymentMethod === "cash" && styles.paymentOptionActive,
-              ]}
-              onPress={() => setPaymentMethod("cash")}
-            >
-              <Wallet
-                size={20}
-                color={
-                  paymentMethod === "cash"
-                    ? colors.primary
-                    : colors.foregroundTertiary
-                }
-                strokeWidth={1.8}
-              />
-              <Text
-                style={[
-                  styles.paymentOptionText,
-                  paymentMethod === "cash" && styles.paymentOptionTextActive,
-                ]}
-              >
-                Efectivo
-              </Text>
-            </Pressable>
+        {hasMultipleSellers && (
+          <View style={styles.warning}>
+            <AlertTriangle size={18} color={colors.warning} strokeWidth={2} />
+            <Text style={styles.warningText}>
+              Tu carro tiene productos de más de un vendedor. Cada compra se paga por
+              separado: deja los productos de un solo vendedor para continuar.
+            </Text>
           </View>
-        </View>
+        )}
 
-        {/* Order Summary */}
+        {step === "shipping" && (
+          <>
+            <View style={styles.section}>
+              <SectionTitle
+                icon={<Truck size={18} color={colors.primary} strokeWidth={2} />}
+                title="Método de entrega"
+              />
+              <ShippingMethodPicker value={shippingMethod} onChange={setShippingMethod} />
+            </View>
+
+            {requiresAddress && (
+              <View style={styles.section}>
+                <SectionTitle
+                  icon={<MapPin size={18} color={colors.primary} strokeWidth={2} />}
+                  title="Datos de entrega"
+                />
+                <ShippingAddressForm value={address} onChange={updateAddressField} />
+              </View>
+            )}
+          </>
+        )}
+
+        {step === "payment" && (
+          <View style={styles.section}>
+            <SectionTitle
+              icon={<Wallet size={18} color={colors.primary} strokeWidth={2} />}
+              title="Medio de pago"
+            />
+            <PaymentMethodPicker value={provider} onChange={setProvider} />
+            <Text style={styles.hint}>
+              El pago se completa en el sitio del proveedor. Volverás a la app al
+              terminar.
+            </Text>
+          </View>
+        )}
+
+        {/* Summary is always visible: it is the thing being agreed to. */}
         <View style={styles.section}>
           <SectionTitle
             icon={<Package size={18} color={colors.primary} strokeWidth={2} />}
@@ -245,16 +176,17 @@ export default function CheckoutScreen() {
           <View style={styles.divider} />
 
           <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Subtotal</Text>
+            <Text style={styles.summaryPrice}>{formatPrice(subtotal)}</Text>
+          </View>
+
+          <View style={styles.summaryRow}>
             <View style={styles.summaryShipping}>
-              <Truck
-                size={14}
-                color={colors.foregroundSecondary}
-                strokeWidth={1.8}
-              />
+              <Truck size={14} color={colors.foregroundSecondary} strokeWidth={1.8} />
               <Text style={styles.summaryLabel}>Envío</Text>
             </View>
             <Text style={styles.summaryPrice}>
-              {formatPrice(SHIPPING_COST)}
+              {shippingCost === 0 ? "Sin costo" : formatPrice(shippingCost)}
             </Text>
           </View>
 
@@ -265,22 +197,27 @@ export default function CheckoutScreen() {
         </View>
       </ScrollView>
 
-      {/* Footer CTA */}
       <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
-        <Pressable
-          style={[
-            styles.placeOrderBtn,
-            isPlacing && styles.placeOrderBtnDisabled,
-          ]}
-          onPress={handlePlaceOrder}
-          disabled={isPlacing}
-        >
-          <Text style={styles.placeOrderBtnText}>
-            {isPlacing
-              ? "Procesando..."
-              : `Confirmar pedido · ${formatPrice(total)}`}
-          </Text>
-        </Pressable>
+        <View style={styles.footerRow}>
+          {step !== "shipping" && (
+            <Pressable style={styles.backBtn} onPress={goBack} disabled={loading}>
+              <Text style={styles.backBtnText}>Atrás</Text>
+            </Pressable>
+          )}
+          <Pressable
+            style={[styles.primaryBtn, (loading || hasMultipleSellers) && styles.primaryBtnDisabled]}
+            onPress={isReview ? pay : goNext}
+            disabled={loading || hasMultipleSellers}
+          >
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.primaryBtnText}>
+                {isReview ? `Pagar · ${formatPrice(total)}` : "Continuar"}
+              </Text>
+            )}
+          </Pressable>
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -294,6 +231,74 @@ const styles = StyleSheet.create({
   scroll: {
     padding: 16,
     gap: 16,
+  },
+  // Steps
+  stepBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: colors.surface,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  step: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  stepDot: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.backgroundSecondary,
+    borderWidth: 1,
+    borderColor: colors.borderStrong,
+  },
+  stepDotActive: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+  },
+  stepDotDone: {
+    opacity: 0.7,
+  },
+  stepNumber: {
+    fontSize: 12,
+    fontFamily: "Cabin_600SemiBold",
+    color: colors.foregroundTertiary,
+  },
+  stepNumberActive: {
+    color: "#fff",
+  },
+  stepLabel: {
+    fontSize: 13,
+    fontFamily: "Cabin_500Medium",
+    color: colors.foregroundTertiary,
+  },
+  stepLabelActive: {
+    color: colors.foreground,
+    fontFamily: "Cabin_600SemiBold",
+  },
+  // Warning
+  warning: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "flex-start",
+    backgroundColor: colors.surface,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.warning,
+    padding: 14,
+  },
+  warningText: {
+    flex: 1,
+    fontSize: 13,
+    fontFamily: "Cabin_400Regular",
+    color: colors.foregroundSecondary,
+    lineHeight: 19,
   },
   section: {
     backgroundColor: colors.surface,
@@ -314,58 +319,11 @@ const styles = StyleSheet.create({
     fontFamily: "Cabin_600SemiBold",
     color: colors.foreground,
   },
-  // Fields
-  field: {
-    gap: 4,
-  },
-  fieldLabel: {
-    fontSize: 13,
-    fontFamily: "Cabin_500Medium",
-    color: colors.foregroundSecondary,
-  },
-  input: {
-    height: 44,
-    borderWidth: 1,
-    borderColor: colors.inputBorder,
-    borderRadius: 8,
-    paddingHorizontal: 12,
+  hint: {
+    fontSize: 12,
     fontFamily: "Cabin_400Regular",
-    fontSize: 14,
-    color: colors.inputText,
-    backgroundColor: colors.inputBg,
-  },
-  inputMultiline: {
-    height: 80,
-    paddingTop: 10,
-  },
-  // Payment
-  paymentOptions: {
-    flexDirection: "row",
-    gap: 10,
-  },
-  paymentOption: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    paddingVertical: 12,
-    borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: colors.borderStrong,
-    backgroundColor: colors.backgroundSecondary,
-  },
-  paymentOptionActive: {
-    borderColor: colors.primary,
-    backgroundColor: colors.background,
-  },
-  paymentOptionText: {
-    fontSize: 14,
-    fontFamily: "Cabin_500Medium",
     color: colors.foregroundTertiary,
-  },
-  paymentOptionTextActive: {
-    color: colors.primary,
+    lineHeight: 18,
   },
   // Summary
   summaryRow: {
@@ -424,16 +382,36 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.borderLight,
   },
-  placeOrderBtn: {
+  footerRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  backBtn: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.borderStrong,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  backBtnText: {
+    fontSize: 15,
+    fontFamily: "Cabin_600SemiBold",
+    color: colors.foreground,
+  },
+  primaryBtn: {
+    flex: 1,
     backgroundColor: colors.primary,
     paddingVertical: 15,
     borderRadius: 12,
     alignItems: "center",
+    justifyContent: "center",
   },
-  placeOrderBtnDisabled: {
+  primaryBtnDisabled: {
     opacity: 0.6,
   },
-  placeOrderBtnText: {
+  primaryBtnText: {
     fontSize: 16,
     fontFamily: "Cabin_600SemiBold",
     color: "#fff",

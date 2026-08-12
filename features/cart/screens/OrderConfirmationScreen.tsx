@@ -1,60 +1,109 @@
 import { colors } from "@/design/tokens";
-import { useRouter } from "expo-router";
-import { CheckCircle, House, Package } from "lucide-react-native";
+import { formatPrice } from "@/utils/formatPrice";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { CheckCircle, Clock, House, Package, XCircle } from "lucide-react-native";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const ORDER_NUMBER = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+import { usePaymentResult } from "../hooks/usePaymentResult";
+
+const COPY = {
+  PAID: {
+    title: "¡Pago confirmado!",
+    subtitle: "Tu pedido fue recibido y ya está en preparación.",
+  },
+  PENDING: {
+    title: "Estamos confirmando tu pago",
+    subtitle:
+      "Esto puede tardar unos segundos. Si cerraste el pago sin terminarlo, tu carro sigue disponible.",
+  },
+  FAILED: {
+    title: "El pago no se completó",
+    subtitle: "No se hizo ningún cobro. Puedes intentarlo otra vez desde tu carro.",
+  },
+  UNKNOWN: {
+    title: "Pedido registrado",
+    subtitle: "Revisa el estado de tu compra en «Mis pedidos».",
+  },
+} as const;
 
 export default function OrderConfirmationScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { paymentId, orderId } = useLocalSearchParams<{
+    paymentId?: string;
+    orderId?: string;
+  }>();
+
+  const { payment, outcome, loading } = usePaymentResult(paymentId);
+  const copy = COPY[outcome];
+
+  const Icon =
+    outcome === "PAID"
+      ? CheckCircle
+      : outcome === "FAILED"
+        ? XCircle
+        : outcome === "PENDING"
+          ? Clock
+          : Package;
+  const iconColor =
+    outcome === "PAID"
+      ? colors.success
+      : outcome === "FAILED"
+        ? colors.danger
+        : colors.foregroundSecondary;
 
   return (
     <View style={[styles.root, { paddingBottom: insets.bottom + 24 }]}>
-      {/* Icon */}
       <View style={styles.iconWrapper}>
-        <CheckCircle size={72} color={colors.success} strokeWidth={1.5} />
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.primary} />
+        ) : (
+          <Icon size={72} color={iconColor} strokeWidth={1.5} />
+        )}
       </View>
 
-      <Text style={styles.title}>¡Pedido confirmado!</Text>
-      <Text style={styles.subtitle}>
-        Tu pedido ha sido recibido y está siendo procesado.
-      </Text>
+      <Text style={styles.title}>{copy.title}</Text>
+      <Text style={styles.subtitle}>{copy.subtitle}</Text>
 
-      {/* Order info card */}
       <View style={styles.card}>
         <View style={styles.cardRow}>
-          <Package
-            size={18}
-            color={colors.foregroundSecondary}
-            strokeWidth={1.8}
-          />
+          <Package size={18} color={colors.foregroundSecondary} strokeWidth={1.8} />
           <Text style={styles.cardLabel}>Número de orden</Text>
-          <Text style={styles.cardValue}>{ORDER_NUMBER}</Text>
+          <Text style={styles.cardValue}>
+            {orderId ? `#${orderId}` : (payment?.orderId ?? "—")}
+          </Text>
         </View>
+
+        {payment?.amount != null && (
+          <>
+            <View style={styles.divider} />
+            <View style={styles.cardRow}>
+              <Text style={styles.cardLabel}>Monto</Text>
+              <Text style={styles.cardValue}>{formatPrice(payment.amount)}</Text>
+            </View>
+          </>
+        )}
+
         <View style={styles.divider} />
         <Text style={styles.cardNote}>
-          Recibirás una confirmación con el detalle de tu compra y el
-          seguimiento del envío.
+          {outcome === "PAID"
+            ? "Recibirás un correo con el detalle de tu compra y el seguimiento del envío."
+            : "El estado se actualiza solo; también puedes revisarlo en «Mis pedidos»."}
         </Text>
       </View>
 
-      {/* Actions */}
       <View style={styles.actions}>
         <Pressable
           style={styles.primaryBtn}
-          onPress={() => router.replace("/(profile)/order-history" as any)}
+          onPress={() => router.replace("/(profile)/order-history")}
         >
           <Package size={18} color="#fff" strokeWidth={2} />
           <Text style={styles.primaryBtnText}>Ver mis pedidos</Text>
         </Pressable>
 
-        <Pressable
-          style={styles.secondaryBtn}
-          onPress={() => router.replace("/(tabs)")}
-        >
+        <Pressable style={styles.secondaryBtn} onPress={() => router.replace("/(tabs)")}>
           <House size={18} color={colors.foreground} strokeWidth={2} />
           <Text style={styles.secondaryBtnText}>Volver al inicio</Text>
         </Pressable>
@@ -74,6 +123,8 @@ const styles = StyleSheet.create({
   },
   iconWrapper: {
     marginBottom: 8,
+    height: 72,
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,

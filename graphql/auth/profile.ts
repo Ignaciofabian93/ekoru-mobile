@@ -52,9 +52,16 @@ export const UPDATE_PASSWORD = gql`
   }
 `;
 
+/**
+ * Emails a one-time reset link. Always succeeds, whether or not the address has
+ * an account — the answer must not reveal which addresses are registered.
+ *
+ * The link itself opens the web app (`/{lang}/reset-password?token=…`); the app
+ * only asks for the link, it does not consume the token.
+ */
 export const REQUEST_PASSWORD_RESET = gql`
-  mutation RequestPasswordReset($email: String!) {
-    requestPasswordReset(email: $email)
+  mutation RequestPasswordReset($email: String!, $language: Language = ES) {
+    requestPasswordReset(email: $email, language: $language)
   }
 `;
 

@@ -36,7 +36,7 @@ function EmptyCart() {
       </Text>
       <Pressable
         style={styles.shopButton}
-        onPress={() => router.push("/(marketplace)" as any)}
+        onPress={() => router.push("/(marketplace)")}
       >
         <Text style={styles.shopButtonText}>Ir al Marketplace</Text>
       </Pressable>
@@ -148,7 +148,7 @@ export default function CartScreen() {
         </View>
         <Pressable
           style={styles.checkoutBtn}
-          onPress={() => router.push("/(cart)/checkout" as any)}
+          onPress={() => router.push("/(cart)/checkout")}
         >
           <Text style={styles.checkoutBtnText}>Ir a pagar</Text>
         </Pressable>

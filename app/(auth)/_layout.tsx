@@ -23,6 +23,10 @@ export default function AuthLayout() {
           name="register"
           options={{ title: "Register", headerShown: false }}
         />
+        <Stack.Screen
+          name="forgot-password"
+          options={{ title: "Forgot password", headerShown: false }}
+        />
       </Stack>
     </Fragment>
   );

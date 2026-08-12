@@ -1,13 +1,16 @@
 import MainButton from "@/components/Primitives/Button/MainButton";
 import Input from "@/components/Primitives/Input/Input";
+import { colors } from "@/design/tokens";
+import useAppRouter from "@/hooks/useAppRouter";
 import { isEmailValid } from "@/utils/regexValidations";
 import { ArrowRight, Lock, Mail } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import useLogin from "../hooks/useLogin";
 
 export default function LoginForm() {
   const { handleFieldChange, handleLogin, email, password, loading } = useLogin();
+  const { navigate } = useAppRouter();
   const { t } = useTranslation("auth");
 
   return (
@@ -32,6 +35,13 @@ export default function LoginForm() {
         type="password"
         leftIcon={Lock}
       />
+      <Pressable
+        onPress={() => navigate("/(auth)/forgot-password")}
+        style={styles.forgotLinkWrapper}
+        accessibilityRole="link"
+      >
+        <Text style={styles.forgotLink}>{t("forgotPassword")}</Text>
+      </Pressable>
       <MainButton
         text={t("login")}
         onPress={handleLogin}
@@ -46,5 +56,14 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
   container: {
     gap: 20,
+  },
+  forgotLinkWrapper: {
+    alignSelf: "flex-end",
+    marginTop: -12,
+  },
+  forgotLink: {
+    fontSize: 14,
+    fontFamily: "Cabin_600SemiBold",
+    color: colors.primary,
   },
 });

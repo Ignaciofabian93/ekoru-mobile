@@ -25,5 +25,13 @@
   "blockedBanner": "Tu cuenta está temporalmente bloqueada para tratos P2P.",
   "toastAccepted": "Trato aceptado",
   "toastConfirmed": "Confirmado",
-  "genericError": "Algo salió mal"
+  "genericError": "Algo salió mal",
+  "messageFrom": "Mensaje de la otra parte",
+  "messageYours": "Tu mensaje",
+  "cashYouBring": "Lleva {{amount}} en efectivo a la entrega.",
+  "cashTheyBring": "La otra parte te entregará {{amount}} en efectivo.",
+  "cashConfirmReceived": "Confirmo que recibí los {{amount}} de compensación.",
+  "cashSettled": "Compensación en efectivo confirmada",
+  "uploadPhoto": "Subir foto del producto recibido",
+  "changePhoto": "Cambiar foto"
 }

@@ -25,8 +25,12 @@ export interface Deal {
   status: P2PStatus;
   buyerId: string;
   sellerId: string;
+  /** Note the proposer wrote when opening the deal. */
+  message?: string | null;
   compensationAmount: number;
   compensationPayerId?: string | null;
+  /** Set once the party owed the cash gap confirms they received it. */
+  compensationSettledAt?: string | null;
   confirmationDeadline?: string | null;
   buyerConfirmedAt?: string | null;
   sellerConfirmedAt?: string | null;

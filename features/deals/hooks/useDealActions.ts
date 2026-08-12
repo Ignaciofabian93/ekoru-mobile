@@ -10,6 +10,7 @@ import {
   DISPUTE_DEAL,
 } from "@/graphql/deals/mutations";
 import { MY_DEALS_AS_BUYER, MY_DEALS_AS_SELLER } from "@/graphql/deals/queries";
+import { uploadProductImage } from "@/api/products/images";
 import { showError, showSuccess } from "@/lib/toast";
 
 import { NAMESPACE } from "../i18n";
@@ -18,7 +19,8 @@ const REFETCH = [{ query: MY_DEALS_AS_BUYER }, { query: MY_DEALS_AS_SELLER }];
 
 /**
  * Deal state transitions. Lists are refetched so the UI reflects the new status.
- * (Evidence-photo upload on confirm is deferred; `confirmDeal` sends no photo.)
+ * `confirmDeal` uploads the evidence photo first (reusing the product image
+ * pipeline) — the server rejects a receiver's confirmation without one.
  */
 export default function useDealActions() {
   const { t } = useTranslation(NAMESPACE);
@@ -52,9 +54,17 @@ export default function useDealActions() {
       }),
     declineDeal: (id: number, reason?: string) =>
       run(id, () => decline({ variables: { id, reason } })),
-    confirmDeal: (id: number) =>
+    /**
+     * `photoUri` is a local image URI; it is uploaded before confirming.
+     * `compensationSettled` is the cash receiver's "I got the top-up" tick —
+     * the server refuses their confirmation without it.
+     */
+    confirmDeal: (id: number, photoUri?: string, compensationSettled?: boolean) =>
       run(id, async () => {
-        await confirm({ variables: { id, evidenceUrl: undefined } });
+        const evidenceUrl = photoUri
+          ? await uploadProductImage(photoUri)
+          : undefined;
+        await confirm({ variables: { id, evidenceUrl, compensationSettled } });
         showSuccess({ message: t("toastConfirmed") });
       }),
     disputeDeal: (id: number, reason: string) =>

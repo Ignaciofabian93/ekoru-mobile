@@ -25,5 +25,13 @@
   "blockedBanner": "Your account is temporarily blocked from P2P deals.",
   "toastAccepted": "Deal accepted",
   "toastConfirmed": "Confirmed",
-  "genericError": "Something went wrong"
+  "genericError": "Something went wrong",
+  "messageFrom": "Message from the other party",
+  "messageYours": "Your message",
+  "cashYouBring": "Bring {{amount}} in cash to the handover.",
+  "cashTheyBring": "The other party will hand you {{amount}} in cash.",
+  "cashConfirmReceived": "I confirm I received the {{amount}} top-up.",
+  "cashSettled": "Cash top-up confirmed",
+  "uploadPhoto": "Upload photo of the item received",
+  "changePhoto": "Change photo"
 }

@@ -46,8 +46,10 @@ export const DEAL_FIELDS = gql`
     status
     buyerId
     sellerId
+    message
     compensationAmount
     compensationPayerId
+    compensationSettledAt
     confirmationDeadline
     buyerConfirmedAt
     sellerConfirmedAt
@@ -107,6 +109,16 @@ export const GET_DEAL = gql`
   query GetDeal($id: Int!) {
     deal(id: $id) {
       ...DealFields
+    }
+  }
+`;
+
+export const P2P_DEAL_SETTINGS = gql`
+  query P2PDealSettings {
+    p2pDealSettings {
+      compensationThresholdClp
+      confirmWindowHours
+      completionPoints
     }
   }
 `;

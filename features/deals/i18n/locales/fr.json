@@ -25,5 +25,13 @@
   "blockedBanner": "Votre compte est temporairement bloqué pour les accords P2P.",
   "toastAccepted": "Accord accepté",
   "toastConfirmed": "Confirmé",
-  "genericError": "Une erreur s'est produite"
+  "genericError": "Une erreur s'est produite",
+  "messageFrom": "Message de l'autre partie",
+  "messageYours": "Votre message",
+  "cashYouBring": "Apportez {{amount}} en espèces lors de la remise.",
+  "cashTheyBring": "L'autre partie vous remettra {{amount}} en espèces.",
+  "cashConfirmReceived": "Je confirme avoir reçu le complément de {{amount}}.",
+  "cashSettled": "Complément en espèces confirmé",
+  "uploadPhoto": "Envoyer une photo de l'article reçu",
+  "changePhoto": "Changer la photo"
 }

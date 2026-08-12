@@ -3,7 +3,9 @@ import { colors } from "@/design/tokens";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
-import { Clock, ImageOff } from "lucide-react-native";
+import useAuthStore from "@/store/useAuthStore";
+import * as ImagePicker from "expo-image-picker";
+import { Check, Clock, Coins, ImageOff, ImagePlus, Quote } from "lucide-react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, View } from "react-native";
@@ -61,7 +63,11 @@ interface Props {
   busyId: number | null;
   onAccept: (id: number) => void;
   onDecline: (id: number) => void;
-  onConfirm: (id: number) => void;
+  onConfirm: (
+    id: number,
+    photoUri?: string,
+    compensationSettled?: boolean,
+  ) => void;
   onCancel: (id: number) => void;
 }
 
@@ -75,14 +81,36 @@ export default function DealCard({
   onCancel,
 }: Props) {
   const { t } = useTranslation(NAMESPACE);
+  const myId = useAuthStore((s) => s.seller?.id);
+  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [cashReceived, setCashReceived] = useState(false);
   const busy = busyId === deal.id;
   const counterparty = perspective === "buyer" ? deal.seller : deal.buyer;
   const tl = deal.status === "ACCEPTED" ? timeLeft(deal.confirmationDeadline) : null;
-  const confirmLabel =
-    perspective === "buyer" || deal.type === "EXCHANGE"
-      ? t("confirmReceipt")
-      : t("confirmHandover");
+  // The buyer always receives an item; the seller only in an exchange. Whoever
+  // receives one must attach a photo — the server rejects the confirmation
+  // without it.
+  const iReceiveItem = perspective === "buyer" || deal.type === "EXCHANGE";
+  const confirmLabel = iReceiveItem ? t("confirmReceipt") : t("confirmHandover");
   const statusColor = STATUS_COLOR[deal.status] ?? colors.foregroundTertiary;
+
+  // Cash gap: only the side owed the money can attest it changed hands.
+  const hasCashGap = deal.compensationAmount > 0 && !!deal.compensationPayerId;
+  const iPayCash = hasCashGap && deal.compensationPayerId === myId;
+  const cashSettled = !!deal.compensationSettledAt;
+  const mustTickCash = hasCashGap && !iPayCash && !cashSettled;
+  const canConfirm =
+    !busy && (!iReceiveItem || !!photoUri) && (!mustTickCash || cashReceived);
+
+  async function pickEvidence() {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    const picker =
+      status === "granted"
+        ? ImagePicker.launchCameraAsync
+        : ImagePicker.launchImageLibraryAsync;
+    const result = await picker({ quality: 0.7, allowsEditing: true });
+    if (!result.canceled) setPhotoUri(result.assets[0].uri);
+  }
 
   return (
     <View style={styles.card}>
@@ -114,6 +142,41 @@ export default function DealCard({
         </Text>
       )}
 
+      {/* What the proposer wrote when they opened the deal. */}
+      {deal.message ? (
+        <View style={styles.messageBox}>
+          <Quote size={12} color={colors.foregroundTertiary} strokeWidth={2} />
+          <View style={{ flex: 1 }}>
+            <Text size="xs" color="tertiary" weight="medium">
+              {perspective === "seller" ? t("messageFrom") : t("messageYours")}
+            </Text>
+            <Text size="xs" color="secondary">
+              {deal.message}
+            </Text>
+          </View>
+        </View>
+      ) : null}
+
+      {hasCashGap && (
+        <View style={styles.cashRow}>
+          <Coins size={12} color={colors.foregroundSecondary} strokeWidth={2} />
+          <Text size="xs" color="secondary" style={{ flex: 1 }}>
+            {iPayCash
+              ? t("cashYouBring", { amount: formatPrice(deal.compensationAmount) })
+              : t("cashTheyBring", { amount: formatPrice(deal.compensationAmount) })}
+          </Text>
+        </View>
+      )}
+
+      {cashSettled && (
+        <View style={styles.cashRow}>
+          <Check size={12} color={colors.success} strokeWidth={2.5} />
+          <Text size="xs" style={{ color: colors.success, flex: 1 }}>
+            {t("cashSettled")}
+          </Text>
+        </View>
+      )}
+
       {deal.status === "ACCEPTED" && (
         <View style={styles.banner}>
           {perspective === "buyer" ? (
@@ -130,6 +193,46 @@ export default function DealCard({
                 {tl.expired ? t("expired") : tl.label}
               </Text>
             </View>
+          )}
+        </View>
+      )}
+
+      {/* Evidence photo + cash tick — both gate the confirm button. */}
+      {deal.status === "ACCEPTED" && (
+        <View style={styles.confirmPrep}>
+          {iReceiveItem && (
+            <Pressable style={styles.photoPicker} onPress={pickEvidence}>
+              {photoUri ? (
+                <>
+                  <Image source={{ uri: photoUri }} style={styles.photoPreview} />
+                  <Text size="xs" color="primary" weight="medium">
+                    {t("changePhoto")}
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <ImagePlus size={16} color={colors.foregroundSecondary} strokeWidth={2} />
+                  <Text size="xs" color="secondary" weight="medium">
+                    {t("uploadPhoto")}
+                  </Text>
+                </>
+              )}
+            </Pressable>
+          )}
+          {mustTickCash && (
+            <Pressable
+              style={styles.checkRow}
+              onPress={() => setCashReceived((v) => !v)}
+            >
+              <View style={[styles.checkbox, cashReceived && styles.checkboxOn]}>
+                {cashReceived && <Check size={11} color="#fff" strokeWidth={3} />}
+              </View>
+              <Text size="xs" color="secondary" style={{ flex: 1 }}>
+                {t("cashConfirmReceived", {
+                  amount: formatPrice(deal.compensationAmount),
+                })}
+              </Text>
+            </Pressable>
           )}
         </View>
       )}
@@ -163,7 +266,17 @@ export default function DealCard({
         )}
         {deal.status === "ACCEPTED" && (
           <>
-            <Pressable disabled={busy} style={[styles.btn, styles.primaryBtn]} onPress={() => onConfirm(deal.id)}>
+            <Pressable
+              disabled={!canConfirm}
+              style={[styles.btn, styles.primaryBtn, !canConfirm && styles.btnDisabled]}
+              onPress={() =>
+                onConfirm(
+                  deal.id,
+                  photoUri ?? undefined,
+                  mustTickCash ? cashReceived : undefined,
+                )
+              }
+            >
               <Text size="sm" weight="semibold" style={{ color: "#fff" }}>
                 {confirmLabel}
               </Text>
@@ -255,6 +368,60 @@ const styles = StyleSheet.create({
   },
   primaryBtn: {
     backgroundColor: colors.primary,
+  },
+  btnDisabled: { opacity: 0.5 },
+  messageBox: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 8,
+    marginTop: 8,
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: colors.background,
+  },
+  cashRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 6,
+  },
+  confirmPrep: {
+    gap: 8,
+    marginTop: 8,
+  },
+  photoPicker: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: colors.border,
+  },
+  photoPreview: {
+    width: 32,
+    height: 32,
+    borderRadius: 6,
+  },
+  checkRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  checkbox: {
+    width: 16,
+    height: 16,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkboxOn: {
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
   outlineBtn: {
     borderWidth: 1,

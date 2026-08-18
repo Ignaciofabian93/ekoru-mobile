@@ -10,12 +10,12 @@ const getEndpoints = () => {
       };
     case "staging":
       return {
-        base: "https://api.staging.ekoru.cl",
-        graphql: "https://api.staging.ekoru.cl/graphql",
-        rest: "https://api.staging.ekoru.cl/session",
+        base: "https://staging-api.ekoru.cl",
+        graphql: "https://staging-api.ekoru.cl/graphql",
+        rest: "https://staging-api.ekoru.cl/session",
       };
     default: {
-      const devBase = "https://api.staging.ekoru.cl";
+      const devBase = "https://staging-api.ekoru.cl";
       return {
         base: devBase,
         graphql: `${devBase}/graphql`,

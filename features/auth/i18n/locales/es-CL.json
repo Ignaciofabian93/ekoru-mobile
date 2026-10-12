@@ -64,5 +64,12 @@
   "securitySubtitle": "Protege tu cuenta con una contraseña segura",
   "personDesc": "Una cuenta personal",
   "startupDesc": "Para emprendimientos en crecimiento",
-  "companyDesc": "Para empresas establecidas"
+  "companyDesc": "Para empresas establecidas",
+  "applicationMessage": "Mensaje para EKORU",
+  "applicationMessagePlaceholder": "Ej: Fabricamos envoltorios reutilizables de cera de abeja con algodón orgánico y cera de apicultores locales...",
+  "applicationMessageHint": "Revisamos cada negocio antes de activar su cuenta. Cuéntanos a qué te dedicas, qué productos o servicios ofreces y de qué materiales están hechos.",
+  "applicationMessageCount": "{{count}} / mín. {{min}}",
+  "applicationMessageTooShort": "Cuéntanos un poco más sobre tu negocio (mínimo {{min}} caracteres)",
+  "applicationSentTitle": "¡Recibimos tu solicitud!",
+  "applicationSentBody": "Revisaremos la información de tu negocio y te escribiremos a {{email}} cuando tu cuenta esté aprobada. Hasta entonces no podrás iniciar sesión."
 }

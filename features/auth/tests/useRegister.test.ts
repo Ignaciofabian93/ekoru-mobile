@@ -81,10 +81,14 @@ function fillBusinessFields(result: HookResult) {
   result.handleFieldChange({ name: "businessType", value: "RETAIL" });
   result.handleFieldChange({ name: "businessName", value: "Acme Corp" });
   result.handleFieldChange({ name: "displayName", value: "Acme" });
+  result.handleFieldChange({ name: "applicationMessage", value: APPLICATION_MESSAGE });
   result.handleFieldChange({ name: "email", value: "acme@example.com" });
   result.handleFieldChange({ name: "password", value: "secret123" });
   result.handleFieldChange({ name: "confirmPassword", value: "secret123" });
 }
+
+const APPLICATION_MESSAGE =
+  "We make reusable beeswax food wraps from organic cotton and local beeswax.";
 
 describe("useRegister", () => {
   beforeEach(() => {
@@ -410,7 +414,7 @@ describe("useRegister", () => {
 
   // ── Happy path: BUSINESS ───────────────────────────────────────────────────
 
-  it("calls showSuccess and navigates to /(auth) on successful COMPANY registration", async () => {
+  it("waits for EKORU's review instead of going to login on a COMPANY registration", async () => {
     const { result } = renderHook(() => useRegister());
 
     act(() => {
@@ -421,9 +425,29 @@ describe("useRegister", () => {
     await act(async () => { await result.current.handleRegister(); });
 
     expect(mockShowError).not.toHaveBeenCalled();
-    expect(mockShowSuccess).toHaveBeenCalled();
-    expect(mockNavigate).toHaveBeenCalledWith("/(auth)");
+    // A pending business cannot sign in, so it is not sent to the login screen.
+    expect(mockNavigate).not.toHaveBeenCalled();
+    expect(result.current.applicationSentTo).toBe("acme@example.com");
     expect(result.current.loading).toBe(false);
+  });
+
+  it("requires a real application message from a business", async () => {
+    const { result } = renderHook(() => useRegister());
+
+    act(() => {
+      result.current.setTermsAccepted(true);
+      fillBusinessFields(result.current);
+      result.current.handleFieldChange({ name: "applicationMessage", value: "We sell things." });
+    });
+
+    await act(async () => { await result.current.handleRegister(); });
+
+    expect(mockShowError).toHaveBeenCalledWith({
+      title: "errorTitle",
+      message: "applicationMessageTooShort",
+    });
+    expect(mockMutationFn).not.toHaveBeenCalled();
+    expect(result.current.isSubmitEnabled()).toBeFalsy();
   });
 
   it("STARTUP type follows the business validation path and registers successfully", async () => {
@@ -439,7 +463,7 @@ describe("useRegister", () => {
 
     expect(mockShowError).not.toHaveBeenCalled();
     expect(result.current.sellerType).toBe("STARTUP");
-    expect(mockShowSuccess).toHaveBeenCalled();
+    expect(result.current.applicationSentTo).toBe("acme@example.com");
   });
 
   // ── API error handling ─────────────────────────────────────────────────────

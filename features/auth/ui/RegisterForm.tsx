@@ -1,6 +1,7 @@
 import MainButton from "@/components/Primitives/Button/MainButton";
 import Checkbox from "@/components/Primitives/Checkbox/Checkbox";
 import Input from "@/components/Primitives/Input/Input";
+import TextArea from "@/components/Primitives/TextArea/TextArea";
 import { Text } from "@/components/Primitives/Text/Text";
 import { Title } from "@/components/Primitives/Title/Title";
 import { colors } from "@/design/tokens";
@@ -12,6 +13,8 @@ import {
   ArrowRight,
   Building2,
   Check,
+  Home,
+  MailCheck,
   Rocket,
   User,
   type LucideIcon,
@@ -19,7 +22,10 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Animated, Pressable, StyleSheet, Text as RNText, View } from "react-native";
-import useRegister from "../hooks/useRegister";
+import useRegister, {
+  APPLICATION_MESSAGE_MAX,
+  APPLICATION_MESSAGE_MIN,
+} from "../hooks/useRegister";
 
 const TOTAL_STEPS = 3;
 
@@ -45,6 +51,8 @@ export default function RegisterForm() {
     lastName,
     businessName,
     displayName,
+    applicationMessage,
+    applicationSentTo,
     email,
     password,
     confirmPassword,
@@ -63,8 +71,13 @@ export default function RegisterForm() {
   const isBusiness = sellerType !== "PERSON";
 
   const emailValid = isEmailValid(email);
+  const messageLength = applicationMessage.trim().length;
+  const messageValid = messageLength >= APPLICATION_MESSAGE_MIN;
   const detailsValid = isBusiness
-    ? businessName.trim().length > 0 && displayName.trim().length > 0 && emailValid
+    ? businessName.trim().length > 0 &&
+      displayName.trim().length > 0 &&
+      messageValid &&
+      emailValid
     : firstName.trim().length > 0 && lastName.trim().length > 0 && emailValid;
   const passwordValid = password.length >= 8;
   const confirmValid = confirmPassword.length > 0 && password === confirmPassword;
@@ -117,6 +130,31 @@ export default function RegisterForm() {
     { title: t("securityTitle"), subtitle: t("securitySubtitle") },
   ];
   const stepHeader = stepHeaders[step];
+
+  // A business application waits for EKORU's review before the account can
+  // sign in, so the wizard ends here instead of on the login screen.
+  if (applicationSentTo) {
+    return (
+      <View style={styles.sent}>
+        <View style={styles.sentIcon}>
+          <MailCheck size={28} color={colors.primary} strokeWidth={2} />
+        </View>
+        <Title level="h4" weight="semibold" color="primary" align="center">
+          {t("applicationSentTitle")}
+        </Title>
+        <Text variant="span" color="secondary" align="center">
+          {t("applicationSentBody", { email: applicationSentTo })}
+        </Text>
+        <MainButton
+          text={t("goBackHome")}
+          variant="outline"
+          leftIcon={Home}
+          onPress={() => router.replace("/(tabs)")}
+          size="md"
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -264,6 +302,30 @@ export default function RegisterForm() {
                     })}
                   </View>
                 </View>
+                <View style={styles.messageGroup}>
+                  <TextArea
+                    label={t("applicationMessage")}
+                    placeholder={t("applicationMessagePlaceholder")}
+                    value={applicationMessage}
+                    onChangeText={(value) => handleFieldChange({ name: "applicationMessage", value })}
+                    maxLength={APPLICATION_MESSAGE_MAX}
+                    numberOfLines={5}
+                  />
+                  <Text
+                    variant="small"
+                    color={submitted && !messageValid ? "error" : "tertiary"}
+                  >
+                    {submitted && !messageValid
+                      ? t("applicationMessageTooShort", { min: APPLICATION_MESSAGE_MIN })
+                      : t("applicationMessageHint")}
+                  </Text>
+                  <Text variant="small" color="tertiary" align="right">
+                    {t("applicationMessageCount", {
+                      count: messageLength,
+                      min: APPLICATION_MESSAGE_MIN,
+                    })}
+                  </Text>
+                </View>
               </>
             ) : (
               <>
@@ -388,6 +450,24 @@ export default function RegisterForm() {
 const styles = StyleSheet.create({
   container: {
     gap: 24,
+  },
+
+  // Business application sent
+  sent: {
+    alignItems: "center",
+    gap: 16,
+    paddingVertical: 24,
+  },
+  sentIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.primaryLightBg,
+  },
+  messageGroup: {
+    gap: 6,
   },
 
   // Progress indicator

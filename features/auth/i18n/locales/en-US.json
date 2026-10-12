@@ -64,5 +64,12 @@
   "securitySubtitle": "Protect your account with a secure password",
   "personDesc": "A personal account",
   "startupDesc": "For growing ventures",
-  "companyDesc": "For established businesses"
+  "companyDesc": "For established businesses",
+  "applicationMessage": "Message to EKORU",
+  "applicationMessagePlaceholder": "E.g. We make reusable beeswax food wraps from organic cotton and beeswax from local beekeepers...",
+  "applicationMessageHint": "We review every business before activating its account. Tell us what you do, which products or services you offer and what they are made of.",
+  "applicationMessageCount": "{{count}} / min. {{min}}",
+  "applicationMessageTooShort": "Tell us a bit more about your business (at least {{min}} characters)",
+  "applicationSentTitle": "We received your application!",
+  "applicationSentBody": "We'll review your business details and email you at {{email}} once your account is approved. Until then you won't be able to sign in."
 }

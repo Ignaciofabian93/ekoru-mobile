@@ -9,6 +9,10 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../i18n";
 
+/** Bounds of the message a business writes for EKORU's review (mirrors ekoru-users). */
+export const APPLICATION_MESSAGE_MIN = 50;
+export const APPLICATION_MESSAGE_MAX = 3000;
+
 export default function useRegister() {
   const { navigate } = useAppRouter();
   const { t } = useTranslation("auth");
@@ -24,6 +28,10 @@ export default function useRegister() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+  const [applicationMessage, setApplicationMessage] = useState<string>("");
+  // Set once a business application is sent: the account waits for EKORU's
+  // review, so the form shows where we'll write instead of the login screen.
+  const [applicationSentTo, setApplicationSentTo] = useState<string | null>(null);
 
   const onCompleted = () => {
     showSuccess({
@@ -46,8 +54,10 @@ export default function useRegister() {
     fetchPolicy: "no-cache",
   });
 
+  // A business can't sign in until EKORU approves it, so there is no login to
+  // send it to yet.
   const [registerBusiness, { loading: loadingBusiness }] = useMutation(REGISTER_BUSINESS, {
-    onCompleted,
+    onCompleted: () => setApplicationSentTo(email),
     onError,
     fetchPolicy: "no-cache",
   });
@@ -64,6 +74,8 @@ export default function useRegister() {
     if (name === "displayName") setDisplayName(sanitizeInput(value));
     if (name === "businessType") setBusinessType(value as BusinessType);
     if (name === "sellerType") setSellerType(value as SellerType);
+    // Free text with line breaks; the backend bounds its length.
+    if (name === "applicationMessage") setApplicationMessage(value);
   };
 
   const handleRegister = async () => {
@@ -90,6 +102,13 @@ export default function useRegister() {
         showError({
           title: t("errorTitle"),
           message: t("registerFieldsRequired"),
+        });
+        return;
+      }
+      if (applicationMessage.trim().length < APPLICATION_MESSAGE_MIN) {
+        showError({
+          title: t("errorTitle"),
+          message: t("applicationMessageTooShort", { min: APPLICATION_MESSAGE_MIN }),
         });
         return;
       }
@@ -124,6 +143,8 @@ export default function useRegister() {
             businessType,
             businessName: sanitizeOnSubmit(businessName),
             displayName: sanitizeOnSubmit(displayName),
+            // Trim only: the line breaks are kept in the email to EKORU.
+            applicationMessage: applicationMessage.trim(),
             email,
             password,
           },
@@ -140,7 +161,15 @@ export default function useRegister() {
       return firstName && email && password && confirmPassword;
     }
 
-    return businessType && businessName && displayName && email && password && confirmPassword;
+    return (
+      businessType &&
+      businessName &&
+      displayName &&
+      applicationMessage.trim().length >= APPLICATION_MESSAGE_MIN &&
+      email &&
+      password &&
+      confirmPassword
+    );
   };
 
   return {
@@ -156,6 +185,8 @@ export default function useRegister() {
     businessType,
     businessName,
     displayName,
+    applicationMessage,
+    applicationSentTo,
     termsAccepted,
     setTermsAccepted,
     isSubmitEnabled,

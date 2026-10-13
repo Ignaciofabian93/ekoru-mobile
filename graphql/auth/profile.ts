@@ -3,7 +3,6 @@ import {
   BUSINESS_PROFILE_FIELDS_FRAGMENT,
   PERSON_PROFILE_FIELDS_FRAGMENT,
   SELLER_FIELDS_FRAGMENT,
-  SELLER_LEVEL_FIELDS_FRAGMENT,
   SELLER_PREFERENCES_FIELDS_FRAGMENT,
 } from "../users/fragments";
 
@@ -83,17 +82,6 @@ export const REACTIVATE_ACCOUNT = gql`
   }
 `;
 
-export const UPDATE_SELLER_CATEGORY = gql`
-  ${SELLER_LEVEL_FIELDS_FRAGMENT}
-  mutation UpdateSellerCategory($id: String!, $categoryId: Int!) {
-    updateSellerCategory(id: $id, categoryId: $categoryId) {
-      id
-      sellerLevel {
-        ...SellerLevelFields
-      }
-    }
-  }
-`;
 
 export const GET_PERSON_MEMBERSHIPS = gql`
   query PersonMemberships($language: Language, $countryId: Int) {
@@ -148,7 +136,7 @@ export const GET_BUSINESS_MEMBERSHIPS = gql`
 `;
 
 export const ASSIGN_PERSON_MEMBERSHIP = gql`
-  mutation AssignPersonMembership($input: CreatePersonMembershipSubscriptionInput, $language: Language) {
+  mutation AssignPersonMembership($input: CreatePersonMembershipSubscriptionInput!, $language: Language) {
     assignPersonMembership(input: $input, language: $language) {
       id
       sellerId
@@ -173,7 +161,7 @@ export const ASSIGN_PERSON_MEMBERSHIP = gql`
 `;
 
 export const ASSIGN_BUSINESS_MEMBERSHIP = gql`
-  mutation AssignBusinessMembership($input: CreateBusinessMembershipSubscriptionInput, $language: Language) {
+  mutation AssignBusinessMembership($input: CreateBusinessMembershipSubscriptionInput!, $language: Language) {
     assignBusinessMembership(input: $input, language: $language) {
       id
       sellerId

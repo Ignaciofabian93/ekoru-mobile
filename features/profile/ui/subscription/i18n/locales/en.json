@@ -20,13 +20,17 @@
     "upgradingTo": "Upgrading to",
     "billedMonthly": "Billed monthly",
     "billedYearly": "Billed yearly",
-    "paymentMethod": "Payment Method",
-    "expires": "Expires",
-    "editCard": "Edit",
-    "addCard": "Add payment card",
-    "updateCard": "Update card",
-    "hideForm": "Hide form",
     "subscribe": "Subscribe to {{plan}}",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "webpayNote": "You'll pay on Webpay. Back in the app, your plan turns on as soon as the payment is confirmed."
+  },
+  "feedback": {
+    "activatedTitle": "Plan activated",
+    "activated": "You are now on the {{plan}} plan.",
+    "pendingTitle": "Payment not confirmed",
+    "pending": "We don't see the payment yet. If you completed it, your plan will turn on in a few minutes.",
+    "failedTitle": "We couldn't start the payment",
+    "downgradedTitle": "Plan updated",
+    "downgraded": "You're back on the free plan."
   }
 }

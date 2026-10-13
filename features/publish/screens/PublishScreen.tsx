@@ -1,3 +1,4 @@
+import { LocationNotice } from "@/components/Feedback/LocationNotice/LocationNotice";
 import { Text } from "@/components/Primitives/Text/Text";
 import { colors } from "@/design/tokens";
 import { router } from "expo-router";
@@ -23,6 +24,9 @@ export default function PublishScreen() {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
+      {/* Listings of a seller without a full location never show in search. */}
+      <LocationNotice />
+
       {/* Hero */}
       <View style={styles.heroBox}>
         <View style={styles.heroIcon}>

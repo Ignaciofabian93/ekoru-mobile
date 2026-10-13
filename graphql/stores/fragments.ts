@@ -137,7 +137,6 @@ export const STORE_PRODUCT_FIELDS_FRAGMENT = gql`
     isLiked
     saleCount
     viewCount
-    materialComposition
     recycledContent
     weight
     weightUnit

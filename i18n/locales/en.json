@@ -43,5 +43,10 @@
     "contact": {
       "title": "Contact Us"
     }
+  },
+  "locationNotice": {
+    "title": "Add your location to show up in search",
+    "body": "Until you set your country, region, city and county, your products and services won't appear in search results.",
+    "action": "Add location"
   }
 }

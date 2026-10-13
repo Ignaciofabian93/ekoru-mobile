@@ -43,5 +43,10 @@
     "contact": {
       "title": "Contactez-nous"
     }
+  },
+  "locationNotice": {
+    "title": "Indiquez votre localisation pour apparaître dans la recherche",
+    "body": "Tant que vous n'indiquez pas votre pays, région, ville et commune, vos produits et services n'apparaissent pas dans les résultats de recherche.",
+    "action": "Indiquer ma localisation"
   }
 }

@@ -17,12 +17,8 @@ export default function SubscriptionScreen() {
     isLoading,
     subscribing,
     pendingPlan,
-    showPaymentForm,
-    setShowPaymentForm,
     showDowngradeConfirm,
-    savedCard,
     handleSelectPlan,
-    handleSaveCard,
     handleConfirmPayment,
     handleConfirmDowngrade,
     handleCancelSelection,
@@ -63,11 +59,7 @@ export default function SubscriptionScreen() {
         <ConfirmModal
           pendingPlan={pendingPlan}
           billingCycle={billingCycle}
-          savedCard={savedCard}
-          showPaymentForm={showPaymentForm}
-          setShowPaymentForm={setShowPaymentForm}
           subscribing={subscribing}
-          onSaveCard={handleSaveCard}
           onConfirm={handleConfirmPayment}
           onCancel={handleCancelSelection}
         />

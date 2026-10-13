@@ -36,8 +36,8 @@ export const GET_MATERIALS = gql`
 
 export const GET_STORES_CATEGORIES = gql`
   ${STORE_CATEGORY_FIELDS_FRAGMENT}
-  query GetStoreCategories($limit: Int = 20, $offset: Int = 0, $language: Language = ES) {
-    getStoreCategories(limit: $limit, offset: $offset, language: $language) {
+  query GetStoreCategories($page: Int = 1, $pageSize: Int = 20, $language: Language = ES) {
+    getStoreCategories(page: $page, pageSize: $pageSize, language: $language) {
       ...StoreCategoryFields
     }
   }
@@ -46,11 +46,11 @@ export const GET_STORES_CATEGORIES = gql`
 export const GET_STORE_SUBCATEGORIES = gql`
   ${STORE_SUB_CATEGORY_FIELDS_FRAGMENT}
   query GetStoreSubCategories(
-    $limit: Int = 20
-    $offset: Int = 0
+    $page: Int = 1
+    $pageSize: Int = 20
     $language: Language = ES
   ) {
-    getStoreSubCategories(limit: $limit, offset: $offset, language: $language) {
+    getStoreSubCategories(page: $page, pageSize: $pageSize, language: $language) {
       ...StoreSubCategoryFields
     }
   }
@@ -97,7 +97,6 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
       likesCount
       saleCount
       viewCount
-      materialComposition
       recycledContent
       weight
       weightUnit
@@ -289,7 +288,6 @@ export const GET_STORE_PRODUCTS = gql`
         likesCount
         saleCount
         viewCount
-        materialComposition
         recycledContent
         weight
         weightUnit

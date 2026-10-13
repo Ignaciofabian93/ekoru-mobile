@@ -1,3 +1,4 @@
+import { LocationNotice } from "@/components/Feedback/LocationNotice/LocationNotice";
 import MainButton from "@/components/Primitives/Button/MainButton";
 import useAuthStore, { useCoverImage, useInitials, useProfileImage, useSeller } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
@@ -84,6 +85,8 @@ export default function ProfileScreen() {
 
         {/* ── Identity ─────────────────────────────────────────────────────── */}
         <Identity />
+
+        <LocationNotice style={{ marginHorizontal: 16, marginBottom: 16 }} />
 
         {/* ── Details ───────────────────────────────────────────────────────── */}
         <ProfileDetails />

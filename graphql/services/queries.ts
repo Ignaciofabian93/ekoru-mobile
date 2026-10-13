@@ -20,11 +20,11 @@ export const GET_SERVICES_CATALOG = gql`
 export const GET_SERVICE_CATEGORIES = gql`
   ${SERVICE_CATEGORY_FIELDS_FRAGMENT}
   query GetServiceCategories(
-    $limit: Int = 20
-    $offset: Int = 0
+    $page: Int = 1
+    $pageSize: Int = 20
     $language: Language = ES
   ) {
-    getServiceCategories(limit: $limit, offset: $offset, language: $language) {
+    getServiceCategories(page: $page, pageSize: $pageSize, language: $language) {
       ...ServiceCategoryFields
     }
   }
@@ -33,11 +33,11 @@ export const GET_SERVICE_CATEGORIES = gql`
 export const GET_SERVICE_SUBCATEGORIES = gql`
   ${SERVICE_SUB_CATEGORY_FIELDS_FRAGMENT}
   query GetServiceSubCategories(
-    $limit: Int = 20
-    $offset: Int = 0
+    $page: Int = 1
+    $pageSize: Int = 20
     $language: Language = ES
   ) {
-    getServiceSubCategories(limit: $limit, offset: $offset, language: $language) {
+    getServiceSubCategories(page: $page, pageSize: $pageSize, language: $language) {
       ...ServiceSubCategoryFields
     }
   }

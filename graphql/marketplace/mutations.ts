@@ -19,14 +19,6 @@ export const UPDATE_PRODUCT = gql`
   }
 `;
 
-export const DELETE_PRODUCT = gql`
-  mutation DeleteProduct($id: ID!) {
-    deleteProduct(id: $id) {
-      id
-      deletedAt
-    }
-  }
-`;
 
 export const TOGGLE_PRODUCT_ACTIVE = gql`
   mutation ToggleProductActive($id: ID!) {

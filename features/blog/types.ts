@@ -41,7 +41,6 @@ export type BlogPostTranslation = {
 export type BlogPost = {
   id: number;
   coverImage: string | null;
-  type: string;
   likes: number;
   publishedAt: string | null;
   translation: BlogPostTranslation | null;

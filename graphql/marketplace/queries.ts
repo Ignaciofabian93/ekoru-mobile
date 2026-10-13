@@ -38,8 +38,8 @@ export const GET_MARKETPLACE_CATALOG = gql`
 
 export const GET_DEPARTMENTS = gql`
   ${DEPARTMENT_FIELDS_FRAGMENT}
-  query GetDepartments($limit: Int = 20, $offset: Int = 0, $language: Language = ES) {
-    getDepartments(limit: $limit, offset: $offset, language: $language) {
+  query GetDepartments($page: Int = 1, $pageSize: Int = 20, $language: Language = ES) {
+    getDepartments(page: $page, pageSize: $pageSize, language: $language) {
       ...DepartmentFields
     }
   }
@@ -58,11 +58,11 @@ export const GET_DEPARTMENT_CATEGORIES = gql`
   ${CATEGORY_TRANSLATION_FIELDS_FRAGMENT}
   ${PRODUCT_CATEGORY_FIELDS_FRAGMENT}
   query GetDepartmentCategories(
-    $limit: Int = 20
-    $offset: Int = 0
+    $page: Int = 1
+    $pageSize: Int = 20
     $language: Language = ES
   ) {
-    getDepartmentCategories(limit: $limit, offset: $offset, language: $language) {
+    getDepartmentCategories(page: $page, pageSize: $pageSize, language: $language) {
       id
       translation {
         ...CategoryTranslationFields
@@ -93,11 +93,11 @@ export const GET_DEPARTMENT_CATEGORY_BY_SLUG = gql`
 export const GET_PRODUCT_CATEGORIES = gql`
   ${PRODUCT_CATEGORY_FIELDS_FRAGMENT}
   query GetProductCategories(
-    $limit: Int = 10
-    $offset: Int = 0
+    $page: Int = 1
+    $pageSize: Int = 10
     $language: Language = ES
   ) {
-    getProductCategories(limit: $limit, offset: $offset, language: $language) {
+    getProductCategories(page: $page, pageSize: $pageSize, language: $language) {
       ...ProductCategoryFields
     }
   }

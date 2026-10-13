@@ -23,3 +23,19 @@ export const BUSINESS_MEMBERSHIPS = gql`
     }
   }
 `;
+
+/** The caller's active membership term, or null on the free plan. */
+export const MY_SUBSCRIPTION = gql`
+  query MySubscription {
+    mySubscription {
+      id
+      membershipId
+      plan
+      isBusiness
+      startDate
+      endDate
+      isActive
+      autoRenew
+    }
+  }
+`;

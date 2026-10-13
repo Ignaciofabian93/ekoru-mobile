@@ -45,7 +45,6 @@ export const GET_BLOG_POSTS_BY_CATEGORY = gql`
       nodes {
         id
         coverImage
-        type
         likes
         publishedAt
         translation {
@@ -72,7 +71,6 @@ export const GET_BLOG_POST_BY_SLUG = gql`
     getBlogPostBySlug(slug: $slug, language: $language) {
       id
       coverImage
-      type
       likes
       publishedAt
       translation {

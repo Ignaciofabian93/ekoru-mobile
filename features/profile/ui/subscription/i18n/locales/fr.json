@@ -20,13 +20,17 @@
     "upgradingTo": "Passage à",
     "billedMonthly": "Facturé mensuellement",
     "billedYearly": "Facturé annuellement",
-    "paymentMethod": "Moyen de paiement",
-    "expires": "Expire",
-    "editCard": "Modifier",
-    "addCard": "Ajouter une carte",
-    "updateCard": "Mettre à jour",
-    "hideForm": "Masquer",
     "subscribe": "S'abonner à {{plan}}",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "webpayNote": "Vous paierez sur Webpay. De retour dans l'app, votre formule s'active dès que le paiement est confirmé."
+  },
+  "feedback": {
+    "activatedTitle": "Formule activée",
+    "activated": "Vous avez maintenant la formule {{plan}}.",
+    "pendingTitle": "Paiement non confirmé",
+    "pending": "Nous ne voyons pas encore le paiement. Si vous l'avez effectué, votre formule s'activera d'ici quelques minutes.",
+    "failedTitle": "Impossible de lancer le paiement",
+    "downgradedTitle": "Formule mise à jour",
+    "downgraded": "Vous êtes revenu à la formule gratuite."
   }
 }

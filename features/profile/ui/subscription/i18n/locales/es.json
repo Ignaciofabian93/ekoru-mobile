@@ -20,19 +20,23 @@
     "upgradingTo": "Cambiando a",
     "billedMonthly": "Facturado mensualmente",
     "billedYearly": "Facturado anualmente",
-    "paymentMethod": "Método de pago",
-    "expires": "Vence",
-    "editCard": "Editar",
-    "addCard": "Agregar tarjeta",
-    "updateCard": "Actualizar tarjeta",
-    "hideForm": "Ocultar formulario",
     "subscribe": "Suscribirse a {{plan}}",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "webpayNote": "Pagarás en Webpay. Al volver a la app, tu plan se activa en cuanto el pago se confirme."
   },
   "downgradeConfirm": {
     "title": "Confirmar cambio de plan",
     "message": "¿Estás seguro de que deseas cambiar a {{plan}}? Perderás acceso a las siguientes funciones:",
     "confirmButton": "Sí, cambiar a {{plan}}",
     "cancelButton": "No, mantener mi plan actual"
+  },
+  "feedback": {
+    "activatedTitle": "Plan activado",
+    "activated": "Ahora tienes el plan {{plan}}.",
+    "pendingTitle": "Pago sin confirmar",
+    "pending": "Aún no vemos el pago. Si lo completaste, tu plan se activará en unos minutos.",
+    "failedTitle": "No pudimos iniciar el pago",
+    "downgradedTitle": "Plan actualizado",
+    "downgraded": "Volviste al plan gratuito."
   }
 }

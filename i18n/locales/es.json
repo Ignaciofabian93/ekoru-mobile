@@ -35,7 +35,9 @@
       "orderHistory": "Historial de Pedidos",
       "favorites": "Favoritos",
       "environmentalImpact": "Impacto Ambiental",
-      "subscription": "Suscripción"
+      "subscription": "Suscripción",
+      "messages": "Mensajes",
+      "thread": "Conversación"
     },
     "legal": {
       "termsAndPolicies": "Términos y Políticas"
@@ -48,5 +50,35 @@
     "title": "Completa tu ubicación para aparecer en la búsqueda",
     "body": "Mientras no indiques tu país, región, ciudad y comuna, tus productos y servicios no aparecen en los resultados de búsqueda.",
     "action": "Completar ubicación"
+  },
+  "chat": {
+    "title": "Mensajes",
+    "contactSeller": "Escribir al vendedor",
+    "emptyTitle": "Aún no tienes conversaciones",
+    "emptyBody": "Cuando escribas a un vendedor o alguien te escriba por una publicación, la conversación aparecerá aquí.",
+    "roles": {
+      "BUYER": "Te interesa",
+      "SELLER": "Tu publicación"
+    },
+    "itemUnavailable": "Publicación no disponible",
+    "you": "Tú",
+    "placeholder": "Escribe un mensaje…",
+    "messageLabel": "Mensaje",
+    "send": "Enviar",
+    "contactLocked": "Por tu seguridad, los correos, teléfonos y enlaces de mensajería se ocultan hasta que exista un intercambio aceptado, un pedido pagado o una reserva entre ustedes.",
+    "masked": "Datos de contacto ocultos",
+    "blockedByYou": "Bloqueaste esta conversación.",
+    "blockedByThem": "Esta conversación está bloqueada.",
+    "block": "Bloquear",
+    "unblock": "Desbloquear",
+    "blockConfirm": "Ninguno de los dos podrá enviar mensajes hasta que la desbloquees.",
+    "report": "Reportar",
+    "reportConfirm": "El equipo de EKORU revisará este mensaje.",
+    "reported": "Mensaje reportado",
+    "cancel": "Cancelar",
+    "startFailed": "No pudimos abrir la conversación",
+    "sendFailed": "No pudimos enviar el mensaje",
+    "loadFailed": "No pudimos cargar la conversación.",
+    "actionFailed": "No pudimos completar la acción"
   }
 }

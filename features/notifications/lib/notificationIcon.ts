@@ -6,6 +6,7 @@ import {
   CalendarX,
   FileText,
   Handshake,
+  MessageCircle,
   PackageCheck,
   ShieldAlert,
   Truck,
@@ -36,6 +37,7 @@ const DEFAULT_SPEC: IconSpec = {
 
 const SPEC_BY_TYPE: Partial<Record<NotificationType, IconSpec>> = {
   SALE_PROPOSAL: { icon: Handshake, accent: colors.primary },
+  MESSAGE_RECEIVED: { icon: MessageCircle, accent: colors.primary },
   EXCHANGE_PROPOSAL: { icon: Handshake, accent: colors.primary },
   EXCHANGE_ACCEPTED: { icon: BadgeCheck, accent: colors.primary },
   EXCHANGE_COMPLETED: { icon: BadgeCheck, accent: colors.primary },

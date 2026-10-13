@@ -35,7 +35,9 @@
       "orderHistory": "Historique des commandes",
       "favorites": "Favoris",
       "environmentalImpact": "Impact environnemental",
-      "subscription": "Abonnement"
+      "subscription": "Abonnement",
+      "messages": "Messages",
+      "thread": "Conversation"
     },
     "legal": {
       "termsAndPolicies": "Termes et Politiques"
@@ -48,5 +50,35 @@
     "title": "Indiquez votre localisation pour apparaître dans la recherche",
     "body": "Tant que vous n'indiquez pas votre pays, région, ville et commune, vos produits et services n'apparaissent pas dans les résultats de recherche.",
     "action": "Indiquer ma localisation"
+  },
+  "chat": {
+    "title": "Messages",
+    "contactSeller": "Écrire au vendeur",
+    "emptyTitle": "Aucune conversation pour l'instant",
+    "emptyBody": "Quand vous écrivez à un vendeur, ou que quelqu'un vous écrit au sujet d'une annonce, la conversation apparaît ici.",
+    "roles": {
+      "BUYER": "Vous êtes intéressé",
+      "SELLER": "Votre annonce"
+    },
+    "itemUnavailable": "Annonce indisponible",
+    "you": "Vous",
+    "placeholder": "Écrivez un message…",
+    "messageLabel": "Message",
+    "send": "Envoyer",
+    "contactLocked": "Pour votre sécurité, les e-mails, numéros de téléphone et liens de messagerie sont masqués tant qu'il n'existe pas entre vous d'échange accepté, de commande payée ou de réservation.",
+    "masked": "Coordonnées masquées",
+    "blockedByYou": "Vous avez bloqué cette conversation.",
+    "blockedByThem": "Cette conversation est bloquée.",
+    "block": "Bloquer",
+    "unblock": "Débloquer",
+    "blockConfirm": "Aucun de vous deux ne pourra envoyer de messages tant que vous ne la débloquez pas.",
+    "report": "Signaler",
+    "reportConfirm": "L'équipe EKORU examinera ce message.",
+    "reported": "Message signalé",
+    "cancel": "Annuler",
+    "startFailed": "Impossible d'ouvrir la conversation",
+    "sendFailed": "Impossible d'envoyer le message",
+    "loadFailed": "Impossible de charger la conversation.",
+    "actionFailed": "Impossible d'effectuer l'action"
   }
 }

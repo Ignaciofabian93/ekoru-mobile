@@ -28,6 +28,7 @@ export type NotificationType =
   | "BOOKING_CANCELLED"
   | "BOOKING_COMPLETED"
   | "SECURITY_LOGIN_ALERT"
+  | "MESSAGE_RECEIVED"
   | (string & {});
 
 export type NotificationPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";

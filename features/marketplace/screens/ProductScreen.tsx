@@ -13,11 +13,16 @@ import {
   ImageOff,
   Leaf,
   MapPin,
+  MessageCircle,
   Phone,
   ShoppingCart,
   User,
 } from "lucide-react-native";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import MainButton from "@/components/Primitives/Button/MainButton";
+import { useStartConversation } from "@/features/chat/hooks/useChatQueries";
+import { useSeller } from "@/store/useAuthStore";
 import {
   ActivityIndicator,
   Image,
@@ -69,6 +74,10 @@ function ProductDetail({ product }: { product: Product }) {
   const imageUri = getImageUrl(product.images?.[0]);
   const router = useRouter();
   const addItem = useCartStore((s) => s.addItem);
+  const me = useSeller();
+  const { t } = useTranslation();
+  const { start, loading: contacting } = useStartConversation();
+  const isOwnProduct = Boolean(me && product.seller?.id === me.id);
 
   const handleAddToCart = () => {
     addItem(product);
@@ -227,6 +236,20 @@ function ProductDetail({ product }: { product: Product }) {
                         {product.seller.phone}
                       </Text>
                     </View>
+                  )}
+                  {/* Questions go through EKORU's chat: the seller's phone and
+                      email stay private until a deal is accepted (MOB-5). */}
+                  {!isOwnProduct && (
+                    <MainButton
+                      text={t("chat.contactSeller")}
+                      leftIcon={MessageCircle}
+                      variant="outline"
+                      size="sm"
+                      loading={contacting}
+                      onPress={() =>
+                        void start({ itemType: "PRODUCT", itemId: Number(product.id) })
+                      }
+                    />
                   )}
                 </View>
               </View>

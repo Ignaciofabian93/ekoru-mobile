@@ -20,6 +20,7 @@ import Drawer from "@/components/Drawer/Drawer";
 import ErrorScreen from "@/components/Feedback/ErrorScreen/ErrorScreen";
 import toastConfig from "@/components/Feedback/Toast/toastConfig";
 import { DrawerProvider } from "@/context/DrawerContext";
+import { usePushNavigation } from "@/features/notifications/hooks/usePushNavigation";
 import client from "@/lib/apollo";
 import { logger } from "@/lib/logger";
 import useAuthStore from "@/store/useAuthStore";
@@ -98,6 +99,8 @@ export default Sentry.wrap(function RootLayout() {
 });
 
 function RootLayoutNav() {
+  // A tapped push notification opens what it is about (MOB-5).
+  usePushNavigation();
   return (
     <ApolloProvider client={client}>
       <DrawerProvider>

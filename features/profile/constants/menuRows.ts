@@ -2,6 +2,7 @@ import {
   Gem,
   Heart,
   KeyRound,
+  MessageCircle,
   Leaf,
   type LucideIcon,
   PackageSearch,
@@ -9,6 +10,7 @@ import {
   UserPen,
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import { useUnreadConversations } from "@/features/chat/hooks/useChatQueries";
 import { NAMESPACE } from "../i18n";
 
 export interface MenuRow {
@@ -19,9 +21,16 @@ export interface MenuRow {
 
 export function useMenuRows(): MenuRow[] {
   const { t } = useTranslation(NAMESPACE);
+  const { t: tRoot } = useTranslation();
+  const unread = useUnreadConversations();
   return [
     { label: t("account.editProfile"), icon: UserPen, route: "/(profile)/edit-profile" },
     { label: t("password.changePassword"), icon: KeyRound, route: "/(profile)/change-password" },
+    {
+      label: unread > 0 ? `${tRoot("chat.title")} (${unread})` : tRoot("chat.title"),
+      icon: MessageCircle,
+      route: "/(profile)/messages",
+    },
     { label: t("orders.title"), icon: PackageSearch, route: "/(profile)/order-history" },
     { label: t("favorites.title"), icon: Heart, route: "/(profile)/favorites" },
     { label: t("impact.title"), icon: Leaf, route: "/(profile)/environmental-impact" },

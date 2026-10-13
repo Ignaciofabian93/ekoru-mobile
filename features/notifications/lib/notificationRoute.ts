@@ -1,3 +1,4 @@
+import { conversationIdFrom, threadRoute } from "@/features/chat/utils";
 import type { AppNotification, NotificationType } from "../types";
 
 /**
@@ -28,10 +29,17 @@ const ROUTE_BY_TYPE: Partial<Record<NotificationType, string>> = {
   PAYMENT_REFUNDED: "/(profile)/order-history",
 
   SECURITY_LOGIN_ALERT: "/(profile)/settings",
+
+  MESSAGE_RECEIVED: "/(profile)/messages",
 };
 
 export function notificationRoute(
-  notification: Pick<AppNotification, "type">,
+  notification: Pick<AppNotification, "type" | "relatedId">,
 ): string | null {
+  // A message opens its own thread: transactions sends "conversation:<id>".
+  if (notification.type === "MESSAGE_RECEIVED") {
+    const id = conversationIdFrom(notification.relatedId);
+    if (id) return threadRoute(id);
+  }
   return ROUTE_BY_TYPE[notification.type] ?? null;
 }

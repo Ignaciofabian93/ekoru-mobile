@@ -35,7 +35,9 @@
       "orderHistory": "Order History",
       "favorites": "Favorites",
       "environmentalImpact": "Environmental Impact",
-      "subscription": "Subscription"
+      "subscription": "Subscription",
+      "messages": "Messages",
+      "thread": "Conversation"
     },
     "legal": {
       "termsAndPolicies": "Terms and Policies"
@@ -48,5 +50,35 @@
     "title": "Add your location to show up in search",
     "body": "Until you set your country, region, city and county, your products and services won't appear in search results.",
     "action": "Add location"
+  },
+  "chat": {
+    "title": "Messages",
+    "contactSeller": "Message the seller",
+    "emptyTitle": "No conversations yet",
+    "emptyBody": "When you message a seller, or someone messages you about a listing, the conversation shows up here.",
+    "roles": {
+      "BUYER": "You're interested",
+      "SELLER": "Your listing"
+    },
+    "itemUnavailable": "Listing unavailable",
+    "you": "You",
+    "placeholder": "Write a message…",
+    "messageLabel": "Message",
+    "send": "Send",
+    "contactLocked": "For your safety, emails, phone numbers and messaging links are hidden until you have an accepted exchange, a paid order or a booking together.",
+    "masked": "Contact details hidden",
+    "blockedByYou": "You blocked this conversation.",
+    "blockedByThem": "This conversation is blocked.",
+    "block": "Block",
+    "unblock": "Unblock",
+    "blockConfirm": "Neither of you can send messages until you unblock it.",
+    "report": "Report",
+    "reportConfirm": "The EKORU team will review this message.",
+    "reported": "Message reported",
+    "cancel": "Cancel",
+    "startFailed": "We couldn't open the conversation",
+    "sendFailed": "We couldn't send the message",
+    "loadFailed": "We couldn't load the conversation.",
+    "actionFailed": "We couldn't complete that"
   }
 }

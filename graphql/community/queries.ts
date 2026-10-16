@@ -9,13 +9,11 @@ export const GET_COMMUNITY_CATALOG = gql`
       id
       category
       slug
-      href
       description
       subcategories @include(if: $enableSubCategories) {
         id
         subcategory
         slug
-        href
         description
       }
     }
@@ -31,7 +29,6 @@ export const GET_COMMUNITY_CATEGORY_BY_SLUG = gql`
         category
         slug
         description
-        href
       }
       subcategories {
         id
@@ -40,7 +37,6 @@ export const GET_COMMUNITY_CATEGORY_BY_SLUG = gql`
           subCategory
           slug
           description
-          href
         }
       }
     }
@@ -57,7 +53,6 @@ export const GET_COMMUNITY_SUBCATEGORY_BY_SLUG = gql`
         subCategory
         slug
         description
-        href
       }
     }
   }

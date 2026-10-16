@@ -7,7 +7,6 @@ type BlogCatalogItem = {
   id: number;
   name: string;
   slug: string;
-  href: string;
 };
 
 // Blog is flat (1 level) — no subcategories

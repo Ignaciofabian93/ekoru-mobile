@@ -5,7 +5,6 @@ export const TRANSLATION_FIELDS_FRAGMENT = gql`
     id
     name
     slug
-    href
   }
 `;
 
@@ -14,7 +13,6 @@ export const CATEGORY_TRANSLATION_FIELDS_FRAGMENT = gql`
     id
     name
     slug
-    href
   }
 `;
 
@@ -23,7 +21,6 @@ export const PRODUCT_CATEGORY_TRANSLATION_FIELDS_FRAGMENT = gql`
     id
     name
     slug
-    href
   }
 `;
 
@@ -70,17 +67,14 @@ export const CATALOG_ITEM_FIELDS_FRAGMENT = gql`
     id
     name
     slug
-    href
     categories {
       id
       name
       slug
-      href
       productCategories {
         id
         name
         slug
-        href
       }
     }
   }

@@ -8,14 +8,12 @@ export interface StoreCatalogSubItem {
   id: number;
   name: string;
   slug: string;
-  href: string;
 }
 
 export interface StoreCatalogCategory {
   id: number;
   name: string;
   slug: string;
-  href: string;
   subCategoryItems: StoreCatalogSubItem[];
 }
 
@@ -52,12 +50,12 @@ export interface PageInfo {
 // ─── Consolidated category browsing (get*ProductsBySlug) ──────────────
 export interface StoreSubCategoryDetail {
   id: number;
-  translation: { id: number; name: string; slug: string; href: string } | null;
+  translation: { id: number; name: string; slug: string } | null;
 }
 
 export interface StoreCategoryDetail {
   id: number;
-  translation: { id: number; name: string; slug: string; href: string } | null;
+  translation: { id: number; name: string; slug: string } | null;
   storeSubCategory: StoreSubCategoryDetail[];
 }
 

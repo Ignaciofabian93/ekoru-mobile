@@ -7,7 +7,6 @@ export type BlogCatalogCategory = {
   name: string;
   description: string;
   slug: string;
-  href: string;
 };
 
 export type BlogCategoryTranslation = {
@@ -15,7 +14,6 @@ export type BlogCategoryTranslation = {
   name: string;
   slug: string;
   description: string;
-  href: string | null;
 };
 
 /** Shape returned by `getBlogCategoryBySlug` — translated fields are nested under `translation`. */

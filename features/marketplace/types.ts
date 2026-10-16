@@ -51,7 +51,6 @@ export interface Translation {
   id: number;
   name: string;
   slug: string;
-  href: string;
 }
 
 export interface ProductCategory {
@@ -76,14 +75,12 @@ export interface CatalogProductCategory {
   id: number;
   name: string;
   slug: string;
-  href: string;
 }
 
 export interface CatalogDepartmentCategory {
   id: number;
   name: string;
   slug: string;
-  href: string;
   productCategories: CatalogProductCategory[];
 }
 
@@ -91,7 +88,6 @@ export interface CatalogDepartment {
   id: number;
   name: string;
   slug: string;
-  href: string;
   categories: CatalogDepartmentCategory[];
 }
 

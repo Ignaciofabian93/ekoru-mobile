@@ -8,14 +8,12 @@ type CatalogProductCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
 };
 
 type CatalogCategory = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   productCategories: CatalogProductCategory[];
 };
 
@@ -23,7 +21,6 @@ type CatalogItem = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   categories: CatalogCategory[];
 };
 

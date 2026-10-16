@@ -8,7 +8,6 @@ export const GET_BLOG_CATALOG = gql`
       name
       description
       slug
-      href
     }
   }
 `;
@@ -23,7 +22,6 @@ export const GET_BLOG_CATEGORY_BY_SLUG = gql`
         name
         slug
         description
-        href
       }
     }
   }

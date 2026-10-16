@@ -4,7 +4,6 @@ export type CommunitySubcategory = {
   id: number;
   subcategory: string;
   slug: string;
-  href: string | null;
   description: string | null;
 };
 
@@ -12,7 +11,6 @@ export type CommunityCategory = {
   id: number;
   category: string;
   slug: string;
-  href: string | null;
   description: string | null;
   subcategories: CommunitySubcategory[];
 };
@@ -22,7 +20,6 @@ export type CommunityCategoryTranslation = {
   category: string;
   slug: string;
   description: string | null;
-  href: string | null;
 };
 
 export type CommunitySubcategoryTranslation = {
@@ -30,7 +27,6 @@ export type CommunitySubcategoryTranslation = {
   subCategory: string;
   slug: string;
   description: string | null;
-  href: string | null;
 };
 
 /** Shape returned by `getCommunityCategoryBySlug` — translated fields nested under `translation`. */

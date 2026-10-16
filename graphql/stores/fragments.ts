@@ -12,7 +12,6 @@ export const STORE_CATEGORY_TRANSLATION_FIELDS_FRAGMENT = gql`
     language
     name
     slug
-    href
     metaTitle
     metaDescription
     metaKeywords
@@ -29,7 +28,6 @@ export const STORE_SUB_CATEGORY_TRANSLATION_FIELDS_FRAGMENT = gql`
     name
     slug
     keywords
-    href
     metaTitle
     metaDescription
     createdAt
@@ -76,12 +74,10 @@ export const STORE_CATALOG_ITEM_FIELDS_FRAGMENT = gql`
     id
     name
     slug
-    href
     subCategoryItems {
       id
       name
       slug
-      href
     }
   }
 `;

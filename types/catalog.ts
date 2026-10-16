@@ -3,18 +3,15 @@ import type { QuotationStatus, ServicePricing } from "./enums";
 export type StoreCatalog = {
   id: number;
   category: string;
-  href: string;
   subcategories: {
     id: number;
     subCategory: string;
-    href: string;
   }[];
 };
 
 export type StoreCategory = {
   id: number;
   category: string;
-  href: string;
   subcategories?: StoreSubCategory[];
 };
 
@@ -22,13 +19,11 @@ export type StoreSubCategory = {
   id: number;
   subCategory: string;
   storeCategoryId: number;
-  href: string;
 };
 
 export type ServiceCategory = {
   id: number;
   category: string;
-  href: string;
   subcategories?: ServiceSubCategory[];
 };
 
@@ -36,7 +31,6 @@ export type ServiceSubCategory = {
   id: number;
   subCategory: string;
   serviceCategoryId: number;
-  href: string;
 };
 
 export type Service = {

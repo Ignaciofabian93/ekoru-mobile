@@ -8,14 +8,12 @@ type StoreSubCategoryItem = {
   id: number;
   name: string;
   slug: string;
-  href: string;
 };
 
 type StoreCatalogItem = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   subCategoryItems: StoreSubCategoryItem[];
 };
 

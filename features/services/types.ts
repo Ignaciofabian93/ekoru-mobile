@@ -6,14 +6,12 @@ export type ServiceCatalogSubItem = {
   id: number;
   name: string;
   slug: string;
-  href: string | null;
 };
 
 export type ServiceCatalogItem = {
   id: number;
   name: string;
   slug: string;
-  href: string | null;
   subCategoryItems: ServiceCatalogSubItem[];
 };
 
@@ -23,7 +21,6 @@ export type ServiceSubCategory = {
   id: number;
   subCategory: string;
   serviceCount: number;
-  href: string | null;
   translation: { subCategory: string; slug: string } | null;
 };
 

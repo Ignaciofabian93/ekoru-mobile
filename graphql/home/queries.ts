@@ -142,7 +142,6 @@ export const EXCHANGEABLE_PRODUCTS = gql`
             name
             slug
             keywords
-            href
             metaTitle
             metaDescription
             metaKeywords

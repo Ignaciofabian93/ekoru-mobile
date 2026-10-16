@@ -12,7 +12,6 @@ export const SERVICE_CATEGORY_TRANSLATION_FIELDS_FRAGMENT = gql`
     language
     category
     slug
-    href
     metaTitle
     metaDescription
     metaKeywords
@@ -28,7 +27,6 @@ export const SERVICE_SUB_CATEGORY_TRANSLATION_FIELDS_FRAGMENT = gql`
     language
     subCategory
     slug
-    href
     metaTitle
     metaDescription
     metaKeywords
@@ -46,7 +44,6 @@ export const SERVICE_SUB_CATEGORY_FIELDS_FRAGMENT = gql`
     sortOrder
     subCategory
     serviceCount
-    href
     translation {
       ...ServiceSubCategoryTranslationFields
     }
@@ -61,7 +58,6 @@ export const SERVICE_CATEGORY_FIELDS_FRAGMENT = gql`
     isActive
     sortOrder
     category
-    href
     translation {
       ...ServiceCategoryTranslationFields
     }
@@ -76,12 +72,10 @@ export const SERVICE_CATALOG_ITEM_FIELDS_FRAGMENT = gql`
     id
     name
     slug
-    href
     subCategoryItems {
       id
       name
       slug
-      href
     }
   }
 `;

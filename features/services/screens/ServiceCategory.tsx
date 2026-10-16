@@ -46,7 +46,7 @@ export default function ServiceCategory() {
           <View style={styles.chips}>
             {subs.map((sc) => {
               const label = sc.translation?.subCategory ?? sc.subCategory;
-              const scSlug = sc.translation?.slug ?? sc.href ?? "";
+              const scSlug = sc.translation?.slug ?? "";
               return (
                 <Pressable
                   key={sc.id}

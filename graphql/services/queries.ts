@@ -183,12 +183,10 @@ export const GET_SERVICE_CATALOG = gql`
     getServiceCatalog(language: $language) {
       id
       name
-      href
       slug
       subCategoryItems @include(if: $enableSubCategories) {
         id
         name
-        href
         slug
       }
     }

@@ -21,5 +21,4 @@ export type BlogCategories = {
   name: string;
   icon: string;
   description: string;
-  href: string;
 };

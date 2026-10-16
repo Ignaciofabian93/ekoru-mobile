@@ -2,7 +2,6 @@ export interface ProductCategoryTranslation {
   id: number;
   name: string;
   slug: string;
-  href: string;
 }
 
 export interface ProductCategory {
@@ -14,7 +13,6 @@ export interface DepartmentCategoryTranslation {
   id: number;
   name: string;
   slug: string;
-  href: string;
 }
 
 export interface DepartmentCategory {
@@ -27,7 +25,6 @@ export interface DepartmentTranslation {
   id: number;
   name: string;
   slug: string;
-  href: string;
 }
 
 export interface Department {

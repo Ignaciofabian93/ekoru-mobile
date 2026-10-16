@@ -7,14 +7,12 @@ type ServiceSubCategoryItem = {
   id: number;
   name: string;
   slug: string;
-  href: string;
 };
 
 type ServiceCatalogItem = {
   id: number;
   name: string;
   slug: string;
-  href: string;
   subCategoryItems: ServiceSubCategoryItem[];
 };
 

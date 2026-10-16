@@ -119,7 +119,6 @@ export type StoreCategory = {
   id: number;
   category: string;
   subcategories: StoreSubCategory[];
-  href: string;
 };
 
 export type StoreSubCategory = {
@@ -128,7 +127,6 @@ export type StoreSubCategory = {
   subCategory: string;
   storeCategory: StoreCategory;
   products: StoreProduct[];
-  href: string;
 };
 
 export type ProductLike = {
@@ -161,7 +159,6 @@ export type ProductCategory = {
   weightUnit?: WeightUnit;
   products?: Product[];
   materials?: ProductCategoryMaterial[];
-  href: string;
 };
 
 export type DepartmentCategory = {
@@ -169,12 +166,10 @@ export type DepartmentCategory = {
   departmentCategoryName: string;
   departmentId: number;
   productCategory: ProductCategory[];
-  href: string;
 };
 
 export type Department = {
   id: number;
   departmentName: string;
   departmentCategory: DepartmentCategory[];
-  href: string;
 };

@@ -18,6 +18,7 @@ import * as WebBrowser from "expo-web-browser";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type Plan } from "../constants/subscriptions";
+import { DEFAULT_PAYMENT_PROVIDER } from "@/features/cart/constants/shippingMethods";
 import { NAMESPACE } from "../ui/subscription/i18n";
 
 type AnyMembership = PersonMembership | BusinessMembership;
@@ -108,10 +109,10 @@ export default function useSubscription() {
           .filter(Boolean) as Plan[])
       : [];
 
-  const { refetch: refetchMySubscription } = useQuery<{ mySubscription: MySubscription }>(
-    MY_SUBSCRIPTION,
-    { skip: !seller, fetchPolicy: "network-only" },
-  );
+  const { refetch: refetchMySubscription } = useQuery<{ mySubscription: MySubscription }>(MY_SUBSCRIPTION, {
+    skip: !seller,
+    fetchPolicy: "network-only",
+  });
 
   const pendingPlan = displayPlans.find((p) => p.key === pendingPlanKey) ?? null;
 
@@ -131,7 +132,7 @@ export default function useSubscription() {
 
   const [createMembershipPayment] = useMutation<
     { createMembershipPayment: Pick<CreatePaymentResponse, "paymentId" | "redirect"> },
-    { membershipId: number; returnUrl: string }
+    { membershipId: number; returnUrl: string; provider: string }
   >(CREATE_MEMBERSHIP_PAYMENT);
 
   // ── Mutations ──────────────────────────────────────────────────────────────
@@ -218,7 +219,9 @@ export default function useSubscription() {
       const res = await createMembershipPayment({
         variables: {
           membershipId: Number(pendingMembership.id),
-          returnUrl: `${GATEWAY_BASE_URL}/payments/return/webpay`,
+          // The return path names the provider the payment was started with.
+          returnUrl: `${GATEWAY_BASE_URL}/payments/return/${DEFAULT_PAYMENT_PROVIDER.toLowerCase()}`,
+          provider: DEFAULT_PAYMENT_PROVIDER,
         },
       });
       const redirect = res.data?.createMembershipPayment.redirect;

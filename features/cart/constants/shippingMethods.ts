@@ -68,10 +68,31 @@ export type PaymentProviderMeta = {
   id: "WEBPAY" | "KHIPU" | "MERCADOPAGO";
   label: string;
   description: string;
+  /**
+   * Offered to buyers. Mercado Pago only since 2026-10-19: stores are paid
+   * through its marketplace split (D1). Webpay stays built as a future option;
+   * turning it back on also needs it in the transactions `PAYMENT_PROVIDERS`.
+   */
+  enabled: boolean;
 };
 
-export const PAYMENT_PROVIDERS: PaymentProviderMeta[] = [
-  { id: "WEBPAY", label: "Webpay", description: "Tarjetas de crédito y débito" },
-  { id: "KHIPU", label: "Khipu", description: "Transferencia bancaria" },
-  { id: "MERCADOPAGO", label: "MercadoPago", description: "Saldo y tarjetas" },
+const ALL_PAYMENT_PROVIDERS: PaymentProviderMeta[] = [
+  {
+    id: "MERCADOPAGO",
+    label: "Mercado Pago",
+    description: "Tarjetas, débito y saldo",
+    enabled: true,
+  },
+  {
+    id: "WEBPAY",
+    label: "Webpay",
+    description: "Tarjetas de crédito y débito",
+    enabled: false,
+  },
+  { id: "KHIPU", label: "Khipu", description: "Transferencia bancaria", enabled: false },
 ];
+
+export const PAYMENT_PROVIDERS = ALL_PAYMENT_PROVIDERS.filter((p) => p.enabled);
+
+/** What memberships use: the first provider switched on. */
+export const DEFAULT_PAYMENT_PROVIDER: PaymentProviderMeta["id"] = PAYMENT_PROVIDERS[0]?.id ?? "MERCADOPAGO";

@@ -20,6 +20,7 @@ import { useMemo, useState } from "react";
 import {
   HOME_DELIVERY_FLAT_RATE_CLP,
   shippingMethodById,
+  PAYMENT_PROVIDERS,
 } from "../constants/shippingMethods";
 
 export type CheckoutStep = "shipping" | "payment" | "review";
@@ -45,13 +46,15 @@ export default function useCheckout() {
   const [step, setStep] = useState<CheckoutStep>("shipping");
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod | null>(null);
   const [address, setAddress] = useState<Partial<ShippingAddressInput>>({});
-  const [provider, setProvider] = useState<PaymentProviderId | null>(null);
+  // With a single provider on offer (Mercado Pago today) it is chosen for the buyer.
+  const [provider, setProvider] = useState<PaymentProviderId | null>(
+    PAYMENT_PROVIDERS.length === 1 ? PAYMENT_PROVIDERS[0].id : null,
+  );
   const [loading, setLoading] = useState(false);
 
-  const [createOrder] = useMutation<
-    { createOrder: CreateOrderResponse },
-    { input: CreateOrderInput }
-  >(CREATE_ORDER);
+  const [createOrder] = useMutation<{ createOrder: CreateOrderResponse }, { input: CreateOrderInput }>(
+    CREATE_ORDER,
+  );
   const [createPayment] = useMutation<
     { createPayment: CreatePaymentResponse },
     { input: CreatePaymentInput }
@@ -86,12 +89,12 @@ export default function useCheckout() {
     if (!meta.requiresAddress) return true;
     return Boolean(
       address.recipientName &&
-        address.countryId &&
-        address.regionId &&
-        address.cityId &&
-        address.countyId &&
-        address.street &&
-        address.phone,
+      address.countryId &&
+      address.regionId &&
+      address.cityId &&
+      address.countyId &&
+      address.street &&
+      address.phone,
     );
   }, [shippingMethod, address]);
 
@@ -163,9 +166,7 @@ export default function useCheckout() {
               quantity: i.quantity,
             })),
             shippingMethod,
-            shippingAddress: meta.requiresAddress
-              ? (address as ShippingAddressInput)
-              : undefined,
+            shippingAddress: meta.requiresAddress ? (address as ShippingAddressInput) : undefined,
             currency: "CLP",
           },
         },

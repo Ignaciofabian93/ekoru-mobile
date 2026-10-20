@@ -14,5 +14,67 @@
   "serviceSubcategorySubtitle": "Services available in this subcategory.",
   "products": "Services",
   "results": "results",
-  "rows": "Rows"
+  "rows": "Rows",
+  "detail": {
+    "title": "Service",
+    "notFound": "This service is no longer available.",
+    "summary": {
+      "from": "From",
+      "perHour": "per hour",
+      "onQuotation": "By quotation",
+      "onQuotationHint": "The provider sends you a quote based on the job",
+      "noPrice": "Price on request",
+      "noReviews": "No reviews yet",
+      "available": "Available now",
+      "unavailable": "Not available right now",
+      "reviews_one": "{{count}} review",
+      "reviews_other": "{{count}} reviews"
+    },
+    "pricingTypes": {
+      "FIXED": "Fixed price",
+      "QUOTATION": "By quotation",
+      "HOURLY": "Hourly",
+      "PACKAGE": "Package"
+    },
+    "details": {
+      "title": "Service details",
+      "pricingType": "Pricing model",
+      "duration": "Estimated duration",
+      "durationValue": "{{minutes}} min",
+      "remote": "Remote service",
+      "radius": "Service radius",
+      "radiusValue": "{{km}} km",
+      "locations": "Service areas",
+      "advanceBooking": "Advance booking",
+      "advanceBookingValue": "{{days}} days",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "actions": {
+      "book": "Book this service",
+      "ownListing": "This is your service — you cannot hire yourself.",
+      "quotesSoon": "This service is priced by quote. Quote requests are coming to the app soon; meanwhile, message the provider."
+    },
+    "booking": {
+      "title": "Book this service",
+      "intro": "Choose when you need \"{{service}}\". The provider confirms the booking.",
+      "date": "Preferred date",
+      "timeSlot": "Preferred time (optional)",
+      "timeSlotPlaceholder": "e.g. 10:00 – 12:00",
+      "notes": "Notes for the provider (optional)",
+      "notesPlaceholder": "Anything they should know before arriving",
+      "disclaimer": "Nothing is charged on EKORU: you pay the provider directly, at the place of service.",
+      "submit": "Send booking request",
+      "cancel": "Cancel",
+      "sentTitle": "Booking requested",
+      "sentBody": "The provider will confirm shortly. You can follow it under Profile → Bookings.",
+      "errors": {
+        "missingDate": "Choose a date for the booking",
+        "failed": "We could not send the booking. Try again."
+      },
+      "datePlaceholder": "Choose a date",
+      "confirmDate": "Confirm",
+      "viewBookings": "See my bookings"
+    }
+  }
 }

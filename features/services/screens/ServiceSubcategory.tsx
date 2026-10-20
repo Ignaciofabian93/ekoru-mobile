@@ -4,7 +4,7 @@ import { colors } from "@/design/tokens";
 import useServicesBySubcategory from "@/features/services/hooks/useServicesBySubcategory";
 import { NAMESPACE } from "@/features/services/i18n";
 import ServiceList from "@/features/services/ui/ServiceList";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
 
@@ -43,7 +43,12 @@ export default function ServiceSubcategory() {
         <Text size="sm" color="secondary" style={{ marginTop: 2, marginBottom: 16 }}>
           {t("serviceSubcategorySubtitle")}
         </Text>
-        <ServiceList services={services} />
+        <ServiceList
+          services={services}
+          onPressService={(service) =>
+            router.push({ pathname: "/service/[id]", params: { id: String(service.id) } })
+          }
+        />
       </View>
     </ScrollView>
   );

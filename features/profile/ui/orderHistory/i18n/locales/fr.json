@@ -3,17 +3,23 @@
     "title": "Historique des commandes",
     "subtitle": "Consultez et suivez l'état de vos achats"
   },
+  "order": "Commande n° {{id}}",
   "total": "Total",
   "item_one": "{{count}} article",
   "item_other": "{{count}} articles",
-  "status": {
-    "Delivered": "Livré",
-    "Shipped": "Expédié",
-    "Processing": "En cours",
-    "Cancelled": "Annulé"
+  "moreItems": "et {{count}} de plus",
+  "tracking": "Suivi",
+  "stage": {
+    "PENDING_PAYMENT": "Paiement en attente",
+    "PREPARING": "En préparation",
+    "SHIPPED": "Expédié",
+    "DELIVERED": "Livré",
+    "RETURNED": "Retourné",
+    "CANCELED": "Annulé"
   },
   "empty": {
     "title": "Aucune commande pour l'instant",
     "subtitle": "Votre historique d'achats apparaîtra ici."
-  }
+  },
+  "error": "Impossible de charger vos commandes. Tirez vers le bas pour réessayer."
 }

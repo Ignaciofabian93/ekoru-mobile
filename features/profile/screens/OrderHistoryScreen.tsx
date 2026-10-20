@@ -1,41 +1,56 @@
 import { colors, spacing } from "@/design/tokens";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import useMyOrders from "../hooks/useMyOrders";
 import EmptyState from "../ui/orderHistory/EmptyState";
 import Header from "../ui/orderHistory/Header";
-import OrderCard, { type Order } from "../ui/orderHistory/OrderCard";
-import { OuterContainer, ScrollContainer } from "../ui/layout/Container";
+import { NAMESPACE } from "../ui/orderHistory/i18n";
+import OrderCard from "../ui/orderHistory/OrderCard";
+import { OuterContainer } from "../ui/layout/Container";
 
-// TODO: replace with real API data
-const MOCK_ORDERS: Order[] = [
-  { id: "ORD-001", date: "Feb 10, 2026", status: "Delivered", total: "$45.90", items: 3 },
-  { id: "ORD-002", date: "Feb 5, 2026", status: "Shipped", total: "$28.50", items: 2 },
-  { id: "ORD-003", date: "Jan 28, 2026", status: "Delivered", total: "$112.00", items: 5 },
-  { id: "ORD-004", date: "Jan 15, 2026", status: "Processing", total: "$19.99", items: 1 },
-];
-
+/** The buyer's orders (MOB-3), from the same query as the web's order history. */
 export default function OrderHistoryScreen() {
+  const { t } = useTranslation(NAMESPACE);
+  const { orders, initialLoading, refreshing, error, refetch } = useMyOrders();
+
   return (
     <OuterContainer enableBottomInset>
-      <ScrollContainer enableContentContainerStyle>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void refetch()} />}
+      >
         <Header />
         <View style={styles.list}>
-          {MOCK_ORDERS.length === 0 ? (
+          {initialLoading ? (
+            <ActivityIndicator color={colors.primary} style={styles.loader} />
+          ) : error && orders.length === 0 ? (
+            <Text style={styles.error}>{t("error")}</Text>
+          ) : orders.length === 0 ? (
             <EmptyState />
           ) : (
-            MOCK_ORDERS.map((order) => <OrderCard key={order.id} order={order} />)
+            orders.map((order) => <OrderCard key={order.id} order={order} />)
           )}
         </View>
-      </ScrollContainer>
+      </ScrollView>
     </OuterContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  content: { flexGrow: 1 },
   list: {
     flex: 1,
     backgroundColor: colors.backgroundTertiary,
     padding: spacing[5],
     gap: spacing[3],
+  },
+  loader: { marginTop: spacing[10] },
+  error: {
+    marginTop: spacing[10],
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: "Cabin_400Regular",
+    color: colors.foregroundSecondary,
   },
 });

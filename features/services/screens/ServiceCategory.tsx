@@ -70,7 +70,12 @@ export default function ServiceCategory() {
         <Title level="h5" weight="semibold" style={{ marginBottom: 12 }}>
           {t("services")}
         </Title>
-        <ServiceList services={services} />
+        <ServiceList
+          services={services}
+          onPressService={(service) =>
+            router.push({ pathname: "/service/[id]", params: { id: String(service.id) } })
+          }
+        />
       </View>
     </ScrollView>
   );

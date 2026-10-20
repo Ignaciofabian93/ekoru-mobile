@@ -56,6 +56,7 @@
   "chat": {
     "title": "Messages",
     "contactSeller": "Message the seller",
+    "contactProvider": "Message the provider",
     "emptyTitle": "No conversations yet",
     "emptyBody": "When you message a seller, or someone messages you about a listing, the conversation shows up here.",
     "roles": {

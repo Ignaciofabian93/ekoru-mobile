@@ -3,17 +3,23 @@
     "title": "Historial de pedidos",
     "subtitle": "Consulta y sigue el estado de tus compras"
   },
+  "order": "Pedido #{{id}}",
   "total": "Total",
   "item_one": "{{count}} artículo",
   "item_other": "{{count}} artículos",
-  "status": {
-    "Delivered": "Entregado",
-    "Shipped": "Enviado",
-    "Processing": "En proceso",
-    "Cancelled": "Cancelado"
+  "moreItems": "y {{count}} más",
+  "tracking": "Seguimiento",
+  "stage": {
+    "PENDING_PAYMENT": "Pago pendiente",
+    "PREPARING": "Preparando",
+    "SHIPPED": "Enviado",
+    "DELIVERED": "Entregado",
+    "RETURNED": "Devuelto",
+    "CANCELED": "Cancelado"
   },
   "empty": {
     "title": "Sin pedidos aún",
     "subtitle": "Tu historial de compras aparecerá aquí."
-  }
+  },
+  "error": "No pudimos cargar tus pedidos. Desliza hacia abajo para reintentar."
 }

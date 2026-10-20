@@ -12,7 +12,9 @@
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
-    "check:graphql": "node scripts/check-graphql.mjs https://staging-api.ekoru.cl/graphql"
+    "check:graphql": "node scripts/check-graphql.mjs https://staging-api.ekoru.cl/graphql",
+    "check": "node scripts/generate-route-types.cjs && tsc --noEmit && eslint . && jest --ci && npm run check:graphql",
+    "eas-build-post-install": "node scripts/eas-build-checks.cjs"
   },
   "jest": {
     "preset": "jest-expo",

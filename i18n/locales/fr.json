@@ -56,6 +56,7 @@
   "chat": {
     "title": "Messages",
     "contactSeller": "Écrire au vendeur",
+    "contactProvider": "Écrire au prestataire",
     "emptyTitle": "Aucune conversation pour l'instant",
     "emptyBody": "Quand vous écrivez à un vendeur, ou que quelqu'un vous écrit au sujet d'une annonce, la conversation apparaît ici.",
     "roles": {

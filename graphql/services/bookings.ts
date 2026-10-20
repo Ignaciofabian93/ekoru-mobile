@@ -78,6 +78,20 @@ export const GET_MY_PROVIDER_BOOKINGS = gql`
   }
 `;
 
+/**
+ * Books a service for the signed-in buyer. The subgraph fills in the client
+ * (from the session), the provider (the service's seller) and the starting
+ * price (its base price), so none of them is sent from the app.
+ */
+export const ADD_SERVICE_BOOKING = gql`
+  ${SERVICE_BOOKING_FIELDS_FRAGMENT}
+  mutation AddServiceBooking($input: AddServiceBookingInput!) {
+    addServiceBooking(input: $input) {
+      ...ServiceBookingFields
+    }
+  }
+`;
+
 export const CANCEL_SERVICE_BOOKING = gql`
   ${SERVICE_BOOKING_FIELDS_FRAGMENT}
   mutation CancelServiceBooking($id: ID!, $reason: String!) {

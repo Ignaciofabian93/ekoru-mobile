@@ -14,5 +14,67 @@
   "serviceSubcategorySubtitle": "Servicios disponibles en esta subcategoría.",
   "products": "Servicios",
   "results": "resultados",
-  "rows": "Filas"
+  "rows": "Filas",
+  "detail": {
+    "title": "Servicio",
+    "notFound": "Este servicio ya no está disponible.",
+    "summary": {
+      "from": "Desde",
+      "perHour": "por hora",
+      "onQuotation": "A convenir",
+      "onQuotationHint": "El prestador te entrega un presupuesto según el trabajo",
+      "noPrice": "Precio a consultar",
+      "noReviews": "Sin reseñas aún",
+      "available": "Disponible ahora",
+      "unavailable": "No disponible por ahora",
+      "reviews_one": "{{count}} reseña",
+      "reviews_other": "{{count}} reseñas"
+    },
+    "pricingTypes": {
+      "FIXED": "Precio fijo",
+      "QUOTATION": "Por cotización",
+      "HOURLY": "Por hora",
+      "PACKAGE": "Por paquete"
+    },
+    "details": {
+      "title": "Detalles del servicio",
+      "pricingType": "Modalidad de cobro",
+      "duration": "Duración estimada",
+      "durationValue": "{{minutes}} min",
+      "remote": "Servicio a distancia",
+      "radius": "Radio de atención",
+      "radiusValue": "{{km}} km",
+      "locations": "Zonas de atención",
+      "advanceBooking": "Reserva con anticipación",
+      "advanceBookingValue": "{{days}} días",
+      "yes": "Sí",
+      "no": "No"
+    },
+    "actions": {
+      "book": "Reservar este servicio",
+      "ownListing": "Este es tu servicio — no puedes contratarte a ti mismo.",
+      "quotesSoon": "Este servicio se cotiza según el trabajo. Las solicitudes de cotización llegan pronto a la app; mientras, escríbele al proveedor."
+    },
+    "booking": {
+      "title": "Reservar este servicio",
+      "intro": "Elige cuándo necesitas «{{service}}». El proveedor confirma la reserva.",
+      "date": "Fecha preferida",
+      "timeSlot": "Horario preferido (opcional)",
+      "timeSlotPlaceholder": "Ej. 10:00 – 12:00",
+      "notes": "Notas para el proveedor (opcional)",
+      "notesPlaceholder": "Algo que deba saber antes de llegar",
+      "disclaimer": "No pagas nada en EKORU: pagas directamente al proveedor, en el lugar del servicio.",
+      "submit": "Enviar solicitud",
+      "cancel": "Cancelar",
+      "sentTitle": "Reserva solicitada",
+      "sentBody": "El proveedor confirmará pronto. Puedes seguirla en Perfil → Reservas.",
+      "errors": {
+        "missingDate": "Elige una fecha para la reserva",
+        "failed": "No pudimos enviar la reserva. Inténtalo nuevamente."
+      },
+      "datePlaceholder": "Elige una fecha",
+      "confirmDate": "Confirmar",
+      "viewBookings": "Ver mis reservas"
+    }
+  }
 }

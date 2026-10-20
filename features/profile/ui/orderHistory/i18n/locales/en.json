@@ -3,17 +3,23 @@
     "title": "Order history",
     "subtitle": "Track and review your past purchases"
   },
+  "order": "Order #{{id}}",
   "total": "Total",
   "item_one": "{{count}} item",
   "item_other": "{{count}} items",
-  "status": {
-    "Delivered": "Delivered",
-    "Shipped": "Shipped",
-    "Processing": "Processing",
-    "Cancelled": "Cancelled"
+  "moreItems": "and {{count}} more",
+  "tracking": "Tracking",
+  "stage": {
+    "PENDING_PAYMENT": "Awaiting payment",
+    "PREPARING": "Preparing",
+    "SHIPPED": "Shipped",
+    "DELIVERED": "Delivered",
+    "RETURNED": "Returned",
+    "CANCELED": "Canceled"
   },
   "empty": {
     "title": "No orders yet",
     "subtitle": "Your purchase history will appear here."
-  }
+  },
+  "error": "We could not load your orders. Pull down to try again."
 }

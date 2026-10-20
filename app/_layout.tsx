@@ -120,6 +120,11 @@ function RootLayoutNav() {
           <Stack.Screen name="(deals)" options={{ headerShown: false }} />
           <Stack.Screen name="(search)" options={{ headerShown: false }} />
           <Stack.Screen name="product" options={{ headerShown: false }} />
+          {/* These bring their own SectionHeader stack; without an entry here the
+              root stack adds its default header on top of it. */}
+          <Stack.Screen name="store-product" options={{ headerShown: false }} />
+          <Stack.Screen name="service" options={{ headerShown: false }} />
+          <Stack.Screen name="seller" options={{ headerShown: false }} />
         </Stack>
         <Drawer />
         <StatusBar style="auto" />

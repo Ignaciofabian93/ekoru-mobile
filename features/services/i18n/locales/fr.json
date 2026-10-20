@@ -14,5 +14,67 @@
   "serviceSubcategorySubtitle": "Services disponibles dans cette sous-catégorie.",
   "products": "Services",
   "results": "résultats",
-  "rows": "Lignes"
+  "rows": "Lignes",
+  "detail": {
+    "title": "Service",
+    "notFound": "Ce service n'est plus disponible.",
+    "summary": {
+      "from": "À partir de",
+      "perHour": "par heure",
+      "onQuotation": "Sur devis",
+      "onQuotationHint": "Le prestataire vous envoie un devis selon les travaux",
+      "noPrice": "Prix sur demande",
+      "noReviews": "Pas encore d'avis",
+      "available": "Disponible maintenant",
+      "unavailable": "Indisponible pour le moment",
+      "reviews_one": "{{count}} avis",
+      "reviews_other": "{{count}} avis"
+    },
+    "pricingTypes": {
+      "FIXED": "Prix fixe",
+      "QUOTATION": "Sur devis",
+      "HOURLY": "À l'heure",
+      "PACKAGE": "Forfait"
+    },
+    "details": {
+      "title": "Détails du service",
+      "pricingType": "Mode de tarification",
+      "duration": "Durée estimée",
+      "durationValue": "{{minutes}} min",
+      "remote": "Service à distance",
+      "radius": "Rayon d'intervention",
+      "radiusValue": "{{km}} km",
+      "locations": "Zones desservies",
+      "advanceBooking": "Réservation à l'avance",
+      "advanceBookingValue": "{{days}} jours",
+      "yes": "Oui",
+      "no": "Non"
+    },
+    "actions": {
+      "book": "Réserver ce service",
+      "ownListing": "C'est votre service — vous ne pouvez pas vous engager vous-même.",
+      "quotesSoon": "Ce service est sur devis. Les demandes de devis arrivent bientôt dans l'app ; en attendant, écrivez au prestataire."
+    },
+    "booking": {
+      "title": "Réserver ce service",
+      "intro": "Choisissez quand vous avez besoin de « {{service}} ». Le prestataire confirme la réservation.",
+      "date": "Date souhaitée",
+      "timeSlot": "Horaire souhaité (facultatif)",
+      "timeSlotPlaceholder": "Ex. 10:00 – 12:00",
+      "notes": "Notes pour le prestataire (facultatif)",
+      "notesPlaceholder": "Ce qu'il doit savoir avant d'arriver",
+      "disclaimer": "Rien n'est débité sur EKORU : vous payez directement le prestataire, sur le lieu du service.",
+      "submit": "Envoyer la demande",
+      "cancel": "Annuler",
+      "sentTitle": "Réservation demandée",
+      "sentBody": "Le prestataire confirmera bientôt. Suivez-la dans Profil → Réservations.",
+      "errors": {
+        "missingDate": "Choisissez une date pour la réservation",
+        "failed": "Nous n'avons pas pu envoyer la réservation. Réessayez."
+      },
+      "datePlaceholder": "Choisissez une date",
+      "confirmDate": "Confirmer",
+      "viewBookings": "Voir mes réservations"
+    }
+  }
 }

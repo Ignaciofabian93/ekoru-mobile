@@ -106,6 +106,8 @@ export const SERVICE_FIELDS_FRAGMENT = gql`
     duration
     isActive
     images
+    # Own first photo, or the provider's logo when the service has none.
+    displayImage
     tags
     createdAt
     updatedAt

@@ -1,4 +1,5 @@
 import {
+  CalendarClock,
   Gem,
   Heart,
   KeyRound,
@@ -35,6 +36,8 @@ export function useMenuRows(): MenuRow[] {
       route: "/(profile)/messages",
     },
     { label: t("orders.title"), icon: PackageSearch, route: "/(profile)/order-history" },
+    // Both sides of service bookings, paid on site (MOB-3).
+    { label: t("bookings.title"), icon: CalendarClock, route: "/(profile)/bookings" },
     // Free for every approved business: where buyers' payments land (MOB-6).
     ...(isBusiness ? [{ label: t("payouts.title"), icon: Wallet, route: "/(profile)/payments" }] : []),
     { label: t("favorites.title"), icon: Heart, route: "/(profile)/favorites" },

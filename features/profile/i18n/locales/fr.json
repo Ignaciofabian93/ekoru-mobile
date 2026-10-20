@@ -215,5 +215,49 @@
     "connectOnWeb": "Connecter sur le web",
     "manageOnWeb": "Gérer sur le web",
     "webNote": "La connexion se fait sur le site d'EKORU. Si on vous le demande, connectez-vous avec le même compte."
+  },
+  "bookings": {
+    "title": "Réservations",
+    "error": "La réservation n'a pas pu être mise à jour",
+    "tabs": {
+      "made": "Mes réservations",
+      "received": "Reçues"
+    },
+    "empty": {
+      "made": "Vous n'avez encore réservé aucun service.",
+      "received": "Vous n'avez encore reçu aucune réservation."
+    },
+    "unknownService": "Service",
+    "paidOnSite": "payé sur place",
+    "client": "Client",
+    "notes": "Notes",
+    "cancelReason": "Motif d'annulation",
+    "status": {
+      "PENDING": "En attente",
+      "CONFIRMED": "Confirmée",
+      "IN_PROGRESS": "En cours",
+      "COMPLETED": "Terminée",
+      "NO_SHOW": "Absent",
+      "CANCELLED": "Annulée"
+    },
+    "actions": {
+      "CONFIRMED": "Confirmer",
+      "IN_PROGRESS": "Commencer",
+      "COMPLETED": "Terminer",
+      "NO_SHOW": "Absent",
+      "CANCEL": "Annuler"
+    },
+    "dialog": {
+      "back": "Retour",
+      "yes": "Oui",
+      "cancelTitle": "Annuler la réservation ?",
+      "cancelMessage": "L'autre partie sera prévenue.",
+      "clientReason": "Annulée par le client",
+      "providerReason": "Annulée par le prestataire",
+      "COMPLETEDTitle": "Marquer comme terminée ?",
+      "COMPLETEDMessage": "Le client recevra ses éco-points.",
+      "NO_SHOWTitle": "Le client ne s'est pas présenté ?",
+      "NO_SHOWMessage": "La réservation sera clôturée comme absence."
+    }
   }
 }

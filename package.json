@@ -11,7 +11,8 @@
     "test:watch": "jest --watch",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:graphql": "node scripts/check-graphql.mjs https://staging-api.ekoru.cl/graphql"
   },
   "jest": {
     "preset": "jest-expo",

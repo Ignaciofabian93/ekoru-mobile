@@ -17,10 +17,12 @@ export default function SearchResultCard({ item }: { item: SearchResultItem }) {
   const price = item.hasOffer && item.offerPrice != null ? item.offerPrice : item.price;
 
   const onPress = () => {
-    // Marketplace product detail exists; store-product & service detail routes
-    // are pending — those hits are display-only for now.
+    // Products and store products have detail screens; service hits stay
+    // display-only until the app has a service screen.
     if (item.type === "PRODUCT") {
       router.push({ pathname: "/product/[id]", params: { id: String(item.id) } });
+    } else if (item.type === "STORE_PRODUCT") {
+      router.push({ pathname: "/store-product/[id]", params: { id: String(item.id) } });
     }
   };
 

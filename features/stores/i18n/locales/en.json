@@ -39,5 +39,16 @@
   "max": "Max",
   "onOfferOnly": "On offer only",
   "onOfferSubtitle": "Show only products on offer",
-  "noProductsFound": "No products found"
+  "noProductsFound": "No products found",
+  "product": {
+    "title": "Product",
+    "notFound": "Product not found",
+    "inStock": "{{count}} available",
+    "outOfStock": "Out of stock",
+    "materials": "Materials",
+    "materialsSubtitle": "What this product is made of.",
+    "seller": "Store",
+    "ownListing": "This is a product from your store.",
+    "browsingOnly": "Browsing only for now — purchases open soon."
+  }
 }

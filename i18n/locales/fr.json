@@ -37,6 +37,7 @@
       "environmentalImpact": "Impact environnemental",
       "subscription": "Abonnement",
       "payments": "Encaissements",
+      "bookings": "Réservations",
       "messages": "Messages",
       "thread": "Conversation"
     },

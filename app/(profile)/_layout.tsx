@@ -29,6 +29,7 @@ export default function ProfileLayout() {
       />
       <Stack.Screen name="subscription" options={{ title: t("screens.profile.subscription") }} />
       <Stack.Screen name="payments" options={{ title: t("screens.profile.payments") }} />
+      <Stack.Screen name="bookings" options={{ title: t("screens.profile.bookings") }} />
       <Stack.Screen name="messages/index" options={{ title: t("screens.profile.messages") }} />
       <Stack.Screen name="messages/[id]" options={{ title: t("screens.profile.thread") }} />
     </Stack>

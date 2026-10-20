@@ -39,5 +39,16 @@
   "max": "Max",
   "onOfferOnly": "En promotion seulement",
   "onOfferSubtitle": "Afficher uniquement les produits en promotion",
-  "noProductsFound": "Aucun produit trouvé"
+  "noProductsFound": "Aucun produit trouvé",
+  "product": {
+    "title": "Produit",
+    "notFound": "Produit introuvable",
+    "inStock": "{{count}} disponibles",
+    "outOfStock": "En rupture de stock",
+    "materials": "Matériaux",
+    "materialsSubtitle": "De quoi ce produit est fait.",
+    "seller": "Boutique",
+    "ownListing": "C'est un produit de votre boutique.",
+    "browsingOnly": "Consultation uniquement pour le moment : les achats arrivent bientôt."
+  }
 }

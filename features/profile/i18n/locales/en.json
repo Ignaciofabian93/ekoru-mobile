@@ -215,5 +215,49 @@
     "connectOnWeb": "Connect on the web",
     "manageOnWeb": "Manage on the web",
     "webNote": "The connection happens on EKORU's website. If asked, sign in with the same account."
+  },
+  "bookings": {
+    "title": "Bookings",
+    "error": "The booking could not be updated",
+    "tabs": {
+      "made": "My bookings",
+      "received": "Received"
+    },
+    "empty": {
+      "made": "You haven't booked any services yet.",
+      "received": "You haven't received any bookings yet."
+    },
+    "unknownService": "Service",
+    "paidOnSite": "paid on site",
+    "client": "Client",
+    "notes": "Notes",
+    "cancelReason": "Cancellation reason",
+    "status": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "IN_PROGRESS": "In progress",
+      "COMPLETED": "Completed",
+      "NO_SHOW": "No-show",
+      "CANCELLED": "Cancelled"
+    },
+    "actions": {
+      "CONFIRMED": "Confirm",
+      "IN_PROGRESS": "Start",
+      "COMPLETED": "Complete",
+      "NO_SHOW": "No-show",
+      "CANCEL": "Cancel"
+    },
+    "dialog": {
+      "back": "Back",
+      "yes": "Yes",
+      "cancelTitle": "Cancel the booking?",
+      "cancelMessage": "The other side will be notified.",
+      "clientReason": "Cancelled by the client",
+      "providerReason": "Cancelled by the provider",
+      "COMPLETEDTitle": "Mark as completed?",
+      "COMPLETEDMessage": "The client will receive their eco-points.",
+      "NO_SHOWTitle": "The client didn't show up?",
+      "NO_SHOWMessage": "The booking will be closed as a no-show."
+    }
   }
 }

@@ -37,6 +37,7 @@
       "environmentalImpact": "Environmental Impact",
       "subscription": "Subscription",
       "payments": "Payouts",
+      "bookings": "Bookings",
       "messages": "Messages",
       "thread": "Conversation"
     },

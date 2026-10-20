@@ -86,7 +86,11 @@ export default function StoreSubcategoryScreen() {
               onPress={() => setFiltersVisible(true)}
               style={[styles.filterBtn, hasActiveFilters && styles.filterBtnActive]}
             >
-              <SlidersHorizontal size={16} color={hasActiveFilters ? "#fff" : colors.primary} strokeWidth={2} />
+              <SlidersHorizontal
+                size={16}
+                color={hasActiveFilters ? "#fff" : colors.primary}
+                strokeWidth={2}
+              />
             </Pressable>
           </View>
 
@@ -99,6 +103,9 @@ export default function StoreSubcategoryScreen() {
             onGoToPage={setPage}
             onChangeItemsPerPage={setPageSize}
             emptyMessage={t("noProductsYet")}
+            onPressProduct={(product) =>
+              router.push({ pathname: "/store-product/[id]", params: { id: String(product.id) } })
+            }
           />
         </ContentContainer>
       </ScrollContainer>

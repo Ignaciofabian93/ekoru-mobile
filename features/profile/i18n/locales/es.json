@@ -196,5 +196,24 @@
     "perk_trees_desc": "Lee historias inspiradoras, consejos y conéctate con una comunidad eco afín.",
     "createAccount": "Crear cuenta gratuita",
     "signIn": "Iniciar sesión en mi cuenta"
+  },
+  "payouts": {
+    "title": "Cobros",
+    "businessOnly": "Los cobros son para cuentas de empresa. Las ventas entre personas se pagan en efectivo al juntarse.",
+    "status": {
+      "connected": "Mercado Pago conectado",
+      "reconnect": "Hay que reconectar Mercado Pago",
+      "disconnected": "Mercado Pago sin conectar"
+    },
+    "account": "Cuenta n.º {{id}}",
+    "explain": {
+      "connected": "Tus compradores ya pueden pagarte. El dinero llega directo a tu cuenta de Mercado Pago.",
+      "reconnect": "La autorización venció o fue revocada. Mientras no la renueves, nadie puede pagarte en EKORU.",
+      "disconnected": "Conecta tu cuenta de Mercado Pago para empezar a vender. Es gratis."
+    },
+    "commission": "Comisión de EKORU: {{percent}} de cada venta, descontada por Mercado Pago al pagar.",
+    "connectOnWeb": "Conectar en la web",
+    "manageOnWeb": "Administrar en la web",
+    "webNote": "La conexión se hace en la web de EKORU. Si te lo pide, inicia sesión con tu misma cuenta."
   }
 }

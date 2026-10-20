@@ -196,5 +196,24 @@
     "perk_trees_desc": "Lisez des histoires inspirantes, des conseils et rejoignez une communauté éco engagée.",
     "createAccount": "Créer un compte gratuit",
     "signIn": "Se connecter à mon compte"
+  },
+  "payouts": {
+    "title": "Encaissements",
+    "businessOnly": "Les encaissements sont réservés aux comptes entreprise. Les ventes entre particuliers se paient en espèces lors du rendez-vous.",
+    "status": {
+      "connected": "Mercado Pago connecté",
+      "reconnect": "Mercado Pago à reconnecter",
+      "disconnected": "Mercado Pago non connecté"
+    },
+    "account": "Compte n° {{id}}",
+    "explain": {
+      "connected": "Vos acheteurs peuvent vous payer. L'argent arrive directement sur votre compte Mercado Pago.",
+      "reconnect": "L'autorisation a expiré ou a été révoquée. Tant que vous ne la renouvelez pas, personne ne peut vous payer sur EKORU.",
+      "disconnected": "Connectez votre compte Mercado Pago pour commencer à vendre. C'est gratuit."
+    },
+    "commission": "Commission d'EKORU : {{percent}} de chaque vente, prélevée par Mercado Pago au paiement.",
+    "connectOnWeb": "Connecter sur le web",
+    "manageOnWeb": "Gérer sur le web",
+    "webNote": "La connexion se fait sur le site d'EKORU. Si on vous le demande, connectez-vous avec le même compte."
   }
 }

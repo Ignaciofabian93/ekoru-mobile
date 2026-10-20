@@ -28,6 +28,7 @@ export default function ProfileLayout() {
         options={{ title: t("screens.profile.environmentalImpact") }}
       />
       <Stack.Screen name="subscription" options={{ title: t("screens.profile.subscription") }} />
+      <Stack.Screen name="payments" options={{ title: t("screens.profile.payments") }} />
       <Stack.Screen name="messages/index" options={{ title: t("screens.profile.messages") }} />
       <Stack.Screen name="messages/[id]" options={{ title: t("screens.profile.thread") }} />
     </Stack>

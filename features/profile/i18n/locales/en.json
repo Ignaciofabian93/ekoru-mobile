@@ -196,5 +196,24 @@
     "perk_trees_desc": "Read inspiring stories, tips, and connect with a like-minded eco community.",
     "createAccount": "Create free account",
     "signIn": "Sign in to my account"
+  },
+  "payouts": {
+    "title": "Payouts",
+    "businessOnly": "Payouts are for business accounts. Sales between people are paid in cash when you meet.",
+    "status": {
+      "connected": "Mercado Pago connected",
+      "reconnect": "Mercado Pago needs reconnecting",
+      "disconnected": "Mercado Pago not connected"
+    },
+    "account": "Account no. {{id}}",
+    "explain": {
+      "connected": "Buyers can pay you now. The money goes straight to your Mercado Pago account.",
+      "reconnect": "The authorization expired or was revoked. Until you renew it, nobody can pay you on EKORU.",
+      "disconnected": "Connect your Mercado Pago account to start selling. It's free."
+    },
+    "commission": "EKORU's commission: {{percent}} of each sale, deducted by Mercado Pago when the buyer pays.",
+    "connectOnWeb": "Connect on the web",
+    "manageOnWeb": "Manage on the web",
+    "webNote": "The connection happens on EKORU's website. If asked, sign in with the same account."
   }
 }

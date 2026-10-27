@@ -10,6 +10,7 @@ const CONDITION_OPTIONS: Option[] = [
   { label: "New", value: "NEW" },
   { label: "Open box", value: "OPEN_BOX" },
   { label: "Like new", value: "LIKE_NEW" },
+  { label: "Good", value: "GOOD" },
   { label: "Fair", value: "FAIR" },
   { label: "Poor", value: "POOR" },
   { label: "For parts", value: "FOR_PARTS" },

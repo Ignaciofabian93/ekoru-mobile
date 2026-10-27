@@ -4,6 +4,7 @@ const conditionMap: Record<ProductCondition, string> = {
   NEW: "Nuevo",
   OPEN_BOX: "Caja abierta",
   LIKE_NEW: "Como nuevo",
+  GOOD: "Bueno",
   FAIR: "Aceptable",
   POOR: "Desgastado",
   FOR_PARTS: "Para piezas",

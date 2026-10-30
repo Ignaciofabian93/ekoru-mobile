@@ -1,6 +1,7 @@
 import MainButton from "@/components/Primitives/Button/MainButton";
 import { colors } from "@/design/tokens";
 import { useStartConversation } from "@/features/chat/hooks/useChatQueries";
+import useTrackItemView from "@/features/tracking/hooks/useTrackItemView";
 import useAppRouter from "@/hooks/useAppRouter";
 import { useSeller } from "@/store/useAuthStore";
 import { displaySellerName } from "@/utils/displaySellerName";
@@ -19,6 +20,7 @@ import BookingForm from "../ui/BookingForm";
 export default function ServiceScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { service, loading } = useService(id ?? "");
+  useTrackItemView({ itemType: "SERVICE", itemId: service?.id, sellerId: service?.sellerId });
   const { t } = useTranslation(NAMESPACE);
 
   if (loading && !service) {
@@ -50,7 +52,8 @@ function usePriceLine(service: ServiceDetail) {
   if (service.pricingType === "QUOTATION" || service.basePrice == null) {
     return {
       prefix: null,
-      price: service.pricingType === "QUOTATION" ? t("detail.summary.onQuotation") : t("detail.summary.noPrice"),
+      price:
+        service.pricingType === "QUOTATION" ? t("detail.summary.onQuotation") : t("detail.summary.noPrice"),
       suffix: service.pricingType === "QUOTATION" ? t("detail.summary.onQuotationHint") : null,
     };
   }
@@ -88,7 +91,10 @@ function ServiceDetailView({ service }: { service: ServiceDetail }) {
 
   const details: { label: string; value: string }[] = [];
   if (service.pricingType) {
-    details.push({ label: t("detail.details.pricingType"), value: t(`detail.pricingTypes.${service.pricingType}`) });
+    details.push({
+      label: t("detail.details.pricingType"),
+      value: t(`detail.pricingTypes.${service.pricingType}`),
+    });
   }
   if (service.duration) {
     details.push({
@@ -121,7 +127,11 @@ function ServiceDetailView({ service }: { service: ServiceDetail }) {
   return (
     <>
       <Stack.Screen options={{ title: service.name }} />
-      <ScrollView style={styles.root} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        style={styles.root}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.imageBox}>
           {imageUri && !imageError ? (
             <Image
@@ -164,7 +174,9 @@ function ServiceDetailView({ service }: { service: ServiceDetail }) {
             </View>
             {service.isCurrentlyAvailable != null ? (
               <Text style={[styles.availability, !service.isCurrentlyAvailable && styles.unavailable]}>
-                {service.isCurrentlyAvailable ? t("detail.summary.available") : t("detail.summary.unavailable")}
+                {service.isCurrentlyAvailable
+                  ? t("detail.summary.available")
+                  : t("detail.summary.unavailable")}
               </Text>
             ) : null}
           </View>
@@ -273,7 +285,13 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.borderLight,
   },
   rowLabel: { fontSize: 14, fontFamily: "Cabin_500Medium", color: colors.foreground },
-  rowValue: { flexShrink: 1, textAlign: "right", fontSize: 14, fontFamily: "Cabin_600SemiBold", color: colors.primary },
+  rowValue: {
+    flexShrink: 1,
+    textAlign: "right",
+    fontSize: 14,
+    fontFamily: "Cabin_600SemiBold",
+    color: colors.primary,
+  },
   notice: {
     flexDirection: "row",
     alignItems: "center",

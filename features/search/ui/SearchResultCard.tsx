@@ -9,14 +9,28 @@ import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 import { NAMESPACE } from "../i18n";
 import type { SearchResultItem } from "../types";
+import { trackSearchClick } from "@/features/tracking/track";
 
-export default function SearchResultCard({ item }: { item: SearchResultItem }) {
+export default function SearchResultCard({
+  item,
+  searchId,
+  position,
+}: {
+  item: SearchResultItem;
+  /** The search this result came from; a tap is counted against it. */
+  searchId?: number | null;
+  /** 1-based place in the results. */
+  position: number;
+}) {
   const { t } = useTranslation(NAMESPACE);
   const [err, setErr] = useState(false);
   const uri = getImageUrl(item.images?.[0] ?? undefined);
   const price = item.hasOffer && item.offerPrice != null ? item.offerPrice : item.price;
 
   const onPress = () => {
+    if (searchId) {
+      trackSearchClick({ searchId, itemType: item.type, itemId: item.id, position });
+    }
     if (item.type === "PRODUCT") {
       router.push({ pathname: "/product/[id]", params: { id: String(item.id) } });
     } else if (item.type === "STORE_PRODUCT") {

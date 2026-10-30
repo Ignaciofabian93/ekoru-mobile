@@ -21,6 +21,7 @@ import ErrorScreen from "@/components/Feedback/ErrorScreen/ErrorScreen";
 import toastConfig from "@/components/Feedback/Toast/toastConfig";
 import { DrawerProvider } from "@/context/DrawerContext";
 import { usePushNavigation } from "@/features/notifications/hooks/usePushNavigation";
+import NavigationTracker from "@/features/tracking/ui/NavigationTracker";
 import client from "@/lib/apollo";
 import { logger } from "@/lib/logger";
 import useAuthStore from "@/store/useAuthStore";
@@ -128,6 +129,8 @@ function RootLayoutNav() {
         </Stack>
         <Drawer />
         <StatusBar style="auto" />
+        {/* Remembers the previous screen, for where an item view came from. */}
+        <NavigationTracker />
       </DrawerProvider>
       <Toast config={toastConfig} />
     </ApolloProvider>

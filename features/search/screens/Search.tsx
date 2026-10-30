@@ -3,6 +3,7 @@ import { colors } from "@/design/tokens";
 import useSearch from "@/features/search/hooks/useSearch";
 import { NAMESPACE } from "@/features/search/i18n";
 import SearchResultCard from "@/features/search/ui/SearchResultCard";
+import { SEARCH_PAGE_SIZE } from "@/features/search/types";
 import { Search as SearchIcon } from "lucide-react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +12,7 @@ import { ActivityIndicator, FlatList, StyleSheet, TextInput, View } from "react-
 export default function Search() {
   const { t, i18n } = useTranslation(NAMESPACE);
   const [query, setQuery] = useState("");
-  const { items, total, loading } = useSearch(query, i18n.language);
+  const { searchId, items, total, loading, page } = useSearch(query, i18n.language);
   const trimmed = query.trim();
 
   return (
@@ -54,7 +55,13 @@ export default function Search() {
               {total} {t("results")}
             </Text>
           }
-          renderItem={({ item }) => <SearchResultCard item={item} />}
+          renderItem={({ item, index }) => (
+            <SearchResultCard
+              item={item}
+              searchId={searchId}
+              position={(page - 1) * SEARCH_PAGE_SIZE + index + 1}
+            />
+          )}
         />
       )}
     </View>

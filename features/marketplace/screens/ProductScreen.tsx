@@ -1,5 +1,6 @@
 import { colors } from "@/design/tokens";
 import useProduct from "@/features/marketplace/hooks/useProduct";
+import useTrackItemView from "@/features/tracking/hooks/useTrackItemView";
 import type { Product } from "@/features/marketplace/types";
 import useCartStore from "@/store/useCartStore";
 import { conditionTranslate } from "@/utils/conditionTranslate";
@@ -23,20 +24,13 @@ import { useTranslation } from "react-i18next";
 import MainButton from "@/components/Primitives/Button/MainButton";
 import { useStartConversation } from "@/features/chat/hooks/useChatQueries";
 import { useSeller } from "@/store/useAuthStore";
-import {
-  ActivityIndicator,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProductScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { product, loading } = useProduct(id ?? "");
+  useTrackItemView({ itemType: "PRODUCT", itemId: product?.id, sellerId: product?.sellerId });
 
   if (loading && !product) {
     return (
@@ -109,9 +103,7 @@ function ProductDetail({ product }: { product: Product }) {
               </View>
             )}
             <View style={styles.conditionBadge}>
-              <Text style={styles.conditionText}>
-                {conditionTranslate(product.condition)}
-              </Text>
+              <Text style={styles.conditionText}>{conditionTranslate(product.condition)}</Text>
             </View>
           </View>
 
@@ -119,30 +111,21 @@ function ProductDetail({ product }: { product: Product }) {
             {/* Title & Price */}
             <View style={styles.titleRow}>
               <View style={styles.titleBlock}>
-                {product.brand && (
-                  <Text style={styles.brand}>{product.brand}</Text>
-                )}
+                {product.brand && <Text style={styles.brand}>{product.brand}</Text>}
                 <Text style={styles.name}>{product.name}</Text>
               </View>
               <Text style={styles.price}>{formatPrice(product.price)}</Text>
             </View>
 
             {/* Description */}
-            {product.description && (
-              <Text style={styles.description}>{product.description}</Text>
-            )}
+            {product.description && <Text style={styles.description}>{product.description}</Text>}
 
             {/* Details */}
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Detalles</Text>
               <View style={styles.detailsGrid}>
-                {product.color && (
-                  <DetailRow label="Color" value={product.color} />
-                )}
-                <DetailRow
-                  label="Estado"
-                  value={conditionTranslate(product.condition)}
-                />
+                {product.color && <DetailRow label="Color" value={product.color} />}
+                <DetailRow label="Estado" value={conditionTranslate(product.condition)} />
               </View>
             </View>
 
@@ -153,17 +136,11 @@ function ProductDetail({ product }: { product: Product }) {
                 <View style={styles.impactRow}>
                   <View style={styles.impactCard}>
                     <Leaf size={20} color={colors.primary} strokeWidth={1.5} />
-                    <Text style={styles.impactValue}>
-                      {product.environmentalImpact.totalCo2SavingsKG} kg
-                    </Text>
+                    <Text style={styles.impactValue}>{product.environmentalImpact.totalCo2SavingsKG} kg</Text>
                     <Text style={styles.impactLabel}>CO₂ ahorrado</Text>
                   </View>
                   <View style={styles.impactCard}>
-                    <Droplets
-                      size={20}
-                      color={colors.secondary}
-                      strokeWidth={1.5}
-                    />
+                    <Droplets size={20} color={colors.secondary} strokeWidth={1.5} />
                     <Text style={styles.impactValue}>
                       {product.environmentalImpact.totalWaterSavingsLT} L
                     </Text>
@@ -175,9 +152,7 @@ function ProductDetail({ product }: { product: Product }) {
                     <Text style={styles.materialsLabel}>Materiales</Text>
                     {product.environmentalImpact.materialBreakdown.map((m, i) => (
                       <View key={`${m.materialType}-${i}`} style={styles.materialRow}>
-                        <Text style={styles.materialName}>
-                          {m.materialTypeLabel ?? m.materialType}
-                        </Text>
+                        <Text style={styles.materialName}>{m.materialTypeLabel ?? m.materialType}</Text>
                         {typeof m.quantity === "number" && m.unit ? (
                           <Text style={styles.materialPct}>
                             {m.quantity} {m.unit}
@@ -196,14 +171,8 @@ function ProductDetail({ product }: { product: Product }) {
                 <Text style={styles.sectionTitle}>Vendedor</Text>
                 <View style={styles.sellerCard}>
                   <View style={styles.sellerRow}>
-                    <User
-                      size={16}
-                      color={colors.foregroundSecondary}
-                      strokeWidth={1.5}
-                    />
-                    <Text style={styles.sellerName}>
-                      {displaySellerName(product.seller)}
-                    </Text>
+                    <User size={16} color={colors.foregroundSecondary} strokeWidth={1.5} />
+                    <Text style={styles.sellerName}>{displaySellerName(product.seller)}</Text>
                     <View style={styles.sellerTypeBadge}>
                       <Text style={styles.sellerTypeText}>
                         {sellerTypeTranslate(product.seller.sellerType)}
@@ -212,29 +181,17 @@ function ProductDetail({ product }: { product: Product }) {
                   </View>
                   {product.seller.county && (
                     <View style={styles.sellerRow}>
-                      <MapPin
-                        size={16}
-                        color={colors.foregroundSecondary}
-                        strokeWidth={1.5}
-                      />
+                      <MapPin size={16} color={colors.foregroundSecondary} strokeWidth={1.5} />
                       <Text style={styles.sellerDetail}>
                         {product.seller.county.county}
-                        {product.seller.address
-                          ? ` · ${product.seller.address}`
-                          : ""}
+                        {product.seller.address ? ` · ${product.seller.address}` : ""}
                       </Text>
                     </View>
                   )}
                   {product.seller.phone && (
                     <View style={styles.sellerRow}>
-                      <Phone
-                        size={16}
-                        color={colors.foregroundSecondary}
-                        strokeWidth={1.5}
-                      />
-                      <Text style={styles.sellerDetail}>
-                        {product.seller.phone}
-                      </Text>
+                      <Phone size={16} color={colors.foregroundSecondary} strokeWidth={1.5} />
+                      <Text style={styles.sellerDetail}>{product.seller.phone}</Text>
                     </View>
                   )}
                   {/* Questions go through EKORU's chat: the seller's phone and
@@ -246,9 +203,7 @@ function ProductDetail({ product }: { product: Product }) {
                       variant="outline"
                       size="sm"
                       loading={contacting}
-                      onPress={() =>
-                        void start({ itemType: "PRODUCT", itemId: Number(product.id) })
-                      }
+                      onPress={() => void start({ itemType: "PRODUCT", itemId: Number(product.id) })}
                     />
                   )}
                 </View>
@@ -260,19 +215,11 @@ function ProductDetail({ product }: { product: Product }) {
         {/* Footer CTA */}
         <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
           <View style={styles.footerRow}>
-            <Pressable
-              style={[styles.cartButton, added && styles.cartButtonAdded]}
-              onPress={handleAddToCart}
-            >
+            <Pressable style={[styles.cartButton, added && styles.cartButtonAdded]} onPress={handleAddToCart}>
               <ShoppingCart size={20} color="#fff" strokeWidth={2} />
-              <Text style={styles.cartButtonText}>
-                {added ? "¡Agregado!" : "Agregar al carrito"}
-              </Text>
+              <Text style={styles.cartButtonText}>{added ? "¡Agregado!" : "Agregar al carrito"}</Text>
             </Pressable>
-            <Pressable
-              style={styles.viewCartBtn}
-              onPress={() => router.push("/(cart)")}
-            >
+            <Pressable style={styles.viewCartBtn} onPress={() => router.push("/(cart)")}>
               <ShoppingCart size={20} color={colors.primary} strokeWidth={2} />
             </Pressable>
           </View>

@@ -1,6 +1,7 @@
 import MainButton from "@/components/Primitives/Button/MainButton";
 import { colors } from "@/design/tokens";
 import { useStartConversation } from "@/features/chat/hooks/useChatQueries";
+import useTrackItemView from "@/features/tracking/hooks/useTrackItemView";
 import { useSeller } from "@/store/useAuthStore";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { formatPrice } from "@/utils/formatPrice";
@@ -24,6 +25,11 @@ const STORE_PURCHASE_ENABLED = false;
 export default function StoreProductScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { product, loading } = useStoreProduct(id ?? "");
+  useTrackItemView({
+    itemType: "STORE_PRODUCT",
+    itemId: product?.id,
+    sellerId: product?.sellerId,
+  });
   const { t } = useTranslation(NAMESPACE);
 
   if (loading && !product) {

@@ -83,5 +83,10 @@
     "sendFailed": "We couldn't send the message",
     "loadFailed": "We couldn't load the conversation.",
     "actionFailed": "We couldn't complete that"
+  },
+  "publishBusiness": {
+    "title": "Publish on the web",
+    "body": "The marketplace is for second-hand items between people. Your store products and services are published on the EKORU website.",
+    "cta": "Open the website"
   }
 }

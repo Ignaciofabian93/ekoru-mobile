@@ -83,5 +83,10 @@
     "sendFailed": "No pudimos enviar el mensaje",
     "loadFailed": "No pudimos cargar la conversación.",
     "actionFailed": "No pudimos completar la acción"
+  },
+  "publishBusiness": {
+    "title": "Publica desde la web",
+    "body": "El marketplace es para artículos de segunda mano entre personas. Los productos de tu tienda y tus servicios se publican desde la web de EKORU.",
+    "cta": "Abrir la web"
   }
 }

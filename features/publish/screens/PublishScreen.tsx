@@ -1,9 +1,13 @@
 import { LocationNotice } from "@/components/Feedback/LocationNotice/LocationNotice";
 import { Text } from "@/components/Primitives/Text/Text";
 import { colors } from "@/design/tokens";
+import { WEB_APP_BASE_URL } from "@/config/endpoints";
+import { useHasSellerType } from "@/store/useAuthStore";
 import { router } from "expo-router";
-import { Camera, FileText, Leaf, PackagePlus, Tag } from "lucide-react-native";
+import * as WebBrowser from "expo-web-browser";
+import { Camera, ExternalLink, FileText, Leaf, PackagePlus, Store, Tag } from "lucide-react-native";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 const STEPS = [
@@ -18,6 +22,11 @@ const STEPS = [
 ];
 
 export default function PublishScreen() {
+  // The marketplace is person-to-person: businesses publish store products and
+  // services, which the app can't create yet, so they're sent to the web.
+  const isBusiness = useHasSellerType("STARTUP", "COMPANY");
+  if (isBusiness) return <BusinessPublish />;
+
   return (
     <ScrollView
       style={styles.container}
@@ -81,6 +90,37 @@ export default function PublishScreen() {
         <Text size="xs" color="tertiary" align="center">
           Free to list. We only earn when you sell.
         </Text>
+      </View>
+    </ScrollView>
+  );
+}
+
+/** For businesses: their listings are created on the web, not in the marketplace. */
+function BusinessPublish() {
+  const { t } = useTranslation();
+  return (
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <View style={styles.heroBox}>
+        <View style={styles.heroIcon}>
+          <Store size={36} color={colors.primary} strokeWidth={1.5} />
+        </View>
+        <Text size="xl" weight="bold" align="center" style={styles.heroTitle}>
+          {t("publishBusiness.title")}
+        </Text>
+        <Text size="sm" color="secondary" align="center" style={styles.heroSubtitle}>
+          {t("publishBusiness.body")}
+        </Text>
+      </View>
+      <View style={styles.actions}>
+        <Pressable
+          style={styles.primaryBtn}
+          onPress={() => WebBrowser.openBrowserAsync(`${WEB_APP_BASE_URL}/publish`, { showTitle: true })}
+        >
+          <ExternalLink size={18} color="#fff" strokeWidth={2} />
+          <Text weight="bold" style={styles.primaryBtnLabel}>
+            {t("publishBusiness.cta")}
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );

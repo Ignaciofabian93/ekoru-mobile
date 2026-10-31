@@ -83,5 +83,10 @@
     "sendFailed": "Impossible d'envoyer le message",
     "loadFailed": "Impossible de charger la conversation.",
     "actionFailed": "Impossible d'effectuer l'action"
+  },
+  "publishBusiness": {
+    "title": "Publiez depuis le web",
+    "body": "La marketplace est réservée aux articles d'occasion entre particuliers. Les produits de votre boutique et vos services se publient sur le site d'EKORU.",
+    "cta": "Ouvrir le site"
   }
 }

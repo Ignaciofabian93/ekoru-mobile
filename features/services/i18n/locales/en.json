@@ -40,7 +40,6 @@
       "title": "Service details",
       "pricingType": "Pricing model",
       "duration": "Estimated duration",
-      "durationValue": "{{minutes}} min",
       "remote": "Remote service",
       "radius": "Service radius",
       "radiusValue": "{{km}} km",

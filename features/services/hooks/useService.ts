@@ -16,7 +16,8 @@ export interface ServiceDetail {
   pricingType: ServicePricing | null;
   basePrice: number | null;
   /** Minutes, stored as a string by the subgraph. */
-  duration: string | null;
+  /** Minutes (GraphQL Int). */
+  duration: number | null;
   images: string[] | null;
   /** Own first photo, or the provider's logo when the service has none. */
   displayImage?: string | null;

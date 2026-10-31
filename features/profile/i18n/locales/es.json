@@ -115,7 +115,7 @@
     "plan_EXPERT": "Experto"
   },
   "orders": {
-    "title": "Historial de pedidos",
+    "title": "Mis compras",
     "noOrders": "Sin pedidos aún",
     "noOrdersSubtitle": "Tu historial de compras aparecerá aquí.",
     "total": "Total",
@@ -217,7 +217,7 @@
     "webNote": "La conexión se hace en la web de EKORU. Si te lo pide, inicia sesión con tu misma cuenta."
   },
   "bookings": {
-    "title": "Reservas",
+    "title": "Mis reservas",
     "error": "No se pudo actualizar la reserva",
     "tabs": {
       "made": "Mis reservas",
@@ -258,6 +258,7 @@
       "COMPLETEDMessage": "El cliente recibirá sus eco-puntos.",
       "NO_SHOWTitle": "¿El cliente no asistió?",
       "NO_SHOWMessage": "La reserva se cerrará como no asistida."
-    }
+    },
+    "servicesProvided": "Servicios prestados"
   }
 }

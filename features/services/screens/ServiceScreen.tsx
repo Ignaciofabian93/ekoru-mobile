@@ -5,6 +5,7 @@ import useTrackItemView from "@/features/tracking/hooks/useTrackItemView";
 import useAppRouter from "@/hooks/useAppRouter";
 import { useSeller } from "@/store/useAuthStore";
 import { displaySellerName } from "@/utils/displaySellerName";
+import { formatDuration } from "@/utils/formatDuration";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { type Href, Stack, useLocalSearchParams } from "expo-router";
@@ -99,7 +100,7 @@ function ServiceDetailView({ service }: { service: ServiceDetail }) {
   if (service.duration) {
     details.push({
       label: t("detail.details.duration"),
-      value: t("detail.details.durationValue", { minutes: service.duration }),
+      value: formatDuration(service.duration),
     });
   }
   if (service.isRemoteService != null) {

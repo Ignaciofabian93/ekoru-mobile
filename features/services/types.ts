@@ -53,7 +53,8 @@ export type ServiceNode = {
   name: string;
   description: string | null;
   basePrice: number | null;
-  duration: string | null;
+  /** Minutes (GraphQL Int). */
+  duration: number | null;
   images: string[] | null;
   averageRating: number | null;
   reviewCount: number | null;

@@ -115,7 +115,7 @@
     "plan_EXPERT": "Expert"
   },
   "orders": {
-    "title": "Order History",
+    "title": "My purchases",
     "noOrders": "No orders yet",
     "noOrdersSubtitle": "Your purchase history will appear here.",
     "total": "Total",
@@ -217,7 +217,7 @@
     "webNote": "The connection happens on EKORU's website. If asked, sign in with the same account."
   },
   "bookings": {
-    "title": "Bookings",
+    "title": "My bookings",
     "error": "The booking could not be updated",
     "tabs": {
       "made": "My bookings",
@@ -258,6 +258,7 @@
       "COMPLETEDMessage": "The client will receive their eco-points.",
       "NO_SHOWTitle": "The client didn't show up?",
       "NO_SHOWMessage": "The booking will be closed as a no-show."
-    }
+    },
+    "servicesProvided": "Services provided"
   }
 }

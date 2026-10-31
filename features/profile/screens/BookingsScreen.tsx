@@ -3,6 +3,7 @@ import { colors } from "@/design/tokens";
 import type { Seller } from "@/types/user";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { formatPrice } from "@/utils/formatPrice";
+import { useLocalSearchParams } from "expo-router";
 import { CalendarClock } from "lucide-react-native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,7 +47,9 @@ export default function BookingsScreen() {
   const { t, i18n } = useTranslation(NAMESPACE);
   const bookings = useBookings({ errorTitle: t("bookings.error") });
   const waiting = bookings.received.filter((b) => b.status === "PENDING").length;
-  const [tab, setTab] = useState<Tab>("made");
+  // "Servicios prestados" opens the provider's side (?tab=received).
+  const params = useLocalSearchParams<{ tab?: string }>();
+  const [tab, setTab] = useState<Tab>(params.tab === "received" ? "received" : "made");
   const list = tab === "made" ? bookings.made : bookings.received;
 
   const confirm = (title: string, message: string, onYes: () => void) =>

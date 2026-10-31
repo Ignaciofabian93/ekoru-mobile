@@ -40,7 +40,6 @@
       "title": "Detalles del servicio",
       "pricingType": "Modalidad de cobro",
       "duration": "Duración estimada",
-      "durationValue": "{{minutes}} min",
       "remote": "Servicio a distancia",
       "radius": "Radio de atención",
       "radiusValue": "{{km}} km",

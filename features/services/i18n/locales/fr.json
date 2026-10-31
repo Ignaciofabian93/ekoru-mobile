@@ -40,7 +40,6 @@
       "title": "Détails du service",
       "pricingType": "Mode de tarification",
       "duration": "Durée estimée",
-      "durationValue": "{{minutes}} min",
       "remote": "Service à distance",
       "radius": "Rayon d'intervention",
       "radiusValue": "{{km}} km",

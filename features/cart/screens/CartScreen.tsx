@@ -1,57 +1,38 @@
 import { colors } from "@/design/tokens";
-import useCartStore, { type CartItem } from "@/store/useCartStore";
+import useCartStore, { type CartGroup, type CartItem, useCartGroups } from "@/store/useCartStore";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { useRouter } from "expo-router";
-import {
-  ImageOff,
-  Minus,
-  Plus,
-  ShoppingCart,
-  Trash2,
-} from "lucide-react-native";
+import { ImageOff, Minus, Plus, ShoppingCart, Store, Trash2 } from "lucide-react-native";
 import React, { useState } from "react";
-import {
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function EmptyCart() {
   const router = useRouter();
   return (
     <View style={styles.empty}>
-      <ShoppingCart
-        size={60}
-        color={colors.foregroundMuted}
-        strokeWidth={1.5}
-      />
+      <ShoppingCart size={60} color={colors.foregroundMuted} strokeWidth={1.5} />
       <Text style={styles.emptyTitle}>Tu carrito está vacío</Text>
-      <Text style={styles.emptySubtitle}>
-        Agrega productos desde el marketplace para comenzar.
-      </Text>
-      <Pressable
-        style={styles.shopButton}
-        onPress={() => router.push("/(marketplace)")}
-      >
-        <Text style={styles.shopButtonText}>Ir al Marketplace</Text>
+      <Text style={styles.emptySubtitle}>Agrega productos desde las tiendas o el marketplace para comenzar.</Text>
+      <Pressable style={styles.shopButton} onPress={() => router.push("/(stores)")}>
+        <Text style={styles.shopButtonText}>Ir a las tiendas</Text>
       </Pressable>
     </View>
   );
 }
 
 function CartItemCard({ item }: { item: CartItem }) {
-  const { removeItem, updateQuantity } = useCartStore();
+  const removeItem = useCartStore((s) => s.removeItem);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
   const [imageError, setImageError] = useState(false);
-  const imageUri = getImageUrl(item.product.images?.[0]);
+  const imageUri = getImageUrl(item.image);
+  // A marketplace item is one unit; a store line goes up to the stock.
+  const stepper = item.source === "store";
+  const atMax = typeof item.maxStock === "number" && item.quantity >= item.maxStock;
 
   return (
     <View style={styles.card}>
-      {/* Thumbnail */}
       <View style={styles.thumb}>
         {imageUri && !imageError ? (
           <Image
@@ -62,51 +43,50 @@ function CartItemCard({ item }: { item: CartItem }) {
           />
         ) : (
           <View style={styles.thumbPlaceholder}>
-            <ImageOff
-              size={24}
-              color={colors.foregroundMuted}
-              strokeWidth={1.5}
-            />
+            <ImageOff size={24} color={colors.foregroundMuted} strokeWidth={1.5} />
           </View>
         )}
       </View>
 
-      {/* Info */}
       <View style={styles.info}>
-        {item.product.brand && (
-          <Text style={styles.brand} numberOfLines={1}>
-            {item.product.brand}
-          </Text>
-        )}
         <Text style={styles.name} numberOfLines={2}>
-          {item.product.name}
+          {item.name}
         </Text>
-        <Text style={styles.price}>{formatPrice(item.product.price)}</Text>
+        <Text style={styles.price}>{formatPrice(item.unitPrice)}</Text>
 
-        {/* Quantity controls */}
         <View style={styles.qtyRow}>
-          <Pressable
-            style={styles.qtyBtn}
-            onPress={() => updateQuantity(item.product.id, item.quantity - 1)}
-            hitSlop={6}
-          >
-            <Minus size={14} color={colors.foreground} strokeWidth={2} />
-          </Pressable>
-          <Text style={styles.qtyText}>{item.quantity}</Text>
-          <Pressable
-            style={styles.qtyBtn}
-            onPress={() => updateQuantity(item.product.id, item.quantity + 1)}
-            hitSlop={6}
-          >
-            <Plus size={14} color={colors.foreground} strokeWidth={2} />
-          </Pressable>
+          {stepper ? (
+            <>
+              <Pressable
+                style={styles.qtyBtn}
+                onPress={() => updateQuantity(item.productId, item.source, item.quantity - 1)}
+                hitSlop={6}
+                accessibilityLabel="Menos"
+              >
+                <Minus size={14} color={colors.foreground} strokeWidth={2} />
+              </Pressable>
+              <Text style={styles.qtyText}>{item.quantity}</Text>
+              <Pressable
+                style={[styles.qtyBtn, atMax && styles.qtyBtnDisabled]}
+                onPress={() => updateQuantity(item.productId, item.source, item.quantity + 1)}
+                disabled={atMax}
+                hitSlop={6}
+                accessibilityLabel="Más"
+              >
+                <Plus size={14} color={colors.foreground} strokeWidth={2} />
+              </Pressable>
+            </>
+          ) : (
+            <Text style={styles.unique}>Pieza única</Text>
+          )}
 
           <View style={{ flex: 1 }} />
 
           <Pressable
-            onPress={() => removeItem(item.product.id)}
+            onPress={() => removeItem(item.productId, item.source)}
             hitSlop={6}
             style={styles.removeBtn}
+            accessibilityLabel="Quitar"
           >
             <Trash2 size={16} color={colors.danger} strokeWidth={1.8} />
           </Pressable>
@@ -116,44 +96,59 @@ function CartItemCard({ item }: { item: CartItem }) {
   );
 }
 
-export default function CartScreen() {
-  const { items, subtotal, clearCart } = useCartStore();
+/** One seller's lines: one order, paid on its own (transactions refuses mixed orders). */
+function GroupSection({ group }: { group: CartGroup }) {
   const router = useRouter();
+  return (
+    <View style={styles.group}>
+      <View style={styles.groupHeader}>
+        <Store size={16} color={colors.primary} strokeWidth={2} />
+        <Text style={styles.groupName} numberOfLines={1}>
+          {group.sellerName ?? "Vendedor"}
+        </Text>
+      </View>
+      {group.items.map((item) => (
+        <CartItemCard key={`${item.source}-${item.productId}`} item={item} />
+      ))}
+      <View style={styles.subtotalRow}>
+        <Text style={styles.subtotalLabel}>Subtotal</Text>
+        <Text style={styles.subtotalValue}>{formatPrice(group.subtotal)}</Text>
+      </View>
+      <Pressable
+        style={styles.checkoutBtn}
+        onPress={() => router.push({ pathname: "/(cart)/checkout", params: { g: group.id } })}
+      >
+        <Text style={styles.checkoutBtnText}>Pagar esta compra</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+export default function CartScreen() {
+  const groups = useCartGroups();
+  const clearCart = useCartStore((s) => s.clearCart);
   const insets = useSafeAreaInsets();
 
-  if (items.length === 0) {
+  if (groups.length === 0) {
     return <EmptyCart />;
   }
 
   return (
-    <View style={styles.root}>
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item.product.id}
-        renderItem={({ item }) => <CartItemCard item={item} />}
-        contentContainerStyle={styles.list}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={
-          <Pressable style={styles.clearBtn} onPress={clearCart}>
-            <Text style={styles.clearBtnText}>Vaciar carrito</Text>
-          </Pressable>
-        }
-      />
-
-      {/* Footer */}
-      <View style={[styles.footer, { paddingBottom: insets.bottom + 12 }]}>
-        <View style={styles.subtotalRow}>
-          <Text style={styles.subtotalLabel}>Subtotal</Text>
-          <Text style={styles.subtotalValue}>{formatPrice(subtotal())}</Text>
-        </View>
-        <Pressable
-          style={styles.checkoutBtn}
-          onPress={() => router.push("/(cart)/checkout")}
-        >
-          <Text style={styles.checkoutBtnText}>Ir a pagar</Text>
-        </Pressable>
-      </View>
-    </View>
+    <ScrollView
+      style={styles.root}
+      contentContainerStyle={[styles.list, { paddingBottom: insets.bottom + 24 }]}
+      showsVerticalScrollIndicator={false}
+    >
+      {groups.length > 1 && (
+        <Text style={styles.hint}>Cada vendedor se paga por separado: una compra por vendedor.</Text>
+      )}
+      {groups.map((group) => (
+        <GroupSection key={group.id} group={group} />
+      ))}
+      <Pressable style={styles.clearBtn} onPress={clearCart}>
+        <Text style={styles.clearBtnText}>Vaciar carrito</Text>
+      </Pressable>
+    </ScrollView>
   );
 }
 
@@ -164,7 +159,12 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 16,
-    gap: 12,
+    gap: 16,
+  },
+  hint: {
+    fontSize: 13,
+    fontFamily: "Cabin_400Regular",
+    color: colors.foregroundSecondary,
   },
   // Empty
   empty: {
@@ -199,6 +199,26 @@ const styles = StyleSheet.create({
     fontFamily: "Cabin_600SemiBold",
     color: "#fff",
   },
+  // Group
+  group: {
+    gap: 10,
+    padding: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.borderLight,
+    backgroundColor: colors.backgroundSecondary,
+  },
+  groupHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  groupName: {
+    flex: 1,
+    fontSize: 15,
+    fontFamily: "Cabin_600SemiBold",
+    color: colors.foreground,
+  },
   // Card
   card: {
     flexDirection: "row",
@@ -228,13 +248,6 @@ const styles = StyleSheet.create({
     padding: 12,
     gap: 2,
   },
-  brand: {
-    fontSize: 11,
-    fontFamily: "Cabin_400Regular",
-    color: colors.foregroundTertiary,
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
-  },
   name: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
@@ -262,6 +275,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  qtyBtnDisabled: {
+    opacity: 0.4,
+  },
   qtyText: {
     fontSize: 14,
     fontFamily: "Cabin_600SemiBold",
@@ -269,13 +285,17 @@ const styles = StyleSheet.create({
     minWidth: 20,
     textAlign: "center",
   },
+  unique: {
+    fontSize: 12,
+    fontFamily: "Cabin_400Regular",
+    color: colors.foregroundTertiary,
+  },
   removeBtn: {
     padding: 4,
   },
   // Clear
   clearBtn: {
     alignSelf: "center",
-    marginTop: 8,
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
@@ -285,19 +305,12 @@ const styles = StyleSheet.create({
     color: colors.danger,
     textDecorationLine: "underline",
   },
-  // Footer
-  footer: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    backgroundColor: colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: colors.borderLight,
-    gap: 10,
-  },
+  // Group footer
   subtotalRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 4,
   },
   subtotalLabel: {
     fontSize: 15,

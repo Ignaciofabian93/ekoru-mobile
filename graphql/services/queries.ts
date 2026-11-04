@@ -66,6 +66,13 @@ export const GET_SERVICE_BY_ID = gql`
   query GetService($id: ID!) {
     getService(id: $id) {
       ...ServiceDetailFields
+      # Resolved by transactions: a provider without Cobros takes no quote
+      # requests, since an accepted quote is paid to them. Detail only, so
+      # lists don't pay for the lookup.
+      seller {
+        id
+        canReceivePayments
+      }
     }
   }
 `;

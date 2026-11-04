@@ -39,7 +39,9 @@
       "payments": "Cobros",
       "bookings": "Reservas",
       "messages": "Mensajes",
-      "thread": "Conversación"
+      "thread": "Conversación",
+      "quotes": "Cotizaciones",
+      "sales": "Mis ventas"
     },
     "legal": {
       "termsAndPolicies": "Términos y Políticas"

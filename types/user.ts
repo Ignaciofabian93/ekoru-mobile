@@ -101,6 +101,8 @@ export type Seller = {
   sellerCategory?: SellerCategory;
   /** Notification/privacy switches; absent until the seller saves once. */
   preferences?: SellerPreferences;
+  /** Whether the seller connected Cobros, so EKORU can pay them; from transactions. */
+  canReceivePayments?: boolean;
 };
 
 export type PersonProfile = {

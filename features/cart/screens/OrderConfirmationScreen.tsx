@@ -28,16 +28,41 @@ const COPY = {
   },
 } as const;
 
+/** A paid quote settles a service, not an order: every outcome leads back to the quotes (WEB-4). */
+const QUOTE_COPY = {
+  PAID: {
+    title: "¡Pago confirmado!",
+    subtitle: "Pagaste la cotización. Le avisamos al proveedor y recibirás un correo con el detalle.",
+  },
+  PENDING: {
+    title: "Estamos confirmando tu pago",
+    subtitle: "Esto puede tardar unos segundos. Si cerraste el pago sin terminarlo, puedes pagar desde tus cotizaciones.",
+  },
+  FAILED: {
+    title: "El pago no se completó",
+    subtitle: "No se hizo ningún cobro. Puedes intentarlo otra vez desde tus cotizaciones.",
+  },
+  UNKNOWN: {
+    title: "Pago registrado",
+    subtitle: "Revisa el estado en «Mis cotizaciones».",
+  },
+} as const;
+
 export default function OrderConfirmationScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { paymentId, orderId } = useLocalSearchParams<{
+  const { paymentId, orderId, group, kind } = useLocalSearchParams<{
     paymentId?: string;
     orderId?: string;
+    /** The cart group being paid, dropped from the cart once paid. */
+    group?: string;
+    /** "quote" when an accepted quote was paid. */
+    kind?: string;
   }>();
 
-  const { payment, outcome, loading } = usePaymentResult(paymentId);
-  const copy = COPY[outcome];
+  const { payment, outcome, loading } = usePaymentResult(paymentId, group);
+  const isQuote = kind === "quote" || Boolean(payment?.quotationId);
+  const copy = (isQuote ? QUOTE_COPY : COPY)[outcome];
 
   const Icon =
     outcome === "PAID"
@@ -70,9 +95,15 @@ export default function OrderConfirmationScreen() {
       <View style={styles.card}>
         <View style={styles.cardRow}>
           <Package size={18} color={colors.foregroundSecondary} strokeWidth={1.8} />
-          <Text style={styles.cardLabel}>Número de orden</Text>
+          <Text style={styles.cardLabel}>{isQuote ? "Cotización" : "Número de orden"}</Text>
           <Text style={styles.cardValue}>
-            {orderId ? `#${orderId}` : (payment?.orderId ?? "—")}
+            {isQuote
+              ? payment?.quotationId
+                ? `#${payment.quotationId}`
+                : "—"
+              : orderId
+                ? `#${orderId}`
+                : (payment?.orderId ?? "—")}
           </Text>
         </View>
 
@@ -88,19 +119,21 @@ export default function OrderConfirmationScreen() {
 
         <View style={styles.divider} />
         <Text style={styles.cardNote}>
-          {outcome === "PAID"
-            ? "Recibirás un correo con el detalle de tu compra y el seguimiento del envío."
-            : "El estado se actualiza solo; también puedes revisarlo en «Mis pedidos»."}
+          {isQuote
+            ? "El estado se actualiza solo; también puedes revisarlo en «Mis cotizaciones»."
+            : outcome === "PAID"
+              ? "Recibirás un correo con el detalle de tu compra y el seguimiento del envío."
+              : "El estado se actualiza solo; también puedes revisarlo en «Mis pedidos»."}
         </Text>
       </View>
 
       <View style={styles.actions}>
         <Pressable
           style={styles.primaryBtn}
-          onPress={() => router.replace("/(profile)/order-history")}
+          onPress={() => router.replace(isQuote ? "/(profile)/quotes" : "/(profile)/order-history")}
         >
           <Package size={18} color="#fff" strokeWidth={2} />
-          <Text style={styles.primaryBtnText}>Ver mis pedidos</Text>
+          <Text style={styles.primaryBtnText}>{isQuote ? "Ver mis cotizaciones" : "Ver mis pedidos"}</Text>
         </Pressable>
 
         <Pressable style={styles.secondaryBtn} onPress={() => router.replace("/(tabs)")}>

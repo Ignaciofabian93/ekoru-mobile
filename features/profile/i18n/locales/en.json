@@ -260,5 +260,108 @@
       "NO_SHOWMessage": "The booking will be closed as a no-show."
     },
     "servicesProvided": "Services provided"
+  },
+  "quotes": {
+    "title": "My quotes",
+    "received": "Quotes received",
+    "error": "The quote couldn't be updated",
+    "tabs": {
+      "sent": "Requested",
+      "received": "To answer"
+    },
+    "empty": {
+      "sent": "Ask a provider for a price and it will appear here.",
+      "received": "Requests for your services will show up here."
+    },
+    "status": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "DECLINED": "Declined",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled",
+      "EXPIRED": "Expired"
+    },
+    "paid": "Paid",
+    "paidOn": "Paid on {{date}}",
+    "quotedPrice": "Quoted price",
+    "providerNotes": "Provider notes",
+    "clientNotes": "Client notes",
+    "declineReason": "Reason",
+    "awaitingProvider": "Waiting for the provider to send a price.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "pay": "Pay {{amount}}",
+    "payHint": "You pay with Mercado Pago. The provider is notified once the payment is confirmed.",
+    "respond": {
+      "price": "Price (CLP)",
+      "duration": "Duration (minutes)",
+      "notes": "Terms and notes",
+      "notesPlaceholder": "What the price includes, availability, conditions…",
+      "submit": "Send quote"
+    }
+  },
+  "sales": {
+    "title": "My sales",
+    "moveError": "The shipment couldn't be updated",
+    "order": "Order #{{id}}",
+    "receivedOn": "Received on {{date}}",
+    "stage": {
+      "PENDING_PAYMENT": "Awaiting payment",
+      "PREPARING": "To ship",
+      "SHIPPED": "Shipped",
+      "DELIVERED": "Delivered",
+      "RETURNED": "Returned",
+      "CANCELED": "Canceled"
+    },
+    "method": {
+      "DELIVERED_TO_HOME": "Home delivery",
+      "IN_HOUSE_PICKUP": "Store pickup",
+      "IN_MID_POINT_PICKUP": "Meeting-point pickup",
+      "CARRIER": "Courier"
+    },
+    "tracking": "Tracking",
+    "unavailableItem": "Item no longer available",
+    "viewDetails": "View buyer and address",
+    "hideDetails": "Hide details",
+    "details": {
+      "email": "Email",
+      "phone": "Phone",
+      "recipient": "Recipient",
+      "address": "Address",
+      "reference": "Reference"
+    },
+    "actions": {
+      "ship": "Mark as shipped",
+      "deliver": "Mark as delivered"
+    },
+    "ship": {
+      "description": "The buyer will be notified. If you sent it by courier, add the company and tracking number.",
+      "trackingLabel": "Tracking (optional)",
+      "trackingPlaceholder": "e.g. Starken 123456789",
+      "confirm": "Confirm shipment"
+    },
+    "deliver": {
+      "title": "Was the order delivered?",
+      "description": "Only confirm once the buyer has it. This closes the sale and notifies them.",
+      "confirm": "Yes, it was delivered"
+    },
+    "cancel": "Cancel",
+    "stats": {
+      "revenue": "Sales this month",
+      "paidOrders": "Payments received",
+      "toShip": "To ship"
+    },
+    "filter": {
+      "toShip": "To ship",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "pending": "Awaiting payment",
+      "canceled": "Canceled",
+      "all": "All"
+    },
+    "empty": "When someone buys one of your products, the order will show up here.",
+    "emptyFiltered": "No sales in this state.",
+    "error": "We couldn't load your sales. Pull down to try again.",
+    "showMore": "Show more"
   }
 }

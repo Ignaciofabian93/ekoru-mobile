@@ -1,6 +1,8 @@
+import MainButton from "@/components/Primitives/Button/MainButton";
 import { Text } from "@/components/Primitives/Text/Text";
 import { borderRadius, colors, fontFamily, fontSize, spacing } from "@/design/tokens";
 import { formatPrice } from "@/utils/formatPrice";
+import { CreditCard } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { type BuyerOrder, lineName, type OrderStage, orderStage } from "../../utils/orders";
@@ -15,7 +17,16 @@ const STAGE_COLORS: Record<OrderStage, string> = {
   CANCELED: colors.danger,
 };
 
-export default function OrderCard({ order }: { order: BuyerOrder }) {
+interface Props {
+  order: BuyerOrder;
+  /** Pays an unpaid order again (WEB-24). */
+  onPay?: (order: BuyerOrder) => void;
+  paying?: boolean;
+  /** Another order's payment is starting. */
+  payDisabled?: boolean;
+}
+
+export default function OrderCard({ order, onPay, paying, payDisabled }: Props) {
   const { t, i18n } = useTranslation(NAMESPACE);
   const stage = orderStage(order);
   const color = STAGE_COLORS[stage];
@@ -60,6 +71,21 @@ export default function OrderCard({ order }: { order: BuyerOrder }) {
         <Text style={styles.totalLabel}>{t("total")}</Text>
         <Text style={styles.totalValue}>{formatPrice(order.total)}</Text>
       </View>
+
+      {/* A buyer who left Mercado Pago's page pays from here (WEB-24). */}
+      {stage === "PENDING_PAYMENT" && onPay ? (
+        <View style={styles.pay}>
+          <MainButton
+            text={t("pay", { amount: formatPrice(order.total) })}
+            leftIcon={CreditCard}
+            size="sm"
+            loading={paying}
+            disabled={payDisabled}
+            onPress={() => onPay(order)}
+          />
+          <Text style={styles.cardDetail}>{t("payHint")}</Text>
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -122,5 +148,8 @@ const styles = StyleSheet.create({
     fontSize: fontSize.base,
     fontFamily: fontFamily.bold,
     color: colors.primary,
+  },
+  pay: {
+    gap: spacing[2],
   },
 });

@@ -39,7 +39,9 @@
       "payments": "Payouts",
       "bookings": "Bookings",
       "messages": "Messages",
-      "thread": "Conversation"
+      "thread": "Conversation",
+      "quotes": "Quotes",
+      "sales": "My sales"
     },
     "legal": {
       "termsAndPolicies": "Terms and Policies"

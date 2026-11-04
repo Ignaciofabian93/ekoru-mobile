@@ -1,9 +1,8 @@
-import { GATEWAY_BASE_URL } from "@/config/endpoints";
 import { CREATE_ORDER, CREATE_PAYMENT } from "@/graphql/checkout/mutations";
 import useAppRouter from "@/hooks/useAppRouter";
 import { logger } from "@/lib/logger";
 import { showError } from "@/lib/toast";
-import useCartStore from "@/store/useCartStore";
+import { useCartGroups } from "@/store/useCartStore";
 import type {
   CreateOrderInput,
   CreateOrderResponse,
@@ -14,7 +13,7 @@ import type {
   ShippingMethod,
 } from "@/types/checkout";
 import { useMutation } from "@apollo/client/react";
-import * as WebBrowser from "expo-web-browser";
+import { useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 
 import {
@@ -22,6 +21,7 @@ import {
   shippingMethodById,
   PAYMENT_PROVIDERS,
 } from "../constants/shippingMethods";
+import { openPaymentHandoff, paymentReturnUrl } from "../utils/paymentHandoff";
 
 export type CheckoutStep = "shipping" | "payment" | "review";
 
@@ -38,9 +38,19 @@ const STEP_ORDER: CheckoutStep[] = ["shipping", "payment", "review"];
  * in a system browser, and once that closes it hands the `paymentId` to the
  * confirmation screen, which asks the backend what actually happened. Nothing
  * here treats "browser closed" as "paid".
+ *
+ * One order is one seller, so checkout runs one cart group at a time: the
+ * cart's per-seller "Pagar" passes `?g=<group id>`. A missing or stale group
+ * falls back to the first one, so checkout never dead-ends.
  */
 export default function useCheckout() {
-  const { items, subtotal } = useCartStore();
+  const groups = useCartGroups();
+  const { g } = useLocalSearchParams<{ g?: string }>();
+  const group = useMemo(
+    () => (g ? (groups.find((x) => x.id === g) ?? groups[0]) : groups[0]) ?? null,
+    [groups, g],
+  );
+  const items = useMemo(() => group?.items ?? [], [group]);
   const { replace } = useAppRouter();
 
   const [step, setStep] = useState<CheckoutStep>("shipping");
@@ -60,15 +70,6 @@ export default function useCheckout() {
     { input: CreatePaymentInput }
   >(CREATE_PAYMENT);
 
-  // The backend rejects an order spanning two sellers (one order = one seller,
-  // see docs/CHECKOUT.md §5). Catch it here so the buyer is told before paying
-  // rather than by a mutation error afterwards.
-  const sellerIds = useMemo(
-    () => Array.from(new Set(items.map((i) => i.product.sellerId).filter(Boolean))),
-    [items],
-  );
-  const hasMultipleSellers = sellerIds.length > 1;
-
   const shippingCost = useMemo(() => {
     if (!shippingMethod) return 0;
     const meta = shippingMethodById(shippingMethod);
@@ -78,7 +79,7 @@ export default function useCheckout() {
     return meta.isQuoted ? 0 : HOME_DELIVERY_FLAT_RATE_CLP;
   }, [shippingMethod]);
 
-  const cartSubtotal = subtotal();
+  const cartSubtotal = group?.subtotal ?? 0;
   const total = cartSubtotal + shippingCost;
 
   const isShippingValid = useMemo(() => {
@@ -133,14 +134,7 @@ export default function useCheckout() {
   };
 
   const pay = async () => {
-    if (items.length === 0) return;
-    if (hasMultipleSellers) {
-      showError({
-        title: "Carro con varios vendedores",
-        message: "Deja productos de un solo vendedor para pagar. Podrás comprar el resto después.",
-      });
-      return;
-    }
+    if (!group || items.length === 0) return;
     const error = !shippingMethod
       ? "Elige un método de entrega"
       : !isShippingValid
@@ -159,12 +153,13 @@ export default function useCheckout() {
       const orderRes = await createOrder({
         variables: {
           input: {
-            // Mobile's cart only holds marketplace products, so every line maps
-            // to productId (store products would use storeProductId).
-            items: items.map((i) => ({
-              productId: Number(i.product.id),
-              quantity: i.quantity,
-            })),
+            // A group is single-source, so each line takes the id field its
+            // catalogue's subgraph expects.
+            items: items.map((i) =>
+              i.source === "store"
+                ? { storeProductId: i.productId, quantity: i.quantity }
+                : { productId: i.productId, quantity: i.quantity },
+            ),
             shippingMethod,
             shippingAddress: meta.requiresAddress ? (address as ShippingAddressInput) : undefined,
             currency: "CLP",
@@ -174,36 +169,22 @@ export default function useCheckout() {
       const order = orderRes.data?.createOrder;
       if (!order) throw new Error("createOrder no devolvió datos");
 
-      // The provider returns the buyer to the gateway, which commits the payment
-      // and then redirects on to the web confirmation page. That page is the end
-      // of the browser journey; the app reads the result over the API.
-      const returnUrl = `${GATEWAY_BASE_URL}/payments/return/${provider.toLowerCase()}`;
-
       const paymentRes = await createPayment({
         variables: {
-          input: { orderId: Number(order.id), provider, returnUrl },
+          input: { orderId: Number(order.id), provider, returnUrl: paymentReturnUrl(provider) },
         },
       });
       const payment = paymentRes.data?.createPayment;
       if (!payment) throw new Error("createPayment no devolvió datos");
 
-      // Webpay only accepts an HTTP form-POST with the token, which a browser
-      // tab cannot be opened onto directly — the gateway serves a tiny page that
-      // performs the POST. Khipu and MercadoPago take a plain URL.
-      const handoffUrl =
-        payment.redirect.kind === "WEBPAY_FORM"
-          ? `${GATEWAY_BASE_URL}/payments/webpay/redirect?url=${encodeURIComponent(
-              payment.redirect.url,
-            )}&token=${encodeURIComponent(payment.redirect.token)}`
-          : payment.redirect.url;
-
-      await WebBrowser.openBrowserAsync(handoffUrl, { showTitle: true });
+      await openPaymentHandoff(payment.redirect);
 
       // Whatever the buyer did in there, the confirmation screen is what decides:
-      // it polls the payment until the backend reports a final state.
+      // it polls the payment until the backend reports a final state, and only
+      // then drops this seller's lines from the cart.
       replace({
         pathname: "/(cart)/confirmation",
-        params: { paymentId: payment.paymentId, orderId: String(order.id) },
+        params: { paymentId: payment.paymentId, orderId: String(order.id), group: group.id },
       });
     } catch (err) {
       logger.error("[Checkout] payment failed:", err);
@@ -222,6 +203,7 @@ export default function useCheckout() {
     goNext,
     goBack,
 
+    group,
     items,
     subtotal: cartSubtotal,
     shippingCost,
@@ -236,7 +218,6 @@ export default function useCheckout() {
     provider,
     setProvider,
 
-    hasMultipleSellers,
     isShippingValid,
     isPaymentValid,
     loading,

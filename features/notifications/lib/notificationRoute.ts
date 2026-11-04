@@ -28,6 +28,17 @@ const ROUTE_BY_TYPE: Partial<Record<NotificationType, string>> = {
   PAYMENT_FAILED: "/(profile)/order-history",
   PAYMENT_REFUNDED: "/(profile)/order-history",
 
+  // The provider's notices open the received tab, the client's the sent one.
+  QUOTATION_REQUEST: "/(profile)/quotes?tab=received",
+  QUOTATION_ACCEPTED: "/(profile)/quotes?tab=received",
+  QUOTATION_RECEIVED: "/(profile)/quotes",
+  QUOTATION_COMPLETED: "/(profile)/quotes",
+  QUOTATION_DECLINED: "/(profile)/quotes",
+  BOOKING_REQUEST: "/(profile)/bookings?tab=received",
+  BOOKING_CONFIRMED: "/(profile)/bookings",
+  BOOKING_COMPLETED: "/(profile)/bookings",
+  BOOKING_CANCELLED: "/(profile)/bookings",
+
   SECURITY_LOGIN_ALERT: "/(profile)/settings",
 
   MESSAGE_RECEIVED: "/(profile)/messages",

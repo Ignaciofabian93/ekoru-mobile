@@ -13,6 +13,7 @@ export interface OrderLine {
 
 export interface BuyerOrder {
   id: string;
+  sellerId?: string;
   status: "PENDING_PAYMENT" | "PAID" | "CANCELED" | "REFUNDED";
   subtotal: number;
   shippingCost: number;
@@ -33,6 +34,16 @@ export function orderStage(order: BuyerOrder): OrderStage {
   if (order.status === "CANCELED" || order.status === "REFUNDED") return "CANCELED";
   if (order.status === "PENDING_PAYMENT") return "PENDING_PAYMENT";
   return order.shippingStatus?.status ?? "PREPARING";
+}
+
+/**
+ * The cart group an order was bought from, so paying it from the order history
+ * drops those lines from the cart too. Orders are single-source and single-seller.
+ */
+export function orderCartGroup(order: BuyerOrder): string | undefined {
+  if (!order.sellerId) return undefined;
+  const source = order.orderItems?.some((line) => line.storeProduct) ? "store" : "marketplace";
+  return `${source}:${order.sellerId}`;
 }
 
 /** Name of a line: whichever catalogue the item came from. */

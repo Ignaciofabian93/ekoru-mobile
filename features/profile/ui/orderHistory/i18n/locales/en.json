@@ -21,5 +21,7 @@
     "title": "No orders yet",
     "subtitle": "Your purchase history will appear here."
   },
-  "error": "We could not load your orders. Pull down to try again."
+  "error": "We could not load your orders. Pull down to try again.",
+  "pay": "Pay {{amount}}",
+  "payHint": "You pay with Mercado Pago. Orders left unpaid for an hour are canceled."
 }

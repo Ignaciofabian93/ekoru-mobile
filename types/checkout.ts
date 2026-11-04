@@ -80,7 +80,9 @@ export type PaymentStatusResponse = {
   status: PaymentStatus;
   amount: number;
   currency: string;
-  orderId: number;
+  orderId: number | null;
+  /** Set instead of `orderId` when the payment settles a service quote. */
+  quotationId?: number | null;
   provider: PaymentProviderId;
   providerTransactionId?: string | null;
   paidAt?: string | null;

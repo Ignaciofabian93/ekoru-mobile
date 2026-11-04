@@ -29,8 +29,8 @@ export type PaymentOutcome = "PENDING" | "PAID" | "FAILED" | "UNKNOWN";
  * asks — repeatedly, while the state is still moving — instead of assuming the
  * payment succeeded because the browser closed.
  */
-export function usePaymentResult(paymentId?: string) {
-  const clearCart = useCartStore((s) => s.clearCart);
+export function usePaymentResult(paymentId?: string, groupId?: string) {
+  const clearGroup = useCartStore((s) => s.clearGroup);
 
   const { data, loading, error, startPolling, stopPolling } = useQuery<{
     payment: PaymentStatusResponse | null;
@@ -54,11 +54,12 @@ export function usePaymentResult(paymentId?: string) {
     return () => clearTimeout(timer);
   }, [paymentId, isFinal, stopPolling]);
 
-  // The cart is only dropped once the money is in: an abandoned or failed
-  // payment leaves it intact so the buyer can retry without rebuilding it.
+  // The seller's lines are only dropped once the money is in: an abandoned or
+  // failed payment leaves them so the buyer can retry without rebuilding them.
+  // Other sellers' lines stay for their own checkout; a quote has none.
   useEffect(() => {
-    if (status === "COMPLETED") clearCart();
-  }, [status, clearCart]);
+    if (status === "COMPLETED" && groupId) clearGroup(groupId);
+  }, [status, groupId, clearGroup]);
 
   const outcome: PaymentOutcome = !paymentId
     ? "UNKNOWN"

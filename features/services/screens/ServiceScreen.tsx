@@ -9,13 +9,23 @@ import { formatDuration } from "@/utils/formatDuration";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { type Href, Stack, useLocalSearchParams } from "expo-router";
-import { CalendarPlus, Info, MessageCircle, Star, User, UserRound, Wrench } from "lucide-react-native";
+import {
+  CalendarPlus,
+  FileText,
+  Info,
+  MessageCircle,
+  Star,
+  User,
+  UserRound,
+  Wrench,
+} from "lucide-react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import useService, { type ServiceDetail } from "../hooks/useService";
 import { NAMESPACE } from "../i18n";
 import BookingForm from "../ui/BookingForm";
+import QuoteForm from "../ui/QuoteForm";
 
 /** A service (MOB-3): what it is, how it is priced, and booking or messaging the provider. */
 export default function ServiceScreen() {
@@ -72,22 +82,27 @@ function ServiceDetailView({ service }: { service: ServiceDetail }) {
   const { navigate } = useAppRouter();
   const { start, loading: contacting } = useStartConversation();
   const [imageError, setImageError] = useState(false);
-  const [bookingOpen, setBookingOpen] = useState(false);
+  // One inline form at a time: the booking or the quote request.
+  const [open, setOpen] = useState<"booking" | "quote" | null>(null);
   const priceLine = usePriceLine(service);
 
   const isOwnService = Boolean(me && service.sellerId === me.id);
   const imageUri = getImageUrl(service.displayImage ?? service.images?.[0] ?? undefined);
-  // A quote-priced service has no number to agree to up front, so it waits for
-  // quote requests (WEB-4); anything with a price can be booked, paid on site.
-  const canBook = service.pricingType !== "QUOTATION";
+  // As on the web (WEB-4, WEB-5): a quote-priced service has no number to
+  // agree to up front, so it can only be quoted; anything with a price can be
+  // booked, paid on site, and quoted too. An accepted quote is paid to the
+  // provider through Mercado Pago, so quotes need them connected to Cobros.
+  const quoteOnly = service.pricingType === "QUOTATION";
+  const canBook = !quoteOnly;
+  const canRequestQuote = service.seller?.canReceivePayments !== false;
   const rating = service.averageRating ?? 0;
 
-  const openBooking = () => {
+  const openForm = (form: "booking" | "quote") => {
     if (!me) {
       navigate("/(auth)" as Href);
       return;
     }
-    setBookingOpen(true);
+    setOpen(form);
   };
 
   const details: { label: string; value: string }[] = [];
@@ -207,27 +222,52 @@ function ServiceDetailView({ service }: { service: ServiceDetail }) {
               <Notice icon={UserRound} text={t("detail.actions.ownListing")} />
             ) : (
               <>
-                {canBook && !bookingOpen && (
-                  <MainButton text={t("detail.actions.book")} leftIcon={CalendarPlus} onPress={openBooking} />
+                {canBook && open !== "booking" && (
+                  <MainButton
+                    text={t("detail.actions.book")}
+                    leftIcon={CalendarPlus}
+                    onPress={() => openForm("booking")}
+                  />
                 )}
-                {canBook && bookingOpen && (
+                {canBook && open === "booking" && (
                   <BookingForm
                     serviceId={service.id}
                     serviceName={service.name}
                     advanceBookingDays={service.advanceBookingDays}
-                    onClose={() => setBookingOpen(false)}
+                    onClose={() => setOpen(null)}
                   />
                 )}
-                {!canBook && <Notice icon={Info} text={t("detail.actions.quotesSoon")} />}
+                {quoteOnly && canRequestQuote && open !== "quote" && (
+                  <MainButton
+                    text={t("detail.actions.requestQuote")}
+                    leftIcon={FileText}
+                    onPress={() => openForm("quote")}
+                  />
+                )}
+                {quoteOnly && !canRequestQuote && (
+                  <Notice icon={Info} text={t("detail.actions.quotesUnavailable")} />
+                )}
+                {open === "quote" && (
+                  <QuoteForm serviceId={service.id} serviceName={service.name} onClose={() => setOpen(null)} />
+                )}
                 {/* The provider is reached through EKORU's chat; their contact
                     details stay private until there is a booking (USR-14). */}
                 <MainButton
                   text={tRoot("chat.contactProvider")}
                   leftIcon={MessageCircle}
-                  variant={canBook ? "outline" : "primary"}
+                  variant={canBook || canRequestQuote ? "outline" : "primary"}
                   loading={contacting}
                   onPress={() => void start({ itemType: "SERVICE", itemId: Number(service.id) })}
                 />
+                {/* A priced service can still be quoted for a tailored figure. */}
+                {!quoteOnly && canRequestQuote && open !== "quote" && (
+                  <MainButton
+                    text={t("detail.actions.requestQuote")}
+                    leftIcon={FileText}
+                    variant="ghost"
+                    onPress={() => openForm("quote")}
+                  />
+                )}
               </>
             )}
           </View>

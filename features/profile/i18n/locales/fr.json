@@ -260,5 +260,108 @@
       "NO_SHOWMessage": "La réservation sera clôturée comme absence."
     },
     "servicesProvided": "Services rendus"
+  },
+  "quotes": {
+    "title": "Mes devis",
+    "received": "Devis reçus",
+    "error": "Le devis n'a pas pu être mis à jour",
+    "tabs": {
+      "sent": "Demandés",
+      "received": "À répondre"
+    },
+    "empty": {
+      "sent": "Demandez un prix à un prestataire et il apparaîtra ici.",
+      "received": "Les demandes pour vos services apparaîtront ici."
+    },
+    "status": {
+      "PENDING": "En attente",
+      "ACCEPTED": "Accepté",
+      "DECLINED": "Refusé",
+      "COMPLETED": "Terminé",
+      "CANCELLED": "Annulé",
+      "EXPIRED": "Expiré"
+    },
+    "paid": "Payé",
+    "paidOn": "Payé le {{date}}",
+    "quotedPrice": "Prix proposé",
+    "providerNotes": "Notes du prestataire",
+    "clientNotes": "Notes du client",
+    "declineReason": "Motif",
+    "awaitingProvider": "En attente du prix du prestataire.",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "pay": "Payer {{amount}}",
+    "payHint": "Vous payez avec Mercado Pago. Le prestataire est prévenu dès que le paiement est confirmé.",
+    "respond": {
+      "price": "Prix (CLP)",
+      "duration": "Durée (minutes)",
+      "notes": "Conditions et notes",
+      "notesPlaceholder": "Ce que le prix comprend, disponibilité, conditions…",
+      "submit": "Envoyer le devis"
+    }
+  },
+  "sales": {
+    "title": "Mes ventes",
+    "moveError": "L'envoi n'a pas pu être mis à jour",
+    "order": "Commande n° {{id}}",
+    "receivedOn": "Reçue le {{date}}",
+    "stage": {
+      "PENDING_PAYMENT": "Paiement en attente",
+      "PREPARING": "À expédier",
+      "SHIPPED": "Expédiée",
+      "DELIVERED": "Livrée",
+      "RETURNED": "Retournée",
+      "CANCELED": "Annulée"
+    },
+    "method": {
+      "DELIVERED_TO_HOME": "Livraison à domicile",
+      "IN_HOUSE_PICKUP": "Retrait en magasin",
+      "IN_MID_POINT_PICKUP": "Retrait au point de rencontre",
+      "CARRIER": "Transporteur"
+    },
+    "tracking": "Suivi",
+    "unavailableItem": "Article plus disponible",
+    "viewDetails": "Voir l'acheteur et l'adresse",
+    "hideDetails": "Masquer les détails",
+    "details": {
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "recipient": "Destinataire",
+      "address": "Adresse",
+      "reference": "Indications"
+    },
+    "actions": {
+      "ship": "Marquer comme expédiée",
+      "deliver": "Marquer comme livrée"
+    },
+    "ship": {
+      "description": "L'acheteur sera prévenu. Si vous l'avez envoyée par transporteur, ajoutez la société et le numéro de suivi.",
+      "trackingLabel": "Suivi (facultatif)",
+      "trackingPlaceholder": "Ex. : Starken 123456789",
+      "confirm": "Confirmer l'envoi"
+    },
+    "deliver": {
+      "title": "La commande a-t-elle été livrée ?",
+      "description": "Ne confirmez qu'une fois que l'acheteur l'a reçue. Cela clôt la vente et le prévient.",
+      "confirm": "Oui, elle a été livrée"
+    },
+    "cancel": "Annuler",
+    "stats": {
+      "revenue": "Ventes du mois",
+      "paidOrders": "Paiements reçus",
+      "toShip": "À expédier"
+    },
+    "filter": {
+      "toShip": "À expédier",
+      "shipped": "Expédiées",
+      "delivered": "Livrées",
+      "pending": "Paiement en attente",
+      "canceled": "Annulées",
+      "all": "Toutes"
+    },
+    "empty": "Quand quelqu'un achète un de vos produits, la commande apparaîtra ici.",
+    "emptyFiltered": "Aucune vente dans cet état.",
+    "error": "Impossible de charger vos ventes. Tirez vers le bas pour réessayer.",
+    "showMore": "Voir plus"
   }
 }

@@ -11,7 +11,7 @@ export default function CartLayout() {
     >
       <Stack.Screen name="index" options={{ title: "Mi Carrito" }} />
       <Stack.Screen name="checkout" options={{ title: "Finalizar Compra" }} />
-      <Stack.Screen name="confirmation" options={{ title: "Pedido Confirmado", headerBackVisible: false }} />
+      <Stack.Screen name="confirmation" options={{ title: "Confirmación de pago", headerBackVisible: false }} />
     </Stack>
   );
 }

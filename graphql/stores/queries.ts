@@ -135,6 +135,8 @@ export const GET_STORE_PRODUCT_BY_ID = gql`
       }
       seller {
         id
+        # Resolved by transactions: a store without Cobros sells nothing yet (TRX-4).
+        canReceivePayments
         email
         sellerType
         isActive

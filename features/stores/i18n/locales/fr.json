@@ -49,6 +49,11 @@
     "materialsSubtitle": "De quoi ce produit est fait.",
     "seller": "Boutique",
     "ownListing": "C'est un produit de votre boutique.",
-    "browsingOnly": "Consultation uniquement pour le moment : les achats arrivent bientôt."
+    "sellerNotPayable": "Cette entreprise n'accepte pas encore les paiements sur EKORU. Vous pouvez lui écrire en attendant.",
+    "addToCart": "Ajouter au panier",
+    "inCart": "Dans votre panier · Voir le panier",
+    "quantity": "Quantité",
+    "less": "Moins",
+    "more": "Plus"
   }
 }

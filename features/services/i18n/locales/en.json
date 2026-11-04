@@ -52,7 +52,8 @@
     "actions": {
       "book": "Book this service",
       "ownListing": "This is your service — you cannot hire yourself.",
-      "quotesSoon": "This service is priced by quote. Quote requests are coming to the app soon; meanwhile, message the provider."
+      "requestQuote": "Request a quote",
+      "quotesUnavailable": "This service is priced by quote, and the provider doesn't take payments on EKORU yet. Meanwhile, message them."
     },
     "booking": {
       "title": "Book this service",
@@ -74,6 +75,26 @@
       "datePlaceholder": "Choose a date",
       "confirmDate": "Confirm",
       "viewBookings": "See my bookings"
+    },
+    "quote": {
+      "title": "Request a quote",
+      "intro": "Describe what you need from «{{service}}» and the provider will reply with a price.",
+      "subject": "Subject",
+      "subjectPlaceholder": "e.g. Move a two-bedroom flat",
+      "description": "What do you need?",
+      "descriptionPlaceholder": "Describe the job, the place and any deadline",
+      "notes": "Extra notes (optional)",
+      "notesPlaceholder": "Access, parking, preferred contact time…",
+      "disclaimer": "A quote request is not a commitment. You decide once the provider answers.",
+      "submit": "Send request",
+      "cancel": "Cancel",
+      "sentTitle": "Request sent",
+      "sentBody": "You will be notified when the provider replies. Follow it under Profile → My quotes.",
+      "viewQuotes": "View my quotes",
+      "errors": {
+        "incomplete": "Add a subject and describe what you need",
+        "failed": "We could not send the request. Try again."
+      }
     }
   }
 }

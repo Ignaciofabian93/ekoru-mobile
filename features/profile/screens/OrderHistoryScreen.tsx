@@ -3,6 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import useMyOrders from "../hooks/useMyOrders";
+import { useOrderPayment } from "../hooks/useOrderPayment";
 import EmptyState from "../ui/orderHistory/EmptyState";
 import Header from "../ui/orderHistory/Header";
 import { NAMESPACE } from "../ui/orderHistory/i18n";
@@ -13,6 +14,7 @@ import { OuterContainer } from "../ui/layout/Container";
 export default function OrderHistoryScreen() {
   const { t } = useTranslation(NAMESPACE);
   const { orders, initialLoading, refreshing, error, refetch } = useMyOrders();
+  const { pay, payingId } = useOrderPayment();
 
   return (
     <OuterContainer enableBottomInset>
@@ -29,7 +31,15 @@ export default function OrderHistoryScreen() {
           ) : orders.length === 0 ? (
             <EmptyState />
           ) : (
-            orders.map((order) => <OrderCard key={order.id} order={order} />)
+            orders.map((order) => (
+              <OrderCard
+                key={order.id}
+                order={order}
+                onPay={(o) => void pay(o)}
+                paying={payingId === order.id}
+                payDisabled={payingId !== null}
+              />
+            ))
           )}
         </View>
       </ScrollView>

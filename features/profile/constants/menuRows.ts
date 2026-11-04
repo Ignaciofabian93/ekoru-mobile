@@ -1,5 +1,6 @@
 import {
   CalendarClock,
+  FileText,
   Gem,
   Handshake,
   Heart,
@@ -8,6 +9,7 @@ import {
   Leaf,
   type LucideIcon,
   PackageSearch,
+  Receipt,
   Settings,
   UserPen,
   Wallet,
@@ -29,9 +31,10 @@ export function useMenuRows(): MenuRow[] {
   const unread = useUnreadConversations();
   const isBusiness = useHasSellerType("STARTUP", "COMPANY");
   const businessType = useBusinessProfile()?.businessType;
-  // Businesses offering services receive bookings; one whose type hasn't
-  // loaded counts as mixed, as on the web.
+  // Businesses offering services receive bookings and quotes, and stores
+  // receive orders; one whose type hasn't loaded counts as mixed, as on the web.
   const providesServices = isBusiness && businessType !== "RETAIL";
+  const sellsProducts = isBusiness && businessType !== "SERVICES";
   return [
     { label: t("account.editProfile"), icon: UserPen, route: "/(profile)/edit-profile" },
     { label: t("password.changePassword"), icon: KeyRound, route: "/(profile)/change-password" },
@@ -41,7 +44,9 @@ export function useMenuRows(): MenuRow[] {
       route: "/(profile)/messages",
     },
     { label: t("orders.title"), icon: PackageSearch, route: "/(profile)/order-history" },
-    // A provider's side of bookings, opened on the received tab (WEB-22).
+    // The orders a store received, to ship (MOB-3, the web's "Mis ventas").
+    ...(sellsProducts ? [{ label: t("sales.title"), icon: Receipt, route: "/(profile)/sales" }] : []),
+    // A provider's side of bookings and quotes, opened on the received tab (WEB-22).
     ...(providesServices
       ? [
           {
@@ -49,10 +54,17 @@ export function useMenuRows(): MenuRow[] {
             icon: Handshake,
             route: "/(profile)/bookings?tab=received",
           },
+          {
+            label: t("quotes.received"),
+            icon: FileText,
+            route: "/(profile)/quotes?tab=received",
+          },
         ]
       : []),
     // Bookings made as a client, paid on site (MOB-3).
     { label: t("bookings.title"), icon: CalendarClock, route: "/(profile)/bookings" },
+    // Quotes asked for as a client, paid through Mercado Pago (MOB-3).
+    { label: t("quotes.title"), icon: FileText, route: "/(profile)/quotes" },
     // Free for every approved business: where buyers' payments land (MOB-6).
     ...(isBusiness ? [{ label: t("payouts.title"), icon: Wallet, route: "/(profile)/payments" }] : []),
     { label: t("favorites.title"), icon: Heart, route: "/(profile)/favorites" },

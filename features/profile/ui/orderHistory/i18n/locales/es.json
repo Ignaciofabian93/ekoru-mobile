@@ -21,5 +21,7 @@
     "title": "Sin pedidos aún",
     "subtitle": "Tu historial de compras aparecerá aquí."
   },
-  "error": "No pudimos cargar tus pedidos. Desliza hacia abajo para reintentar."
+  "error": "No pudimos cargar tus pedidos. Desliza hacia abajo para reintentar.",
+  "pay": "Pagar {{amount}}",
+  "payHint": "Pagas con Mercado Pago. Si no se paga en una hora, el pedido se cancela."
 }

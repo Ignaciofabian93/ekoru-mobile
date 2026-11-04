@@ -32,3 +32,42 @@ export const CREATE_PAYMENT = gql`
     }
   }
 `;
+
+/**
+ * Pays an accepted service quote (WEB-4). Transactions reads the amount and
+ * the provider from services, so only the quote is sent; the hand-off and the
+ * return are checkout's.
+ */
+export const CREATE_QUOTATION_PAYMENT = gql`
+  ${PAYMENT_REDIRECT_FRAGMENT}
+  mutation CreateQuotationPayment(
+    $quotationId: Int!
+    $returnUrl: String!
+    $provider: ChileanPaymentProvider! = MERCADOPAGO
+  ) {
+    createQuotationPayment(quotationId: $quotationId, returnUrl: $returnUrl, provider: $provider) {
+      paymentId
+      status
+      redirect {
+        ...PaymentRedirectFields
+      }
+    }
+  }
+`;
+
+/**
+ * Moves an order the seller received to its next shipping stage (WEB-1).
+ * `trackingInfo` is kept only when the stage is SHIPPED.
+ */
+export const UPDATE_SHIPPING = gql`
+  mutation UpdateShipping($input: UpdateShippingInput!) {
+    updateShipping(input: $input) {
+      id
+      shippingStatus {
+        id
+        status
+        trackingInfo
+      }
+    }
+  }
+`;

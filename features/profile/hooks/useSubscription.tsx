@@ -1,4 +1,3 @@
-import { GATEWAY_BASE_URL } from "@/config/endpoints";
 import {
   ASSIGN_BUSINESS_MEMBERSHIP,
   ASSIGN_PERSON_MEMBERSHIP,
@@ -14,11 +13,11 @@ import useAuthStore, { useBusinessProfile, usePersonProfile } from "@/store/useA
 import type { CreatePaymentResponse } from "@/types/checkout";
 import type { BusinessMembership, PersonMembership, SellerMembershipSubscription } from "@/types/user";
 import { useMutation, useQuery } from "@apollo/client/react";
-import * as WebBrowser from "expo-web-browser";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { type Plan } from "../constants/subscriptions";
 import { DEFAULT_PAYMENT_PROVIDER } from "@/features/cart/constants/shippingMethods";
+import { openPaymentHandoff, paymentReturnUrl } from "@/features/cart/utils/paymentHandoff";
 import { NAMESPACE } from "../ui/subscription/i18n";
 
 type AnyMembership = PersonMembership | BusinessMembership;
@@ -219,22 +218,13 @@ export default function useSubscription() {
       const res = await createMembershipPayment({
         variables: {
           membershipId: Number(pendingMembership.id),
-          // The return path names the provider the payment was started with.
-          returnUrl: `${GATEWAY_BASE_URL}/payments/return/${DEFAULT_PAYMENT_PROVIDER.toLowerCase()}`,
+          returnUrl: paymentReturnUrl(DEFAULT_PAYMENT_PROVIDER),
           provider: DEFAULT_PAYMENT_PROVIDER,
         },
       });
       const redirect = res.data?.createMembershipPayment.redirect;
       if (!redirect) throw new Error("createMembershipPayment returned no redirect");
-
-      // Webpay only takes a form POST; the gateway serves the page that does it.
-      const handoffUrl =
-        redirect.kind === "WEBPAY_FORM"
-          ? `${GATEWAY_BASE_URL}/payments/webpay/redirect?url=${encodeURIComponent(
-              redirect.url,
-            )}&token=${encodeURIComponent(redirect.token)}`
-          : redirect.url;
-      await WebBrowser.openBrowserAsync(handoffUrl, { showTitle: true });
+      await openPaymentHandoff(redirect);
 
       const { data } = await refetchMySubscription();
       const active = data?.mySubscription;

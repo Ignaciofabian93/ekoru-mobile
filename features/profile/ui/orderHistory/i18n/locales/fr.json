@@ -21,5 +21,7 @@
     "title": "Aucune commande pour l'instant",
     "subtitle": "Votre historique d'achats apparaîtra ici."
   },
-  "error": "Impossible de charger vos commandes. Tirez vers le bas pour réessayer."
+  "error": "Impossible de charger vos commandes. Tirez vers le bas pour réessayer.",
+  "pay": "Payer {{amount}}",
+  "payHint": "Vous payez avec Mercado Pago. Une commande non payée est annulée au bout d'une heure."
 }

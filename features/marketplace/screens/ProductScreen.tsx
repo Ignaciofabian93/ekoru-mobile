@@ -2,7 +2,8 @@ import { colors } from "@/design/tokens";
 import useProduct from "@/features/marketplace/hooks/useProduct";
 import useTrackItemView from "@/features/tracking/hooks/useTrackItemView";
 import type { Product } from "@/features/marketplace/types";
-import useCartStore from "@/store/useCartStore";
+import useAddToCart from "@/features/cart/hooks/useAddToCart";
+import { useIsInCart } from "@/store/useCartStore";
 import { conditionTranslate } from "@/utils/conditionTranslate";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { formatPrice } from "@/utils/formatPrice";
@@ -64,19 +65,18 @@ function ProductNotFound() {
 function ProductDetail({ product }: { product: Product }) {
   const insets = useSafeAreaInsets();
   const [imageError, setImageError] = useState(false);
-  const [added, setAdded] = useState(false);
   const imageUri = getImageUrl(product.images?.[0]);
   const router = useRouter();
-  const addItem = useCartStore((s) => s.addItem);
+  const { addMarketplaceProduct } = useAddToCart();
+  const inCart = useIsInCart("marketplace", Number(product.id));
   const me = useSeller();
   const { t } = useTranslation();
   const { start, loading: contacting } = useStartConversation();
   const isOwnProduct = Boolean(me && product.seller?.id === me.id);
 
+  // A marketplace item is one unit, so once it is in the cart the button says so.
   const handleAddToCart = () => {
-    addItem(product);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    if (!inCart) addMarketplaceProduct(product);
   };
 
   return (
@@ -212,18 +212,20 @@ function ProductDetail({ product }: { product: Product }) {
           </View>
         </ScrollView>
 
-        {/* Footer CTA */}
-        <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
-          <View style={styles.footerRow}>
-            <Pressable style={[styles.cartButton, added && styles.cartButtonAdded]} onPress={handleAddToCart}>
-              <ShoppingCart size={20} color="#fff" strokeWidth={2} />
-              <Text style={styles.cartButtonText}>{added ? "¡Agregado!" : "Agregar al carrito"}</Text>
-            </Pressable>
-            <Pressable style={styles.viewCartBtn} onPress={() => router.push("/(cart)")}>
-              <ShoppingCart size={20} color={colors.primary} strokeWidth={2} />
-            </Pressable>
+        {/* Footer CTA: never on the seller's own listing. */}
+        {!isOwnProduct && (
+          <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
+            <View style={styles.footerRow}>
+              <Pressable style={[styles.cartButton, inCart && styles.cartButtonAdded]} onPress={handleAddToCart}>
+                <ShoppingCart size={20} color="#fff" strokeWidth={2} />
+                <Text style={styles.cartButtonText}>{inCart ? "En tu carro" : "Agregar al carrito"}</Text>
+              </Pressable>
+              <Pressable style={styles.viewCartBtn} onPress={() => router.push("/(cart)")}>
+                <ShoppingCart size={20} color={colors.primary} strokeWidth={2} />
+              </Pressable>
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </>
   );

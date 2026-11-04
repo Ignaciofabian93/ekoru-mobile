@@ -52,7 +52,8 @@
     "actions": {
       "book": "Réserver ce service",
       "ownListing": "C'est votre service — vous ne pouvez pas vous engager vous-même.",
-      "quotesSoon": "Ce service est sur devis. Les demandes de devis arrivent bientôt dans l'app ; en attendant, écrivez au prestataire."
+      "requestQuote": "Demander un devis",
+      "quotesUnavailable": "Ce service est sur devis, et le prestataire n'accepte pas encore les paiements sur EKORU. En attendant, écrivez-lui."
     },
     "booking": {
       "title": "Réserver ce service",
@@ -74,6 +75,26 @@
       "datePlaceholder": "Choisissez une date",
       "confirmDate": "Confirmer",
       "viewBookings": "Voir mes réservations"
+    },
+    "quote": {
+      "title": "Demander un devis",
+      "intro": "Décrivez ce dont vous avez besoin pour «{{service}}» et le prestataire répondra avec un prix.",
+      "subject": "Objet",
+      "subjectPlaceholder": "Ex. Déménagement d'un appartement 2 chambres",
+      "description": "De quoi avez-vous besoin ?",
+      "descriptionPlaceholder": "Décrivez le travail, le lieu et votre échéance",
+      "notes": "Notes supplémentaires (facultatif)",
+      "notesPlaceholder": "Accès, stationnement, heure de contact…",
+      "disclaimer": "Une demande de devis ne vous engage pas. Vous décidez après la réponse.",
+      "submit": "Envoyer la demande",
+      "cancel": "Annuler",
+      "sentTitle": "Demande envoyée",
+      "sentBody": "Vous serez averti dès la réponse du prestataire. Suivez-la dans Profil → Mes devis.",
+      "viewQuotes": "Voir mes devis",
+      "errors": {
+        "incomplete": "Ajoutez un objet et décrivez votre besoin",
+        "failed": "Nous n'avons pas pu envoyer la demande. Réessayez."
+      }
     }
   }
 }

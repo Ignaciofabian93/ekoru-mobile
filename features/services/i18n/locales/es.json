@@ -52,7 +52,8 @@
     "actions": {
       "book": "Reservar este servicio",
       "ownListing": "Este es tu servicio — no puedes contratarte a ti mismo.",
-      "quotesSoon": "Este servicio se cotiza según el trabajo. Las solicitudes de cotización llegan pronto a la app; mientras, escríbele al proveedor."
+      "requestQuote": "Solicitar cotización",
+      "quotesUnavailable": "Este servicio se cotiza según el trabajo, y el proveedor todavía no recibe pagos en EKORU. Mientras, escríbele."
     },
     "booking": {
       "title": "Reservar este servicio",
@@ -74,6 +75,26 @@
       "datePlaceholder": "Elige una fecha",
       "confirmDate": "Confirmar",
       "viewBookings": "Ver mis reservas"
+    },
+    "quote": {
+      "title": "Solicitar cotización",
+      "intro": "Cuéntale al proveedor qué necesitas de «{{service}}» y te responderá con un precio.",
+      "subject": "Asunto",
+      "subjectPlaceholder": "Ej. Mudanza de departamento de 2 dormitorios",
+      "description": "¿Qué necesitas?",
+      "descriptionPlaceholder": "Describe el trabajo, el lugar y si tienes un plazo",
+      "notes": "Notas adicionales (opcional)",
+      "notesPlaceholder": "Acceso, estacionamiento, horario de contacto…",
+      "disclaimer": "Pedir una cotización no te compromete. Decides cuando el proveedor responda.",
+      "submit": "Enviar solicitud",
+      "cancel": "Cancelar",
+      "sentTitle": "Solicitud enviada",
+      "sentBody": "Te avisaremos cuando el proveedor responda. Síguela en Perfil → Mis cotizaciones.",
+      "viewQuotes": "Ver mis cotizaciones",
+      "errors": {
+        "incomplete": "Agrega un asunto y describe lo que necesitas",
+        "failed": "No pudimos enviar la solicitud. Inténtalo nuevamente."
+      }
     }
   }
 }

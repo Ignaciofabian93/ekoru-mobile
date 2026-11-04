@@ -49,6 +49,11 @@
     "materialsSubtitle": "What this product is made of.",
     "seller": "Store",
     "ownListing": "This is a product from your store.",
-    "browsingOnly": "Browsing only for now — purchases open soon."
+    "sellerNotPayable": "This business doesn't take payments on EKORU yet. You can message it in the meantime.",
+    "addToCart": "Add to cart",
+    "inCart": "In your cart · View cart",
+    "quantity": "Quantity",
+    "less": "Fewer",
+    "more": "More"
   }
 }

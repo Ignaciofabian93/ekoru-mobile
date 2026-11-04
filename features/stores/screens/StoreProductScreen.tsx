@@ -1,27 +1,34 @@
 import MainButton from "@/components/Primitives/Button/MainButton";
 import { colors } from "@/design/tokens";
+import useAddToCart from "@/features/cart/hooks/useAddToCart";
 import { useStartConversation } from "@/features/chat/hooks/useChatQueries";
 import useTrackItemView from "@/features/tracking/hooks/useTrackItemView";
+import useAppRouter from "@/hooks/useAppRouter";
 import { useSeller } from "@/store/useAuthStore";
+import { useIsInCart } from "@/store/useCartStore";
 import { displaySellerName } from "@/utils/displaySellerName";
 import { formatPrice } from "@/utils/formatPrice";
 import { getImageUrl } from "@/utils/getImageUrl";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { ImageOff, Info, Layers, MessageCircle, PackageCheck, User } from "lucide-react-native";
+import {
+  Check,
+  ImageOff,
+  Info,
+  Layers,
+  MessageCircle,
+  Minus,
+  PackageCheck,
+  Plus,
+  ShoppingCart,
+  User,
+} from "lucide-react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import useStoreProduct, { type StoreProductDetail } from "../hooks/useStoreProduct";
 import { NAMESPACE } from "../i18n";
 
-/**
- * Store purchases are off on the web for the beta (`storePurchase` in the web's
- * constants/features.ts), so the app shows the same notice instead of a cart
- * button. Flip both together.
- */
-const STORE_PURCHASE_ENABLED = false;
-
-/** A store product (MOB-3): what it is, what it is made of, and who sells it. */
+/** A store product (MOB-3): what it is, what it is made of, who sells it, and buying it. */
 export default function StoreProductScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { product, loading } = useStoreProduct(id ?? "");
@@ -59,9 +66,18 @@ function StoreProductDetailView({ product }: { product: StoreProductDetail }) {
   const { t } = useTranslation(NAMESPACE);
   const { t: tRoot } = useTranslation();
   const [imageError, setImageError] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const me = useSeller();
+  const { navigate } = useAppRouter();
   const { start, loading: contacting } = useStartConversation();
+  const { addStoreProduct } = useAddToCart();
+  const inCart = useIsInCart("store", Number(product.id));
   const isOwnProduct = Boolean(me && product.sellerId === me.id);
+  const stock = product.stock ?? 0;
+  // As on the web (TRX-4): a store that hasn't connected Cobros can't be paid
+  // yet, so it can't be bought from; buyers can still write to it.
+  const sellerCanBePaid = product.seller?.canReceivePayments !== false;
+  const canBuy = sellerCanBePaid && stock > 0;
   const imageUri = getImageUrl(product.images?.[0]);
   const onOffer = Boolean(product.hasOffer && product.offerPrice != null);
   // Largest share first, as on the web (STO-4, D3: a new product shows what it
@@ -140,12 +156,55 @@ function StoreProductDetailView({ product }: { product: StoreProductDetail }) {
               <Notice icon={PackageCheck} text={t("product.ownListing")} />
             ) : (
               <>
-                {!STORE_PURCHASE_ENABLED && <Notice icon={Info} text={t("product.browsingOnly")} />}
+                {!sellerCanBePaid ? (
+                  <Notice icon={Info} text={t("product.sellerNotPayable")} />
+                ) : stock <= 0 ? null : inCart ? (
+                  <MainButton
+                    text={t("product.inCart")}
+                    leftIcon={Check}
+                    variant="secondary"
+                    onPress={() => navigate("/(cart)")}
+                  />
+                ) : (
+                  <>
+                    <View style={styles.stepperRow}>
+                      <Text style={styles.rowLabel}>{t("product.quantity")}</Text>
+                      <View style={styles.stepper}>
+                        <Pressable
+                          style={styles.stepperBtn}
+                          onPress={() => setQuantity((q) => Math.max(1, q - 1))}
+                          disabled={quantity <= 1}
+                          accessibilityLabel={t("product.less")}
+                          hitSlop={6}
+                        >
+                          <Minus size={16} color={colors.foreground} strokeWidth={2} />
+                        </Pressable>
+                        <Text style={styles.stepperValue}>{quantity}</Text>
+                        <Pressable
+                          style={styles.stepperBtn}
+                          onPress={() => setQuantity((q) => Math.min(stock, q + 1))}
+                          disabled={quantity >= stock}
+                          accessibilityLabel={t("product.more")}
+                          hitSlop={6}
+                        >
+                          <Plus size={16} color={colors.foreground} strokeWidth={2} />
+                        </Pressable>
+                      </View>
+                    </View>
+                    <MainButton
+                      text={t("product.addToCart")}
+                      leftIcon={ShoppingCart}
+                      onPress={() => {
+                        if (addStoreProduct(product, quantity) === "added") setQuantity(1);
+                      }}
+                    />
+                  </>
+                )}
                 {/* Questions go through EKORU's chat (MOB-5). */}
                 <MainButton
                   text={tRoot("chat.contactSeller")}
                   leftIcon={MessageCircle}
-                  variant="outline"
+                  variant={canBuy ? "ghost" : "outline"}
                   loading={contacting}
                   onPress={() => void start({ itemType: "STORE_PRODUCT", itemId: Number(product.id) })}
                 />
@@ -205,6 +264,24 @@ const styles = StyleSheet.create({
   rowLabel: { fontSize: 14, fontFamily: "Cabin_500Medium", color: colors.foreground },
   rowValue: { fontSize: 14, fontFamily: "Cabin_600SemiBold", color: colors.primary },
   sellerRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  stepperRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  stepper: { flexDirection: "row", alignItems: "center", gap: 12 },
+  stepperBtn: {
+    width: 34,
+    height: 34,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.borderStrong,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  stepperValue: {
+    minWidth: 24,
+    textAlign: "center",
+    fontSize: 16,
+    fontFamily: "Cabin_600SemiBold",
+    color: colors.foreground,
+  },
   notice: {
     flexDirection: "row",
     alignItems: "center",

@@ -1,9 +1,9 @@
 import { colors } from "@/design/tokens";
 import { formatPrice } from "@/utils/formatPrice";
 import {
-  AlertTriangle,
   MapPin,
   Package,
+  Store,
   Truck,
   Wallet,
 } from "lucide-react-native";
@@ -77,6 +77,7 @@ export default function CheckoutScreen() {
     step,
     goNext,
     goBack,
+    group,
     items,
     subtotal,
     shippingCost,
@@ -87,7 +88,6 @@ export default function CheckoutScreen() {
     updateAddressField,
     provider,
     setProvider,
-    hasMultipleSellers,
     loading,
     pay,
   } = useCheckout();
@@ -109,15 +109,13 @@ export default function CheckoutScreen() {
       >
         <StepBar current={step} />
 
-        {hasMultipleSellers && (
-          <View style={styles.warning}>
-            <AlertTriangle size={18} color={colors.warning} strokeWidth={2} />
-            <Text style={styles.warningText}>
-              Tu carro tiene productos de más de un vendedor. Cada compra se paga por
-              separado: deja los productos de un solo vendedor para continuar.
-            </Text>
+        {/* One order is one seller; the rest of the cart waits for its own checkout. */}
+        {group?.sellerName ? (
+          <View style={styles.sellerNote}>
+            <Store size={16} color={colors.primary} strokeWidth={2} />
+            <Text style={styles.sellerNoteText}>Compra a {group.sellerName}</Text>
           </View>
-        )}
+        ) : null}
 
         {step === "shipping" && (
           <>
@@ -162,13 +160,13 @@ export default function CheckoutScreen() {
             title="Resumen del pedido"
           />
           {items.map((item) => (
-            <View key={item.product.id} style={styles.summaryRow}>
+            <View key={`${item.source}-${item.productId}`} style={styles.summaryRow}>
               <Text style={styles.summaryName} numberOfLines={1}>
-                {item.product.name}
+                {item.name}
                 <Text style={styles.summaryQty}> ×{item.quantity}</Text>
               </Text>
               <Text style={styles.summaryPrice}>
-                {formatPrice(item.product.price * item.quantity)}
+                {formatPrice(item.unitPrice * item.quantity)}
               </Text>
             </View>
           ))}
@@ -205,9 +203,9 @@ export default function CheckoutScreen() {
             </Pressable>
           )}
           <Pressable
-            style={[styles.primaryBtn, (loading || hasMultipleSellers) && styles.primaryBtnDisabled]}
+            style={[styles.primaryBtn, (loading || !group) && styles.primaryBtnDisabled]}
             onPress={isReview ? pay : goNext}
-            disabled={loading || hasMultipleSellers}
+            disabled={loading || !group}
           >
             {loading ? (
               <ActivityIndicator color="#fff" />
@@ -282,23 +280,18 @@ const styles = StyleSheet.create({
     color: colors.foreground,
     fontFamily: "Cabin_600SemiBold",
   },
-  // Warning
-  warning: {
+  // Seller
+  sellerNote: {
     flexDirection: "row",
-    gap: 10,
-    alignItems: "flex-start",
-    backgroundColor: colors.surface,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: colors.warning,
-    padding: 14,
+    gap: 8,
+    alignItems: "center",
+    paddingHorizontal: 4,
   },
-  warningText: {
+  sellerNoteText: {
     flex: 1,
-    fontSize: 13,
-    fontFamily: "Cabin_400Regular",
-    color: colors.foregroundSecondary,
-    lineHeight: 19,
+    fontSize: 14,
+    fontFamily: "Cabin_600SemiBold",
+    color: colors.foreground,
   },
   section: {
     backgroundColor: colors.surface,
